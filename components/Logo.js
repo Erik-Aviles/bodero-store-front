@@ -3,7 +3,7 @@ import React from "react";
 import { styled } from "styled-components";
 
 const LogoStyles = styled(Link)`
-  color: #fff;
+  color: red;
   text-decoration: none;
 `;
 
