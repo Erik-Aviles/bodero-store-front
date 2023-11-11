@@ -17,4 +17,4 @@ const ProductShema = new Schema(
   }
 );
 
-export const Product = models.Product || model("Product", ProductShema);
+export const Product = models?.Product || model("Product", ProductShema);

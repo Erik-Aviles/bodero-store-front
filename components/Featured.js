@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Center from "./Center";
 import { styled } from "styled-components";
 import Button from "./Button";
 import { CardIcon } from "./Icons";
 import ButtonLink from "./ButtonLink";
+import { CartContext } from "./CartContext";
 
 const Bg = styled.div`
   color: #ffff;
@@ -22,8 +23,9 @@ const Description = styled.p`
 `;
 
 const ColumnsWrapper = styled.div`
+  background-color: #222;
   display: grid;
-  padding: 30px 0;
+  padding: 30px;
   grid-template-columns: 1fr 0.9fr;
   gap: 40px;
   img {
@@ -43,6 +45,10 @@ const ButtonWrapper = styled.div`
 `;
 
 const Featured = ({ product }) => {
+  const { addProduct } = useContext(CartContext);
+  function addFeaturedToCart() {
+    addProduct(product._id);
+  }
   return (
     <Bg>
       <Center>
@@ -59,7 +65,7 @@ const Featured = ({ product }) => {
                 >
                   Leer mas
                 </ButtonLink>
-                <Button primary>
+                <Button primary onClick={addFeaturedToCart}>
                   <CardIcon />
                   Comprar
                 </Button>

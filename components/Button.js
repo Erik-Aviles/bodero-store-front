@@ -1,3 +1,4 @@
+import { black, primary, white, secondary } from "@/lib/colors";
 import React from "react";
 import { css, styled } from "styled-components";
 
@@ -10,30 +11,79 @@ export const ButtonStyle = css`
   align-items: center;
   gap: 5px;
   text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
   svg: {
     height: 16px;
   }
   ${(props) =>
+    props.block &&
+    css`
+      display: block;
+      width: 100%;
+    `};
+  ${(props) =>
     props.white &&
     !props.outline &&
     css`
-      background-color: #fff;
-      color: #000;
+      background-color: ${white};
+      color: ${black};
     `};
   ${(props) =>
     props.white &&
     props.outline &&
     css`
       background-color: transparent;
-      color: #fff;
-      border: 1px solid #fff;
+      color: ${white};
+      border: 1px solid ${white};
     `};
   ${(props) =>
     props.primary &&
+    !props.outline &&
     css`
-      background-color: #fe0000;
-      color: #fff;
-      border: 1px solid #fe0000;
+      background-color: ${primary};
+      color: ${white};
+      border: 1px solid ${primary};
+    `};
+  ${(props) =>
+    props.primary &&
+    props.outline &&
+    css`
+      background-color: transparent;
+      color: ${primary};
+      border: 1px solid ${primary};
+    `};
+  ${(props) =>
+    props.secondary &&
+    !props.outline &&
+    css`
+      background-color: ${secondary};
+      color: ${white};
+      border: 1px solid ${secondary};
+    `};
+  ${(props) =>
+    props.secondary &&
+    props.outline &&
+    css`
+      background-color: transparent;
+      color: ${secondary};
+      border: 1px solid ${secondary};
+    `};
+  ${(props) =>
+    props.black &&
+    !props.outline &&
+    css`
+      background-color: ${black};
+      color: ${white};
+      border: 1px solid ${black};
+    `};
+  ${(props) =>
+    props.black &&
+    props.outline &&
+    css`
+      background-color: transparent;
+      color: ${black};
+      border: 1px solid ${black};
     `};
   ${(props) =>
     props.size === "l" &&

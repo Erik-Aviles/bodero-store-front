@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import CustomLink from "./CustomLink";
 import Logo from "./Logo";
 import styled from "styled-components";
+import { CartContext } from "./CartContext";
 
 const StyledHeader = styled.header`
   padding: 0;
@@ -36,10 +38,11 @@ const linksUp = [
 ];
 const linksDown = [
   { title: "Mi cuenta", href: "/account", icon: "j" },
-  { title: "Carrito (0)", href: "/cart", icon: "j" },
+  { title: "Carrito", href: "/cart", icon: "j" },
 ];
 
 export default function Header() {
+  const { cartProducts } = useContext(CartContext);
   return (
     <StyledHeader>
       <WrapperUp>
@@ -57,13 +60,21 @@ export default function Header() {
       <WrapperDown>
         <Logo href={"/"} />
         <StaledNav>
-          {linksDown.map((link, index) => (
-            <CustomLink
-              href={link.href}
-              key={`id${index}${link.title}`}
-              title={link.title}
-            />
-          ))}
+          {linksDown.map((link, index) =>
+            link.href === "/cart" ? (
+              <CustomLink
+                href={link.href}
+                key={`id${index}${link.title}`}
+                title={`${link.title}(${cartProducts?.length})`}
+              />
+            ) : (
+              <CustomLink
+                href={link.href}
+                key={`id${index}${link.title}`}
+                title={link.title}
+              />
+            )
+          )}
         </StaledNav>
       </WrapperDown>
     </StyledHeader>
