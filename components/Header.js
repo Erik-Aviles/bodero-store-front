@@ -37,6 +37,7 @@ const linksUp = [
   { title: "Contacto", href: "/contact", icon: "j" },
 ];
 const linksDown = [
+  { title: "Productos", href: "/products", icon: "j" },
   { title: "Mi cuenta", href: "/account", icon: "j" },
   { title: "Carrito", href: "/cart", icon: "j" },
 ];

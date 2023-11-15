@@ -4,11 +4,12 @@ import { CardIcon } from "./Icons";
 import Link from "next/link";
 import { CartContext } from "./CartContext";
 import { useContext } from "react";
+import { white } from "@/lib/colors";
 
 const ProductWrapper = styled.div``;
 
 const WhiteBox = styled(Link)`
-  background-color: #fff;
+  background-color: ${white};
   padding: 20px;
   height: 120px;
   text-align: center;
@@ -51,7 +52,7 @@ export default function ProductBox({ _id, name, description, price, images }) {
     <ProductWrapper>
       <WhiteBox href={url}>
         <div>
-          <img src={images[0]} alt={name} />
+          <img src={images?.[0]} alt={name} />
         </div>
       </WhiteBox>
       <ProductInfoBox>

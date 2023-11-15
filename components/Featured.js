@@ -67,7 +67,7 @@ const Featured = ({ product }) => {
                 </ButtonLink>
                 <Button primary onClick={addFeaturedToCart}>
                   <CardIcon />
-                  Comprar
+                  Comprar Aquí
                 </Button>
               </ButtonWrapper>
             </div>
