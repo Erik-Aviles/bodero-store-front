@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
+import Categories from "@/components/Categories";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import { CardIcon } from "@/components/Icons";
@@ -39,7 +40,7 @@ export default function ProductPage({ product, categories }) {
         <title>B.D.R | {product.name}</title>
       </Head>
       <main>
-        <Header categories={categories} />
+        <Categories categories={categories} />
         <Center>
           <ColWrapper>
             <WhiteBox>

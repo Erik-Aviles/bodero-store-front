@@ -1,6 +1,6 @@
 import { black, primary, white, secondary } from "@/lib/colors";
 import React from "react";
-import { css, styled } from "styled-components";
+import styled, { css } from "styled-components";
 
 export const ButtonStyle = css`
   border: 0;

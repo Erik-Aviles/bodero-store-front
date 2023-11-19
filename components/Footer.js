@@ -24,13 +24,11 @@ const WrapperFooter = styled.footer`
   }
 `;
 
-const SectionSocialMedia = styled.section``;
-
 export default function Footer() {
   return (
     <WrapperFooter>
       <Logo href={"/"} />
-      <SectionSocialMedia>
+      <section>
         <Link
           href={"/"}
           target="_blank"
@@ -55,7 +53,7 @@ export default function Footer() {
         >
           FaceBook
         </Link>
-      </SectionSocialMedia>
+      </section>
       <section>
         <p>COPYRIGHT B.R.D 2023. TODOS LOS DERECHOS RESERVADOS</p>
       </section>

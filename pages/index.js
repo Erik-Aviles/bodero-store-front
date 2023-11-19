@@ -19,7 +19,7 @@ export default function HomePage({ featureProduct, newProducts, categories }) {
         />
       </Head>
       <main>
-        <Header categories={categories} />
+        <Categories categories={categories} />
         <Featured product={featureProduct} />
         <NewProducts products={newProducts} />
         <Brands />

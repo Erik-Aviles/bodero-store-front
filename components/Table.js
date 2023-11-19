@@ -1,5 +1,5 @@
 import { grey } from "@/lib/colors";
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const StyleTable = styled.table`
   width: 100%;

@@ -1,5 +1,5 @@
 import React from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const StyledDiv = styled.section`
   max-width: 1000px;

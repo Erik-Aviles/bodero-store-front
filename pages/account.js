@@ -1,5 +1,5 @@
+import Categories from "@/components/Categories";
 import Center from "@/components/Center";
-import Header from "@/components/Header";
 import Title from "@/components/Title";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
@@ -12,7 +12,7 @@ export default function AccountPage({ categories }) {
         <title>B.D.R | Usuario</title>
       </Head>
       <main>
-        <Header categories={categories} />
+        <Categories categories={categories} />
         <Center>
           <Title>Mi Cuenta</Title>
         </Center>

@@ -1,8 +1,7 @@
 import { CartContextProvider } from "@/components/CartContext";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { BackgroundColor } from "@/lib/colors";
-import { mongooseConnect } from "@/lib/mongoose";
-import { Category } from "@/models/Category";
 import Head from "next/head";
 import { createGlobalStyle } from "styled-components";
 
@@ -28,20 +27,12 @@ export default function App({ Component, pageProps }) {
         />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       </Head>
-      <GlobalStyles />
       <CartContextProvider>
+        <GlobalStyles />
+        <Header />
         <Component {...pageProps} />
+        <Footer />
       </CartContextProvider>
-      <Footer />
     </>
   );
-}
-export async function getServerSideProps() {
-  await mongooseConnect();
-  const categories = await Category.find({}, null, { sort: { _id: -1 } });
-  return {
-    props: {
-      categories: JSON.parse(JSON.stringify(categories)),
-    },
-  };
 }

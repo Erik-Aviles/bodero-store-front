@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Center from "./Center";
 import Title from "./Title";
 import { BackgroundColor, black, grey, primary, white } from "@/lib/colors";
@@ -103,9 +103,9 @@ export default function Brands() {
         <Title>Marcas destacadas</Title>
         <BrandsWrapper>
           {brands.map((brand) => (
-            <StyledCard>
+            <StyledCard key={brand.name}>
               <BrandName>{brand.name.toUpperCase()}</BrandName>
-              <img src={brand.src} alt={brand.name} itemprop="logo"></img>
+              <img src={brand.src} alt={brand.name} title="logo"></img>
             </StyledCard>
           ))}
         </BrandsWrapper>

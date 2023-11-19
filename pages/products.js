@@ -1,5 +1,5 @@
+import Categories from "@/components/Categories";
 import Center from "@/components/Center";
-import Header from "@/components/Header";
 import ProductsGrid from "@/components/ProductsGrid";
 import Title from "@/components/Title";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -18,7 +18,7 @@ export default function ProductsPage({ products, categories }) {
         />
       </Head>
       <main>
-        <Header categories={categories} />
+        <Categories categories={categories} />
         <Center>
           <Title>Todos los productos</Title>
           <ProductsGrid products={products} />

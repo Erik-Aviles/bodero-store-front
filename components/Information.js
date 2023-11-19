@@ -1,7 +1,7 @@
 import { white, grey, primary } from "@/lib/colors";
 import Link from "next/link";
 import React from "react";
-import { styled, css } from "styled-components";
+import styled from "styled-components";
 
 const linksUp = [
   { name: "Quiénes somos ", href: "/about", icon: "j" },
@@ -11,20 +11,20 @@ const linksUp = [
   { name: "Contacto", href: "/contact", icon: "j" },
 ];
 
-const StyleDiv = css`
+const Wrapper = styled.div`
   height: 35px;
   display: flex;
   justify-content: center;
   background-color: ${primary};
 `;
 
-const StyleNav = css`
+const StyleNav = styled.nav`
   display: flex;
   align-items: center;
   gap: 20px;
 `;
 
-const StaledLink = css`
+const StaledLink = styled(Link)`
   text-decoration: none;
   padding: 0 20px 0 0;
   border-right: 0.3px solid #ccc;
@@ -36,32 +36,20 @@ const StaledLink = css`
   }
 `;
 
-const StaledNavLink = styled(Link)`
-  ${StaledLink}
-`;
-
-const Nav = styled.nav`
-  ${StyleNav}
-`;
-
-const Wrapper = styled.div`
-  ${StyleDiv}
-`;
-
 const Information = () => {
   return (
     <Wrapper>
-      <Nav>
+      <StyleNav>
         {linksUp.map((link, index) => (
-          <StaledNavLink
+          <StaledLink
             href={link.href}
             key={`id${index}${link.name}`}
             title={link.name}
           >
             {link.name}
-          </StaledNavLink>
+          </StaledLink>
         ))}
-      </Nav>
+      </StyleNav>
     </Wrapper>
   );
 };

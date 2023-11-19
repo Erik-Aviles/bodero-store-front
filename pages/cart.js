@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
+import Categories from "@/components/Categories";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Input from "@/components/Input";
@@ -13,7 +14,7 @@ import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -121,18 +122,23 @@ export default function CartPage({ categories }) {
   if (asPath?.includes("success") || isSuccess) {
     return (
       <>
-        <Header categories={categories} />
-        <SuccessSend />
+        <Head>
+          <title>B.R.D | Mi carrito - Envio exitoso</title>
+        </Head>
+        <main>
+          <Categories categories={categories} />
+          <SuccessSend />
+        </main>
       </>
     );
   }
   return (
     <>
       <Head>
-        <title>B.R.D | Mi carrito</title>
+        <title>B.R.D | Mi carrito </title>
       </Head>
       <main>
-        <Header categories={categories} />
+        <Categories categories={categories} />
         <Center>
           <Title>Mi Pedido</Title>
           <ColumnsWrapper>

@@ -1,6 +1,6 @@
 import { white, success } from "@/lib/colors";
 import React from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Center from "./Center";
 import { SuccessIcons } from "./Icons";
 import Link from "next/link";
