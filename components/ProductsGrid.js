@@ -6,7 +6,7 @@ const StyledProductsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 30px;
-  padding-top: 30px;
+  padding: 30px 0;
 `;
 
 export default function ProductsGrid({ products }) {

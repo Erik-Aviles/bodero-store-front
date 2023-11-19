@@ -19,7 +19,7 @@ const WhiteBox = styled(Link)`
   border-radius: 10px;
   img {
     max-width: 100%;
-    max-height: 80px;
+    max-height: 100px;
   }
 `;
 
@@ -41,18 +41,18 @@ const PriceRow = styled.div`
   margin-top: 2px;
 `;
 const Price = styled.div`
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
 `;
 
 export default function ProductBox({ _id, name, description, price, images }) {
   const { addProduct } = useContext(CartContext);
-  const url = "/productc/" + _id;
+  const url = "/product/" + _id;
   return (
     <ProductWrapper>
       <WhiteBox href={url}>
         <div>
-          <img src={images?.[0]} alt={name} />
+          <img src={images?.[0]} alt={name} title={name} />
         </div>
       </WhiteBox>
       <ProductInfoBox>

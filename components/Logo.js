@@ -1,14 +1,10 @@
 import Link from "next/link";
-import React from "react";
-import { styled } from "styled-components";
+import Image from "next/image";
 
-const LogoStyles = styled(Link)`
-  color: red;
-  text-decoration: none;
-`;
-
-const Logo = ({ href }) => {
-  return <LogoStyles href={href}>Imagen Logo</LogoStyles>;
-};
-
-export default Logo;
+export default function Logo({ href }) {
+  return (
+    <Link href={href}>
+      <Image alt="Logo B.D.R" src="/logo.jpg" width={300} height={160} />
+    </Link>
+  );
+}

@@ -1,83 +1,115 @@
 import { useContext } from "react";
-import CustomLink from "./CustomLink";
 import Logo from "./Logo";
-import styled from "styled-components";
+import { styled, css } from "styled-components";
 import { CartContext } from "./CartContext";
+import { grey, white } from "@/lib/colors";
+import Link from "next/link";
+import { ProductIcon, ShoppingIcons, UserIcons, WhatsappIcons } from "./Icons";
+import Categories from "./Categories";
+import Information from "./Information";
 
 const StyledHeader = styled.header`
-  padding: 0;
+  padding-bottom: 10px;
 `;
-const WrapperUp = styled.div`
-  background-color: #222;
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px 0;
-`;
-const WrapperDown = styled.div`
+
+const StyleDiv = css`
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 10px;
   display: flex;
   justify-content: space-between;
-  padding: 20px 30px;
-`;
-const StaledNavUp = styled.nav`
-  display: flex;
-  padding: 0 30px;
-  gap: 10px;
-`;
-const StaledNav = styled.nav`
-  display: flex;
-  gap: 10px;
+  color: ${white};
 `;
 
-//  links
-const linksUp = [
-  { title: "Quiénes somos ", href: "/about", icon: "j" },
-  { title: "Formas de pago  ", href: "/payments", icon: "j" },
-  { title: "Tiempo de entrega ", href: "/delivery", icon: "j" },
-  { title: "Recomendaciones ", href: "/suggestions", icon: "j" },
-  { title: "Contacto", href: "/contact", icon: "j" },
-];
-const linksDown = [
-  { title: "Productos", href: "/products", icon: "j" },
-  { title: "Mi cuenta", href: "/account", icon: "j" },
-  { title: "Carrito", href: "/cart", icon: "j" },
-];
+const StyleNav = css`
+  display: flex;
+  gap: 20px;
+`;
 
-export default function Header() {
+const StaledLink = css`
+  font-size: 0.8rem;
+  display: flex;
+  text-decoration: none;
+  cursor: pointer;
+  color: ${grey};
+  &:hover {
+    color: #ccc;
+  }
+`;
+
+const StylesSpan = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h3 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
+`;
+
+const Wrapper = styled.div`
+  ${StyleDiv}
+`;
+const Nav = styled.nav`
+  ${StyleNav}
+`;
+
+const StaledNavLink = styled(Link)`
+  ${StaledLink}
+`;
+
+export default function Header({ categories }) {
   const { cartProducts } = useContext(CartContext);
   return (
-    <StyledHeader>
-      <WrapperUp>
-        <StaledNavUp>
-          {linksUp.map((link, index) => (
-            <CustomLink
-              href={link.href}
-              key={`id${index}${link.title}`}
-              title={link.title}
-            />
-          ))}
-        </StaledNavUp>
-      </WrapperUp>
+    <>
+      <StyledHeader>
+        <Information />
+        <Wrapper>
+          <Logo href={"/"} />
+          <Nav>
+            <StaledNavLink
+              href={
+                "https://api.whatsapp.com/send/?phone=593996501072&text&type=phone_number&app_absent=1"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              title={"Whatsapp"}
+            >
+              <StylesSpan>
+                <WhatsappIcons />
+                <p>Escribenos</p>
+                <h3>0996501072</h3>
+              </StylesSpan>
+            </StaledNavLink>
 
-      <WrapperDown>
-        <Logo href={"/"} />
-        <StaledNav>
-          {linksDown.map((link, index) =>
-            link.href === "/cart" ? (
-              <CustomLink
-                href={link.href}
-                key={`id${index}${link.title}`}
-                title={`${link.title}(${cartProducts?.length})`}
-              />
-            ) : (
-              <CustomLink
-                href={link.href}
-                key={`id${index}${link.title}`}
-                title={link.title}
-              />
-            )
-          )}
-        </StaledNav>
-      </WrapperDown>
-    </StyledHeader>
+            <StaledNavLink hoverTwo href={"/products"} title={"Whatsapp"}>
+              <StylesSpan>
+                <ProductIcon />
+                <p>Productos</p>
+              </StylesSpan>
+            </StaledNavLink>
+
+            {/*             <StaledNavLink hoverTwo href={"/account"} title={"Ver mi cuenta"}>
+              <StylesSpan>
+                <UserIcons />
+                <p>Mi cuenta</p>
+              </StylesSpan>
+            </StaledNavLink> */}
+
+            <StaledNavLink hoverTwo href={"/cart"} title={"Ver mi carrito"}>
+              <StylesSpan>
+                <ShoppingIcons />
+                <p>Carrito {cartProducts?.length} </p>
+              </StylesSpan>
+            </StaledNavLink>
+          </Nav>
+        </Wrapper>
+        <Categories categories={categories} />
+      </StyledHeader>
+    </>
   );
 }

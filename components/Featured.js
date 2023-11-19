@@ -5,6 +5,7 @@ import Button from "./Button";
 import { CardIcon } from "./Icons";
 import ButtonLink from "./ButtonLink";
 import { CartContext } from "./CartContext";
+import { black, grey } from "@/lib/colors";
 
 const Bg = styled.div`
   color: #ffff;
@@ -18,12 +19,12 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-  color: #aaa;
+  color: ${grey};
   font-size: 0.8rem;
 `;
 
 const ColumnsWrapper = styled.div`
-  background-color: #222;
+  background-color: ${black};
   display: grid;
   padding: 30px;
   grid-template-columns: 1fr 0.9fr;
@@ -49,6 +50,7 @@ const Featured = ({ product }) => {
   function addFeaturedToCart() {
     addProduct(product._id);
   }
+
   return (
     <Bg>
       <Center>
