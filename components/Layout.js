@@ -1,11 +1,13 @@
-import AsideInfoAccount from "@/components/AsideInfoAccount";
-import Categories from "@/components/Categories";
 import Center from "@/components/Center";
+import Layout from "@/components/Layout";
 import Title from "@/components/Title";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
 import Head from "next/head";
 import styled from "styled-components";
+import UserInfo from "./account/user-info";
+import AsideInfoAccount from "./AsideInfoAccount";
+import Categories from "./Categories";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -13,8 +15,7 @@ const ColumnsWrapper = styled.div`
   gap: 40px;
   margin: 20px 0 80px;
 `;
-
-export default function AccountPage({ categories }) {
+export default function Layout({ children, categories }) {
   return (
     <>
       <Head>
@@ -29,6 +30,7 @@ export default function AccountPage({ categories }) {
           </h4>
           <ColumnsWrapper>
             <AsideInfoAccount />
+            {children}
           </ColumnsWrapper>
         </Center>
       </main>

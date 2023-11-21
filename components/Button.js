@@ -36,6 +36,11 @@ export const ButtonStyle = css`
       background-color: transparent;
       color: ${white};
       border: 1px solid ${white};
+      &:hover {
+        background-color: transparent;
+        color: ${secondary};
+        border: 1px solid ${secondary};
+      }
     `};
   ${(props) =>
     props.primary &&
@@ -44,6 +49,11 @@ export const ButtonStyle = css`
       background-color: ${primary};
       color: ${white};
       border: 1px solid ${primary};
+      &:hover {
+        background-color: ${white};
+        color: ${black};
+        border: 1px solid ${black};
+      }
     `};
   ${(props) =>
     props.primary &&
@@ -52,6 +62,11 @@ export const ButtonStyle = css`
       background-color: transparent;
       color: ${primary};
       border: 1px solid ${primary};
+      &:hover {
+        background-color: ${secondary};
+        color: ${white};
+        border: 1px solid ${secondary};
+      }
     `};
   ${(props) =>
     props.secondary &&
@@ -76,6 +91,11 @@ export const ButtonStyle = css`
       background-color: ${black};
       color: ${white};
       border: 1px solid ${black};
+      &:hover {
+        background-color: transparent;
+        color: ${black};
+        border: 1px solid ${black};
+      }
     `};
   ${(props) =>
     props.black &&

@@ -54,7 +54,7 @@ export default function ProductPage({ product, categories }) {
                   <Price>${product.price}</Price>
                 </div>
                 <div>
-                  <Button onClick={() => addProduct(product._id)} primary>
+                  <Button onClick={() => addProduct(product._id)} primary={1}>
                     <CardIcon /> Comprar
                   </Button>
                 </div>

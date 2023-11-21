@@ -204,7 +204,7 @@ export default function CartPage({ categories }) {
             </Box>
             {!!cartProducts?.length && (
               <Box>
-                <h3>Información de la Orden</h3>
+                <h3>Informacion de envio </h3>
                 <Input
                   type="text"
                   placeholder="Nombre"
@@ -257,7 +257,7 @@ export default function CartPage({ categories }) {
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                 />
-                <Button block black onClick={goToPayment}>
+                <Button block={1} black={1} onClick={goToPayment}>
                   Enviar pedido
                 </Button>
               </Box>

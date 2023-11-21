@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 
 const linksUp = [
-  { name: "Quiénes somos ", href: "/about", icon: "j" },
+  { name: "Quiénes somos ", href: "/about-us", icon: "j" },
   { name: "Formas de pago  ", href: "/payments", icon: "j" },
   { name: "Tiempo de entrega ", href: "/delivery", icon: "j" },
   { name: "Como llegar? ", href: "/address", icon: "j" },

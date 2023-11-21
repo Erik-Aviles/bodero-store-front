@@ -65,9 +65,9 @@ const Featured = ({ product }) => {
                   outline={1}
                   white={1}
                 >
-                  Leer mas
+                  Ver mas
                 </ButtonLink>
-                <Button primary onClick={addFeaturedToCart}>
+                <Button primary={1} onClick={addFeaturedToCart}>
                   <CardIcon />
                   Comprar Aquí
                 </Button>

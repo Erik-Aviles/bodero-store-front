@@ -52,15 +52,15 @@ export default function ProductBox({ _id, name, description, price, images }) {
     <ProductWrapper>
       <WhiteBox href={url}>
         <div>
-          <img src={images?.[0]} alt={name} title={name} />
+          <img src={images?.[0]} alt={name} title={`Ver ${name}`} />
         </div>
       </WhiteBox>
       <ProductInfoBox>
         <Title href={url}>{name}</Title>
         <PriceRow>
           <Price>${price}</Price>
-          <Button onClick={() => addProduct(_id)} primary outline>
-            Comprar
+          <Button primary={1} outline={1} onClick={() => addProduct(_id)}>
+            Agregar
           </Button>
         </PriceRow>
       </ProductInfoBox>

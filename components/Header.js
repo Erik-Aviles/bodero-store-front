@@ -7,14 +7,11 @@ import Link from "next/link";
 import { ProductIcon, ShoppingIcons, UserIcons, WhatsappIcons } from "./Icons";
 import Information from "./Information";
 
-const StyledHeader = styled.header`
-  padding-bottom: 10px;
-`;
+const StyledHeader = styled.header``;
 
 const Wrapper = styled.div`
   max-width: 1000px;
   margin: 0 auto;
-  padding-top: 10px;
   display: flex;
   justify-content: space-between;
   color: ${white};
@@ -80,12 +77,12 @@ export default function Header() {
             </StylesSpan>
           </StaledLink>
 
-          {/*             <StaledLink hoverTwo href={"/account"} title={"Ver mi cuenta"}>
-              <StylesSpan>
-                <UserIcons />
-                <p>Mi cuenta</p>
-              </StylesSpan>
-            </StaledLink> */}
+          <StaledLink hoverTwo href={"/account"} title={"Ver mi cuenta"}>
+            <StylesSpan>
+              <UserIcons />
+              <p>Mi cuenta</p>
+            </StylesSpan>
+          </StaledLink>
 
           <StaledLink href={"/cart"} title={"Ver mi carrito"}>
             <StylesSpan>
