@@ -61,7 +61,7 @@ export default function Header() {
             }
             target="_blank"
             rel="noopener noreferrer"
-            title={"Whatsapp"}
+            title={"Enviar mensaje por Whatsapp"}
           >
             <StylesSpan>
               <WhatsappIcons />
@@ -70,21 +70,25 @@ export default function Header() {
             </StylesSpan>
           </StaledLink>
 
-          <StaledLink href={"/products"} title={"Whatsapp"}>
+          <StaledLink href={"/products"} title={"Ver todos los productos"}>
             <StylesSpan>
               <ProductIcon />
               <p>Productos</p>
             </StylesSpan>
           </StaledLink>
 
-          <StaledLink hoverTwo href={"/account"} title={"Ver mi cuenta"}>
+          <StaledLink
+            hoverTwo
+            href={"/account/user-info"}
+            title={"Ver mi cuenta"}
+          >
             <StylesSpan>
               <UserIcons />
               <p>Mi cuenta</p>
             </StylesSpan>
           </StaledLink>
 
-          <StaledLink href={"/cart"} title={"Ver mi carrito"}>
+          <StaledLink href={"/cart"} title={"Ver mi carrito de compras"}>
             <StylesSpan>
               <ShoppingIcons />
               <p>Carrito ({cartProducts?.length})</p>
