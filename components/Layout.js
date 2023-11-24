@@ -3,9 +3,9 @@ import AsideInfoAccount from "./AsideInfoAccount";
 
 const ColumnsWrapper = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr;
+  grid-template-columns: 0.6fr 1.4fr;
   gap: 40px;
-  margin: 20px 0 80px;
+  margin: 40px 0 80px;
 `;
 export default function Layout({ children }) {
   return (

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { CartContext } from "./CartContext";
 import { grey, white } from "@/lib/colors";
 import Link from "next/link";
-import { ProductIcon, ShoppingIcons, UserIcons, WhatsappIcons } from "./Icons";
+import { ProductIcon, ShoppingIcon, UserIcon, WhatsappIcon } from "./Icons";
 import Information from "./Information";
 
 const StyledHeader = styled.header``;
@@ -23,7 +23,6 @@ const StyleNav = styled.nav`
 `;
 
 const StaledLink = styled(Link)`
-  font-size: 0.8rem;
   display: flex;
   text-decoration: none;
   cursor: pointer;
@@ -64,7 +63,7 @@ export default function Header() {
             title={"Enviar mensaje por Whatsapp"}
           >
             <StylesSpan>
-              <WhatsappIcons />
+              <WhatsappIcon />
               <p>Escribenos</p>
               <h3>0996501072</h3>
             </StylesSpan>
@@ -77,20 +76,16 @@ export default function Header() {
             </StylesSpan>
           </StaledLink>
 
-          <StaledLink
-            hoverTwo
-            href={"/account/user-info"}
-            title={"Ver mi cuenta"}
-          >
+          <StaledLink href={"/account/user-info"} title={"Ver mi cuenta"}>
             <StylesSpan>
-              <UserIcons />
+              <UserIcon />
               <p>Mi cuenta</p>
             </StylesSpan>
           </StaledLink>
 
           <StaledLink href={"/cart"} title={"Ver mi carrito de compras"}>
             <StylesSpan>
-              <ShoppingIcons />
+              <ShoppingIcon />
               <p>Carrito ({cartProducts?.length})</p>
             </StylesSpan>
           </StaledLink>

@@ -2,7 +2,6 @@ import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
 import Categories from "@/components/Categories";
 import Center from "@/components/Center";
-import Header from "@/components/Header";
 import Input from "@/components/Input";
 import SuccessSend from "@/components/SuccessSend";
 import Table from "@/components/Table";
@@ -14,7 +13,7 @@ import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -29,14 +28,21 @@ const Box = styled.div`
   h3 {
     font-size: 1.5rem;
   }
+  ${(props) =>
+    props.white &&
+    css`
+      box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
+    `}
 `;
 const ProductInfoCell = styled.td`
   padding: 10px 0;
+  font-weight: 700;
 `;
 const ProductImageBox = styled.div`
   width: 80px;
   height: 80px;
   padding: 10px;
+  margin-bottom: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -140,10 +146,12 @@ export default function CartPage({ categories }) {
       <main>
         <Categories categories={categories} />
         <Center>
-          <Title>Mi Pedido</Title>
+          <Title>Revisión del carrito</Title>
           <ColumnsWrapper>
             <Box>
-              {!cartProducts?.length && <p>Tu carrito esta vacio</p>}{" "}
+              {!cartProducts?.length && (
+                <p>Los productos adicionados se mostrarán aquí</p>
+              )}{" "}
               {products?.length > 0 && (
                 <Table>
                   <thead>
@@ -203,8 +211,8 @@ export default function CartPage({ categories }) {
               )}
             </Box>
             {!!cartProducts?.length && (
-              <Box>
-                <h3>Informacion de envio </h3>
+              <Box white={1}>
+                <h3>Información de envío </h3>
                 <Input
                   type="text"
                   placeholder="Nombre"

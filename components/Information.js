@@ -5,10 +5,9 @@ import styled from "styled-components";
 
 const linksUp = [
   { name: "Quiénes somos ", href: "/about-us", icon: "j" },
-  { name: "Formas de pago  ", href: "/payments", icon: "j" },
   { name: "Tiempo de entrega ", href: "/delivery", icon: "j" },
   { name: "Como llegar? ", href: "/address", icon: "j" },
-  { name: "Contacto", href: "/contact", icon: "j" },
+  { name: "Contáctenos", href: "/contact", icon: "j" },
 ];
 
 const Wrapper = styled.div`
@@ -28,7 +27,6 @@ const StaledLink = styled(Link)`
   text-decoration: none;
   padding: 0 20px 0 0;
   border-right: 0.3px solid #ccc;
-  font-size: 0.8rem;
   cursor: pointer;
   color: ${grey};
   &:hover {

@@ -16,9 +16,10 @@ import styled from "styled-components";
 
 const ColWrapper = styled.div`
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
+  grid-template-columns: 1.2fr 0.8fr;
   gap: 40px;
   margin-top: 40px;
+  padding: 100px 0;
 `;
 
 const PriceRow = styled.div`
@@ -55,7 +56,7 @@ export default function ProductPage({ product, categories }) {
                 </div>
                 <div>
                   <Button onClick={() => addProduct(product._id)} primary={1}>
-                    <CardIcon /> Comprar
+                    <CardIcon /> Agregar
                   </Button>
                 </div>
               </PriceRow>

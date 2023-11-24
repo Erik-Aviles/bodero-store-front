@@ -5,6 +5,7 @@ import Title from "@/components/Title";
 import { error, grey, success, warning, white } from "@/lib/colors";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
+import { Order } from "@/models/Order";
 import Head from "next/head";
 import { useState } from "react";
 import styled, { css } from "styled-components";
@@ -15,6 +16,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
   h4,
   p {
     margin: 0;
@@ -57,14 +59,17 @@ const StylesCart = styled.div`
   padding: 13px;
   border-bottom: 1px solid rgba(132, 135, 137, 0.1);
 `;
+
 const StylesTime = styled.p`
   font-size: 1.1rem;
   font-weight: 700;
 `;
 
-export default function OrderInfoPage({ categories }) {
-  const [order, setOrder] = useState();
+const CantProducts = styled.p`
+  padding-top: 13px;
+`;
 
+export default function OrderInfoPage({ categories, orders }) {
   return (
     <>
       <Head>
@@ -76,52 +81,44 @@ export default function OrderInfoPage({ categories }) {
           <Title>Mi Cuenta</Title>
           <Layout>
             <Wrapper>
-              <h4>Todos los pedidos realizados</h4>
-              {order === null ? (
-                <StylesInfo>Sin pedido registrado...</StylesInfo>
+              <h4>Todos los pedidos</h4>
+              {orders === undefined ? (
+                <StylesInfo>
+                  Los pedidos realizados se mostrarán aquí. Aun no regristra
+                  pedidos
+                </StylesInfo>
               ) : (
                 <>
-                  <StylesInfo>
-                    <StylesTime>
-                      02/10/2024 <StylesSpan error>Cancelado</StylesSpan>
-                    </StylesTime>
-                    <StylesCart>
-                      <p>Producto: Telefono SG - Cantidad: 2</p>
-                      <p>Precio c/u: $100</p>
-                      <p>Precio Total: $200</p>
-                    </StylesCart>
-                    <StylesCart>
-                      <p>Producto: Moto Gp - Cantidad: 1</p>
-                      <p>Precio c/u: $1000</p>
-                      <p>Precio Total: $1000</p>
-                    </StylesCart>
-                    <p>Cant. Total de producto: 3 </p>
-                    <p>Pago por pedido: $1200</p>
-                  </StylesInfo>
-                  <StylesInfo>
-                    <StylesTime>
-                      06/12/2020 <StylesSpan warning>Pendiente</StylesSpan>
-                    </StylesTime>
-                    <StylesCart>
-                      <p>Producto: Yamaha - Cantidad: 2</p>
-                      <p>Precio c/u: $3000</p>
-                      <p>Precio Total: $6000</p>
-                    </StylesCart>
-                    <p>Cant. Total de producto: 2 </p>
-                    <p>Pago por pedido: $6000</p>
-                  </StylesInfo>
-                  <StylesInfo>
-                    <StylesTime>
-                      06/12/2020 <StylesSpan success>Pagado</StylesSpan>
-                    </StylesTime>
-                    <StylesCart>
-                      <p>Producto: Yamaha - Cantidad: 2</p>
-                      <p>Precio c/u: $3000</p>
-                      <p>Precio Total: $6000</p>
-                    </StylesCart>
-                    <p>Cant. Total de producto: 2 </p>
-                    <p>Pago por pedido: $6000</p>
-                  </StylesInfo>
+                  {orders.length > 0 &&
+                    orders?.map((order) => (
+                      <StylesInfo>
+                        <StylesTime>
+                          {new Date(order.createdAt).toLocaleString()}
+                          {order.paid ? (
+                            <StylesSpan success={1}>Entregado</StylesSpan>
+                          ) : (
+                            <StylesSpan warning={1}>Pendiente</StylesSpan>
+                          )}
+                        </StylesTime>
+                        {order.line_items.map((l) => (
+                          <StylesCart>
+                            <p>Producto: {l.price_data?.product_data?.name}</p>
+                            <p>Cantidad: {l.quantity}</p>
+                            <p>Precio c/u: ${l.price_data.unit_amount}</p>
+                            <p>
+                              Valor Total: $
+                              {l.price_data.unit_amount * l.quantity}
+                            </p>
+                          </StylesCart>
+                        ))}
+                        <CantProducts>
+                          Cant. Total de producto: {order.line_items.length}
+                        </CantProducts>
+                        <p>
+                          Pago por pedido: <strong>$1200</strong>
+                        </p>
+                      </StylesInfo>
+                    ))}
                 </>
               )}
             </Wrapper>
@@ -135,9 +132,11 @@ export default function OrderInfoPage({ categories }) {
 export async function getServerSideProps() {
   await mongooseConnect();
   const categories = await Category.find({}, null, { sort: { _id: -1 } });
+  const orders = await Order.find({}, null, { sort: { _id: -1 } });
   return {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
+      orders: JSON.parse(JSON.stringify(orders)),
     },
   };
 }

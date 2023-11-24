@@ -1,5 +1,35 @@
+import { white } from "@/lib/colors";
 import * as React from "react";
 
+export const LocationIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlSpace="preserve"
+    style={{
+      enableBackground: "new 0 0 512 512",
+    }}
+    viewBox="0 0 512 512"
+    width="3em"
+    height="3em"
+    {...props}
+  >
+    <path
+      d="M290.61 375.83c81.2 4.67 142.41 25.54 142.41 50.57 0 28.45-79.23 51.54-177.02 51.54-97.76 0-177.02-23.09-177.02-51.54 0-24.74 59.8-45.39 139.57-50.41 14.51 23.1 27.37 43.69 35.88 59.03 8.8-15.88 21.72-36.41 36.18-59.19z"
+      style={{
+        fill: "#bdc3c7",
+      }}
+    />
+    <path
+      d="M254.43 34.06c76.61 0 138.72 62.11 138.72 138.74 0 43.25-58.45 133.59-102.54 203.03-14.46 22.78-27.38 43.31-36.18 59.19-8.51-15.34-21.37-35.93-35.88-59.03-43.86-69.79-102.86-162.57-102.86-203.19 0-76.63 62.11-138.74 138.74-138.74zm61.98 133.51c0-34.16-27.84-62.01-61.98-62.01-34.16 0-62 27.85-62 62.01 0 34.14 27.84 61.98 62 61.98 34.14 0 61.98-27.84 61.98-61.98z"
+      style={{
+        fill: "#e74c3c",
+      }}
+    />
+    <path d="M256 487.94c-48.195 0-93.641-5.505-127.966-15.5C89.4 461.189 68.98 445.269 68.98 426.4c0-37.657 80.234-56.067 148.942-60.391 5.499-.356 10.262 3.84 10.608 9.353.347 5.512-3.84 10.262-9.353 10.608-38.04 2.394-72.477 8.52-96.969 17.249C97.683 411.961 88.98 421.17 88.98 426.4c0 5.139 9.403 16.574 44.646 26.837 32.558 9.481 76.018 14.703 122.374 14.703 46.367 0 89.831-5.222 122.385-14.703 35.234-10.262 44.635-21.697 44.635-26.837 0-13.463-47.356-35.662-132.984-40.587-5.514-.317-9.727-5.044-9.409-10.558.317-5.514 5.03-9.744 10.558-9.409 70.043 4.028 151.836 22.304 151.836 60.554 0 18.87-20.417 34.79-59.042 46.04-34.322 9.995-79.772 15.5-127.979 15.5z" />
+    <path d="M254.43 445.019a10.002 10.002 0 0 1-8.745-5.148c-8.264-14.896-21.014-35.335-35.604-58.562l.001.002-3.384-5.384C161.697 304.348 105.69 215.266 105.69 172.8c0-82.016 66.725-148.74 148.74-148.74 82.004 0 148.72 66.724 148.72 148.74 0 44.584-52.718 127.539-99.231 200.729l-4.867 7.661c-14.474 22.802-27.164 42.956-35.875 58.676a9.998 9.998 0 0 1-8.744 5.153h-.003zm0-400.959c-70.988 0-128.74 57.752-128.74 128.74 0 36.702 56.607 126.74 97.94 192.483l3.386 5.386.001.002c10.663 16.975 19.905 31.758 27.414 44.363 7.845-13.144 17.339-28.185 27.735-44.563l4.872-7.669C327.6 298.977 383.15 211.566 383.15 172.8c0-70.988-57.744-128.74-128.72-128.74z" />
+    <path d="M254.43 239.55c-39.701 0-72-32.29-72-71.98 0-39.707 32.299-72.01 72-72.01 39.69 0 71.98 32.303 71.98 72.01 0 39.69-32.29 71.98-71.98 71.98zm0-123.99c-28.673 0-52 23.332-52 52.01 0 28.662 23.327 51.98 52 51.98 28.662 0 51.98-23.318 51.98-51.98 0-28.679-23.318-52.01-51.98-52.01z" />
+  </svg>
+);
 export const CardIcon = ({ className, ...rest }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +71,7 @@ export const ProductIcon = (props) => (
   </svg>
 );
 
-export const WhatsappIcons = (props) => (
+export const WhatsappIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -227,7 +257,7 @@ export const WhatsappIcons = (props) => (
   </svg>
 );
 
-export const ShoppingIcons = (props) => (
+export const ShoppingIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
@@ -264,7 +294,7 @@ export const ShoppingIcons = (props) => (
   </svg>
 );
 
-export const UserIcons = (props) => (
+export const UserIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
@@ -278,7 +308,7 @@ export const UserIcons = (props) => (
     />
   </svg>
 );
-export const SuccessIcons = (props) => (
+export const SuccessIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"
@@ -293,5 +323,72 @@ export const SuccessIcons = (props) => (
       d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 0 1 1.04-.208z"
       clipRule="evenodd"
     />
+  </svg>
+);
+
+export const InstagramIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="2em"
+    height="2em"
+    fill={white}
+    viewBox="0 0 32 32"
+    {...props}
+  >
+    <rect width={28} height={28} x={2} y={2} fill="url(#a)" rx={6} />
+    <rect width={28} height={28} x={2} y={2} fill="url(#b)" rx={6} />
+    <rect width={28} height={28} x={2} y={2} fill="url(#c)" rx={6} />
+    <path fill="#fff" d="M23 10.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+    <path
+      fill="#fff"
+      fillRule="evenodd"
+      d="M16 21a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+      clipRule="evenodd"
+    />
+    <path
+      fill="#fff"
+      fillRule="evenodd"
+      d="M6 15.6c0-3.36 0-5.04.654-6.324a6 6 0 0 1 2.622-2.622C10.56 6 12.24 6 15.6 6h.8c3.36 0 5.04 0 6.324.654a6 6 0 0 1 2.622 2.622C26 10.56 26 12.24 26 15.6v.8c0 3.36 0 5.04-.654 6.324a6 6 0 0 1-2.622 2.622C21.44 26 19.76 26 16.4 26h-.8c-3.36 0-5.04 0-6.324-.654a6 6 0 0 1-2.622-2.622C6 21.44 6 19.76 6 16.4v-.8ZM15.6 8h.8c1.713 0 2.878.002 3.778.075.877.072 1.325.202 1.638.361a4 4 0 0 1 1.748 1.748c.16.313.29.761.36 1.638.074.9.076 2.065.076 3.778v.8c0 1.713-.002 2.878-.075 3.778-.072.877-.202 1.325-.361 1.638a4 4 0 0 1-1.748 1.748c-.313.16-.761.29-1.638.36-.9.074-2.065.076-3.778.076h-.8c-1.713 0-2.878-.002-3.778-.075-.877-.072-1.325-.202-1.638-.361a4 4 0 0 1-1.748-1.748c-.16-.313-.29-.761-.36-1.638C8.001 19.278 8 18.113 8 16.4v-.8c0-1.713.002-2.878.075-3.778.072-.877.202-1.325.361-1.638a4 4 0 0 1 1.748-1.748c.313-.16.761-.29 1.638-.36.9-.074 2.065-.076 3.778-.076Z"
+      clipRule="evenodd"
+    />
+    <defs>
+      <radialGradient
+        id="a"
+        cx={0}
+        cy={0}
+        r={1}
+        gradientTransform="rotate(-55.376 27.916 .066) scale(25.5196)"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#B13589" />
+        <stop offset={0.793} stopColor="#C62F94" />
+        <stop offset={1} stopColor="#8A3AC8" />
+      </radialGradient>
+      <radialGradient
+        id="b"
+        cx={0}
+        cy={0}
+        r={1}
+        gradientTransform="rotate(-65.136 29.766 6.89) scale(22.5942)"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#E0E8B7" />
+        <stop offset={0.445} stopColor="#FB8A2E" />
+        <stop offset={0.715} stopColor="#E2425C" />
+        <stop offset={1} stopColor="#E2425C" stopOpacity={0} />
+      </radialGradient>
+      <radialGradient
+        id="c"
+        cx={0}
+        cy={0}
+        r={1}
+        gradientTransform="matrix(38.50003 -5.5 1.1764 8.23476 .5 3)"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset={0.157} stopColor="#406ADC" />
+        <stop offset={0.468} stopColor="#6A45BE" />
+        <stop offset={1} stopColor="#6A45BE" stopOpacity={0} />
+      </radialGradient>
+    </defs>
   </svg>
 );

@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
   p {
     margin: 0;
   }
@@ -49,7 +50,7 @@ export default function UserInfoPage({ categories }) {
                 <StylesText>Erika Patricia Aviles Cortez</StylesText>
               </StylesInfo>
               <StylesInfo>
-                <StylesTitle>Telefono</StylesTitle>
+                <StylesTitle>Teléfono</StylesTitle>
                 <StylesText>0963616800</StylesText>
               </StylesInfo>
               <StylesInfo>
@@ -61,7 +62,7 @@ export default function UserInfoPage({ categories }) {
                 <StylesText>Quevedo</StylesText>
               </StylesInfo>
               <StylesInfo>
-                <StylesTitle>Direccion</StylesTitle>
+                <StylesTitle>Dirección</StylesTitle>
                 <StylesText>Av. Jaime Roldos Aguilera</StylesText>
               </StylesInfo>
             </Wrapper>

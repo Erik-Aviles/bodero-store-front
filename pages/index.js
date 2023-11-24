@@ -1,7 +1,6 @@
 import Brands from "@/components/Brands";
 import Categories from "@/components/Categories";
 import Featured from "@/components/Featured";
-import Header from "@/components/Header";
 import NewProducts from "@/components/NewProducts";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";

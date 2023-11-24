@@ -1,27 +1,39 @@
-import { white, success } from "@/lib/colors";
+import { white, success, grey } from "@/lib/colors";
 import React from "react";
 import styled from "styled-components";
 import Center from "./Center";
-import { SuccessIcons } from "./Icons";
+import { SuccessIcon } from "./Icons";
+import ButtonLink from "./ButtonLink";
 import Link from "next/link";
-
-const ColumnsWrapper = styled.div`
-  height: calc(100vh - 400px);
-  gap: 40px;
-  margin: 40px 0 80px;
-`;
 
 const Box = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: ${white};
   border-radius: 10px;
   padding: 70px 20px;
+  color: ${grey};
+  margin: 80px;
+  h4 {
+    font-size: 1.5rem;
+  }
   p {
-    font-size: 1.5em;
+    font-size: 0.8rem;
+  }
+  p,
+  h4 {
+    padding-bottom: 10px;
     margin: 0;
     place-self: center;
+  }
+  a {
+    text-decoration: none;
+    strong {
+      color: ${grey};
+    }
   }
 `;
 
@@ -33,25 +45,30 @@ const SpanWrapper = styled.div`
   border-radius: 100%;
   text-align: center;
   padding: ;
-  a {
-    cursor: pointer;
-  }
 `;
 
 const SuccessSend = () => {
   return (
     <Center>
-      <ColumnsWrapper>
-        <Box>
-          <SpanWrapper>
-            <Link href={"/"} title={"Ir a Inicio"}>
-              <SuccessIcons fill={success} width="5em" height="5em" />
-            </Link>
-          </SpanWrapper>
-          <p>Tu pedido se ha realizado con exito!</p>
-          <p>En tu correo te enviaremos la informacion sobre tu pedido</p>
-        </Box>
-      </ColumnsWrapper>
+      <Box>
+        <SpanWrapper>
+          <SuccessIcon fill={success} width="3em" height="3em" />
+        </SpanWrapper>
+        <h4>Lo tenemos!</h4>
+        <p>
+          Un e-mail de confirmación ha sido enviada a la dirección de correo
+          electrónico asociado a tu cuenta.
+        </p>
+        <p>
+          Puedes confirmar tu dirección de e-mail en la opción{" "}
+          <Link href={"/account/user-info"} title={"Ir a mi cuenta"}>
+            <strong>Mi Cuenta</strong>
+          </Link>
+        </p>
+        <ButtonLink black={1} href={"/"} title={"Ir a Inicio"}>
+          Ir a Inicio
+        </ButtonLink>
+      </Box>
     </Center>
   );
 };

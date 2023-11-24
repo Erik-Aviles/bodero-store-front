@@ -9,8 +9,10 @@ const Wrapper = styled.aside`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
 `;
 const StylesNavAside = styled.nav`
+  width: auto;
   display: flex;
   flex-direction: column;
 `;

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const BigImage = styled.img`
-  max-width: 100%;
-  max-heigth: 200px;
-`;
 const BigImageWrapper = styled.div`
   display: flex;
   justify-content: center;
+`;
+const BigImage = styled.img`
+  max-width: 100%;
+  max-heigth: 100%;
+  cursor: pointer;
 `;
 const Image = styled.img`
   max-width: 100%;
@@ -37,11 +38,16 @@ const ImageButton = styled.div`
 `;
 
 export default function ProductImages({ images }) {
+  console.log({ images });
   const [activeImage, setActiveImage] = useState(images?.[0]);
   return (
     <>
       <BigImageWrapper>
-        <BigImage src={activeImage} alt="" />
+        <BigImage
+          src={activeImage}
+          alt="Imagen referencial"
+          title="Ver imagen en grande"
+        />
       </BigImageWrapper>
       <ImageButtons>
         {images.map((image) => (
@@ -50,7 +56,7 @@ export default function ProductImages({ images }) {
             active={image === activeImage}
             onClick={() => setActiveImage(image)}
           >
-            <Image src={image} alt="" />
+            <Image src={image} alt="Imagen referencial" />
           </ImageButton>
         ))}
       </ImageButtons>

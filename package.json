@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.2",
     "axios": "^1.6.1",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
