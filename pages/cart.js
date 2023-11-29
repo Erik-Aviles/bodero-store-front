@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
 import Categories from "@/components/Categories";
 import Center from "@/components/Center";
+import { AllDeleteIcon, DeleteIcon } from "@/components/Icons";
 import Input from "@/components/Input";
 import SuccessSend from "@/components/SuccessSend";
 import Table from "@/components/Table";
@@ -29,9 +30,16 @@ const Box = styled.div`
     font-size: 1.5rem;
   }
   ${(props) =>
-    props.white &&
+    props.form &&
     css`
       box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
+    `}
+  ${(props) =>
+    props.list &&
+    css`
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     `}
 `;
 const ProductInfoCell = styled.td`
@@ -103,6 +111,12 @@ export default function CartPage({ categories }) {
   function lessOfThisProduct(id) {
     removeProduct(id);
   }
+  function deleteProduct() {
+    clearCart();
+  }
+  function deleteProductAll() {
+    clearCart();
+  }
   async function goToPayment() {
     const response = await axios.post("/api/checkout", {
       name,
@@ -119,6 +133,24 @@ export default function CartPage({ categories }) {
     }
   }
 
+  /* function deleteProduct(id) {
+    swal
+      .fire({
+        title: "Estas seguro?",
+        text: `Quires eliminar "${product.name}"?`,
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#fe0000",
+        confirmButtonText: "Si, Eliminar",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          removeProduct(id);
+        }
+      });
+  }
+ */
   let total = 0;
   for (const productId of cartProducts) {
     const price = products.find((p) => p._id === productId)?.price || 0;
@@ -148,66 +180,83 @@ export default function CartPage({ categories }) {
         <Center>
           <Title>Revisión del carrito</Title>
           <ColumnsWrapper>
-            <Box>
+            <Box list={1}>
               {!cartProducts?.length && (
-                <p>Los productos adicionados se mostrarán aquí</p>
-              )}{" "}
+                <p>
+                  El carrito esta vacio. Los productos adicionados se mostrarán
+                  aquí.
+                </p>
+              )}
               {products?.length > 0 && (
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>Producto</th>
-                      <th>Cantidad</th>
-                      <th>Precio U.</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {products.map((product) => (
-                      <tr key={product._id}>
-                        <ProductInfoCell>
-                          <ProductImageBox>
-                            <img src={product.images[0]} />
-                          </ProductImageBox>
-                          {product.name}
-                        </ProductInfoCell>
-                        <td>
-                          <Button
-                            onClick={() => lessOfThisProduct(product._id)}
-                          >
-                            -
-                          </Button>
-                          <QuantityLabel>
-                            {
-                              cartProducts.filter((id) => id === product._id)
-                                .length
-                            }
-                          </QuantityLabel>
-                          <Button
-                            onClick={() => moreOfThisProduct(product._id)}
-                          >
-                            +
-                          </Button>
-                        </td>
-                        <td>
-                          {"$ "}
-                          {product.price}
-                        </td>
-                        <td>
-                          {"$ "}
-                          {cartProducts.filter((id) => id === product._id)
-                            .length * product.price}
-                        </td>
+                <>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio U.</th>
+                        <th>Total</th>
+                        <th></th>
                       </tr>
-                    ))}
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>Total</td>
-                      <td>$ {total}</td>
-                    </tr>
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {products.map((product) => (
+                        <tr key={product._id}>
+                          <ProductInfoCell>
+                            <ProductImageBox>
+                              <img src={product.images[0]} />
+                            </ProductImageBox>
+                            {product.name}
+                          </ProductInfoCell>
+                          <td>
+                            <Button
+                              onClick={() => lessOfThisProduct(product._id)}
+                            >
+                              -
+                            </Button>
+                            <QuantityLabel>
+                              {
+                                cartProducts.filter((id) => id === product._id)
+                                  .length
+                              }
+                            </QuantityLabel>
+                            <Button
+                              onClick={() => moreOfThisProduct(product._id)}
+                            >
+                              +
+                            </Button>
+                          </td>
+                          <td>
+                            {"$ "}
+                            {product.price}
+                          </td>
+                          <td>
+                            {"$ "}
+                            {cartProducts.filter((id) => id === product._id)
+                              .length * product.price}
+                          </td>
+                          <td>
+                            <Button
+                              option={1}
+                              onClick={(e) => deleteProduct(product._id)}
+                            >
+                              <DeleteIcon />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Total</td>
+                        <td>$ {total}</td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                  <Button option={1} onClick={() => deleteProductAll()}>
+                    <AllDeleteIcon />
+                  </Button>
+                </>
               )}
             </Box>
             {!!cartProducts?.length && (

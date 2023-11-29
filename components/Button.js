@@ -1,4 +1,4 @@
-import { black, primary, white, secondary } from "@/lib/colors";
+import { black, primary, white, secondary, error, grey } from "@/lib/colors";
 import React from "react";
 import styled, { css } from "styled-components";
 
@@ -28,6 +28,23 @@ export const ButtonStyle = css`
     css`
       background-color: ${white};
       color: ${black};
+    `};
+  ${(props) =>
+    props.option &&
+    css`
+      font-size: 1.2rem;
+      background-color: transparent;
+      place-self: end;
+      color: ${grey};
+      svg {
+        fill: ${grey};
+      }
+      &:hover {
+        color: ${error};
+        svg {
+          fill: ${error};
+        }
+      }
     `};
   ${(props) =>
     props.white &&

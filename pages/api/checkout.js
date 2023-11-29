@@ -42,6 +42,7 @@ export default async function handle(req, res) {
       });
     }
   }
+
   const orderDoc = await Order.create({
     line_items,
     name,

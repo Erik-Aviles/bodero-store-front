@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import Logo from "./Logo";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { CartContext } from "./CartContext";
 import { grey, white } from "@/lib/colors";
 import Link from "next/link";
@@ -30,6 +30,11 @@ const StaledLink = styled(Link)`
   &:hover {
     color: #ccc;
   }
+  ${(props) =>
+    props.hidden &&
+    css`
+      display: none;
+    `};
 `;
 
 const StylesSpan = styled.div`
@@ -76,10 +81,20 @@ export default function Header() {
             </StylesSpan>
           </StaledLink>
 
-          <StaledLink href={"/account/user-info"} title={"Ver mi cuenta"}>
+          <StaledLink
+            hidden={1}
+            href={"/account/user-info"}
+            title={"Ver mi cuenta"}
+          >
             <StylesSpan>
               <UserIcon />
               <p>Mi cuenta</p>
+            </StylesSpan>
+          </StaledLink>
+          <StaledLink href={"/login"} title={"Entrar a mi cuenta"}>
+            <StylesSpan>
+              <UserIcon />
+              <p>Iniciar sesión</p>
             </StylesSpan>
           </StaledLink>
 
