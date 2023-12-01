@@ -14,44 +14,32 @@ export default async function handle(req, res) {
 
     //validar que esten todos los campos
     if (!email || !password || !confirmPassword) {
-      res.json(
-        {
-          message: messages.error.needProps,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.needProps,
+      });
     }
 
     //validar si el email es un email
     if (!isValidEmail(email)) {
-      res.json(
-        {
-          message: messages.error.emailNotValid,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.emailNotValid,
+      });
     }
 
     //validar que las contraseñas sean iguales
     if (password !== confirmPassword) {
-      res.json(
-        {
-          message: messages.error.passwordNotMatch,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.passwordNotMatch,
+      });
     }
 
     const userFind = await User.findOne({ email });
 
     // validar si ya existe el email en la base de datos
     if (userFind) {
-      res.json(
-        {
-          message: messages.error.emailExist,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.emailExist,
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -75,15 +63,10 @@ export default async function handle(req, res) {
       }
     );
 
-    const response = res.json(
-      {
-        newUser: rest,
-        message: messages.success.userCreated,
-      },
-      {
-        status: 200,
-      }
-    );
+    const response = res.status(200).json({
+      newUser: rest,
+      message: messages.success.userCreated,
+    });
 
     response.cookies.set("auth_cookie", token, {
       httpOnly: true,
@@ -95,6 +78,6 @@ export default async function handle(req, res) {
 
     response;
   } catch (error) {
-    res.json({ message: messages.error.default, error }, { status: 500 });
+    res.status(500).json({ message: messages.error.default, error });
   }
 }

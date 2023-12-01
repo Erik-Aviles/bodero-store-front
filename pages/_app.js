@@ -1,6 +1,7 @@
 import { CartContextProvider } from "@/components/CartContext";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { NotificationProvider } from "@/context/NotificationContext";
 import { BackgroundColor } from "@/lib/colors";
 import Head from "next/head";
 import { createGlobalStyle } from "styled-components";
@@ -12,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
     background-color: ${BackgroundColor};
     padding:0;
     margin:0;
+    outline: none;
     font-family: 'Poppins', sans-serif;
     }
   `;
@@ -42,12 +44,13 @@ export default function App({ Component, pageProps }) {
         />
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
-      <CartContextProvider>
-        <GlobalStyles />
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
-      </CartContextProvider>
+      <NotificationProvider>
+        <CartContextProvider>
+          <GlobalStyles />
+          <Header />
+          <Component {...pageProps} />
+        </CartContextProvider>
+      </NotificationProvider>
     </>
   );
 }

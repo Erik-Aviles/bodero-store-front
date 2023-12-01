@@ -17,12 +17,11 @@ export default function HomePage({ featureProduct, newProducts, categories }) {
           content="Taller y venta de repuestos de motos"
         />
       </Head>
-      <main>
-        <Categories categories={categories} />
-        <Featured product={featureProduct} />
-        <NewProducts products={newProducts} />
-        <Brands />
-      </main>
+
+      <Categories categories={categories} />
+      <Featured product={featureProduct} />
+      <NewProducts products={newProducts} />
+      <Brands />
     </>
   );
 }

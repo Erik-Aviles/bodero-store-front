@@ -2,7 +2,6 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { User } from "@/models/User";
 import messages from "@/utils/messages";
 import bcrypt from "bcryptjs";
-import { serialize } from "cookie";
 import jwt from "jsonwebtoken";
 
 export default async function handle(req, res) {
@@ -14,36 +13,27 @@ export default async function handle(req, res) {
 
     //validar que esten todos los campos
     if (!email || !password) {
-      res.json(
-        {
-          message: messages.error.needProps,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.needProps,
+      });
     }
 
     const userFind = await User.findOne({ email });
 
     // validar si existe el email en la base de datos
     if (!userFind) {
-      res.json(
-        {
-          message: messages.error.userNotFound,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.userNotFound,
+      });
     }
 
     const isCorrect = await bcrypt.compare(password, userFind.password);
 
-    // validar que la contraña sea la correcta
+    // validar que la consetraña sea la correcta
     if (!isCorrect) {
-      res.json(
-        {
-          message: messages.error.incorrectPassword,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.incorrectPassword,
+      });
     }
 
     const { password: userPass, ...rest } = userFind._doc;
@@ -58,24 +48,19 @@ export default async function handle(req, res) {
       }
     );
 
-    const response = res.json(
-      {
-        userLogged: rest,
-        message: messages.success.userLogged,
-      },
-      { status: 200 }
-    );
+    const response = res.status(200).json({
+      userLogged: rest,
+      message: messages.success.userLogged,
+    });
 
     response.cookies.set("auth_cookie", token, {
-      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 86400,
       path: "/",
     });
-
-    response;
+    return response;
   } catch (error) {
-    res.json({ message: messages.error.default, error }, { status: 500 });
+    res.status(500).json({ message: messages.error.default, error });
   }
 }

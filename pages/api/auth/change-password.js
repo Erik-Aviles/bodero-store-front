@@ -12,12 +12,9 @@ export default async function handle(req, res) {
 
     //validar que esten todos los campos
     if (!newPassword || !confirmPassword) {
-      res.json(
-        {
-          message: messages.error.needProps,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.needProps,
+      });
     }
 
     const headersList = await req.headers;
@@ -25,12 +22,9 @@ export default async function handle(req, res) {
 
     //validar que haya token
     if (!token) {
-      res.json(
-        {
-          message: messages.error.notAuthorized,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.notAuthorized,
+      });
     }
 
     try {
@@ -42,22 +36,16 @@ export default async function handle(req, res) {
 
       // validar si existe el usuario en la base de datos
       if (!userFind) {
-        res.json(
-          {
-            message: messages.error.userNotFound,
-          },
-          { status: 400 }
-        );
+        res.status(400).json({
+          message: messages.error.userNotFound,
+        });
       }
 
       //validar que las contraseñas sean iguales
       if (newPassword !== confirmPassword) {
-        res.json(
-          {
-            message: messages.error.passwordNotMatch,
-          },
-          { status: 400 }
-        );
+        res.status(400).json({
+          message: messages.error.passwordNotMatch,
+        });
       }
 
       const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -65,21 +53,15 @@ export default async function handle(req, res) {
 
       await userFind.save();
 
-      const response = res.json(
-        {
-          message: messages.success.passwordChanged,
-        },
-        { status: 200 }
-      );
+      const response = res.status(200).json({
+        message: messages.success.passwordChanged,
+      });
 
       response;
     } catch (error) {
-      res.json(
-        { message: messages.error.tokenNotValid, error },
-        { status: 400 }
-      );
+      res.status(400).json({ message: messages.error.tokenNotValid, error });
     }
   } catch (error) {
-    res.json({ message: messages.error.default, error }, { status: 500 });
+    res.status(500).json({ message: messages.error.default, error });
   }
 }

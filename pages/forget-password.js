@@ -22,7 +22,7 @@ const StylesForm = styled.form`
   gap: 20px;
 `;
 
-export default function RegisterPage({ categories }) {
+export default function ForgetPasswordPage({ categories }) {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -41,16 +41,11 @@ export default function RegisterPage({ categories }) {
   return (
     <>
       <Head>
-        <title>B.R.D | Crear cuenta</title>
+        <title>B.R.D | Recuperar contraseña</title>
       </Head>
       <Categories categories={categories} />
       <Center>
-        <Title>Crear cuenta</Title>
-        <p>
-          ¿No tienes cuenta? Ingresa un correo y una contraseña para crearte una
-          nueva cuenta y guardar todas tus preferencias y poder ver el listado
-          de tus pedidos.
-        </p>
+        <Title>Recuperar contraseña</Title>
         <StylesForm onSubmit={handleSubmit}>
           <input
             name="email"

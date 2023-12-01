@@ -1,7 +1,6 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { User } from "@/models/User";
 import messages from "@/utils/messages";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
 
@@ -18,12 +17,9 @@ export default async function handle(req, res) {
 
     // validar si existe el email en la base de datos
     if (!userFind) {
-      res.json(
-        {
-          message: messages.error.userNotFound,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.userNotFound,
+      });
     }
 
     const tokenData = { email: userFind.email, userId: userFind._id };
@@ -47,15 +43,12 @@ export default async function handle(req, res) {
       html: `<a href=${forgetUrl}> Cambiar contraseña </a>`,
     });
 
-    const response = res.json(
-      {
-        message: messages.success.emailSend,
-      },
-      { status: 200 }
-    );
+    const response = res.status(200).json({
+      message: messages.success.emailSend,
+    });
 
     response;
   } catch (error) {
-    res.json({ message: messages.error.default, error }, { status: 500 });
+    res.status(500).json({ message: messages.error.default, error });
   }
 }

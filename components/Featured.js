@@ -10,6 +10,7 @@ import { black, grey } from "@/lib/colors";
 const Bg = styled.div`
   color: #ffff;
   padding: 0;
+  margin-top: 20px;
 `;
 
 const Title = styled.h1`

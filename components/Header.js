@@ -94,7 +94,7 @@ export default function Header() {
           <StaledLink href={"/login"} title={"Entrar a mi cuenta"}>
             <StylesSpan>
               <UserIcon />
-              <p>Iniciar sesión</p>
+              <p>Mi cuenta</p>
             </StylesSpan>
           </StaledLink>
 

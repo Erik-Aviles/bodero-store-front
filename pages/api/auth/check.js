@@ -11,12 +11,9 @@ export default async function handle() {
 
     //validar que haya token
     if (!token) {
-      res.json(
-        {
-          message: messages.error.notAuthorized,
-        },
-        { status: 400 }
-      );
+      res.status(400).json({
+        message: messages.error.notAuthorized,
+      });
     }
 
     try {
@@ -29,31 +26,22 @@ export default async function handle() {
 
       // validar si existe el usuario en la base de datos
       if (!userFind) {
-        res.json(
-          {
-            message: messages.error.userNotFound,
-          },
-          { status: 400 }
-        );
+        res.status(400).json({
+          message: messages.error.userNotFound,
+        });
       }
 
-      const response = res.json(
-        {
-          isAuthorized: true,
-          message: messages.success.authorized,
-        },
-        { status: 200 }
-      );
+      const response = res.status(200).json({
+        isAuthorized: true,
+        message: messages.success.authorized,
+      });
 
       response;
     } catch (error) {
-      res.json(
-        { message: messages.error.tokenNotValid, error },
-        { status: 400 }
-      );
+      res.status(400).json({ message: messages.error.tokenNotValid, error });
     }
     console.log(headerList);
   } catch (error) {
-    res.json({ message: messages.error.default, error }, { status: 400 });
+    res.status(400).json({ message: messages.error.default, error });
   }
 }
