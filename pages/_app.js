@@ -49,6 +49,7 @@ export default function App({ Component, pageProps }) {
           <GlobalStyles />
           <Header />
           <Component {...pageProps} />
+          <Footer />
         </CartContextProvider>
       </NotificationProvider>
     </>

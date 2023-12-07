@@ -1,3 +1,4 @@
+import { EmailTemplate } from "@/components/EmailTemplate";
 import { mongooseConnect } from "@/lib/mongoose";
 import { User } from "@/models/User";
 import messages from "@/utils/messages";
@@ -40,7 +41,7 @@ export default async function handle(req, res) {
       from: process.env.SECRET_EMAIL,
       to: email,
       subject: "Cambio de contraseña",
-      html: `<a href=${forgetUrl}> Cambiar contraseña </a>`,
+      react: EmailTemplate({ buttonUrl: forgetUrl }),
     });
 
     const response = res.status(200).json({

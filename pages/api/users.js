@@ -6,8 +6,8 @@ export default async function handle(req, res) {
     await mongooseConnect();
     const users = await User.find();
 
-    res.json({ users }, { status: 200 });
+    res.status(200).json({ users });
   } catch (error) {
-    res.json({ message: messages.error.default, error }, { status: 500 });
+    res.status(200).json({ message: messages.error.default, error });
   }
 }

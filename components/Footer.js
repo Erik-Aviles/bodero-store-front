@@ -8,7 +8,7 @@ const WrapperFooter = styled.footer`
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  background-color: ${black};
+  background-color: ${white};
   padding: 40px 0;
   color: ${grey};
   p {
@@ -16,10 +16,10 @@ const WrapperFooter = styled.footer`
   }
   a {
     text-decoration: none;
-    color: ${grey};
+    color: ${black};
     padding: 0 10px;
     &:hover {
-      color: ${white};
+      color: ${grey};
     }
   }
 `;

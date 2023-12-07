@@ -23,7 +23,7 @@ export default function LoginPage({ categories }) {
     startLoading();
     await authRouter({
       endpoint: "login",
-      redirectRoute: "/",
+      redirectRoute: "/account/user-info",
       formData,
     });
     finishtLoading();

@@ -57,7 +57,7 @@ export default function address({ categories }) {
               <p>
                 Av. Walter Andrade y calle primera esquina. Frente al parque El
                 Velero. Preguntar en el Taller de motos "BODERO RACING
-                DEVELPMENT"
+                DEVELOPMENT"
               </p>
             </AddressWrapper>
             <MapWrapper>

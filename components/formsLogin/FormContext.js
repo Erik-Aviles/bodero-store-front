@@ -11,6 +11,7 @@ const FormWrapper = styled.form`
   border: 0.5px solid #878787;
   border-radius: 10px;
   min-width: 300px;
+  margin: 40px 0;
 `;
 const DespContainer = styled.div`
   text-align: left;

@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const linksUp = [
   { name: "Quiénes somos ", href: "/about-us", icon: "j" },
-  { name: "Tiempo de entrega ", href: "/delivery", icon: "j" },
+  { name: "Pedidos y entregas ", href: "/delivery", icon: "j" },
   { name: "Como llegar? ", href: "/address", icon: "j" },
   { name: "Contáctenos", href: "/contact", icon: "j" },
 ];

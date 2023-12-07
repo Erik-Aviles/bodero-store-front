@@ -17,6 +17,11 @@ const WhiteBox = styled(Link)`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+  }
   img {
     max-width: 100%;
     max-height: 100px;
@@ -32,7 +37,7 @@ const Title = styled(Link)`
 `;
 
 const ProductInfoBox = styled.div`
-  margin-top: 5px;
+  margin-top: 15px;
 `;
 const PriceRow = styled.div`
   display: flex;

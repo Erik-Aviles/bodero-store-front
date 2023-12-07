@@ -2,6 +2,7 @@ import Brands from "@/components/Brands";
 import Categories from "@/components/Categories";
 import Featured from "@/components/Featured";
 import NewProducts from "@/components/NewProducts";
+import SearchProduct from "@/components/searchProduct";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
@@ -17,9 +18,9 @@ export default function HomePage({ featureProduct, newProducts, categories }) {
           content="Taller y venta de repuestos de motos"
         />
       </Head>
-
       <Categories categories={categories} />
       <Featured product={featureProduct} />
+      <SearchProduct />
       <NewProducts products={newProducts} />
       <Brands />
     </>

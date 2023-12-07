@@ -6,7 +6,7 @@ export const NotificationContext = createContext({});
 export function NotificationProvider({ children }) {
   const [notification, setNotification] = useState({
     open: false,
-    msj: null,
+    msj: "Ha ocurrido un error",
     status: "error" || "success" || null,
   });
 

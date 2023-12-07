@@ -1,41 +1,42 @@
-import Button from "@/components/Button";
 import Categories from "@/components/Categories";
-import Center from "@/components/Center";
-import Title from "@/components/Title";
+import MainLayout from "@/components/MainLayout";
+import { FormContextProvider } from "@/components/formsLogin/FormContext";
+import useAuthFetch from "@/hooks/useAuthFetch";
+import useLoading from "@/hooks/useLoading";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
-import axios from "axios";
 import Head from "next/head";
-import Link from "next/link";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import styled from "styled-components";
 
-const StylesWrapper = styled.div`
-  margin: 0 auto;
-`;
-const StylesForm = styled.form`
-  margin: 0 auto;
-  max-width: 300px;
-  padding: 60px;
+const WrapperInputs = styled.div`
+  margin: 10px 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1rem;
 `;
-
 export default function ChangePasswordPage({ categories }) {
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
+  const { isLoading, startLoading, finishtLoading } = useLoading();
+  const searchParams = useSearchParams();
+  const authRouter = useAuthFetch();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await axios.post("/api/auth/login", credentials);
-    console.log(response);
+  const changePassword = async (formData) => {
+    startLoading();
+
+    const token = searchParams.get("token");
+    const options = {
+      headers: {
+        token,
+      },
+    };
+
+    await authRouter({
+      endpoint: "change-password",
+      redirectRoute: "/",
+      formData,
+      options,
+    });
+    finishtLoading();
   };
 
   return (
@@ -44,30 +45,32 @@ export default function ChangePasswordPage({ categories }) {
         <title>B.R.D | Cambiar contraseña</title>
       </Head>
       <Categories categories={categories} />
-      <Center>
-        <Title>Cambiar contraseña</Title>
-        <StylesForm onSubmit={handleSubmit}>
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            onChange={handleChange}
+      <MainLayout>
+        <FormContextProvider
+          title="CAMBIAR CONTRASEÑA"
+          onSubmit={changePassword}
+          description="Registra una nueva contraseña"
+        >
+          <WrapperInputs>
+            <FormContextProvider.Input
+              label="Nueva Contraseña"
+              name="newPassword"
+              type="password"
+              placeholder="Ingresa nueva contraseña"
+            />
+            <FormContextProvider.Input
+              label="Confirmar Contraseña"
+              name="confirmPassword"
+              type="password"
+              placeholder="Repetir contraseña"
+            />
+          </WrapperInputs>
+          <FormContextProvider.SubmitButton
+            buttonText="Cambiar contraseña"
+            isLoading={isLoading}
           />
-          <input
-            name="password"
-            type="password"
-            placeholder="Contraseña"
-            onChange={handleChange}
-          />
-          <input
-            name="confirmPassword"
-            type="password"
-            placeholder="Confirmar contraseña"
-            onChange={handleChange}
-          />
-          <Button primary={1}>Entrar</Button>
-        </StylesForm>
-      </Center>
+        </FormContextProvider>
+      </MainLayout>
     </>
   );
 }

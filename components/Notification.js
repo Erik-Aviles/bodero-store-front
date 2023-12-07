@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 
 const NotifContainer = styled.div`
   position: fixed;
-  bottom: 70px;
+  bottom: 100px;
   right: 0;
   margin-bottom: 1rem;
   z-index: 5;
@@ -15,7 +15,7 @@ const NotifContainer = styled.div`
   height: 50px;
   width: fit-content;
   padding: 0.6rem 1rem;
-  transition: 0.5s;
+  transition: 0.3s;
 
   border: 0.5px solid #878787;
   border-radius: 10px;
@@ -36,7 +36,7 @@ const NotifContainer = styled.div`
       left: -100%;
     }
     to {
-      left: 15%;
+      left: 5%;
     }
   }
 `;
@@ -45,11 +45,11 @@ export function Notification({ status, msj }) {
   return (
     <>
       {status === "success" ? (
-        <NotifContainer success>
+        <NotifContainer success={1}>
           <p>{msj}</p>
         </NotifContainer>
       ) : (
-        <NotifContainer isError>
+        <NotifContainer isError={1}>
           <p>{msj}</p>
         </NotifContainer>
       )}

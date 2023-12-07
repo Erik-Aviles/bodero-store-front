@@ -18,12 +18,14 @@ export default function useAuthFetch() {
       showNotification({ open: true, msj: data.message, status: "success" });
 
       if (redirectRoute) {
-        router.push(redirectRoute);
+        setTimeout(() => {
+          router.push(redirectRoute);
+        }, 3000);
       }
     } catch (error) {
       showNotification({
         open: true,
-        msj: error.response?.data?.message,
+        msj: error?.response?.data?.message,
         status: "error",
       });
     }
