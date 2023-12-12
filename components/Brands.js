@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Center from "./Center";
 import Title from "./Title";
-import { BackgroundColor, black, grey, primary, white } from "@/lib/colors";
+import { BackgroundColor, black, primary, white } from "@/lib/colors";
 
 const brands = [
   {

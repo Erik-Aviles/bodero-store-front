@@ -1,14 +1,10 @@
 import { black, white, primary } from "@/lib/colors";
 import Link from "next/link";
 import styled from "styled-components";
+import Center from "./Center";
 
-const Wrapper = styled.div`
-  width: 1000px;
-  margin: 0 auto;
-  color: ${white};
-  background-color: ${black};
-`;
 const StyleNav = styled.nav`
+  background-color: ${black};
   height: 45px;
   display: flex;
   justify-content: center;
@@ -29,7 +25,7 @@ const StaledLink = styled(Link)`
 
 export default function Categories({ categories }) {
   return (
-    <Wrapper>
+    <Center>
       <StyleNav>
         {categories?.map((category) => (
           <StaledLink href={"/"} title={category.name} key={category._id}>
@@ -37,6 +33,6 @@ export default function Categories({ categories }) {
           </StaledLink>
         ))}
       </StyleNav>
-    </Wrapper>
+    </Center>
   );
 }

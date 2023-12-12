@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Center from "./Center";
 
 const products = [
   { id: 1, name: "Producto 1" },
@@ -38,23 +39,25 @@ const SearchProduct = () => {
   };
 
   return (
-    <SearchContainer>
-      <SearchInput
-        type="text"
-        placeholder="Buscar productos"
-        value={searchTerm}
-        onChange={handleChange}
-      />
+    <Center>
+      <SearchContainer>
+        <SearchInput
+          type="text"
+          placeholder="Buscar productos..."
+          value={searchTerm}
+          onChange={handleChange}
+        />
 
-      {/* Puedes mostrar los resultados de la búsqueda aquí */}
-      {searchResults.length > 0 && (
-        <ul>
-          {searchResults.map((product) => (
-            <li key={product.id}>{product.name}</li>
-          ))}
-        </ul>
-      )}
-    </SearchContainer>
+        {/* Puedes mostrar los resultados de la búsqueda aquí */}
+        {searchResults.length > 0 && (
+          <ul>
+            {searchResults.map((product) => (
+              <li key={product.id}>{product.name}</li>
+            ))}
+          </ul>
+        )}
+      </SearchContainer>
+    </Center>
   );
 };
 

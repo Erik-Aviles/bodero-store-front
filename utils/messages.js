@@ -13,8 +13,9 @@ const messages = {
   success: {
     userCreated: "Su cuenta ha sido creada",
     userLogged: "Que bueno verte de vuelta",
-    emailSend: "Correo enviado correctamente",
-    passwordChanged: "Contraseña cambiada correctamente",
+    emailSend: "Correo enviado con exito",
+    msgSend: "Mensaje enviado con exito",
+    passwordChanged: "Contraseña cambiada con exito",
     authorized: "Autorizado",
   },
 };

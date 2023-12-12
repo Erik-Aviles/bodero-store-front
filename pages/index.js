@@ -13,10 +13,6 @@ export default function HomePage({ featureProduct, newProducts, categories }) {
     <>
       <Head>
         <title>B.R.D | Quevedo</title>
-        <meta
-          name="description"
-          content="Taller y venta de repuestos de motos"
-        />
       </Head>
       <Categories categories={categories} />
       <Featured product={featureProduct} />

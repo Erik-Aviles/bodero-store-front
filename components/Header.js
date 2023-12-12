@@ -80,30 +80,6 @@ export default function Header() {
               <p>Productos</p>
             </StylesSpan>
           </StaledLink>
-
-          <StaledLink
-            hidden={1}
-            href={"/account/user-info"}
-            title={"Ver mi cuenta"}
-          >
-            <StylesSpan>
-              <UserIcon />
-              <p>Mi cuenta</p>
-            </StylesSpan>
-          </StaledLink>
-          <StaledLink href={"/login"} title={"Entrar a mi cuenta"}>
-            <StylesSpan>
-              <UserIcon />
-              <p>Mi cuenta</p>
-            </StylesSpan>
-          </StaledLink>
-
-          <StaledLink href={"/cart"} title={"Ver mi carrito de compras"}>
-            <StylesSpan>
-              <ShoppingIcon />
-              <p>Carrito ({cartProducts?.length})</p>
-            </StylesSpan>
-          </StaledLink>
         </StyleNav>
       </Wrapper>
     </StyledHeader>

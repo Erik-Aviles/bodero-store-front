@@ -9,11 +9,7 @@ export default function useAuthFetch() {
 
   const authRouter = async ({ endpoint, formData, redirectRoute, options }) => {
     try {
-      const { data } = await axios.post(
-        `/api/auth/${endpoint}`,
-        formData,
-        options
-      );
+      const { data } = await axios.post(`/api/${endpoint}`, formData, options);
 
       showNotification({ open: true, msj: data.message, status: "success" });
 

@@ -1,7 +1,9 @@
 import Categories from "@/components/Categories";
 import Center from "@/components/Center";
-import FormContact from "@/components/FormContact";
 import Title from "@/components/Title";
+import { FormContextProvider } from "@/components/formsLogin/FormContext";
+import useAuthFetch from "@/hooks/useAuthFetch";
+import useLoading from "@/hooks/useLoading";
 import { black, white } from "@/lib/colors";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
@@ -16,6 +18,7 @@ const Wrapper = styled.div`
 `;
 const Box = styled.div`
   padding: 0 20px;
+  height: fit-content;
   ${(props) =>
     props.black &&
     css`
@@ -41,19 +44,36 @@ const Box = styled.div`
     margin-bottom: 0;
   }
 `;
-const FormBox = styled.div``;
 const TextStrong = styled.strong`
   font-size: 2rem;
 `;
+const WrapperInputs = styled.div`
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+export default function ContactPage({ categories }) {
+  const { isLoading, startLoading, finishtLoading } = useLoading();
+  const authRouter = useAuthFetch();
 
-export default function contact({ categories }) {
+  const contactSend = async (formData) => {
+    startLoading();
+    await authRouter({
+      endpoint: "send",
+      redirectRoute: "/",
+      formData,
+    });
+    finishtLoading();
+  };
+
   return (
     <>
       <Head>
         <title>B.R.D | Contacto</title>
       </Head>
-      <Categories categories={categories} />
       <main>
+        <Categories categories={categories} />
         <Center>
           <Title>Contáctenos</Title>
           <Wrapper>
@@ -72,10 +92,62 @@ export default function contact({ categories }) {
                 marketing digital, lo que nos permite trabajar de manera
                 integral y proponer estrategias 360º.
               </p>
+              <p>
+                Con el fin de brindar una atención personalizada, nos gustaría
+                que nos cuente sobre su inquietud y cuál es el producto de su
+                interés.
+              </p>
             </Box>
             <Box white={1}>
-              <h4>¡Envíanos un mensaje ahora y haz crecer tu negocio!</h4>
-              <FormContact />
+              <h4>
+                ¡Envíanos un mensaje ahora y nosotros nos contáctamos contigo!
+              </h4>
+              <FormContextProvider
+                onSubmit={contactSend}
+                description="Ingresa el correo electrónico y teléfono de uso frecuente"
+              >
+                <WrapperInputs>
+                  <FormContextProvider.Input
+                    label="Nombre completo"
+                    name="name"
+                    type="text"
+                    placeholder="Nombre..."
+                  />
+                  <FormContextProvider.Input
+                    label="Correo"
+                    name="email"
+                    type="email"
+                    placeholder="Correo..."
+                  />
+                  <FormContextProvider.Input
+                    label="Teléfono"
+                    name="phone"
+                    type="text"
+                    placeholder="Teléfono..."
+                  />
+                  <FormContextProvider.Input
+                    label="Ciudad"
+                    name="city"
+                    type="text"
+                    placeholder="Ciudad"
+                  />
+                  <FormContextProvider.Input
+                    label="País"
+                    name="country"
+                    type="text"
+                    placeholder="País"
+                  />
+                  <FormContextProvider.TextArea
+                    label="Mensaje"
+                    name="message"
+                    placeholder="Escribe tu mensaje aquí"
+                  />
+                </WrapperInputs>
+                <FormContextProvider.SubmitButton
+                  buttonText="ENVIAR"
+                  isLoading={isLoading}
+                />
+              </FormContextProvider>
             </Box>
           </Wrapper>
         </Center>

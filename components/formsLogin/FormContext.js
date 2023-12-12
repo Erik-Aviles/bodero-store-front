@@ -4,14 +4,14 @@ import styled from "styled-components";
 import { Input } from "./Input";
 import { Footer } from "./Footer";
 import { SubmitButton } from "./SubmitButton";
+import { TextArea } from "./TextArea";
 
 const FormWrapper = styled.form`
-  width: fit-content;
-  padding: 2rem;
+  padding: 1.3rem;
   border: 0.5px solid #878787;
   border-radius: 10px;
   min-width: 300px;
-  margin: 40px 0;
+  margin: 20px 0;
 `;
 const DespContainer = styled.div`
   text-align: left;
@@ -21,6 +21,7 @@ const DespContainer = styled.div`
     font-size: 1.2rem;
   }
   p {
+    margin-top: 0;
     font-weight: 400;
     font-size: 0.8rem;
   }
@@ -57,5 +58,6 @@ export function FormContextProvider({
 }
 
 FormContextProvider.Input = Input;
+FormContextProvider.TextArea = TextArea;
 FormContextProvider.Footer = Footer;
 FormContextProvider.SubmitButton = SubmitButton;
