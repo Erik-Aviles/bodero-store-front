@@ -5,12 +5,13 @@ import styled, { css } from "styled-components";
 export const ButtonStyle = css`
   border: 0;
   padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 5px;
   text-decoration: none;
+  font-size: 0.6rem;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   svg: {
@@ -126,6 +127,12 @@ export const ButtonStyle = css`
     props.size === "l" &&
     css`
       font-size: 1.2rem;
+      padding: 10px 15px;
+    `};
+  ${(props) =>
+    props.size === "m" &&
+    css`
+      font-size: 1rem;
       padding: 10px 15px;
     `};
 `;

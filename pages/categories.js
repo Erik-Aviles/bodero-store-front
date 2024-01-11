@@ -1,5 +1,5 @@
+import Categories from "@/components/Categories";
 import Center from "@/components/Center";
-import Filter from "@/components/Filter";
 import ProductsGrid from "@/components/ProductsGrid";
 import Title from "@/components/Title";
 import { DataContext } from "@/context/DataContext";
@@ -9,13 +9,14 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
-export default function ProductsPage({ products, result }) {
+export default function CategoriesPage({ products, result }) {
   const { data } = useContext(DataContext);
+  const { categories } = data;
+
   const [product, setProducts] = useState(products);
-
   const [page, setPage] = useState(1);
-  const router = useRouter();
 
+  const router = useRouter();
   useEffect(() => {
     setProducts(products);
   }, [products]);
@@ -28,24 +29,24 @@ export default function ProductsPage({ products, result }) {
     setPage(page + 1);
     filterSearch({ router, page: page + 1 });
   };
+
   return (
     <>
       <Head>
-        <title>B.R.D | Busqueda</title>
+        <title>B.R.D | Categoria </title>
         <meta
           name="description"
           content="Repuestos Originales  en diferentes marcas que hacen la diferencia"
         />
       </Head>
       <main>
-        <Filter data={data} />
-
+        <Categories categories={categories} />
         <Center>
           {product?.length === 0 ? (
             <h2>No Products</h2>
           ) : (
             <>
-              <Title>Todos los productos</Title>
+              <Title>Producto por categoria</Title>
               <ProductsGrid products={product} />
             </>
           )}
@@ -71,7 +72,6 @@ export async function getServerSideProps({ query }) {
       page * 6
     }&category=${category}&sort=${sort}&title=${search}`
   );
-
   return {
     props: {
       products: res.products,

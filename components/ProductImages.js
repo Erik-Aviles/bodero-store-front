@@ -38,7 +38,6 @@ const ImageButton = styled.div`
 `;
 
 export default function ProductImages({ images }) {
-  console.log({ images });
   const [activeImage, setActiveImage] = useState(images?.[0]);
   return (
     <>

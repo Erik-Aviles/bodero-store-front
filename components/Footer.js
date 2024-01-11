@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Logo from "./Logo";
 import { black, grey, white } from "@/lib/colors";
 import Link from "next/link";
+import LogoFooter from "./LogoFooter";
 
 const WrapperFooter = styled.footer`
   display: flex;
@@ -27,7 +27,7 @@ const WrapperFooter = styled.footer`
 export default function Footer() {
   return (
     <WrapperFooter>
-      <Logo href={"/"} />
+      <LogoFooter href={"/"} />
       <section>
         <Link
           href={"/"}

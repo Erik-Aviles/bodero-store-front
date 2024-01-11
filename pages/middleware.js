@@ -1,7 +1,6 @@
 export async function middleware(req, res) {
   try {
     const token = req.cookies.get("auth_cookie");
-    console.log(res.redirect);
 
     if (!token) {
       return res.redirect(new URL("/login", req.url));

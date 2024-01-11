@@ -40,7 +40,6 @@ export default async function handle() {
     } catch (error) {
       res.status(400).json({ message: messages.error.tokenNotValid, error });
     }
-    console.log(headerList);
   } catch (error) {
     res.status(400).json({ message: messages.error.default, error });
   }

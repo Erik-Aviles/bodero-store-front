@@ -1,17 +1,9 @@
 import React, { useContext } from "react";
 import Center from "./Center";
 import styled from "styled-components";
-import Button from "./Button";
-import { CardIcon } from "./Icons";
 import ButtonLink from "./ButtonLink";
 import { CartContext } from "./CartContext";
 import { black, grey } from "@/lib/colors";
-
-/* const Bg = styled.div`
-  color: #ffff;
-  padding: 0;
-  margin-top: 20px;
-`; */
 
 const Title = styled.h1`
   margin: 0;
@@ -60,20 +52,17 @@ const Featured = ({ product }) => {
       <ColumnsWrapper>
         <Columns>
           <div>
-            <Title>{product.name}</Title>
+            <Title>{product.title}</Title>
             <Description>{product.description}.</Description>
             <ButtonWrapper>
               <ButtonLink
                 href={"/product/" + product._id}
-                outline={1}
+                primary={1}
+                size={"m"}
                 white={1}
               >
-                Ver mas
+                Ver detalles
               </ButtonLink>
-              <Button primary={1} onClick={addFeaturedToCart}>
-                <CardIcon />
-                Comprar Aquí
-              </Button>
             </ButtonWrapper>
           </div>
         </Columns>

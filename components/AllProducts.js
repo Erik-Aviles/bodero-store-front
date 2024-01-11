@@ -1,12 +1,11 @@
-import styled from "styled-components";
 import Center from "./Center";
 import ProductsGrid from "./ProductsGrid";
 import Title from "./Title";
 
-export default function NewProducts({ products }) {
+export default function AllProducts({ products }) {
   return (
     <Center>
-      <Title>Productos nuevos</Title>
+      <Title>Productos</Title>
       <ProductsGrid products={products} />
     </Center>
   );

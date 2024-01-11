@@ -1,6 +1,7 @@
 import { CartContextProvider } from "@/components/CartContext";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { DataProvider } from "@/context/DataContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { BackgroundColor } from "@/lib/colors";
 import Head from "next/head";
@@ -22,13 +23,16 @@ export default function App({ Component, pageProps }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+
       <NotificationProvider>
-        <CartContextProvider>
-          <GlobalStyles />
-          <Header />
-          <Component {...pageProps} />
-          <Footer />
-        </CartContextProvider>
+        <DataProvider>
+          <CartContextProvider>
+            <GlobalStyles />
+            <Header />
+            <Component {...pageProps} />
+            <Footer />
+          </CartContextProvider>{" "}
+        </DataProvider>
       </NotificationProvider>
     </>
   );
