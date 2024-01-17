@@ -1,14 +1,14 @@
-import Categories from "@/components/Categories";
-import Center from "@/components/Center";
-import Title from "@/components/Title";
 import { FormContextProvider } from "@/components/formsLogin/FormContext";
+import FilterOnlyCategories from "@/components/FilterOnlyCategories";
+import { mongooseConnect } from "@/lib/mongoose";
 import useAuthFetch from "@/hooks/useAuthFetch";
+import styled, { css } from "styled-components";
+import { Category } from "@/models/Category";
 import useLoading from "@/hooks/useLoading";
 import { black, white } from "@/lib/colors";
-import { mongooseConnect } from "@/lib/mongoose";
-import { Category } from "@/models/Category";
+import Center from "@/components/Center";
+import Title from "@/components/Title";
 import Head from "next/head";
-import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
   display: grid;
@@ -73,7 +73,7 @@ export default function ContactPage({ categories }) {
         <title>B.R.D | Contacto</title>
       </Head>
       <main>
-        <Categories categories={categories} />
+        <FilterOnlyCategories categories={categories} />
         <Center>
           <Title>Contáctenos</Title>
           <Wrapper>

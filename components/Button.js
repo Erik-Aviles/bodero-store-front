@@ -101,6 +101,11 @@ export const ButtonStyle = css`
       background-color: transparent;
       color: ${secondary};
       border: 1px solid ${secondary};
+      &:hover {
+        background-color: ${secondary};
+        color: ${white};
+        border: 1px solid ${secondary};
+      }
     `};
   ${(props) =>
     props.black &&
@@ -123,6 +128,11 @@ export const ButtonStyle = css`
       color: ${black};
       border: 1px solid ${black};
     `};
+  &:hover {
+    background-color: ${black};
+    color: ${white};
+    border: 1px solid ${black};
+  }
   ${(props) =>
     props.size === "l" &&
     css`

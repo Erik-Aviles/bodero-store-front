@@ -1,18 +1,17 @@
-import Categories from "@/components/Categories";
-import Center from "@/components/Center";
+import FilterOnlyCategories from "@/components/FilterOnlyCategories";
 import ProductsGrid from "@/components/ProductsGrid";
-import Title from "@/components/Title";
 import { DataContext } from "@/context/DataContext";
-import { getData } from "@/utils/FetchData";
+import { mongooseConnect } from "@/lib/mongoose";
 import filterSearch from "@/utils/filterSearch";
-import Head from "next/head";
+import { Category } from "@/models/Category";
+import { getData } from "@/utils/FetchData";
+import { useEffect, useState } from "react";
+import Center from "@/components/Center";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import Title from "@/components/Title";
+import Head from "next/head";
 
-export default function CategoriesPage({ products, result }) {
-  const { data } = useContext(DataContext);
-  const { categories } = data;
-
+export default function CategoriesPage({ categories, products, result }) {
   const [product, setProducts] = useState(products);
   const [page, setPage] = useState(1);
 
@@ -40,7 +39,7 @@ export default function CategoriesPage({ products, result }) {
         />
       </Head>
       <main>
-        <Categories categories={categories} />
+        <FilterOnlyCategories categories={categories} />
         <Center>
           {product?.length === 0 ? (
             <h2>No Products</h2>
@@ -62,11 +61,14 @@ export default function CategoriesPage({ products, result }) {
 }
 
 export async function getServerSideProps({ query }) {
+  await mongooseConnect();
+
   const page = query.page || 1;
   const category = query.category || "all";
   const sort = query.sort || "";
   const search = query.search || "all";
 
+  const categories = await Category.find({}, null, { sort: { _id: -1 } });
   const res = await getData(
     `products?limit=${
       page * 6
@@ -76,6 +78,7 @@ export async function getServerSideProps({ query }) {
     props: {
       products: res.products,
       result: res.result,
+      categories: JSON.parse(JSON.stringify(categories)),
     },
   };
 }

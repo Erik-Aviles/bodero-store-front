@@ -1,13 +1,13 @@
-import Categories from "@/components/Categories";
-import Center from "@/components/Center";
+import FilterOnlyCategories from "@/components/FilterOnlyCategories";
 import { LocationIcon } from "@/components/Icons";
-import Map from "@/components/Map";
-import Title from "@/components/Title";
 import { black, grey, white } from "@/lib/colors";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
-import Head from "next/head";
+import Center from "@/components/Center";
+import Title from "@/components/Title";
 import styled from "styled-components";
+import Map from "@/components/Map";
+import Head from "next/head";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -46,7 +46,7 @@ export default function address({ categories }) {
         />
       </Head>
       <main>
-        <Categories categories={categories} />
+        <FilterOnlyCategories categories={categories} />
         <Center>
           <Title>Tienda Física</Title>
           <ColumnsWrapper>

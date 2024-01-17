@@ -1,13 +1,20 @@
+import { useContext, useEffect, useState } from "react";
+import ProductsGrid from "@/components/ProductsGrid";
+import { DataContext } from "@/context/DataContext";
+import filterSearch from "@/utils/filterSearch";
+import { getData } from "@/utils/FetchData";
 import Center from "@/components/Center";
 import Filter from "@/components/Filter";
-import ProductsGrid from "@/components/ProductsGrid";
-import Title from "@/components/Title";
-import { DataContext } from "@/context/DataContext";
-import { getData } from "@/utils/FetchData";
-import filterSearch from "@/utils/filterSearch";
-import Head from "next/head";
+import Button from "@/components/Button";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import Title from "@/components/Title";
+import styled from "styled-components";
+import Head from "next/head";
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 export default function ProductsPage({ products, result }) {
   const { data } = useContext(DataContext);
@@ -28,6 +35,7 @@ export default function ProductsPage({ products, result }) {
     setPage(page + 1);
     filterSearch({ router, page: page + 1 });
   };
+
   return (
     <>
       <Head>
@@ -39,7 +47,6 @@ export default function ProductsPage({ products, result }) {
       </Head>
       <main>
         <Filter data={data} />
-
         <Center>
           {product?.length === 0 ? (
             <h2>No Products</h2>
@@ -49,12 +56,17 @@ export default function ProductsPage({ products, result }) {
               <ProductsGrid products={product} />
             </>
           )}
+
+          {result < page * 6 ? (
+            ""
+          ) : (
+            <ButtonContainer>
+              <Button black={1} outline={1} size="m" onClick={handleLoadmore}>
+                Load more
+              </Button>
+            </ButtonContainer>
+          )}
         </Center>
-        {result < page * 6 ? (
-          ""
-        ) : (
-          <button onClick={handleLoadmore}>Load more</button>
-        )}
       </main>
     </>
   );

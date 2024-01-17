@@ -28,7 +28,7 @@ export default async function handle(req, res) {
 
     const data = await resend.emails.send({
       from: process.env.SECRET_EMAIL,
-      to: "eriavicor34@gmail.com",
+      to: "dailygps183@gmail.com",
       subject: "Usuarios B.R.D ",
       react: EmailTemplate({ name, email, phone, city, country, message }),
     });

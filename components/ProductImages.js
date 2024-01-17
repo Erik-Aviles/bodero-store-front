@@ -7,23 +7,22 @@ const BigImageWrapper = styled.div`
 `;
 const BigImage = styled.img`
   max-width: 100%;
-  max-heigth: 100%;
-  cursor: pointer;
+  height: auto;
 `;
 const Image = styled.img`
-  max-width: 100%;
-  max-heigth: 100%;
+  width: 100px;
 `;
 
 const ImageButtons = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  flex-grow: 0;
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 20px;
   margin-top: 10px;
 `;
 
 const ImageButton = styled.div`
+  width: fit-content;
+  heigth: fit-content;
   border: 2px solid #ccc;
   ${(props) =>
     props.active
@@ -31,7 +30,7 @@ const ImageButton = styled.div`
       `
       : `border-color: transparent;
       `}
-  heigth: 40px;
+  heigth: auto;
   padding: 2px;
   cursor: pointer;
   border-radius: 5px;

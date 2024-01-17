@@ -1,32 +1,34 @@
-import Button from "@/components/Button";
-import { CartContext } from "@/components/CartContext";
-import Categories from "@/components/Categories";
-import Center from "@/components/Center";
-import Header from "@/components/Header";
-import { CardIcon } from "@/components/Icons";
-import ProductImages from "@/components/ProductImages";
-import Title from "@/components/Title";
-import WhiteBox from "@/components/WhiteBox";
 import { error, grey, greylight, primary, success } from "@/lib/colors";
+import Categories from "@/components/FilterOnlyCategories";
+import ProductImages from "@/components/ProductImages";
+import { CartContext } from "@/components/CartContext";
 import { mongooseConnect } from "@/lib/mongoose";
+import { CardIcon } from "@/components/Icons";
+import WhiteBox from "@/components/WhiteBox";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
-import Head from "next/head";
-import { useContext } from "react";
+import Button from "@/components/Button";
+import Center from "@/components/Center";
+import Header from "@/components/Header";
 import styled from "styled-components";
+import Title from "@/components/Title";
+import { useContext } from "react";
+import Head from "next/head";
 
 const ColWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1fr;
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
   gap: 40px;
-  padding: 100px 0;
+  margin: 40px 0;
 `;
 
 const Row = styled.div`
   display: flex;
   flex-direction: column;
   aling-items: center;
-  padding: ;
   p {
     margin: 0;
     padding: 0.8rem 0;
@@ -79,7 +81,7 @@ export default function ProductPage({ product, categories }) {
                 <Title
                   style={{ color: primary, marginBottom: 5, marginTop: 0 }}
                 >
-                  {product.title}
+                  {product.title.toUpperCase()}
                 </Title>
                 <span style={{ color: grey, fontSize: 12 }}>
                   <strong style={{ marginRight: 5 }}>Ref:</strong>

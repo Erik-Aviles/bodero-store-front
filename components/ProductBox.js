@@ -2,18 +2,16 @@ import styled, { css } from "styled-components";
 import Button from "./Button";
 import { CartContext } from "./CartContext";
 import { useContext } from "react";
-import { error, success, white } from "@/lib/colors";
+import { error, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./ButtonLink";
 
 const ProductWrapper = styled.div`
   width: 18rem;
-  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
+  background-color: ${white};
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
   margin: 10px auto;
@@ -26,11 +24,10 @@ const ProductWrapper = styled.div`
 
 const WhiteBox = styled.img`
   height: 250px;
-  width: 100%;
-  vertical-align: middle;
-  border-style: none;
-  object-fit: contain;
+  border-radius: 0.25rem 0.25rem 0 0;
   object-position: 50%;
+  object-fit: contain;
+  ${"" /* cambiar si es necesario con cover */}
 `;
 
 const ProductInfoBox = styled.div`
@@ -38,8 +35,8 @@ const ProductInfoBox = styled.div`
 
   p {
     font-size: 0.8rem;
-    line-height: 1.4rem;
-    height: 70px;
+    line-height: 1.2rem;
+    height: 52px;
     overflow: hidden;
   }
 `;
@@ -49,7 +46,6 @@ const Title = styled.h5`
   margin-top: 0;
   margin-bottom: 0.75rem;
   overflow: hidden;
-  text-transform: capitalize;
 `;
 
 const Row = styled.div`
@@ -82,7 +78,7 @@ export default function ProductBox({
     <ProductWrapper>
       <WhiteBox src={images?.[0]} alt={title} title={title} />
       <ProductInfoBox>
-        <Title href={url}>{title}</Title>
+        <Title href={url}>{title.toUpperCase()}</Title>
         <Row>
           <Price>${price}</Price>
           {quantity === 5 ? (

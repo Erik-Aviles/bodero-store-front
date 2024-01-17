@@ -1,11 +1,9 @@
-import { useContext } from "react";
-import Logo from "./Logo";
+import { LogoLetters } from "./Logo";
 import styled, { css } from "styled-components";
-import { CartContext } from "./CartContext";
-import { grey, white } from "@/lib/colors";
+import { black, grey, primary, white } from "@/lib/colors";
 import Link from "next/link";
-import { ProductIcon, ShoppingIcon, UserIcon, WhatsappIcon } from "./Icons";
-import Information from "./Information";
+import { HamburguerIcon, ProductIcon, WhatsappIcon } from "./Icons";
+import InformationHeader from "./InformationHeader";
 import Center from "./Center";
 
 const StyledHeader = styled.header``;
@@ -25,6 +23,7 @@ const StaledLink = styled(Link)`
   display: flex;
   text-decoration: none;
   color: ${grey};
+
   &:hover {
     color: #ccc;
   }
@@ -41,7 +40,6 @@ const StylesSpan = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-
   h3 {
     font-size: 1.5rem;
     margin: 0;
@@ -49,17 +47,37 @@ const StylesSpan = styled.div`
   p {
     margin: 0;
   }
+  @media screen and (max-width: 768px) {
+    h3,
+    p {
+      display: none;
+    }
+  }
+`;
+const NavButton = styled.button`
+  background-color: transparent;
+  width: 50px;
+  height: 50px;
+  color: ${primary};
+  border: 0;
+  cursor: pointer;
 `;
 
 export default function Header() {
-  const { cartProducts } = useContext(CartContext);
   return (
     <StyledHeader>
-      <Information />
+      <InformationHeader />
       <Center>
         <Wrapper>
-          <Logo href={"/"} />
+          <LogoLetters href={"/"} />
           <StyleNav>
+            <StaledLink href={"/products"} title={"Ver todos los productos"}>
+              <StylesSpan>
+                <ProductIcon />
+                <p>Productos</p>
+              </StylesSpan>
+            </StaledLink>
+
             <StaledLink
               href={
                 "https://api.whatsapp.com/send/?phone=593996501072&text&type=phone_number&app_absent=1"
@@ -69,18 +87,11 @@ export default function Header() {
               title={"Enviar mensaje por Whatsapp"}
             >
               <StylesSpan>
-                <WhatsappIcon />
+                <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
                 <p>Escribenos</p>
                 <h3>0996501072</h3>
               </StylesSpan>
             </StaledLink>
-
-            {/* <StaledLink href={"/products"} title={"Ver todos los productos"}>
-            <StylesSpan>
-              <ProductIcon />
-              <p>Productos</p>
-            </StylesSpan>
-          </StaledLink> */}
           </StyleNav>
         </Wrapper>
       </Center>

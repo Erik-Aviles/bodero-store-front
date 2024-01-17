@@ -1,7 +1,8 @@
-import styled from "styled-components";
+import InformationFooter from "./InformationFooter";
 import { black, grey, white } from "@/lib/colors";
+import styled from "styled-components";
+import { LogoLetters } from "./Logo";
 import Link from "next/link";
-import LogoFooter from "./LogoFooter";
 
 const WrapperFooter = styled.footer`
   display: flex;
@@ -26,37 +27,40 @@ const WrapperFooter = styled.footer`
 
 export default function Footer() {
   return (
-    <WrapperFooter>
-      <LogoFooter href={"/"} />
-      <section>
-        <Link
-          href={"/"}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={"Whatsapp"}
-        >
-          Whatsapp
-        </Link>
-        <Link
-          href={"/"}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={"Instagram"}
-        >
-          Instagram
-        </Link>
-        <Link
-          href={"/"}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={"FaceBook"}
-        >
-          FaceBook
-        </Link>
-      </section>
-      <section>
-        <p>COPYRIGHT B.R.D 2023. TODOS LOS DERECHOS RESERVADOS</p>
-      </section>
-    </WrapperFooter>
+    <>
+      <InformationFooter />
+      <WrapperFooter>
+        <LogoLetters href={"/"} />
+        <section>
+          <Link
+            href={"/"}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={"Whatsapp"}
+          >
+            Whatsapp
+          </Link>
+          <Link
+            href={"/"}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={"Instagram"}
+          >
+            Instagram
+          </Link>
+          <Link
+            href={"/"}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={"FaceBook"}
+          >
+            FaceBook
+          </Link>
+        </section>
+        <section>
+          <p>COPYRIGHT B.R.D 2023. TODOS LOS DERECHOS RESERVADOS</p>
+        </section>
+      </WrapperFooter>
+    </>
   );
 }

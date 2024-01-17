@@ -8,12 +8,36 @@ import Head from "next/head";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle` 
-  body{
+  html,body{
     background-color: ${BackgroundColor};
     padding:0;
     margin:0;
     outline: none;
     font-family: 'Poppins', sans-serif;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
+      box-sizing: border-box;
+  }
+
+  ul,
+  li {
+    list-style: none;
+    white-space: nowrap;
+    padding: 0
+  }
+
+  li {
+    display: inline;
+  }
+
+  img{
+      object-fit: cover;
+      object-position: 0 30%;
     }
   `;
 

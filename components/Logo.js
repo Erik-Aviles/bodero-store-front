@@ -1,16 +1,34 @@
-import Link from "next/link";
-import Image from "next/image";
 import styled from "styled-components";
+import * as React from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const StaledLink = styled(Link)`
   display: flex;
   align-items: center;
+  width: 300px;
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+  @media screen and (max-width: 767px) {
+    width: 200px;
+  }
 `;
 
-export default function Logo({ href }) {
+export const LogoFull = ({ href }) => {
   return (
     <StaledLink href={href}>
       <Image alt="Logo B.D.R" src="/logo.jpg" width={300} height={120} />
     </StaledLink>
   );
-}
+};
+
+export const LogoLetters = ({ href }) => {
+  return (
+    <StaledLink href={href}>
+      <Image alt="Logo B.D.R" src="/logoLetras.jpg" width={300} height={60} />
+    </StaledLink>
+  );
+};

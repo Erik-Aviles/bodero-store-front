@@ -52,7 +52,7 @@ const Wrapper = styled.section`
   background-repeat: no-repeat;
   background-position: center;
   width: 100%;
-  height: 100vh;
+  height: auto;
   h2 {
     color: ${white};
     padding-top: 20px;
@@ -60,9 +60,10 @@ const Wrapper = styled.section`
 `;
 const BrandsWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 15px;
-  padding: 30px 0;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 0;
 `;
 
 const StyledCard = styled.article`
@@ -92,7 +93,7 @@ const BrandName = styled.h3`
   font-weight: normal;
   font-size: 1.5rem;
   margin: 0;
-  color: ${primary};
+  color: ${black};
   text-decoration: none;
 `;
 

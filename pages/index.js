@@ -1,20 +1,26 @@
-import Brands from "@/components/Brands";
-import Featured from "@/components/Featured";
+import FilterOnlyCategories from "@/components/FilterOnlyCategories";
 import NewProducts from "@/components/NewProducts";
 import { mongooseConnect } from "@/lib/mongoose";
-import { Product } from "@/models/Product";
-import Head from "next/head";
+import Featured from "@/components/Featured";
 import { Category } from "@/models/Category";
-import Categories from "@/components/Categories";
+import Carousel from "@/components/Carousel";
+import { Product } from "@/models/Product";
+import Brands from "@/components/Brands";
+import Head from "next/head";
+import { HamburguerIcon } from "@/components/Icons";
+import { useState } from "react";
 
 export default function HomePage({ featureProduct, newProducts, categories }) {
+  const [showNav, setShowNav] = useState(false);
+
   return (
     <>
       <Head>
         <title>B.R.D | Quevedo</title>
       </Head>
-      <Categories categories={categories} />
-      <Featured product={featureProduct} />
+      <FilterOnlyCategories categories={categories} show={showNav} />
+      {/* <Featured product={featureProduct} /> */}
+      <Carousel />
       <NewProducts products={newProducts} />
       <Brands />
     </>
