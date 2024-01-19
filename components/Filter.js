@@ -3,18 +3,33 @@ import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import Center from "./Center";
+import { grey } from "@/lib/colors";
 
+const TitleH3 = styled.h3`
+  display: none;
+  @media screen and (max-width: 768px) {
+    color: ${grey};
+    display: block;
+  }
+`;
 const FilterGroup = styled.div`
   position: relative;
   display: flex;
   align-items: stretch;
   width: 100%;
   margin: 20px 0;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
+
 const WrapperSelect = styled.div`
   display: flex;
 `;
+
 const CustomSelect = styled.select`
+  width: 200px;
   text-transform: capitalize;
   display: inline-block;
   height: calc(1.5em + 0.75rem + 2px);
@@ -30,9 +45,16 @@ const CustomSelect = styled.select`
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   appearance: none;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    order: 1;
+  }
 `;
 const Customform = styled.form`
   width: 100%;
+  @media screen and (max-width: 768px) {
+    order: 2;
+  }
 `;
 const Input = styled.input`
   display: block;
@@ -79,10 +101,11 @@ const Filter = ({ data }) => {
 
   return (
     <Center>
+      <TitleH3>Búsqueda de productos...</TitleH3>
       <FilterGroup>
         <WrapperSelect>
           <CustomSelect value={category} onChange={handleCategory}>
-            <option value="all">Todos los productos</option>
+            <option value="all"> Categorias </option>
             {categories.map((item) => (
               <option key={item._id} value={item._id}>
                 {item.name}

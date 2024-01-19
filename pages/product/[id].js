@@ -3,15 +3,11 @@ import Categories from "@/components/FilterOnlyCategories";
 import ProductImages from "@/components/ProductImages";
 import { CartContext } from "@/components/CartContext";
 import { mongooseConnect } from "@/lib/mongoose";
-import { CardIcon } from "@/components/Icons";
 import WhiteBox from "@/components/WhiteBox";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
-import Button from "@/components/Button";
 import Center from "@/components/Center";
-import Header from "@/components/Header";
 import styled from "styled-components";
-import Title from "@/components/Title";
 import { useContext } from "react";
 import Head from "next/head";
 
@@ -23,6 +19,12 @@ const ColWrapper = styled.div`
   }
   gap: 40px;
   margin: 40px 0;
+`;
+const Title = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 5px;
+  color: ${primary};
 `;
 
 const Row = styled.div`
@@ -44,6 +46,13 @@ const InfoTitle = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 0.8rem;
+  span {
+    color: ${grey};
+    font-size: 12px;
+    strong {
+      margin-right: 5px;
+    }
+  }
 `;
 const Info = styled.div`
   display: flex;
@@ -78,13 +87,9 @@ export default function ProductPage({ product, categories }) {
             </WhiteBox>
             <Row>
               <InfoTitle>
-                <Title
-                  style={{ color: primary, marginBottom: 5, marginTop: 0 }}
-                >
-                  {product.title.toUpperCase()}
-                </Title>
-                <span style={{ color: grey, fontSize: 12 }}>
-                  <strong style={{ marginRight: 5 }}>Ref:</strong>
+                <Title>{product.title.toUpperCase()}</Title>
+                <span>
+                  <strong>Ref:</strong>
                   {product.code}
                 </span>
               </InfoTitle>
@@ -93,7 +98,7 @@ export default function ProductPage({ product, categories }) {
                 <span style={{ color: success, fontSize: 20 }}>
                   Precio venta:
                 </span>
-                <Price>${product.price}</Price>
+                <Price>${product.priceVen}</Price>
               </Info>
               <Info>
                 <span style={{ color: grey, fontSize: 16 }}>

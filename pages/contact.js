@@ -15,9 +15,14 @@ const Wrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin: 40px 0 80px;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+    place-items: center;
+  }
 `;
 const Box = styled.div`
   padding: 0 20px;
+  max-width: 450px;
   height: fit-content;
   ${(props) =>
     props.black &&

@@ -66,11 +66,15 @@ const Price = styled.div`
 export default function ProductBox({
   _id,
   title,
-  description,
   code,
-  price,
-  images,
+  priceVen,
+  priceDis,
+  priceOff,
+  brand,
   quantity,
+  location,
+  description,
+  images,
 }) {
   const { addProduct } = useContext(CartContext);
   const url = "/product/" + _id;
@@ -80,7 +84,7 @@ export default function ProductBox({
       <ProductInfoBox>
         <Title href={url}>{title.toUpperCase()}</Title>
         <Row>
-          <Price>${price}</Price>
+          <Price>${priceVen}</Price>
           {quantity === 5 ? (
             <span style={{ color: error }}>¡Agotado!</span>
           ) : (

@@ -6,7 +6,7 @@ const NotifContainer = styled.div`
   bottom: 100px;
   right: 0;
   margin-bottom: 1rem;
-  z-index: 9;
+  z-index: 1;
 
   display: flex;
   align-items: center;
@@ -19,6 +19,10 @@ const NotifContainer = styled.div`
   transition: 0.3s;
 
   border-radius: 3px;
+
+  @media screen and (max-width: 768px) {
+    bottom: 150px;
+  }
 
   ${(props) =>
     props.success &&

@@ -43,6 +43,10 @@ const DotsContainer = styled.div`
   justify-content: center;
   z-index: 1;
   transform: translate(0%, -150%);
+  @media screen and (max-width: 768px) {
+    position: relative;
+    transform: translate(0%, -30%);
+  }
 `;
 const DotContainerItem = styled.div`
   margin: 8px 3px;

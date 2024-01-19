@@ -12,7 +12,7 @@ const StaledLink = styled(Link)`
     height: auto;
     object-fit: contain;
   }
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     width: 200px;
   }
 `;

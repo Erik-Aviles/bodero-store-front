@@ -14,6 +14,9 @@ const ColumnsWrapper = styled.div`
   grid-template-columns: 0.5fr 1.5fr;
   gap: 40px;
   margin: 20px 0 80px;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 const AddressWrapper = styled.aside`
   padding: 20px;
@@ -29,6 +32,10 @@ const AddressWrapper = styled.aside`
   p {
     margin: 0;
     line-height: 24px;
+  }
+  @media screen and (max-width: 768px) {
+    flex-direction: row;
+    order: 2;
   }
 `;
 

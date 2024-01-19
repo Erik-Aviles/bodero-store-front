@@ -13,7 +13,7 @@
 const baseUrl = process.env.PUBLIC_URL;
 export const getData = async (url) => {
   try {
-    const response = await fetch(`http://localhost:3000/api/${url}`, {
+    const response = await fetch(`http://localhost:3001/api/${url}`, {
       method: "GET",
     });
 

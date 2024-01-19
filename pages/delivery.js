@@ -13,6 +13,9 @@ const Wrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin: 40px 0 80px;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 const Box = styled.div`
   padding: 0 20px;

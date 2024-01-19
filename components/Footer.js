@@ -10,7 +10,7 @@ const WrapperFooter = styled.footer`
   align-items: center;
   gap: 5px;
   background-color: ${white};
-  padding: 40px 0;
+  padding: 40px 20px;
   color: ${grey};
   p {
     margin: 0;
@@ -24,6 +24,13 @@ const WrapperFooter = styled.footer`
     }
   }
 `;
+const WrapperFooterSpan = styled.footer`
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+  }
+`;
 
 export default function Footer() {
   return (
@@ -31,7 +38,7 @@ export default function Footer() {
       <InformationFooter />
       <WrapperFooter>
         <LogoLetters href={"/"} />
-        <section>
+        <div>
           <Link
             href={"/"}
             target="_blank"
@@ -56,10 +63,11 @@ export default function Footer() {
           >
             FaceBook
           </Link>
-        </section>
-        <section>
-          <p>COPYRIGHT B.R.D 2023. TODOS LOS DERECHOS RESERVADOS</p>
-        </section>
+        </div>
+        <WrapperFooterSpan>
+          <span>COPYRIGHT B.R.D 2023.</span>
+          <span>TODOS LOS DERECHOS RESERVADOS</span>
+        </WrapperFooterSpan>
       </WrapperFooter>
     </>
   );

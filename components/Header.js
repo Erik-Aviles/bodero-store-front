@@ -1,4 +1,4 @@
-import { LogoLetters } from "./Logo";
+import { LogoFull, LogoLetters } from "./Logo";
 import styled, { css } from "styled-components";
 import { black, grey, primary, white } from "@/lib/colors";
 import Link from "next/link";
@@ -6,7 +6,11 @@ import { HamburguerIcon, ProductIcon, WhatsappIcon } from "./Icons";
 import InformationHeader from "./InformationHeader";
 import Center from "./Center";
 
-const StyledHeader = styled.header``;
+const StyledHeader = styled.header`
+  @media screen and (max-width: 768px) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  }
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -69,7 +73,7 @@ export default function Header() {
       <InformationHeader />
       <Center>
         <Wrapper>
-          <LogoLetters href={"/"} />
+          <LogoFull href={"/"} />
           <StyleNav>
             <StaledLink href={"/products"} title={"Ver todos los productos"}>
               <StylesSpan>

@@ -5,7 +5,7 @@ import Title from "./Title";
 
 export default function NewProducts({ products }) {
   return (
-    <Center>
+    <Center style={{ paddingTop: "20px" }}>
       <Title>Productos nuevos</Title>
       <ProductsGrid products={products} />
     </Center>
