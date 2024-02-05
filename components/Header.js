@@ -44,6 +44,25 @@ const StylesSpan = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  svg {
+    ${(props) =>
+      props.anim &&
+      css`
+        animation: bounce 1s infinite;
+
+        @keyframes bounce {
+          0%,
+          100% {
+            transform: translateY(-25%);
+            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+          }
+          50% {
+            transform: translateY(0);
+            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+          }
+        }
+      `};
+  }
   h3 {
     font-size: 1.5rem;
     margin: 0;
@@ -90,7 +109,7 @@ export default function Header() {
               rel="noopener noreferrer"
               title={"Enviar mensaje por Whatsapp"}
             >
-              <StylesSpan>
+              <StylesSpan anim={1}>
                 <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
                 <p>Escribenos</p>
                 <h3>0996501072</h3>

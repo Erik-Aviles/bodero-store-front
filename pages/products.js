@@ -10,11 +10,7 @@ import { useRouter } from "next/router";
 import Title from "@/components/Title";
 import styled from "styled-components";
 import Head from "next/head";
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
+import { ButtonContainer } from "./categories";
 
 export default function ProductsPage({ products, result }) {
   const { data } = useContext(DataContext);

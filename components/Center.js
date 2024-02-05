@@ -6,6 +6,9 @@ const StyledDiv = styled.section`
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 20px;
+  @media screen and (max-width: 320px) {
+    padding: 0 10px;
+  }
 `;
 
 const Center = ({ children }) => {

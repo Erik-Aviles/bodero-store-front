@@ -1,15 +1,3 @@
-/* export const getData = async (url) => {
-  const response = await fetch(`/api/${url}`);
-  const data = await response.json();
-  return data;
-}; */
-
-/* export const getData = async (url) => {
-  const res = await axios(`/api/${url}`);
-
-  return res;
-};
- */
 const baseUrl = process.env.PUBLIC_URL;
 export const getData = async (url) => {
   try {

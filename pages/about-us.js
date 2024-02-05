@@ -26,6 +26,9 @@ const SectionText = styled.section`
   p {
     margin: 0;
     padding: 0 30px;
+    @media screen and (max-width: 320px) {
+      padding: 0 10px;
+    }
   }
 `;
 

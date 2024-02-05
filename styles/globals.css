@@ -19,6 +19,9 @@ img{
   object-fit: cover;
   object-position: 0 30%;
 }
+.slick-slider>div {
+  padding-left: 30px;
+}
 
 /* ----------- Loading ------------- */
 @import url("./loading.css");

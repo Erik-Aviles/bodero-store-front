@@ -7,22 +7,31 @@ import Carousel from "@/components/Carousel";
 import { Product } from "@/models/Product";
 import Brands from "@/components/Brands";
 import Head from "next/head";
-import { HamburguerIcon } from "@/components/Icons";
-import { useState } from "react";
 
-export default function HomePage({ featureProduct, newProducts, categories }) {
-  const [showNav, setShowNav] = useState(false);
-
+export default function HomePage({ newProducts, categories }) {
   return (
     <>
       <Head>
         <title>B.R.D | Quevedo</title>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          charset="UTF-8"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+        />
       </Head>
-      <FilterOnlyCategories categories={categories} show={showNav} />
-      {/* <Featured product={featureProduct} /> */}
-      <Carousel />
-      <NewProducts products={newProducts} />
-      <Brands />
+      <main>
+        <FilterOnlyCategories categories={categories} />
+        {/* <Featured product={featureProduct} /> */}
+        <Carousel />
+        <NewProducts products={newProducts} />
+        <Brands />
+      </main>
     </>
   );
 }
@@ -36,7 +45,7 @@ export async function getServerSideProps() {
   });
   const newProducts = await Product.find({}, null, {
     sort: { _id: -1 },
-    limit: 3,
+    limit: 9,
   });
 
   return {

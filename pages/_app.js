@@ -39,6 +39,8 @@ const GlobalStyles = createGlobalStyle`
       object-fit: cover;
       object-position: 0 30%;
     }
+   
+   
   `;
 
 export default function App({ Component, pageProps }) {

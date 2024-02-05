@@ -30,6 +30,9 @@ const WrapperFooterSpan = styled.footer`
     flex-direction: column;
     place-items: center;
   }
+  @media screen and (max-width: 320px) {
+    font-size: 14px;
+  }
 `;
 
 export default function Footer() {

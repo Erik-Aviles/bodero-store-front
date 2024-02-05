@@ -1,13 +1,12 @@
-import styled from "styled-components";
 import Center from "./Center";
-import ProductsGrid from "./ProductsGrid";
+import SlinderHorizontal from "./SlinderHorizontal";
 import Title from "./Title";
 
 export default function NewProducts({ products }) {
   return (
     <Center style={{ paddingTop: "20px" }}>
       <Title>Productos nuevos</Title>
-      <ProductsGrid products={products} />
+      <SlinderHorizontal products={products} />
     </Center>
   );
 }

@@ -10,7 +10,6 @@ const ProductWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 0;
-  word-wrap: break-word;
   background-color: ${white};
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
@@ -23,26 +22,27 @@ const ProductWrapper = styled.div`
 `;
 
 const WhiteBox = styled.img`
-  height: 250px;
+  height: 220px;
   border-radius: 0.25rem 0.25rem 0 0;
   object-position: 50%;
-  object-fit: contain;
+  object-fit: cover;
   ${"" /* cambiar si es necesario con cover */}
 `;
 
 const ProductInfoBox = styled.div`
-  padding: 1.25rem;
+  padding: 0.7rem;
 
   p {
     font-size: 0.8rem;
     line-height: 1.2rem;
     height: 52px;
     overflow: hidden;
+    margin: 0;
   }
 `;
 
 const Title = styled.h5`
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   margin-top: 0;
   margin-bottom: 0.75rem;
   overflow: hidden;
