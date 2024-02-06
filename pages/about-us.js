@@ -1,15 +1,22 @@
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
-import Center from "@/components/Center";
 import styled from "styled-components";
 import Title from "@/components/Title";
 import Head from "next/head";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+
+const CenterDiv = styled.section`
+  ${CenterSecction}
+`;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 60px;
+  @media screen and (max-width: 768px) {
+    padding-bottom: 0;
+  }
 `;
 const SectionImagen = styled.section`
   width: 100%;
@@ -26,7 +33,7 @@ const SectionText = styled.section`
   }
   p {
     margin: 0;
-    padding: 0 30px;
+    padding: 0;
   }
   @media screen and (max-width: 320px) {
   }
@@ -40,7 +47,7 @@ export default function AboutUsPage({ categories }) {
       </Head>
       <main>
         <CategoriesComponent categories={categories} />
-        <Center>
+        <CenterDiv>
           <Title>Quienes somos</Title>
           <Wrapper>
             <SectionImagen>
@@ -90,7 +97,7 @@ export default function AboutUsPage({ categories }) {
               </p>
             </SectionText>
           </Wrapper>
-        </Center>
+        </CenterDiv>
       </main>
     </>
   );

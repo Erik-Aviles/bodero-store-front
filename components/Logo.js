@@ -8,12 +8,12 @@ const StaledLink = styled(Link)`
   align-items: center;
   width: 300px;
   img {
-    width: 100%;
+    width: auto;
     height: auto;
     object-fit: contain;
-  }
-  @media screen and (max-width: 768px) {
-    width: 200px;
+    @media screen and (max-width: 768px) {
+      width: 200px;
+    }
   }
 `;
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import ProductsGrid from "@/components/ProductsGrid";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -7,10 +8,13 @@ import filterSearch from "@/utils/filterSearch";
 import { grey, secondary } from "@/lib/colors";
 import { Category } from "@/models/Category";
 import { getData } from "@/utils/FetchData";
-import Center from "@/components/Center";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import Head from "next/head";
+
+const CenterDiv = styled.section`
+  ${CenterSecction}
+`;
 
 export const ButtonContainer = styled.div`
   display: flex;
@@ -43,6 +47,14 @@ const Text = styled.span`
       font-size: 1rem;
       font-weight: 500;
     `};
+`;
+
+const TextH4 = styled.h4`
+  font-size: 1.4rem;
+  color: ${grey};
+  @media screen and (max-width: 640px) {
+    padding-left: 1.2rem;
+  }
 `;
 const Divider = styled.span`
   color: ${grey};
@@ -83,7 +95,7 @@ export default function CategoriesPage({ categories, products, result }) {
       </Head>
       <main>
         <CategoriesComponent categories={categories} />
-        <Center>
+        <CenterDiv>
           <seccion aria-label="breadcrumb">
             <Sorted class="">
               <BreadCrumb>
@@ -100,7 +112,9 @@ export default function CategoriesPage({ categories, products, result }) {
             </Sorted>
           </seccion>
           {product?.length === 0 ? (
-            <h4>No se encontró productos en "{resultadoFiltrado[0]?.name}"</h4>
+            <TextH4>
+              No se encontró productos en "{resultadoFiltrado[0]?.name}"
+            </TextH4>
           ) : (
             <ProductsGrid products={product} />
           )}
@@ -114,7 +128,7 @@ export default function CategoriesPage({ categories, products, result }) {
               </Button>
             </ButtonContainer>
           )}
-        </Center>
+        </CenterDiv>
       </main>
     </>
   );

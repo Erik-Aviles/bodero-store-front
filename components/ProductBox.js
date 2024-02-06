@@ -1,12 +1,11 @@
 import styled, { css } from "styled-components";
-import Button from "./Button";
 import { CartContext } from "./CartContext";
 import { useContext } from "react";
 import { error, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./ButtonLink";
 
 const ProductWrapper = styled.div`
-  width: 18rem;
+  width: 17rem;
   display: flex;
   flex-direction: column;
   min-width: 0;

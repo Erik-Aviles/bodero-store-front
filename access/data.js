@@ -1,4 +1,4 @@
-const { HomeIcon } = require("@/components/Icons");
+import { HomeIcon } from "@/components/Icons";
 import * as React from "react";
 
 export const InfoData = [
@@ -44,5 +44,45 @@ export const dataCarousel = [
   {
     id: 4,
     imgUrl: "/images/slide/slinder4.jpg",
+  },
+];
+
+export const brands = [
+  {
+    name: "Honda",
+    src: "/images/brands/Honda-Logo.png",
+  },
+  {
+    name: "Bajab",
+    src: "/images/brands/Bajaj-Logo.png",
+  },
+  {
+    name: "Suzuki",
+    src: "/images/brands/Suzuki-Logo.png",
+  },
+  {
+    name: "IGM",
+    src: "/images/brands/IGM-Logo.png",
+  },
+  {
+    name: "KTM",
+    src: "/images/brands/KTM-Logo.png",
+  },
+  {
+    name: "Benelli",
+    src: "/images/brands/Benelli-Logo.png",
+  },
+  {
+    name: "Kawasaki",
+    src: "/images/brands/Kawasaki-Logo.png",
+  },
+  {
+    name: "Yamaha",
+    src: "/images/brands/Yamaha-Logo.png",
+  },
+
+  {
+    name: "Ducati",
+    src: "/images/brands/Ducati-Logo.png",
   },
 ];

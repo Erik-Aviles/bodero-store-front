@@ -30,10 +30,14 @@ const DivContainert = styled.div`
   @media screen and (min-width: 768px) {
     font-size: 16px;
     box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
-
     select {
       display: none;
     }
+  }
+  @media screen and (max-width: 640px) {
+    position: fixed;
+    z-index: 1;
+    margin-top: 105.63px;
   }
 `;
 

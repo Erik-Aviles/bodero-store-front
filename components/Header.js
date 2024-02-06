@@ -7,12 +7,18 @@ import InformationHeader from "./InformationHeader";
 import Center from "./Center";
 
 const StyledHeader = styled.header`
-  @media screen and (max-width: 768px) {
+  width: 100%;
+  background-color: ${white};
+
+  @media screen and (max-width: 640px) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    position: fixed;
+    z-index: 1;
   }
 `;
 
 const Wrapper = styled.div`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   color: ${white};

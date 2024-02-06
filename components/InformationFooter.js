@@ -1,8 +1,8 @@
+import React from "react";
 import { white, grey, primary, greylight, white2 } from "@/lib/colors";
 import { InfoData } from "@/access/data";
 import styled from "styled-components";
 import Link from "next/link";
-import React from "react";
 import Center from "./Center";
 
 const Wrapper = styled.div`
@@ -71,11 +71,7 @@ const ImagesInformationContainer = styled.div`
   color: ${white};
   font-weight: 700;
   margin-right: 10px;
-  svg {
-    stroke-width: 1.5;
-    width: 2.5em;
-    height: 2.5em;
-  }
+
   @media screen and (max-width: 640px) {
     float: left;
     width: 60px;

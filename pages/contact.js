@@ -1,3 +1,4 @@
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { FormContextProvider } from "@/components/formsLogin/FormContext";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -6,9 +7,12 @@ import styled, { css } from "styled-components";
 import { Category } from "@/models/Category";
 import useLoading from "@/hooks/useLoading";
 import { black, white } from "@/lib/colors";
-import Center from "@/components/Center";
 import Title from "@/components/Title";
 import Head from "next/head";
+
+const CenterDiv = styled.section`
+  ${CenterSecction}
+`;
 
 const Wrapper = styled.div`
   display: grid;
@@ -79,7 +83,7 @@ export default function ContactPage({ categories }) {
       </Head>
       <main>
         <CategoriesComponent categories={categories} />
-        <Center>
+        <CenterDiv>
           <Title>Contáctenos</Title>
           <Wrapper>
             <Box black={1}>
@@ -155,7 +159,7 @@ export default function ContactPage({ categories }) {
               </FormContextProvider>
             </Box>
           </Wrapper>
-        </Center>
+        </CenterDiv>
       </main>
     </>
   );

@@ -1,14 +1,17 @@
 import CategoriesComponent from "@/components/CategoriesComponent";
-import SlinderCategories from "@/components/SlinderCategories";
 import { LocationIcon } from "@/components/Icons";
-import { black, grey, white } from "@/lib/colors";
+import { black, white } from "@/lib/colors";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
-import Center from "@/components/Center";
 import Title from "@/components/Title";
 import styled from "styled-components";
 import Map from "@/components/Map";
 import Head from "next/head";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+
+const CenterDiv = styled.section`
+  ${CenterSecction}
+`;
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -41,6 +44,8 @@ const AddressWrapper = styled.aside`
 `;
 
 const MapWrapper = styled.div`
+  height: 100%;
+  width: 100%;
   border: 1px solid rgba(132, 135, 137, 0.1);
 `;
 export default function address({ categories }) {
@@ -55,7 +60,7 @@ export default function address({ categories }) {
       </Head>
       <main>
         <CategoriesComponent categories={categories} />
-        <Center>
+        <CenterDiv>
           <Title>Tienda Física</Title>
           <ColumnsWrapper>
             <AddressWrapper>
@@ -72,7 +77,7 @@ export default function address({ categories }) {
               <Map />
             </MapWrapper>
           </ColumnsWrapper>
-        </Center>
+        </CenterDiv>
       </main>
     </>
   );

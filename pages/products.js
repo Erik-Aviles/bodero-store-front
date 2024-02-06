@@ -12,6 +12,17 @@ import styled from "styled-components";
 import Head from "next/head";
 import { ButtonContainer } from "./categories";
 
+const CenterSection = styled.section`
+  @media screen and (max-width: 480px) {
+    margin-bottom: 0;
+    padding: 0;
+  }
+  @media screen and (max-width: 640px) {
+    padding-top: 105.63px;
+    margin-bottom: 60px;
+  }
+`;
+
 export default function ProductsPage({ products, result }) {
   const { data } = useContext(DataContext);
   const [product, setProducts] = useState(products);
@@ -42,27 +53,29 @@ export default function ProductsPage({ products, result }) {
         />
       </Head>
       <main>
-        <Filter data={data} />
-        <Center>
-          {product?.length === 0 ? (
-            <h2>No Products</h2>
-          ) : (
-            <>
-              <Title>Todos los productos</Title>
-              <ProductsGrid products={product} />
-            </>
-          )}
+        <CenterSection>
+          <Filter data={data} />
+          <Center>
+            {product?.length === 0 ? (
+              <h2>No Products</h2>
+            ) : (
+              <>
+                <Title>Todos los productos</Title>
+                <ProductsGrid products={product} />
+              </>
+            )}
 
-          {result < page * 6 ? (
-            ""
-          ) : (
-            <ButtonContainer>
-              <Button black={1} outline={1} size="m" onClick={handleLoadmore}>
-                Load more
-              </Button>
-            </ButtonContainer>
-          )}
-        </Center>
+            {result < page * 6 ? (
+              ""
+            ) : (
+              <ButtonContainer>
+                <Button black={1} outline={1} size="m" onClick={handleLoadmore}>
+                  Load more
+                </Button>
+              </ButtonContainer>
+            )}
+          </Center>
+        </CenterSection>
       </main>
     </>
   );

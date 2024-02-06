@@ -1,11 +1,11 @@
 import { CartContextProvider } from "@/components/CartContext";
+import { NotificationProvider } from "@/context/NotificationContext";
+import { createGlobalStyle } from "styled-components";
+import { DataProvider } from "@/context/DataContext";
+import { BackgroundColor } from "@/lib/colors";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { DataProvider } from "@/context/DataContext";
-import { NotificationProvider } from "@/context/NotificationContext";
-import { BackgroundColor } from "@/lib/colors";
 import Head from "next/head";
-import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle` 
   html,body{
@@ -28,7 +28,7 @@ const GlobalStyles = createGlobalStyle`
   li {
     list-style: none;
     white-space: nowrap;
-    padding: 0
+    padding: 0;
   }
 
   li {
@@ -37,9 +37,7 @@ const GlobalStyles = createGlobalStyle`
 
   img{
       object-fit: cover;
-      object-position: 0 30%;
     }
-   
    
   `;
 
@@ -47,17 +45,9 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          charset="UTF-8"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-        />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+        <meta
+          name="description"
+          content="Tienda de repuestos y accesorios originales de las marcas más prestigiosas "
         />
       </Head>
 
@@ -68,7 +58,7 @@ export default function App({ Component, pageProps }) {
             <Header />
             <Component {...pageProps} />
             <Footer />
-          </CartContextProvider>{" "}
+          </CartContextProvider>
         </DataProvider>
       </NotificationProvider>
     </>

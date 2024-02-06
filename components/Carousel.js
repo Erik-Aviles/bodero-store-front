@@ -6,6 +6,13 @@ const SliderContainer = styled.div`
   position: relative;
   width: 100%;
   max-height: 350px;
+  @media screen and (max-width: 480px) {
+    margin-bottom: 0;
+  }
+  @media screen and (max-width: 640px) {
+    padding-top: 150.43px;
+    margin-bottom: 60px;
+  }
 `;
 const ContainerImages = styled.div`
   width: 100%;
@@ -22,7 +29,6 @@ const DotsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  z-index: 1;
   transform: translate(0%, -150%);
   @media screen and (max-width: 768px) {
     position: relative;

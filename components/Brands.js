@@ -2,46 +2,8 @@ import styled from "styled-components";
 import Center from "./Center";
 import Title from "./Title";
 import { BackgroundColor, black, primary, white } from "@/lib/colors";
-
-const brands = [
-  {
-    name: "Honda",
-    src: "/images/brands/Honda-Logo.png",
-  },
-  {
-    name: "Bajab",
-    src: "/images/brands/Bajaj-Logo.png",
-  },
-  {
-    name: "Suzuki",
-    src: "/images/brands/Suzuki-Logo.png",
-  },
-  {
-    name: "IGM",
-    src: "/images/brands/IGM-Logo.png",
-  },
-  {
-    name: "KTM",
-    src: "/images/brands/KTM-Logo.png",
-  },
-  {
-    name: "Benelli",
-    src: "/images/brands/Benelli-Logo.png",
-  },
-  {
-    name: "Kawasaki",
-    src: "/images/brands/Kawasaki-Logo.png",
-  },
-  {
-    name: "Yamaha",
-    src: "/images/brands/Yamaha-Logo.png",
-  },
-
-  {
-    name: "Ducati",
-    src: "/images/brands/Ducati-Logo.png",
-  },
-];
+import { brands } from "@/access/data";
+import Image from "next/image";
 
 const Wrapper = styled.section`
   background-image: url("https://yamaha-motor.com/images/mock-homepage/homepage_bu_1.png");
@@ -103,10 +65,10 @@ export default function Brands() {
       <Center>
         <Title>Marcas destacadas</Title>
         <BrandsWrapper>
-          {brands.map((brand) => (
+          {brands?.map((brand) => (
             <StyledCard key={brand.name}>
               <BrandName>{brand.name.toUpperCase()}</BrandName>
-              <img src={brand.src} alt={brand.name} title="logo"></img>
+              <Image src={brand.src} alt={brand.name} width={50} height={50} />
             </StyledCard>
           ))}
         </BrandsWrapper>
