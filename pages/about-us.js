@@ -1,12 +1,10 @@
-import FilterOnlyCategories from "@/components/FilterOnlyCategories";
+import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
 import Center from "@/components/Center";
 import styled from "styled-components";
 import Title from "@/components/Title";
 import Head from "next/head";
-import SlinderCategories from "@/components/SlinderCategories";
-import CategoriesComponent from "@/components/CategoriesComponent";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,15 +20,15 @@ const SectionImagen = styled.section`
   }
 `;
 const SectionText = styled.section`
+  padding: 0 20px;
   h3 {
     font-size: 1.5rem;
   }
   p {
     margin: 0;
     padding: 0 30px;
-    @media screen and (max-width: 320px) {
-      padding: 0 10px;
-    }
+  }
+  @media screen and (max-width: 320px) {
   }
 `;
 

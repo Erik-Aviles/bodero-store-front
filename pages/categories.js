@@ -23,6 +23,9 @@ const Sorted = styled.div`
   margin: 0;
   font-size: 0.8rem;
   line-height: 1.25rem;
+  @media screen and (max-width: 640px) {
+    padding-left: 1.2rem;
+  }
 `;
 
 const BreadCrumb = styled.span`

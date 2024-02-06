@@ -7,7 +7,12 @@ import Center from "./Center";
 
 const Wrapper = styled.div`
   background-color: ${white2};
-  padding: 20px 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  @media screen and (max-width: 640px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 `;
 
 const ListInformation = styled.ul`
@@ -40,7 +45,8 @@ const StaledLink = styled(Link)`
     margin: 13px 0 0;
     font-weight: 700;
     color: #343332;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 640px) {
+      margin: 0;
     }
   }
   p {
@@ -70,8 +76,10 @@ const ImagesInformationContainer = styled.div`
     width: 2.5em;
     height: 2.5em;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 640px) {
     float: left;
+    width: 60px;
+    height: 60px;
   }
   @media screen and (min-width: 1024px) {
     float: left;

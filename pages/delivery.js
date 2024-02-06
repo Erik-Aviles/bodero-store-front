@@ -16,6 +16,9 @@ const Wrapper = styled.div`
   margin: 40px 0 80px;
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
   }
 `;
 const Box = styled.div`

@@ -16,6 +16,19 @@ const ContainerArrow = styled.div`
     css`
       right: 80px;
     `};
+  @media screen and (max-width: 640px) {
+    top: 405px;
+    ${(props) =>
+      props.next &&
+      css`
+        right: 8px;
+      `};
+    ${(props) =>
+      props.prev &&
+      css`
+        left: 8px;
+      `};
+  }
 `;
 const ArrowBox = styled.div`
   background-color: ${black};

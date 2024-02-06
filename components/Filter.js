@@ -5,6 +5,9 @@ import styled from "styled-components";
 import Center from "./Center";
 import { grey } from "@/lib/colors";
 
+const WrapperProductFilter = styled.div`
+  padding: 0 20px;
+`;
 const TitleH3 = styled.h3`
   display: none;
   @media screen and (max-width: 768px) {
@@ -101,40 +104,42 @@ const Filter = ({ data }) => {
 
   return (
     <Center>
-      <TitleH3>Búsqueda de productos...</TitleH3>
-      <FilterGroup>
-        <WrapperSelect>
-          <CustomSelect value={category} onChange={handleCategory}>
-            <option value="all"> Categorias </option>
-            {categories.map((item) => (
-              <option key={item._id} value={item._id}>
-                {item.name}
-              </option>
-            ))}
-          </CustomSelect>
-        </WrapperSelect>
+      <WrapperProductFilter>
+        <TitleH3>Búsqueda de productos...</TitleH3>
+        <FilterGroup>
+          <WrapperSelect>
+            <CustomSelect value={category} onChange={handleCategory}>
+              <option value="all"> Categorias </option>
+              {categories.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              ))}
+            </CustomSelect>
+          </WrapperSelect>
 
-        <Customform autoComplete="off">
-          <Input
-            type="text"
-            placeholder="Buscar..."
-            list="title_product"
-            value={search.toLowerCase()}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </Customform>
+          <Customform autoComplete="off">
+            <Input
+              type="text"
+              placeholder="Buscar..."
+              list="title_product"
+              value={search.toLowerCase()}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Customform>
 
-        <WrapperSelect>
-          <CustomSelect value={sort} onChange={handleSort}>
-            <option value="all">Ordenar por:</option>
-            <option value="-createdAt">Lo más nuevo</option>
-            <option value="oldest">Lo antiguAntiguo</option>
-            <option value="-sold">Referencia: más vendido</option>
-            <option value="-price">Precio: más caro primero</option>
-            <option value="price">Precio: más barato primero</option>
-          </CustomSelect>
-        </WrapperSelect>
-      </FilterGroup>
+          <WrapperSelect>
+            <CustomSelect value={sort} onChange={handleSort}>
+              <option value="all">Ordenar por:</option>
+              <option value="-createdAt">Lo más nuevo</option>
+              <option value="oldest">Lo antiguAntiguo</option>
+              <option value="-sold">Referencia: más vendido</option>
+              <option value="-price">Precio: más caro primero</option>
+              <option value="price">Precio: más barato primero</option>
+            </CustomSelect>
+          </WrapperSelect>
+        </FilterGroup>
+      </WrapperProductFilter>
     </Center>
   );
 };

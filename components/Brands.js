@@ -61,6 +61,9 @@ const BrandsWrapper = styled.div`
   justify-content: center;
   gap: 10px;
   padding: 20px 0;
+  @media screen and (max-width: 640px) {
+    padding: 20px 20px;
+  }
 `;
 
 const StyledCard = styled.article`

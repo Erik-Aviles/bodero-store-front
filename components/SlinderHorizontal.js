@@ -9,6 +9,11 @@ const HorizontalSliderContainer = styled.div`
   width: 100%;
   position: relative;
   margin-top: 60px;
+  z-index: 10px;
+  @media screen and (max-width: 640px) {
+    margin-top: 5px;
+    margin-bottom: 50px;
+  }
 `;
 
 const SliderContainer = styled.div`
