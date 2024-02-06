@@ -1,16 +1,16 @@
-import FilterOnlyCategories from "@/components/FilterOnlyCategories";
+import { useEffect, useState } from "react";
+import CategoriesComponent from "@/components/CategoriesComponent";
 import ProductsGrid from "@/components/ProductsGrid";
 import { mongooseConnect } from "@/lib/mongoose";
+import styled, { css } from "styled-components";
 import filterSearch from "@/utils/filterSearch";
+import { grey, secondary } from "@/lib/colors";
 import { Category } from "@/models/Category";
 import { getData } from "@/utils/FetchData";
-import { useEffect, useState } from "react";
 import Center from "@/components/Center";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import styled, { css } from "styled-components";
-import { grey, secondary } from "@/lib/colors";
 
 export const ButtonContainer = styled.div`
   display: flex;
@@ -79,7 +79,7 @@ export default function CategoriesPage({ categories, products, result }) {
         />
       </Head>
       <main>
-        <FilterOnlyCategories categories={categories} />
+        <CategoriesComponent categories={categories} />
         <Center>
           <seccion aria-label="breadcrumb">
             <Sorted class="">

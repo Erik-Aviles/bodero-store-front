@@ -6,43 +6,40 @@ import { BackgroundColor, black, primary, white } from "@/lib/colors";
 const brands = [
   {
     name: "Honda",
-    src: "https://www.hondamotovalencia.es/wp-content/uploads/2018/10/favicon-honda-moto-valencia.png",
+    src: "/images/brands/Honda-Logo.png",
   },
   {
     name: "Bajab",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
+    src: "/images/brands/Bajaj-Logo.png",
   },
   {
     name: "Suzuki",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
-  },
-  {
-    name: "KTM",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
+    src: "/images/brands/Suzuki-Logo.png",
   },
   {
     name: "IGM",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
+    src: "/images/brands/IGM-Logo.png",
+  },
+  {
+    name: "KTM",
+    src: "/images/brands/KTM-Logo.png",
   },
   {
     name: "Benelli",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
+    src: "/images/brands/Benelli-Logo.png",
   },
   {
     name: "Kawasaki",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
+    src: "/images/brands/Kawasaki-Logo.png",
   },
   {
     name: "Yamaha",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
+    src: "/images/brands/Yamaha-Logo.png",
   },
-  {
-    name: "Oromoto",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
-  },
+
   {
     name: "Ducati",
-    src: "https://assets.ducati.com/dist/0.15.0/assets/img/ducati_id.png",
+    src: "/images/brands/Ducati-Logo.png",
   },
 ];
 

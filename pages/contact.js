@@ -1,5 +1,5 @@
 import { FormContextProvider } from "@/components/formsLogin/FormContext";
-import FilterOnlyCategories from "@/components/FilterOnlyCategories";
+import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
 import useAuthFetch from "@/hooks/useAuthFetch";
 import styled, { css } from "styled-components";
@@ -78,7 +78,7 @@ export default function ContactPage({ categories }) {
         <title>B.R.D | Contacto</title>
       </Head>
       <main>
-        <FilterOnlyCategories categories={categories} />
+        <CategoriesComponent categories={categories} />
         <Center>
           <Title>Contáctenos</Title>
           <Wrapper>

@@ -1,4 +1,5 @@
-import FilterOnlyCategories from "@/components/FilterOnlyCategories";
+import CategoriesComponent from "@/components/CategoriesComponent";
+import SlinderCategories from "@/components/SlinderCategories";
 import { LocationIcon } from "@/components/Icons";
 import { black, grey, white } from "@/lib/colors";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -53,7 +54,7 @@ export default function address({ categories }) {
         />
       </Head>
       <main>
-        <FilterOnlyCategories categories={categories} />
+        <CategoriesComponent categories={categories} />
         <Center>
           <Title>Tienda Física</Title>
           <ColumnsWrapper>

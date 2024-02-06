@@ -1,12 +1,13 @@
-import FilterOnlyCategories from "@/components/FilterOnlyCategories";
-import { mongooseConnect } from "@/lib/mongoose";
-import { Category } from "@/models/Category";
-import Center from "@/components/Center";
-import Head from "next/head";
 import React from "react";
+import CategoriesComponent from "@/components/CategoriesComponent";
+import SlinderCategories from "@/components/SlinderCategories";
+import { mongooseConnect } from "@/lib/mongoose";
 import styled, { css } from "styled-components";
-import Title from "@/components/Title";
+import { Category } from "@/models/Category";
 import { black, white } from "@/lib/colors";
+import Center from "@/components/Center";
+import Title from "@/components/Title";
+import Head from "next/head";
 
 const Wrapper = styled.div`
   display: grid;
@@ -50,7 +51,7 @@ export default function DeliveryPage({ categories }) {
         <title>B.R.D | Padidos y entrega</title>
       </Head>
       <main>
-        <FilterOnlyCategories categories={categories} />
+        <CategoriesComponent categories={categories} />
         <Center>
           <Title>Información</Title>
           <Wrapper>

@@ -1,5 +1,5 @@
 import InformationFooter from "./InformationFooter";
-import { black, grey, white } from "@/lib/colors";
+import { black, grey, success, white } from "@/lib/colors";
 import styled from "styled-components";
 import { LogoLetters } from "./Logo";
 import Link from "next/link";
@@ -9,7 +9,7 @@ const WrapperFooter = styled.footer`
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  background-color: ${white};
+  background-color: ${black};
   padding: 40px 20px;
   color: ${grey};
   p {
@@ -17,10 +17,10 @@ const WrapperFooter = styled.footer`
   }
   a {
     text-decoration: none;
-    color: ${black};
+    color: ${white};
     padding: 0 10px;
     &:hover {
-      color: ${grey};
+      color: ${success};
     }
   }
 `;
@@ -41,7 +41,7 @@ export default function Footer() {
       <InformationFooter />
       <WrapperFooter>
         <LogoLetters href={"/"} />
-        <div>
+        {/* <div>
           <Link
             href={"/"}
             target="_blank"
@@ -66,7 +66,7 @@ export default function Footer() {
           >
             FaceBook
           </Link>
-        </div>
+        </div> */}
         <WrapperFooterSpan>
           <span>COPYRIGHT B.R.D 2023.</span>
           <span>TODOS LOS DERECHOS RESERVADOS</span>

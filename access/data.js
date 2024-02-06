@@ -27,3 +27,22 @@ export const InfoData = [
     description: "Tines una duda, ingresa aqui",
   },
 ];
+
+export const dataCarousel = [
+  {
+    id: 1,
+    imgUrl: "/images/slide/slinder1.jpg",
+  },
+  {
+    id: 2,
+    imgUrl: "/images/slide/slinder2.jpg",
+  },
+  {
+    id: 3,
+    imgUrl: "/images/slide/slinder3.jpg",
+  },
+  {
+    id: 4,
+    imgUrl: "/images/slide/slinder4.jpg",
+  },
+];

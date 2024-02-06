@@ -2,25 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Center from "./Center";
 
-const data = [
-  {
-    id: 1,
-    imgUrl: "/images/slide/slinder1.jpg",
-  },
-  {
-    id: 2,
-    imgUrl: "/images/slide/slinder2.jpg",
-  },
-  {
-    id: 3,
-    imgUrl: "/images/slide/slinder3.jpg",
-  },
-  {
-    id: 4,
-    imgUrl: "/images/slide/slinder4.jpg",
-  },
-];
-
 const SliderContainer = styled.div`
   position: relative;
   width: 100%;
@@ -69,7 +50,7 @@ const Img = styled.img`
   object-fit: contain;
 `;
 
-const Carousel = () => {
+const Carousel = ({ data }) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {

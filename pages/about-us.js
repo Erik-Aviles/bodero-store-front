@@ -5,6 +5,8 @@ import Center from "@/components/Center";
 import styled from "styled-components";
 import Title from "@/components/Title";
 import Head from "next/head";
+import SlinderCategories from "@/components/SlinderCategories";
+import CategoriesComponent from "@/components/CategoriesComponent";
 
 const Wrapper = styled.div`
   display: flex;
@@ -39,7 +41,7 @@ export default function AboutUsPage({ categories }) {
         <title> B.R.D | Quienes somos</title>
       </Head>
       <main>
-        <FilterOnlyCategories categories={categories} />
+        <CategoriesComponent categories={categories} />
         <Center>
           <Title>Quienes somos</Title>
           <Wrapper>
