@@ -7,7 +7,7 @@ const style = {
     display: "grid",
     justifyItems: "center",
   },
-  text: {
+  txsmal: {
     margin: 0,
     borderBottom: "1px",
   },
@@ -22,27 +22,27 @@ export const EmailTemplate = ({
   message,
 }) => (
   <div style={style.container}>
-    <p style={style.text}>
+    <p style={style.txsmal}>
       <strong>Nombre: </strong>
       {name}
     </p>
-    <p style={style.text}>
+    <p style={style.txsmal}>
       <strong>Correo: </strong>
       {email}
     </p>
-    <p style={style.text}>
+    <p style={style.txsmal}>
       <strong>Celular: </strong>
       {phone}
     </p>
-    <p style={style.text}>
+    <p style={style.txsmal}>
       <strong>Ciudad: </strong>
       {city}
     </p>
-    <p style={style.text}>
+    <p style={style.txsmal}>
       <strong>País: </strong>
       {country}
     </p>
-    <p style={style.text}>
+    <p style={style.txsmal}>
       <strong>Mensaje: </strong>
       {message}
     </p>

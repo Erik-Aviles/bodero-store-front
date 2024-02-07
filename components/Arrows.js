@@ -7,24 +7,24 @@ const ContainerArrow = styled.div`
   position: absolute;
   top: -55px;
   ${(props) =>
-    props.next &&
+    props.$anex &&
     css`
       right: 0px;
     `};
   ${(props) =>
-    props.prev &&
+    props.$apre &&
     css`
       right: 80px;
     `};
   @media screen and (max-width: 640px) {
     top: 405px;
     ${(props) =>
-      props.next &&
+      props.$anex &&
       css`
         right: 8px;
       `};
     ${(props) =>
-      props.prev &&
+      props.$apre &&
       css`
         left: 8px;
       `};
@@ -47,7 +47,7 @@ const ArrowBox = styled.div`
 
 export const NextArrow = ({ onClick }) => {
   return (
-    <ContainerArrow next={1} onClick={onClick}>
+    <ContainerArrow $anex={1} onClick={onClick}>
       <ArrowBox>
         <BsChevronRight />
       </ArrowBox>
@@ -57,7 +57,7 @@ export const NextArrow = ({ onClick }) => {
 
 export const PrevArrow = ({ onClick }) => {
   return (
-    <ContainerArrow prev={1} onClick={onClick}>
+    <ContainerArrow $apre={1} onClick={onClick}>
       <ArrowBox>
         <BsChevronLeft />
       </ArrowBox>

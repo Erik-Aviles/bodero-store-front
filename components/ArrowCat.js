@@ -7,12 +7,12 @@ const ContainerArrow = styled.div`
   position: absolute;
   top: 10px;
   ${(props) =>
-    props.nextcat &&
+    props.$catNex &&
     css`
       right: -22px;
     `};
   ${(props) =>
-    props.prevcat &&
+    props.$catPre &&
     css`
       left: -22px;
     `};
@@ -30,7 +30,7 @@ const ArrowBox = styled.div`
 
 export const NextArrowCategory = ({ onClick }) => {
   return (
-    <ContainerArrow nextcat={1} onClick={onClick}>
+    <ContainerArrow $catNex={1} onClick={onClick}>
       <ArrowBox>
         <BsChevronRight />
       </ArrowBox>
@@ -40,7 +40,7 @@ export const NextArrowCategory = ({ onClick }) => {
 
 export const PrevArrowCategory = ({ onClick }) => {
   return (
-    <ContainerArrow prevcat={1} onClick={onClick}>
+    <ContainerArrow $catPre={1} onClick={onClick}>
       <ArrowBox>
         <BsChevronLeft />
       </ArrowBox>

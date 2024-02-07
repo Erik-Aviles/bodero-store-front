@@ -42,7 +42,7 @@ const DotContainerItem = styled.div`
   text-align: center;
 
   ${(props) =>
-    props.active &&
+    props.$active &&
     css`
       background: #ccc;
       width: 20px;
@@ -88,7 +88,7 @@ const Carousel = ({ data }) => {
             idx === index ? (
               <DotContainerItem
                 key={idx}
-                active={1}
+                $active={1}
                 onClick={() => goToSlide(idx)}
               >
                 &#9865;

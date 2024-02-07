@@ -52,7 +52,7 @@ const StylesSpan = styled.div`
   cursor: pointer;
   svg {
     ${(props) =>
-      props.anim &&
+      props.$anim &&
       css`
         animation: bounce 1s infinite;
 
@@ -115,7 +115,7 @@ export default function Header() {
               rel="noopener noreferrer"
               title={"Enviar mensaje por Whatsapp"}
             >
-              <StylesSpan anim={1}>
+              <StylesSpan $anim={1}>
                 <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
                 <p>Escribenos</p>
                 <h3>0996501072</h3>

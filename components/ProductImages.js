@@ -25,7 +25,7 @@ const ImageButton = styled.div`
   heigth: fit-content;
   border: 2px solid #ccc;
   ${(props) =>
-    props.active
+    props.$actived
       ? `border-color: #ccc;
       `
       : `border-color: transparent;
@@ -51,7 +51,7 @@ export default function ProductImages({ images }) {
         {images.map((image) => (
           <ImageButton
             key={image}
-            active={image === activeImage}
+            actived={image === activeImage}
             onClick={() => setActiveImage(image)}
           >
             <Image src={image} alt="Imagen referencial" />
