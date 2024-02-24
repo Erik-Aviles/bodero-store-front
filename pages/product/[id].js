@@ -1,15 +1,17 @@
 import { error, grey, greylight, primary, success } from "@/lib/colors";
-import Categories from "@/components/FilterOnlyCategories";
 import ProductImages from "@/components/ProductImages";
-import { CartContext } from "@/components/CartContext";
 import { mongooseConnect } from "@/lib/mongoose";
 import WhiteBox from "@/components/WhiteBox";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
-import Center from "@/components/Center";
 import styled from "styled-components";
-import { useContext } from "react";
 import Head from "next/head";
+import CategoriesComponent from "@/components/CategoriesComponent";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+
+const CenterDiv = styled.section`
+  ${CenterSecction}
+`;
 
 const ColWrapper = styled.div`
   display: grid;
@@ -21,7 +23,7 @@ const ColWrapper = styled.div`
   margin: 40px 0;
 `;
 const Title = styled.h2`
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   margin: 0 0 5px;
   color: ${primary};
@@ -39,6 +41,9 @@ const Row = styled.div`
     border-color: ${greylight};
     color: ${grey};
     line-height: 1.4rem;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 0 1.4rem;
   }
 `;
 
@@ -72,15 +77,14 @@ const Price = styled.span`
 `;
 
 export default function ProductPage({ product, categories }) {
-  const { addProduct } = useContext(CartContext);
   return (
     <>
       <Head>
         <title>B.D.R | {product.title}</title>
       </Head>
       <main>
-        <Categories categories={categories} />
-        <Center>
+        <CategoriesComponent categories={categories} />
+        <CenterDiv>
           <ColWrapper>
             <WhiteBox>
               <ProductImages images={product.images} />
@@ -89,16 +93,16 @@ export default function ProductPage({ product, categories }) {
               <InfoTitle>
                 <Title>{product.title.toUpperCase()}</Title>
                 <span>
-                  <strong>Ref:</strong>
+                  <strong>Código:</strong>
                   {product.code}
                 </span>
               </InfoTitle>
               <p>{product.description}</p>
               <Info>
                 <span style={{ color: success, fontSize: 20 }}>
-                  Precio venta:
+                  Precio Venta:
                 </span>
-                <Price>${product.priceVen}</Price>
+                <Price>${product.salePrice}</Price>
               </Info>
               <Info>
                 <span style={{ color: grey, fontSize: 16 }}>
@@ -110,7 +114,7 @@ export default function ProductPage({ product, categories }) {
               </Info>
             </Row>
           </ColWrapper>
-        </Center>
+        </CenterDiv>
       </main>
     </>
   );

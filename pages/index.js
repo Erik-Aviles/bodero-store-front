@@ -6,7 +6,7 @@ import Carousel from "@/components/Carousel";
 import { Product } from "@/models/Product";
 import Brands from "@/components/Brands";
 import Head from "next/head";
-import { dataCarousel } from "@/access/data";
+import { dataCarousel } from "@/resource/data";
 
 export default function HomePage({ newProducts, categories }) {
   return (

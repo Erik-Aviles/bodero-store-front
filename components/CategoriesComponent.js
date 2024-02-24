@@ -10,9 +10,10 @@ import { black, error, white } from "@/lib/colors";
 const DivContainert = styled.div`
   background-color: ${black};
   width: 100%;
+  height: auto;
   position: relative;
   box-shadow: none;
-
+  white-space: nowrap;
   select {
     padding-left: 20px;
     display: block;
@@ -27,7 +28,7 @@ const DivContainert = styled.div`
     outline: none;
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 767px) {
     font-size: 16px;
     box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
     select {

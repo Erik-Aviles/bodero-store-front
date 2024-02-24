@@ -28,6 +28,7 @@ const Box = styled.div`
   padding: 0 20px;
   max-width: 450px;
   height: fit-content;
+  box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
   ${(props) =>
     props.black &&
     css`
@@ -38,13 +39,15 @@ const Box = styled.div`
     props.white &&
     css`
       background-color: ${white};
-      box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
     `};
   h3 {
+    padding: 15px;
     margin-top: 16px;
     font-size: 1.6rem;
     line-height: 2.4rem;
     font-weight: normal;
+    background-color: ${white};
+    color: ${black};
   }
   p {
     line-height: 1.6rem;

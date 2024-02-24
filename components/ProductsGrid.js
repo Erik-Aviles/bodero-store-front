@@ -2,8 +2,8 @@ import styled from "styled-components";
 import ProductBox from "./ProductBox";
 
 const StyledProductsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   margin: 20px 0;
 `;

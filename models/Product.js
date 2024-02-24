@@ -1,32 +1,3 @@
-/* import mongoose from "mongoose";
-const { Schema, model, models } = mongoose;
-
-const ProductSchema = new Schema(
-  {
-    name: { type: String, required: true, trim: true },
-    code: { type: String, required: true },
-    price: { type: Number, required: true, trim: true },
-    category: { type: mongoose.Types.ObjectId, ref: "Category" },
-    quantity: { type: Number, required: true },
-    images: [{ type: String }],
-    properties: { type: Object },
-    description: {
-      type: String,
-      required: true,
-    },
-    checked: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
-);
-
-export const Product = models?.Product || model("Product", ProductSchema); */
-
 import mongoose from "mongoose";
 const { Schema, model, models } = mongoose;
 
@@ -42,19 +13,38 @@ const productSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    priceVen: {
+    codeEnterprise: {
+      type: String,
+      trim: true,
+    },
+    codeWeb: {
+      type: String,
+      trim: true,
+    },
+    price: {
       type: Number,
       required: true,
       trim: true,
     },
-    priceDis: {
+    tax: { type: Object },
+    profitability: {
       type: Number,
-      required: true,
       trim: true,
     },
-    priceOff: {
+    netPrice: {
       type: Number,
-      required: true,
+      trim: true,
+    },
+    salePrice: {
+      type: Number,
+      trim: true,
+    },
+    profit: {
+      type: Number,
+      trim: true,
+    },
+    offerPrice: {
+      type: Number,
       trim: true,
     },
     brand: {
@@ -62,19 +52,17 @@ const productSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    category: { type: String, required: true, ref: "Category" },
-    properties: { type: Object },
-    quantity: { type: Number, required: true },
-    location: { type: String, required: true, trim: true },
+    category: { type: String, ref: "Category" },
+    color: [{ type: Object }],
+    size: [{ type: Object }],
+    quantity: { type: Number },
+    location: { type: String, trim: true },
     description: { type: String, required: true },
-    images: [{ type: String, required: true }],
-    checked: {
+    descriptionAdditional: { type: String },
+    images: [{ type: String }],
+    stock: {
       type: Boolean,
       default: false,
-    },
-    sold: {
-      type: Number,
-      default: 0,
     },
   },
   {
@@ -82,7 +70,6 @@ const productSchema = new mongoose.Schema(
     versionKey: false,
   }
 );
-
 export const Product = models?.Product || model("Product", productSchema);
 
 // {

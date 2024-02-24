@@ -8,11 +8,11 @@ import Slider from "react-slick";
 const HorizontalSliderContainer = styled.div`
   width: 100%;
   position: relative;
-  margin-top: 60px;
+  margin-top: 30px;
+  margin-bottom: 60px;
   z-index: 10px;
-  @media screen and (max-width: 640px) {
-    margin-top: 5px;
-    margin-bottom: 50px;
+  @media screen and (min-width: 768px) {
+    margin-top: 80px;
   }
 `;
 
@@ -94,7 +94,6 @@ export default function SlinderHorizontal({ products }) {
     ],
     afterChange: (current) => {
       setProgress((100 / (products.length - slideToShow + 1)) * (current + 1));
-      console.log(slideToShow);
     },
   };
 

@@ -1,30 +1,29 @@
-import { HomeIcon } from "@/components/Icons";
 import * as React from "react";
 
 export const InfoData = [
   {
     name: "Quiénes somos",
     href: "/about-us",
-    icon: <HomeIcon />,
+    src: "/images/information/grupo.png",
     description: "Conoce nuestra historia y quienes somos",
   },
   {
     name: "Pedidos y entregas",
     href: "/delivery",
-    icon: <HomeIcon />,
+    src: "/images/information/lista-de-verificacion.png",
     description: "Conoce nuestro método de pedidos y entrega ",
   },
   {
-    name: "Como llegar?",
+    name: "Cómo llegar?",
     href: "/address",
-    icon: <HomeIcon />,
+    src: "/images/information/mapa.png",
     description: "Conoce la dirección en donde estamos ubicados",
   },
   {
     name: "Contáctenos",
     href: "/contact",
-    icon: <HomeIcon />,
-    description: "Tines una duda, ingresa aqui",
+    src: "/images/information/comunicar.png",
+    description: "Tienes una duda, ingresa aquí",
   },
 ];
 
@@ -44,6 +43,10 @@ export const dataCarousel = [
   {
     id: 4,
     imgUrl: "/images/slide/slinder4.jpg",
+  },
+  {
+    id: 5,
+    imgUrl: "/images/slide/slinder5.jpg",
   },
 ];
 

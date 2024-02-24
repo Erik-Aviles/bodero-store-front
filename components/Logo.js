@@ -4,9 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 const StaledLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  width: 300px;
   img {
     width: auto;
     height: auto;
@@ -20,7 +17,7 @@ const StaledLink = styled(Link)`
 export const LogoFull = ({ href }) => {
   return (
     <StaledLink href={href}>
-      <Image alt="Logo B.D.R" src="/logo.jpg" width={300} height={120} />
+      <Image alt="Logo B.D.R" src="/logo.jpg" width={200} height={20} />
     </StaledLink>
   );
 };
@@ -28,7 +25,7 @@ export const LogoFull = ({ href }) => {
 export const LogoLetters = ({ href }) => {
   return (
     <StaledLink href={href}>
-      <Image alt="Logo B.D.R" src="/logoLetras.jpg" width={300} height={60} />
+      <Image alt="Logo B.D.R" src="/logoLetras.jpg" width={200} height={60} />
     </StaledLink>
   );
 };

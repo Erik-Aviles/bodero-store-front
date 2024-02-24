@@ -109,7 +109,7 @@ export default function Header() {
 
             <StaledLink
               href={
-                "https://api.whatsapp.com/send/?phone=593996501072&text&type=phone_number&app_absent=1"
+                "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
               }
               target="_blank"
               rel="noopener noreferrer"

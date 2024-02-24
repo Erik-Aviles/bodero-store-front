@@ -46,18 +46,14 @@ export default function ProductsPage({ products, result }) {
   return (
     <>
       <Head>
-        <title>B.R.D | Busqueda</title>
-        <meta
-          name="description"
-          content="Repuestos Originales  en diferentes marcas que hacen la diferencia"
-        />
+        <title>B.R.D | Búsqueda</title>
       </Head>
       <main>
         <CenterSection>
           <Filter data={data} />
           <Center>
             {product?.length === 0 ? (
-              <h2>No Products</h2>
+              <h2>Sin registro</h2>
             ) : (
               <>
                 <Title>Todos los productos</Title>
@@ -70,7 +66,7 @@ export default function ProductsPage({ products, result }) {
             ) : (
               <ButtonContainer>
                 <Button black={1} outline={1} size="m" onClick={handleLoadmore}>
-                  Load more
+                  Cargar más
                 </Button>
               </ButtonContainer>
             )}

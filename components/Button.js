@@ -3,12 +3,15 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 export const ButtonStyle = css`
+  width: 45%;
+  height: 30px;
   border: 0;
-  padding: 5px 10px;
+  padding: 12px 10px;
   border-radius: 3px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   text-decoration: none;
   font-size: 0.6rem;

@@ -41,7 +41,7 @@ const BreadCrumb = styled.span`
 const Text = styled.span`
   color: ${grey};
   ${(props) =>
-    props.txMain &&
+    props.txmain &&
     css`
       color: ${secondary};
       font-size: 1rem;
@@ -96,21 +96,21 @@ export default function CategoriesPage({ categories, products, result }) {
       <main>
         <CategoriesComponent categories={categories} />
         <CenterDiv>
-          <seccion aria-label="breadcrumb">
-            <Sorted class="">
+          <section aria-label="breadcrumb">
+            <Sorted className="">
               <BreadCrumb>
                 <Text>Categoría</Text>
               </BreadCrumb>
               <BreadCrumb aria-current="page">
                 <Divider> / </Divider>
-                <Text txMain={1}>
+                <Text txmain={1}>
                   {resultadoFiltrado[0]?.name
                     ? resultadoFiltrado[0]?.name
                     : "Todas"}
                 </Text>
               </BreadCrumb>
             </Sorted>
-          </seccion>
+          </section>
           {product?.length === 0 ? (
             <TextH4>
               No se encontró productos en "{resultadoFiltrado[0]?.name}"

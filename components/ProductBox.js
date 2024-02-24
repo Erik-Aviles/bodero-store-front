@@ -1,18 +1,17 @@
 import styled, { css } from "styled-components";
-import { CartContext } from "./CartContext";
-import { useContext } from "react";
 import { error, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./ButtonLink";
+import { WhatsappIcon } from "./Icons";
 
 const ProductWrapper = styled.div`
-  width: 17rem;
+  width: 18rem;
   display: flex;
   flex-direction: column;
   min-width: 0;
   background-color: ${white};
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
-  margin: 10px auto;
+  margin: 8px auto;
   transition: transform 0.3s, box-shadow 0.3s;
   &:hover {
     transform: scale(1);
@@ -24,12 +23,12 @@ const WhiteBox = styled.img`
   height: 220px;
   border-radius: 0.25rem 0.25rem 0 0;
   object-position: 50%;
-  object-fit: cover;
+  object-fit: contain;
   ${"" /* cambiar si es necesario con cover */}
 `;
 
 const ProductInfoBox = styled.div`
-  padding: 0.7rem;
+  padding: 0.5rem;
 
   p {
     font-size: 0.8rem;
@@ -41,7 +40,7 @@ const ProductInfoBox = styled.div`
 `;
 
 const Title = styled.h5`
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: 0;
   margin-bottom: 0.75rem;
   overflow: hidden;
@@ -66,16 +65,15 @@ export default function ProductBox({
   _id,
   title,
   code,
-  priceVen,
-  priceDis,
+  salePrice,
   priceOff,
   brand,
+  color,
+  size,
   quantity,
-  location,
   description,
   images,
 }) {
-  const { addProduct } = useContext(CartContext);
   const url = "/product/" + _id;
   return (
     <ProductWrapper>
@@ -83,8 +81,8 @@ export default function ProductBox({
       <ProductInfoBox>
         <Title href={url}>{title.toUpperCase()}</Title>
         <Row>
-          <Price>${priceVen}</Price>
-          {quantity === 5 ? (
+          <Price>${salePrice}</Price>
+          {quantity === 0 ? (
             <span style={{ color: error }}>¡Agotado!</span>
           ) : (
             <span style={{ color: success }}>¡En stock!</span>
@@ -92,8 +90,18 @@ export default function ProductBox({
         </Row>
         <p>{description}</p>
         <Row>
-          <ButtonLink href={"/product/" + _id} primary={1}>
+          <ButtonLink href={"/product/" + _id} black={1} outline={1}>
             VER DETALLES
+          </ButtonLink>
+          <ButtonLink
+            href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto. Producto: ${title}, Código: ${code}&type=phone_number&app_absent=1`}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={"Realizar pedido por Whatsapp"}
+            secondary={1}
+          >
+            <WhatsappIcon height={25} width={25} />
+            PEDIR
           </ButtonLink>
         </Row>
       </ProductInfoBox>

@@ -1,6 +1,6 @@
 import React from "react";
 import { white, grey, primary, greylight, white2 } from "@/lib/colors";
-import { InfoData } from "@/access/data";
+import { InfoData } from "@/resource/data";
 import styled from "styled-components";
 import Link from "next/link";
 import Center from "./Center";
@@ -67,11 +67,11 @@ const ImagesInformationContainer = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: ${primary};
+  background-color: ${white};
   color: ${white};
   font-weight: 700;
   margin-right: 10px;
-
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
   @media screen and (max-width: 640px) {
     float: left;
     width: 60px;
@@ -90,7 +90,7 @@ const InformationFooter = () => {
             <ItemInformation key={`id${index}${item.name}`} title={item.name}>
               <StaledLink href={item.href}>
                 <ImagesInformationContainer>
-                  {item.icon}
+                  <img width={50} height={50} src={item.src} />
                 </ImagesInformationContainer>
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Center from "./Center";
 import Title from "./Title";
 import { BackgroundColor, black, primary, white } from "@/lib/colors";
-import { brands } from "@/access/data";
+import { brands } from "@/resource/data";
 import Image from "next/image";
 
 const Wrapper = styled.section`
@@ -41,9 +41,7 @@ const StyledCard = styled.article`
   border-radius: 5px;
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  img {
-    width: 50px;
-  }
+
   &:hover h3 {
     font-size: 2rem;
     font-weight: bold;
@@ -68,7 +66,13 @@ export default function Brands() {
           {brands?.map((brand) => (
             <StyledCard key={brand.name}>
               <BrandName>{brand.name.toUpperCase()}</BrandName>
-              <Image src={brand.src} alt={brand.name} width={50} height={50} />
+              <img
+                loazy={true}
+                src={brand.src}
+                alt={brand.name}
+                width={50}
+                height={50}
+              />
             </StyledCard>
           ))}
         </BrandsWrapper>

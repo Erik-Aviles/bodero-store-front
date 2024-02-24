@@ -1,4 +1,3 @@
-import { CartContextProvider } from "@/components/CartContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { createGlobalStyle } from "styled-components";
 import { DataProvider } from "@/context/DataContext";
@@ -53,12 +52,10 @@ export default function App({ Component, pageProps }) {
 
       <NotificationProvider>
         <DataProvider>
-          <CartContextProvider>
-            <GlobalStyles />
-            <Header />
-            <Component {...pageProps} />
-            <Footer />
-          </CartContextProvider>
+          <GlobalStyles />
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
         </DataProvider>
       </NotificationProvider>
     </>
