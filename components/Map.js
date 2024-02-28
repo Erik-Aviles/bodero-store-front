@@ -18,7 +18,7 @@ export default function Page() {
       style={containerStyle}
       mode="view"
       center="-1.037497,-79.474484"
-      zoom={18}
+      zoom={19}
     />
   );
 }

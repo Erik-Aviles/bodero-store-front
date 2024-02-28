@@ -97,7 +97,7 @@ export default function CategoriesPage({ categories, products, result }) {
         <CategoriesComponent categories={categories} />
         <CenterDiv>
           <section aria-label="breadcrumb">
-            <Sorted className="">
+            <Sorted>
               <BreadCrumb>
                 <Text>Categoría</Text>
               </BreadCrumb>

@@ -8,11 +8,19 @@ import styled from "styled-components";
 import Head from "next/head";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import CompatibilityModal from "@/components/CompatibilityModal";
+import BackButton from "@/components/BackButton";
+import { useRouter } from "next/router";
+import { useRef } from "react";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
+const WrapperBackButtom = styled.div`
+  margin: 8px 0 0;
+  display: block;
+`;
 const ColWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -20,7 +28,6 @@ const ColWrapper = styled.div`
     grid-template-columns: 1.2fr 0.8fr;
   }
   gap: 40px;
-  margin: 40px 0;
 `;
 const Title = styled.h2`
   font-size: 1.8rem;
@@ -77,14 +84,30 @@ const Price = styled.span`
 `;
 
 export default function ProductPage({ product, categories }) {
+  const router = useRouter();
+  const { id } = router.query;
+  const targetRef = useRef(null);
+
+  const handleGoBack = (e) => {
+    e.preventDefault();
+    if (targetRef.current) {
+      router.push(targetRef.current);
+      targetRef.current = null; // Restablecer la ruta previa después de retroceder
+    } else {
+      router.back();
+    }
+  };
   return (
     <>
       <Head>
-        <title>B.D.R | {product.title}</title>
+        <title>B.D.R | {product.title.toUpperCase()}</title>
       </Head>
       <main>
         <CategoriesComponent categories={categories} />
         <CenterDiv>
+          <WrapperBackButtom>
+            <BackButton onClick={handleGoBack} />
+          </WrapperBackButtom>
           <ColWrapper>
             <WhiteBox>
               <ProductImages images={product.images} />
@@ -112,6 +135,7 @@ export default function ProductPage({ product, categories }) {
                   <strong>{product.quantity}</strong>
                 </span>
               </Info>
+              <CompatibilityModal product={product} />
             </Row>
           </ColWrapper>
         </CenterDiv>

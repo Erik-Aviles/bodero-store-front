@@ -2,6 +2,9 @@ import styled, { css } from "styled-components";
 import { error, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./ButtonLink";
 import { WhatsappIcon } from "./Icons";
+import Button from "./Button";
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -23,7 +26,7 @@ const WhiteBox = styled.img`
   height: 220px;
   border-radius: 0.25rem 0.25rem 0 0;
   object-position: 50%;
-  object-fit: contain;
+  object-fit: cover;
   ${"" /* cambiar si es necesario con cover */}
 `;
 
@@ -61,40 +64,59 @@ const Price = styled.div`
   font-weight: 600;
 `;
 
-export default function ProductBox({
-  _id,
-  title,
-  code,
-  salePrice,
-  priceOff,
-  brand,
-  color,
-  size,
-  quantity,
-  description,
-  images,
-}) {
-  const url = "/product/" + _id;
+export default function ProductBox({ ...product }) {
+  const url = "/product/" + product?._id;
+  const router = useRouter();
+  const targetRef = useRef(null);
+
+  useEffect(() => {
+    const targetDiv = document.getElementById("targetDiv");
+    if (targetDiv) {
+      window.scrollTo({
+        top: targetDiv.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  }, [targetRef]);
+
+  const onProductClick = (productId) => {
+    targetRef.current = router.asPath;
+    router.push(`/product/${productId}`);
+  };
+
   return (
     <ProductWrapper>
-      <WhiteBox src={images?.[0]} alt={title} title={title} />
+      <WhiteBox
+        src={product?.images?.[0]}
+        alt={product?.title}
+        title={product?.title}
+      />
       <ProductInfoBox>
-        <Title href={url}>{title.toUpperCase()}</Title>
+        <Title ref={targetRef} id="targetDiv" href={url}>
+          {product?.title?.toUpperCase()}
+        </Title>
         <Row>
-          <Price>${salePrice}</Price>
-          {quantity === 0 ? (
+          <Price>${product?.salePrice}</Price>
+          {product?.quantity === 0 ? (
             <span style={{ color: error }}>¡Agotado!</span>
           ) : (
             <span style={{ color: success }}>¡En stock!</span>
           )}
         </Row>
-        <p>{description}</p>
+        <p>{product?.description}</p>
         <Row>
-          <ButtonLink href={"/product/" + _id} black={1} outline={1}>
+          {/* <Button href={"/product/" + _id} black={1} outline={1}> */}
+          <Button
+            onClick={() => onProductClick(product?._id)}
+            black={1}
+            outline={1}
+          >
             VER DETALLES
-          </ButtonLink>
+          </Button>
           <ButtonLink
-            href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto. Producto: ${title}, Código: ${code}&type=phone_number&app_absent=1`}
+            href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto. Producto: ${product?.title?.toUpperCase()}, Código: ${
+              product?.code
+            }&type=phone_number&app_absent=1`}
             target="_blank"
             rel="noopener noreferrer"
             title={"Realizar pedido por Whatsapp"}

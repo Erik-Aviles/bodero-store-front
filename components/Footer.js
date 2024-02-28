@@ -15,14 +15,6 @@ const WrapperFooter = styled.footer`
   p {
     margin: 0;
   }
-  a {
-    text-decoration: none;
-    color: ${white};
-    padding: 0 10px;
-    &:hover {
-      color: ${success};
-    }
-  }
 `;
 const WrapperFooterSpan = styled.span`
   text-align: center;
@@ -34,6 +26,7 @@ const WrapperFooterSpan = styled.span`
 const ListSocialMedia = styled.div`
   display: flex;
   align-items: center;
+  gap: 12px;
 `;
 
 export default function Footer() {

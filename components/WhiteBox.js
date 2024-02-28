@@ -5,9 +5,9 @@ const WhiteBox = styled.div`
   heigth: 500px;
   background-color: ${white};
   border-radius: 10px;
-  padding: 20px 20px 20px 0;
-  @media screen and (max-width: 768px) {
-    padding: 20px 0;
+  padding: 0 20px;
+  @media screen and (min-width: 768px) {
+    padding: 0 20px 20px 0;
   }
 `;
 

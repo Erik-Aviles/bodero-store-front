@@ -1,9 +1,12 @@
+import { greylight, success } from "@/lib/colors";
 import { useState } from "react";
 import styled from "styled-components";
 
 const BigImageWrapper = styled.div`
   display: flex;
   justify-content: center;
+  border: 2px solid ${greylight};
+  border-radius: 5px;
 `;
 const BigImage = styled.img`
   max-width: 100%;
@@ -11,29 +14,27 @@ const BigImage = styled.img`
 `;
 const Image = styled.img`
   width: 100px;
+  border-radius: 5px;
 `;
 
 const ImageButtons = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 5px;
   margin-top: 10px;
 `;
 
 const ImageButton = styled.div`
   width: fit-content;
-  heigth: fit-content;
-  border: 2px solid #ccc;
-  ${(props) =>
-    props.$actived
-      ? `border-color: #ccc;
-      `
-      : `border-color: transparent;
-      `}
-  heigth: auto;
-  padding: 2px;
+  border: 1px solid ${greylight};
   cursor: pointer;
   border-radius: 5px;
+  ${(props) =>
+    props.$actived
+      ? `border-color: ${success};
+      `
+      : `border-color: ${greylight};
+      `}
 `;
 
 export default function ProductImages({ images }) {
@@ -51,7 +52,7 @@ export default function ProductImages({ images }) {
         {images.map((image) => (
           <ImageButton
             key={image}
-            actived={image === activeImage}
+            $actived={image === activeImage}
             onClick={() => setActiveImage(image)}
           >
             <Image src={image} alt="Imagen referencial" />

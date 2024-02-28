@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import ProductBox from "./ProductBox";
+import { useRouter } from "next/router";
+import { useRef } from "react";
 
 const StyledProductsGrid = styled.div`
   display: flex;

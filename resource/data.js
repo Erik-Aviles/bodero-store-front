@@ -89,3 +89,30 @@ export const brands = [
     src: "/images/brands/Ducati-Logo.png",
   },
 ];
+export const compatibilidad = [
+  {
+    id: "1",
+    name: "Daytona",
+    modelo: "aaaa",
+  },
+  {
+    id: "2",
+    name: "fACTORY",
+    modelo: "FFFFFg",
+  },
+  {
+    id: "3",
+    name: "Suzuki",
+    modelo: "HHH",
+  },
+  {
+    id: "4",
+    name: "IGM",
+    modelo: "JJJJJ",
+  },
+  {
+    id: "5",
+    name: "KTM",
+    modelo: "JOOOOOOO",
+  },
+];

@@ -1,6 +1,24 @@
 import { white } from "@/lib/colors";
 import * as React from "react";
 
+export const BackIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    width="3.5em"
+    height="3.5em"
+    {...props}
+  >
+    <path
+      stroke="#ff0810"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="m15 7-5 5 5 5"
+    />
+  </svg>
+);
 export const HamburguerIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
