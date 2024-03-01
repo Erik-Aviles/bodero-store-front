@@ -29,7 +29,7 @@ const Box = styled.div`
   padding: 20px;
   height: fit-content;
   ${(props) =>
-    props.black &&
+    props.deliverblack &&
     css`
       background-color: ${black};
       color: ${white};

@@ -5,7 +5,7 @@ import styled from "styled-components";
 const BigImageWrapper = styled.div`
   display: flex;
   justify-content: center;
-  border: 2px solid ${greylight};
+  border: 1px solid ${greylight};
   border-radius: 5px;
 `;
 const BigImage = styled.img`
@@ -13,13 +13,13 @@ const BigImage = styled.img`
   height: auto;
 `;
 const Image = styled.img`
-  width: 100px;
+  width: 100%;
   border-radius: 5px;
 `;
 
 const ImageButtons = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   gap: 5px;
   margin-top: 10px;
 `;
@@ -42,11 +42,7 @@ export default function ProductImages({ images }) {
   return (
     <>
       <BigImageWrapper>
-        <BigImage
-          src={activeImage}
-          alt="Imagen referencial"
-          title="Ver imagen en grande"
-        />
+        <BigImage src={activeImage} alt="Producto" />
       </BigImageWrapper>
       <ImageButtons>
         {images.map((image) => (
@@ -55,7 +51,7 @@ export default function ProductImages({ images }) {
             $actived={image === activeImage}
             onClick={() => setActiveImage(image)}
           >
-            <Image src={image} alt="Imagen referencial" />
+            <Image src={image} alt="Producto" />
           </ImageButton>
         ))}
       </ImageButtons>

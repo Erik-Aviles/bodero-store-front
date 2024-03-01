@@ -30,7 +30,7 @@ const Box = styled.div`
   height: fit-content;
   box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
   ${(props) =>
-    props.black &&
+    props.boxblack &&
     css`
       background-color: ${black};
       color: ${white};
@@ -89,7 +89,7 @@ export default function ContactPage({ categories }) {
         <CenterDiv>
           <Title>Contáctenos</Title>
           <Wrapper>
-            <Box black={1}>
+            <Box boxblack={1}>
               <h3>
                 Podemos asesorarte en <br />
                 <TextStrong>todos tus pedidos! </TextStrong>

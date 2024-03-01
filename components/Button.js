@@ -28,7 +28,7 @@ export const ButtonStyle = css`
     `};
   ${(props) =>
     props.white &&
-    !props.outline &&
+    !props.$outline &&
     css`
       background-color: ${white};
       color: ${black};
@@ -52,7 +52,7 @@ export const ButtonStyle = css`
     `};
   ${(props) =>
     props.white &&
-    props.outline &&
+    props.$outline &&
     css`
       background-color: transparent;
       color: ${white};
@@ -65,7 +65,7 @@ export const ButtonStyle = css`
     `};
   ${(props) =>
     props.primary &&
-    !props.outline &&
+    !props.$outline &&
     css`
       background-color: ${primary};
       color: ${white};
@@ -78,7 +78,7 @@ export const ButtonStyle = css`
     `};
   ${(props) =>
     props.primary &&
-    props.outline &&
+    props.$outline &&
     css`
       background-color: transparent;
       color: ${primary};
@@ -91,7 +91,7 @@ export const ButtonStyle = css`
     `};
   ${(props) =>
     props.secondary &&
-    !props.outline &&
+    !props.$outline &&
     css`
       background-color: ${secondary};
       color: ${white};
@@ -99,7 +99,7 @@ export const ButtonStyle = css`
     `};
   ${(props) =>
     props.secondary &&
-    props.outline &&
+    props.$outline &&
     css`
       background-color: transparent;
       color: ${secondary};
@@ -111,8 +111,8 @@ export const ButtonStyle = css`
       }
     `};
   ${(props) =>
-    props.black &&
-    !props.outline &&
+    props.$black &&
+    !props.$outline &&
     css`
       background-color: ${black};
       color: ${white};
@@ -124,8 +124,8 @@ export const ButtonStyle = css`
       }
     `};
   ${(props) =>
-    props.black &&
-    props.outline &&
+    props.$black &&
+    props.$outline &&
     css`
       background-color: transparent;
       color: ${black};

@@ -92,27 +92,27 @@ export const brands = [
 export const compatibilidad = [
   {
     id: "1",
-    name: "Daytona",
-    modelo: "aaaa",
+    title: "Daytona",
+    model: "aaaa",
   },
   {
     id: "2",
-    name: "fACTORY",
-    modelo: "FFFFFg",
+    title: "fACTORY",
+    model: "FFFFFg",
   },
   {
     id: "3",
-    name: "Suzuki",
-    modelo: "HHH",
+    title: "Suzuki",
+    model: "HHHhh",
   },
   {
     id: "4",
-    name: "IGM",
-    modelo: "JJJJJ",
+    title: "IGM",
+    model: "JJJJJ",
   },
   {
     id: "5",
-    name: "KTM",
-    modelo: "JOOOOOOO",
+    title: "KTM",
+    model: "dddddO",
   },
 ];

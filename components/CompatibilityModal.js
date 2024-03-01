@@ -1,10 +1,17 @@
+import {
+  black,
+  blacklight,
+  error,
+  grey,
+  greylight,
+  success,
+  white,
+} from "@/lib/colors";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { black, grey, success, white } from "@/lib/colors";
 
-const StyledDiv = styled.div`
-  height: 80vh;
-`;
+const StyledDiv = styled.div``;
+
 const WrapperButton = styled.section`
   margin: 20px 0;
 `;
@@ -31,7 +38,6 @@ const ModalContent = styled.div`
   border-radius: 0.5rem;
   background-color: #fff;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  width: 90vw;
   max-width: 40rem;
 `;
 
@@ -41,7 +47,8 @@ const ModalHeader = styled.div`
 `;
 
 const ModalTitle = styled.h3`
-  font-size: 1.25rem;
+  margin: 0;
+  font-size: 1rem;
   font-weight: 600;
   span {
     color: ${success};
@@ -49,14 +56,30 @@ const ModalTitle = styled.h3`
   }
 `;
 
-const ModalBody = styled.article`
-  padding: 1.5rem;
-  p {
-    color: ${black};
-    span {
-      color: ${grey};
-    }
-  }
+const ModalBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1rem;
+  font-size: 0.8rem;
+`;
+const ModalArticle = styled.article`
+  padding: 0.5rem;
+  margin: 0;
+  border: 1px solid ${greylight};
+  border-radius: 0.5rem;
+`;
+const ModalTextCompatibily = styled.p`
+  margin: 0;
+  color: ${grey};
+`;
+const ModalListCompatibily = styled.span`
+  color: ${greylight};
+  margin: 0;
+  font-size: 0.7rem;
+  word-break: break-all;
+  display: flex;
+  flex-direction: column;
 `;
 
 const ModalFooter = styled.div`
@@ -68,10 +91,10 @@ const ModalFooter = styled.div`
 `;
 
 const ModalButton = styled.button`
-  border: 1px solid ${(props) => (props.primary ? "#3182ce" : "#d2d6dc")};
-  background-color: ${(props) => (props.primary ? "#3182ce" : "#fff")};
-  color: ${(props) => (props.primary ? "#fff" : "#4a5568")};
-  border-radius: 0.375rem;
+  border: 1px solid ${(props) => (props.primary ? `${error}` : `${greylight}`)};
+  background-color: ${(props) => (props.primary ? `${error}` : `${white}`)};
+  color: ${(props) => (props.primary ? `${white}` : `${blacklight}`)};
+  border-radius: 0.275rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
@@ -108,19 +131,28 @@ const CompatibilityModal = ({ product }) => {
                   </ModalTitle>
                 </ModalHeader>
                 <ModalBody>
-                  <p>
-                    This is some
-                    <br /> <span>scrolling</span>
-                  </p>
-                  <p>
-                    This is some: <span>scrolling</span>
-                  </p>
-                  <p>
-                    This is some= <span>scrolling</span>
-                  </p>
-                  <p>
-                    This is some <span>scrolling</span>
-                  </p>
+                  {product.compatibility.length > 0 &&
+                    product.compatibility.map((item, index) => (
+                      <div key={index + item.title}>
+                        <ModalArticle>
+                          <ModalTextCompatibily>
+                            {item.title.toUpperCase()}
+                          </ModalTextCompatibily>
+
+                          {Array.isArray(item.model) ? (
+                            item.model.map((model, index) => (
+                              <ModalListCompatibily key={index + model}>
+                                {model}
+                              </ModalListCompatibily>
+                            ))
+                          ) : (
+                            <ModalListCompatibily>
+                              {item.model.toUpperCase()}
+                            </ModalListCompatibily>
+                          )}
+                        </ModalArticle>
+                      </div>
+                    ))}
                 </ModalBody>
                 <ModalFooter>
                   <ModalButton primary={1} onClick={toggleModal}>

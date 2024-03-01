@@ -31,8 +31,10 @@ const WhiteBox = styled.img`
 `;
 
 const ProductInfoBox = styled.div`
-  padding: 0.5rem;
-
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   p {
     font-size: 0.8rem;
     line-height: 1.2rem;
@@ -45,7 +47,7 @@ const ProductInfoBox = styled.div`
 const Title = styled.h5`
   font-size: 1rem;
   margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin: 0;
   overflow: hidden;
 `;
 
@@ -88,8 +90,8 @@ export default function ProductBox({ ...product }) {
     <ProductWrapper>
       <WhiteBox
         src={product?.images?.[0]}
-        alt={product?.title}
-        title={product?.title}
+        alt={product?.title.toUpperCase()}
+        title={product?.title.toUpperCase()}
       />
       <ProductInfoBox>
         <Title ref={targetRef} id="targetDiv" href={url}>
@@ -105,11 +107,10 @@ export default function ProductBox({ ...product }) {
         </Row>
         <p>{product?.description}</p>
         <Row>
-          {/* <Button href={"/product/" + _id} black={1} outline={1}> */}
           <Button
             onClick={() => onProductClick(product?._id)}
-            black={1}
-            outline={1}
+            $black={1}
+            $outline={1}
           >
             VER DETALLES
           </Button>

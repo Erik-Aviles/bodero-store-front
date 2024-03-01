@@ -18,7 +18,7 @@ const CenterDiv = styled.section`
 `;
 
 const WrapperBackButtom = styled.div`
-  margin: 8px 0 0;
+  margin: 8px 0;
   display: block;
 `;
 const ColWrapper = styled.div`
@@ -40,20 +40,21 @@ const Row = styled.div`
   display: flex;
   flex-direction: column;
   aling-items: center;
-  p {
-    margin: 0;
-    padding: 0.8rem 0;
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-color: ${greylight};
-    color: ${grey};
-    line-height: 1.4rem;
-  }
+
   @media screen and (max-width: 480px) {
     padding: 0 1.4rem;
   }
 `;
 
+const InfoText = styled.p`
+  margin: 0;
+  padding: 0.8rem 0;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: ${greylight};
+  color: ${grey};
+  line-height: 1.4rem;
+`;
 const InfoTitle = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,14 +86,13 @@ const Price = styled.span`
 
 export default function ProductPage({ product, categories }) {
   const router = useRouter();
-  const { id } = router.query;
   const targetRef = useRef(null);
 
   const handleGoBack = (e) => {
     e.preventDefault();
     if (targetRef.current) {
       router.push(targetRef.current);
-      targetRef.current = null; // Restablecer la ruta previa después de retroceder
+      targetRef.current = null;
     } else {
       router.back();
     }
@@ -120,7 +120,7 @@ export default function ProductPage({ product, categories }) {
                   {product.code}
                 </span>
               </InfoTitle>
-              <p>{product.description}</p>
+              <InfoText>{product.description}</InfoText>
               <Info>
                 <span style={{ color: success, fontSize: 20 }}>
                   Precio Venta:

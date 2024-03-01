@@ -21,7 +21,7 @@ const ContainerArrow = styled.div`
     ${(props) =>
       props.$anex &&
       css`
-        right: 8px;
+        right: 60px;
       `};
     ${(props) =>
       props.$apre &&
@@ -31,6 +31,7 @@ const ContainerArrow = styled.div`
   }
 `;
 const ArrowBox = styled.div`
+  position: absolute;
   background-color: ${black};
   color: ${white};
   font-size: large;
@@ -40,6 +41,7 @@ const ArrowBox = styled.div`
   display: grid;
   place-items: center;
   cursor: pointer;
+  z-index: 10;
   &:hover {
     color: ${primary};
   }

@@ -8,12 +8,8 @@ import Slider from "react-slick";
 const HorizontalSliderContainer = styled.div`
   width: 100%;
   position: relative;
-  margin-top: 30px;
-  margin-bottom: 60px;
+  margin: 30px 0;
   z-index: 10px;
-  @media screen and (min-width: 768px) {
-    margin-top: 80px;
-  }
 `;
 
 const SliderContainer = styled.div`

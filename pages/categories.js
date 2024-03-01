@@ -123,7 +123,7 @@ export default function CategoriesPage({ categories, products, result }) {
             ""
           ) : (
             <ButtonContainer>
-              <Button black={1} outline={1} size="m" onClick={handleLoadmore}>
+              <Button $black={1} $outline={1} size="m" onClick={handleLoadmore}>
                 Load more
               </Button>
             </ButtonContainer>
