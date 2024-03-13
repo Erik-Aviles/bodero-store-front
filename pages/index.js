@@ -7,6 +7,7 @@ import { Product } from "@/models/Product";
 import Brands from "@/components/Brands";
 import Head from "next/head";
 import { dataCarousel } from "@/resource/data";
+import Testimonios from "@/components/Testimonios";
 
 export default function HomePage({ newProducts, categories }) {
   return (
@@ -19,6 +20,7 @@ export default function HomePage({ newProducts, categories }) {
         <Carousel data={dataCarousel} />
         <NewProducts products={newProducts} />
         <Brands />
+        <Testimonios />
       </main>
     </>
   );

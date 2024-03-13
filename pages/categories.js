@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import ProductsGrid from "@/components/ProductsGrid";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -41,7 +41,7 @@ const BreadCrumb = styled.span`
 const Text = styled.span`
   color: ${grey};
   ${(props) =>
-    props.txmain &&
+    props.$big &&
     css`
       color: ${secondary};
       font-size: 1rem;
@@ -103,7 +103,7 @@ export default function CategoriesPage({ categories, products, result }) {
               </BreadCrumb>
               <BreadCrumb aria-current="page">
                 <Divider> / </Divider>
-                <Text txmain={1}>
+                <Text $big={1}>
                   {resultadoFiltrado[0]?.name
                     ? resultadoFiltrado[0]?.name
                     : "Todas"}

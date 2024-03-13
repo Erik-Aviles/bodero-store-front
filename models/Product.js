@@ -57,6 +57,7 @@ const productSchema = new mongoose.Schema(
     size: [{ type: Object }],
     quantity: { type: Number },
     location: { type: String, trim: true },
+    compatibility: [{ type: Object }],
     description: { type: String, required: true },
     descriptionAdditional: { type: String },
     images: [{ type: String }],
@@ -71,47 +72,3 @@ const productSchema = new mongoose.Schema(
   }
 );
 export const Product = models?.Product || model("Product", productSchema);
-
-// {
-//   title: {
-//     type: String,
-//     required: true,
-//     trim: true,
-//   },
-//   code: {
-//     type: String,
-//     required: true,
-//     trim: true,
-//   },
-//   price: {
-//     type: Number,
-//     required: true,
-//     trim: true,
-//   },
-//   description: {
-//     type: String,
-//     required: true,
-//   },
-//   category: { type: String, required: true },
-//   properties: { type: Object },
-//   images: {
-//     type: Array,
-//     required: true,
-//   },
-//   checked: {
-//     type: Boolean,
-//     default: false,
-//   },
-//   quantity: {
-//     type: Number,
-//     default: 0,
-//   },
-//   sold: {
-//     type: Number,
-//     default: 0,
-//   },
-// },
-// {
-//   timestamps: true,
-//   versionKey: false,
-// }

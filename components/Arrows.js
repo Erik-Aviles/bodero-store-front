@@ -17,7 +17,7 @@ const ContainerArrow = styled.div`
       right: 80px;
     `};
   @media screen and (max-width: 640px) {
-    top: 405px;
+    top: 435px;
     ${(props) =>
       props.$anex &&
       css`
@@ -31,7 +31,6 @@ const ContainerArrow = styled.div`
   }
 `;
 const ArrowBox = styled.div`
-  position: absolute;
   background-color: ${black};
   color: ${white};
   font-size: large;
@@ -41,9 +40,12 @@ const ArrowBox = styled.div`
   display: grid;
   place-items: center;
   cursor: pointer;
-  z-index: 10;
   &:hover {
     color: ${primary};
+  }
+  @media screen and (max-width: 640px) {
+    position: absolute;
+    z-index: 10;
   }
 `;
 

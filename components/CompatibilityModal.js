@@ -70,7 +70,7 @@ const ModalArticle = styled.article`
   border-radius: 0.5rem;
 `;
 const ModalTextCompatibily = styled.p`
-  margin: 0;
+  margin: 0 0 4px;
   color: ${grey};
 `;
 const ModalListCompatibily = styled.span`

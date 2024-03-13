@@ -7,8 +7,7 @@ import Slider from "react-slick";
 
 const HorizontalSliderContainer = styled.div`
   width: 100%;
-  position: relative;
-  margin: 30px 0;
+  margin: 30px 0 60px;
   z-index: 10px;
 `;
 

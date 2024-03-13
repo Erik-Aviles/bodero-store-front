@@ -7,7 +7,6 @@ const StaledLink = styled(Link)`
   img {
     width: auto;
     height: auto;
-    object-fit: contain;
     @media screen and (max-width: 768px) {
       width: 200px;
     }

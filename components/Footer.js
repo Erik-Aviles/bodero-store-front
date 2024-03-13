@@ -1,8 +1,9 @@
-import InformationFooter from "./InformationFooter";
-import { black, grey, success, white } from "@/lib/colors";
 import styled from "styled-components";
+import InformationFooter from "./InformationFooter";
+import { grey, white } from "@/lib/colors";
 import { LogoLetters } from "./Logo";
 import Link from "next/link";
+import { InstagramIcon, FacebookIcon, TiktokIcon } from "./Icons";
 
 const WrapperFooter = styled.footer`
   display: flex;
@@ -17,10 +18,18 @@ const WrapperFooter = styled.footer`
   }
 `;
 const WrapperFooterSpan = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 12px;
   text-align: center;
   font: small-caption;
+  img {
+    aspect-ratio: 300/100;
+  }
   @media screen and (max-width: 320px) {
-    font-size: 14px;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 12px;
   }
 `;
 const ListSocialMedia = styled.div`
@@ -50,8 +59,8 @@ export default function Footer() {
             <img
               src="/svg/instagram.svg"
               alt="Repo Instagram"
-              width={21}
-              height={21}
+              width={17}
+              height={17}
             />
           </Link>
           <Link
@@ -60,12 +69,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             title={"FaceBook"}
           >
-            <img
-              src={"/svg/facebook.svg"}
-              alt="Repo FaceBook"
-              width={21}
-              height={21}
-            />
+            <FacebookIcon />
           </Link>
           <Link
             href={
@@ -75,17 +79,12 @@ export default function Footer() {
             rel="noopener noreferrer"
             title={"TikTok"}
           >
-            <img
-              src={"/svg/tiktok.svg"}
-              alt="Repo TikTok"
-              width={21}
-              height={21}
-            />
+            <TiktokIcon />
           </Link>
         </ListSocialMedia>
         <WrapperFooterSpan>
-          © 2024 - Bodero Racing Development <br />
-          TODOS LOS DERECHOS RESERVADOS
+          © 2024 - Diseñado y Desarrollado por:
+          <img width={100} src="/images/betimes/betimesCompany.png" />
         </WrapperFooterSpan>
       </WrapperFooter>
     </>

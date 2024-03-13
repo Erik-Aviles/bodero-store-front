@@ -1,3 +1,4 @@
+import { FacebookIcon, InstagramIcon } from "@/components/Icons";
 import * as React from "react";
 
 export const InfoData = [
@@ -89,30 +90,50 @@ export const brands = [
     src: "/images/brands/Ducati-Logo.png",
   },
 ];
-export const compatibilidad = [
+
+export const testimonials = [
   {
-    id: "1",
-    title: "Daytona",
-    model: "aaaa",
+    id: crypto.randomUUID(),
+    avatar: "images/testimonials/avatar1.png",
+    name: "Carlos Pereira",
+    testimony:
+      "¡Increíble experiencia con esta tienda en línea de repuestos para  motos! Necesitaba una pieza específica para mi motocicleta y la encontré aquí a un precio razonable. Además, el servicio al cliente fue excepcional, me ayudaron a elegir la pieza correcta y me dieron consejos útiles para la instalación. Definitivamente volveré a comprar aquí.",
+    socialmedia: [
+      { img: <InstagramIcon />, name: "Imstagram" },
+      { img: <FacebookIcon />, name: "FaceBoook" },
+    ],
   },
   {
-    id: "2",
-    title: "fACTORY",
-    model: "FFFFFg",
+    id: crypto.randomUUID(),
+    avatar: "images/testimonials/avatar2.jpg",
+    name: "Margarito Villares",
+    testimony:
+      "¡No puedo estar más feliz con el servicio de esta tienda en línea! Ordené varios repuestos para mi motocicleta y llegaron en tiempo  récord, incluso más rápido de lo que esperaba. Los repuestos eran originales y de alta calidad, lo que me dio tranquilidad. Además, cuando tuve una pregunta sobre la instalación, su equipo de soporte técnico fue extremadamente útil y paciente. Recomiendo encarecidamente esta tienda a todos los amantes de las motos.",
+    socialmedia: [
+      { img: <InstagramIcon />, name: "Imstagram" },
+      { img: <FacebookIcon />, name: "FaceBoook" },
+    ],
   },
   {
-    id: "3",
-    title: "Suzuki",
-    model: "HHHhh",
+    id: crypto.randomUUID(),
+    avatar: "images/testimonials/avatar3.jpg",
+    name: "Antonio Anzules",
+    testimony:
+      "Después de buscar en varios sitios en línea, encontré esta tienda de repuestos para motos y estoy muy contento de haberlo hecho. No solo tenían todas las piezas que necesitaba, sino que el proceso de compra fue fácil y rápido. Cuando recibí los repuestos, estaban muy bien empaquetados y en perfecto estado. Además, su atención al cliente fue excepcional; espondieron rápidamente a mis preguntas y me brindaron asesoramiento experto sobre la instalación. ¡Definitivamente mi tienda de referencia para futuras compras!",
+    socialmedia: [
+      { img: <InstagramIcon />, name: "Imstagram" },
+      { img: <FacebookIcon />, name: "FaceBoook" },
+    ],
   },
   {
-    id: "4",
-    title: "IGM",
-    model: "JJJJJ",
-  },
-  {
-    id: "5",
-    title: "KTM",
-    model: "dddddO",
+    id: crypto.randomUUID(),
+    avatar: "images/testimonials/avatar4.jpg",
+    name: "Felix Arboleda",
+    testimony:
+      "Personalmente, he tenido excelentes experiencias al obtener orientación de expertos en Bodero Racing Development. No solo me ayudaron a elegir las piezas correctas, sino que también me dieron valiosos consejos sobre su instalación",
+    socialmedia: [
+      { img: <InstagramIcon />, name: "Imstagram" },
+      { img: <FacebookIcon />, name: "FaceBoook" },
+    ],
   },
 ];

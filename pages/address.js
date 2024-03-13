@@ -7,7 +7,7 @@ import Title from "@/components/Title";
 import styled from "styled-components";
 import Map from "@/components/Map";
 import Head from "next/head";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
 
 const CenterDiv = styled.section`
   ${CenterSecction}

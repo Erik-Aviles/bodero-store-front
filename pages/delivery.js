@@ -1,5 +1,5 @@
 import React from "react";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
 import styled, { css } from "styled-components";
@@ -18,9 +18,7 @@ const Wrapper = styled.div`
   gap: 20px;
   margin: 40px 0 80px;
   @media screen and (max-width: 768px) {
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 20px;
+    margin: 0 20px 20px;
   }
 `;
 const Box = styled.div`
@@ -29,13 +27,13 @@ const Box = styled.div`
   padding: 20px;
   height: fit-content;
   ${(props) =>
-    props.deliverblack &&
+    props.boxblack &&
     css`
       background-color: ${black};
       color: ${white};
     `};
   ${(props) =>
-    props.white &&
+    props.boxwhite &&
     css`
       background-color: ${white};
       box-shadow: 1px 4px 20px rgb(0 0 0 / 50%);
@@ -70,29 +68,29 @@ export default function DeliveryPage({ categories }) {
         <CenterDiv>
           <Title>Información</Title>
           <Wrapper>
-            <Box white={1}>
+            <Box boxwhite={1}>
               <h3>¿Cómo Comprar?</h3>
               <p>Para realizar tus compras vía web, solo sigue estos pasos:</p>
-              <span>* Ingresa a www.boderoracing.com</span>
-              <span>* Escoge el producto que deseas comprar.</span>
+              <span>- Ingresa a www.boderoracing.com</span>
+              <span>- Escoge el producto que deseas comprar.</span>
               <span>
-                * Presiona el icono de WhatsApp. Nos eviará un chat con la
+                - Presiona el icono de WhatsApp. Nos eviará un chat con la
                 información del producto y tendrá atención personalizada.
               </span>
               <span>
-                * Especificar la forma de envío (entrega a domicilio o recogida
+                - Especificar la forma de envío (entrega a domicilio o recogida
                 en el local)
               </span>
-              <span>* Especificar el método de pago</span>
+              <span>- Especificar el método de pago</span>
             </Box>
-            <Box white={1}>
+            <Box boxwhite={1}>
               <h3>Formas de pago aceptadas</h3>
               <p>
-                En Boderoracing.com, nos complace ofrecerte diversas opciones de
-                pago para que elijas la que mejor se adapte a tus necesidades:
+                En Boderoracing.com, nos complace ofrecerte opciones de pago
+                para que elijas la que mejor se adapte a tus necesidades:
               </p>
               <p>
-                Transferencia bancaria:{" "}
+                Transferencia bancaria:
                 <span>
                   Realiza tu pago de forma segura y conveniente mediante
                   transferencia bancaria. Te proporcionaremos todos los detalles
@@ -115,7 +113,7 @@ export default function DeliveryPage({ categories }) {
                 necesitas asistencia adicional durante el proceso de compra.
               </p>
             </Box>{" "}
-            <Box white={1}>
+            <Box boxwhite={1}>
               <h3>Tiempos de Entrega</h3>
               <p>
                 Utilizamos los servicios de Servientrega o transporte público

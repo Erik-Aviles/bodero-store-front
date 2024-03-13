@@ -1,17 +1,16 @@
-import { error, grey, greylight, primary, success } from "@/lib/colors";
-import ProductImages from "@/components/ProductImages";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { mongooseConnect } from "@/lib/mongoose";
+import { grey, greylight, primary, success } from "@/lib/colors";
+import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
+import ProductImages from "@/components/ProductImages";
 import WhiteBox from "@/components/WhiteBox";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
 import styled from "styled-components";
-import Head from "next/head";
 import CategoriesComponent from "@/components/CategoriesComponent";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import CompatibilityModal from "@/components/CompatibilityModal";
 import BackButton from "@/components/BackButton";
-import { useRouter } from "next/router";
-import { useRef } from "react";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -86,16 +85,10 @@ const Price = styled.span`
 
 export default function ProductPage({ product, categories }) {
   const router = useRouter();
-  const targetRef = useRef(null);
 
   const handleGoBack = (e) => {
     e.preventDefault();
-    if (targetRef.current) {
-      router.push(targetRef.current);
-      targetRef.current = null;
-    } else {
-      router.back();
-    }
+    router.back();
   };
   return (
     <>

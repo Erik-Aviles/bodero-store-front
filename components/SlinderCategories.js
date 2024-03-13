@@ -68,10 +68,10 @@ const SlinderCategories = ({ categories }) => {
         <SliderContainer>
           <Slider {...settings}>
             {categories?.length > 0 &&
-              categories.map((item, index) => (
+              categories.map((item) => (
                 <CategoryBox
-                  key={index}
-                  text={item.name}
+                  key={item._id}
+                  title={item.name}
                   value={category}
                   onClick={() => handle(item._id)}
                 >

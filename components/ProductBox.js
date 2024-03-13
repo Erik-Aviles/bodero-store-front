@@ -1,10 +1,11 @@
-import styled, { css } from "styled-components";
-import { error, success, white, white2 } from "@/lib/colors";
+import styled from "styled-components";
+import { error, success, white } from "@/lib/colors";
 import ButtonLink from "./ButtonLink";
 import { WhatsappIcon } from "./Icons";
 import Button from "./Button";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -27,7 +28,6 @@ const WhiteBox = styled.img`
   border-radius: 0.25rem 0.25rem 0 0;
   object-position: 50%;
   object-fit: cover;
-  ${"" /* cambiar si es necesario con cover */}
 `;
 
 const ProductInfoBox = styled.div`
@@ -67,25 +67,6 @@ const Price = styled.div`
 `;
 
 export default function ProductBox({ ...product }) {
-  const url = "/product/" + product?._id;
-  const router = useRouter();
-  const targetRef = useRef(null);
-
-  useEffect(() => {
-    const targetDiv = document.getElementById("targetDiv");
-    if (targetDiv) {
-      window.scrollTo({
-        top: targetDiv.offsetTop,
-        behavior: "smooth",
-      });
-    }
-  }, [targetRef]);
-
-  const onProductClick = (productId) => {
-    targetRef.current = router.asPath;
-    router.push(`/product/${productId}`);
-  };
-
   return (
     <ProductWrapper>
       <WhiteBox
@@ -94,9 +75,7 @@ export default function ProductBox({ ...product }) {
         title={product?.title.toUpperCase()}
       />
       <ProductInfoBox>
-        <Title ref={targetRef} id="targetDiv" href={url}>
-          {product?.title?.toUpperCase()}
-        </Title>
+        <Title id={product._id}>{product?.title?.toUpperCase()}</Title>
         <Row>
           <Price>${product?.salePrice}</Price>
           {product?.quantity === 0 ? (
@@ -107,13 +86,9 @@ export default function ProductBox({ ...product }) {
         </Row>
         <p>{product?.description}</p>
         <Row>
-          <Button
-            onClick={() => onProductClick(product?._id)}
-            $black={1}
-            $outline={1}
-          >
+          <ButtonLink href={`/product/${product._id}`} $black={1} $outline={1}>
             VER DETALLES
-          </Button>
+          </ButtonLink>
           <ButtonLink
             href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto. Producto: ${product?.title?.toUpperCase()}, Código: ${
               product?.code

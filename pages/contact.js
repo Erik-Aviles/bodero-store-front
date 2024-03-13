@@ -1,5 +1,5 @@
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import { FormContextProvider } from "@/components/formsLogin/FormContext";
+import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
+import { FormContextProvider } from "@/components/FormsLogin/FormContext";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
 import useAuthFetch from "@/hooks/useAuthFetch";
@@ -30,13 +30,13 @@ const Box = styled.div`
   height: fit-content;
   box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
   ${(props) =>
-    props.boxblack &&
+    props.$black &&
     css`
       background-color: ${black};
       color: ${white};
     `};
   ${(props) =>
-    props.white &&
+    props.$white &&
     css`
       background-color: ${white};
     `};
@@ -89,28 +89,36 @@ export default function ContactPage({ categories }) {
         <CenterDiv>
           <Title>Contáctenos</Title>
           <Wrapper>
-            <Box boxblack={1}>
+            <Box $black={1}>
               <h3>
                 Podemos asesorarte en <br />
                 <TextStrong>todos tus pedidos! </TextStrong>
               </h3>
               <p>
-                Somos un equipo de profesionales capacitados para llevar tu
-                marca al siguiente nivel. Trabajamos enfocados en nuestros
-                clientes, conscientes de que su éxito es nuestro éxito.
-              </p>
-              <p>
-                Contamos con expertos especializados en las diferentes áreas del
-                marketing digital, lo que nos permite trabajar de manera
-                integral y proponer estrategias 360º.
-              </p>
-              <p>
-                Con el fin de brindar una atención personalizada, nos gustaría
-                que nos cuente sobre su inquietud y cuál es el producto de su
-                interés.
+                "En Bodero Racing Development, estamos enfocados en ti, el
+                apasionado dueño de una moto que busca lo mejor para su
+                vehículo. Nuestro equipo está compuesto por expertos en el mundo
+                de las motocicletas, listos para llevarte al siguiente nivel en
+                rendimiento y satisfacción.
+                <br />
+                <br />
+                Nos enorgullece ofrecer repuestos originales y un servicio de
+                reparación y preparación de motos de primer nivel. Sabemos que
+                cada moto es única y cada cliente tiene necesidades específicas,
+                por eso nos comprometemos a brindarte una atención
+                personalizada.
+                <br />
+                <br /> ¿Tienes alguna inquietud sobre tu moto? ¿Estás buscando
+                un repuesto específico o necesitas ayuda con la reparación?
+                Cuéntanos sobre tu moto y tus necesidades, estamos aquí para
+                ayudarte.
+                <br />
+                <br /> En Bodero Racing Development, tu satisfacción es nuestra
+                prioridad. ¡Contáctanos hoy mismo y descubre cómo podemos
+                mejorar tu experiencia en el mundo de las dos ruedas!"
               </p>
             </Box>
-            <Box white={1}>
+            <Box $white={1}>
               <h4>
                 ¡Envíanos un mensaje ahora y nosotros nos contáctamos contigo!
               </h4>

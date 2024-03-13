@@ -4,7 +4,7 @@ import { Category } from "@/models/Category";
 import styled from "styled-components";
 import Title from "@/components/Title";
 import Head from "next/head";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
