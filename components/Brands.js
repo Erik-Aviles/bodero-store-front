@@ -66,7 +66,13 @@ export default function Brands() {
           {brands?.map((brand) => (
             <StyledCard key={brand.name}>
               <BrandName>{brand.name.toUpperCase()}</BrandName>
-              <img src={brand.src} alt={brand.name} width={50} height={50} />
+              <img
+                loading="lazy"
+                src={brand.src}
+                alt={brand.name}
+                width={50}
+                height={50}
+              />
             </StyledCard>
           ))}
         </BrandsWrapper>
