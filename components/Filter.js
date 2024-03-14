@@ -132,10 +132,9 @@ const Filter = ({ data }) => {
             <CustomSelect value={sort} onChange={handleSort}>
               <option value="all">Ordenar por:</option>
               <option value="-createdAt">Lo más nuevo</option>
-              <option value="oldest">Lo antiguAntiguo</option>
-              <option value="-sold">Referencia: más vendido</option>
-              <option value="-price">Precio: más caro primero</option>
-              <option value="price">Precio: más barato primero</option>
+              <option value="oldest">Lo mas antiguo</option>
+              <option value="-salePrice">Precio: más caro primero</option>
+              <option value="salePrice">Precio: más barato primero</option>
             </CustomSelect>
           </WrapperSelect>
         </FilterGroup>

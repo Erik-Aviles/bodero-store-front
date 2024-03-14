@@ -7,7 +7,7 @@ import Title from "@/components/Title";
 import styled from "styled-components";
 import Map from "@/components/Map";
 import Head from "next/head";
-import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -69,8 +69,8 @@ export default function address({ categories }) {
               </figure>
               <p>
                 Av. Walter Andrade y calle primera esquina. Frente al parque El
-                Velero. Preguntar en el Taller de motos "BODERO RACING
-                DEVELOPMENT"
+                Velero. Preguntar en el Taller de motos &ldquo;BODERO RACING
+                DEVELOPMENT&rdquo;
               </p>
             </AddressWrapper>
             <MapWrapper>

@@ -107,7 +107,7 @@ const Testimonios = () => {
             ({ id, avatar, name, testimony, socialmedia }, index) => (
               <WrapperArticle key={id} $derecha={index % 2 !== 0 ? 1 : 0}>
                 <WrapperAvatar $derecha={index % 2 !== 0 ? 1 : 0}>
-                  <img src={avatar} alt={name} />
+                  <img src={avatar} alt={name} loading="lazy" />
                 </WrapperAvatar>
                 <WrapperHeaderTestimonial>
                   <TitleTestimonial>{name}</TitleTestimonial>

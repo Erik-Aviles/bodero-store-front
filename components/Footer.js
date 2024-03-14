@@ -57,6 +57,7 @@ export default function Footer() {
             title={"Instagram"}
           >
             <img
+              loading="lazy"
               src="/svg/instagram.svg"
               alt="Repo Instagram"
               width={17}
@@ -84,7 +85,12 @@ export default function Footer() {
         </ListSocialMedia>
         <WrapperFooterSpan>
           © 2024 - Diseñado y Desarrollado por:
-          <img width={100} src="/images/betimes/betimesCompany.png" />
+          <img
+            width={100}
+            src="/images/betimes/betimesCompany.png"
+            alt="Logo de Betimes Company"
+            loading="lazy"
+          />
         </WrapperFooterSpan>
       </WrapperFooter>
     </>

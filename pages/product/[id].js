@@ -2,7 +2,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { mongooseConnect } from "@/lib/mongoose";
 import { grey, greylight, primary, success } from "@/lib/colors";
-import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
 import ProductImages from "@/components/ProductImages";
 import WhiteBox from "@/components/WhiteBox";
 import { Category } from "@/models/Category";
@@ -11,6 +10,7 @@ import styled from "styled-components";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import CompatibilityModal from "@/components/CompatibilityModal";
 import BackButton from "@/components/BackButton";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 
 const CenterDiv = styled.section`
   ${CenterSecction}

@@ -1,5 +1,3 @@
-import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
-import { FormContextProvider } from "@/components/FormsLogin/FormContext";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
 import useAuthFetch from "@/hooks/useAuthFetch";
@@ -9,6 +7,8 @@ import useLoading from "@/hooks/useLoading";
 import { black, white } from "@/lib/colors";
 import Title from "@/components/Title";
 import Head from "next/head";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { FormContextProvider } from "@/components/formsLogin/FormContext";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -95,7 +95,7 @@ export default function ContactPage({ categories }) {
                 <TextStrong>todos tus pedidos! </TextStrong>
               </h3>
               <p>
-                "En Bodero Racing Development, estamos enfocados en ti, el
+                &ldquo;En Bodero Racing Development, estamos enfocados en ti, el
                 apasionado dueño de una moto que busca lo mejor para su
                 vehículo. Nuestro equipo está compuesto por expertos en el mundo
                 de las motocicletas, listos para llevarte al siguiente nivel en
@@ -115,7 +115,7 @@ export default function ContactPage({ categories }) {
                 <br />
                 <br /> En Bodero Racing Development, tu satisfacción es nuestra
                 prioridad. ¡Contáctanos hoy mismo y descubre cómo podemos
-                mejorar tu experiencia en el mundo de las dos ruedas!"
+                mejorar tu experiencia en el mundo de las dos ruedas!&rdquo;
               </p>
             </Box>
             <Box $white={1}>

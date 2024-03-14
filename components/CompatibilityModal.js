@@ -91,9 +91,9 @@ const ModalFooter = styled.div`
 `;
 
 const ModalButton = styled.button`
-  border: 1px solid ${(props) => (props.primary ? `${error}` : `${greylight}`)};
-  background-color: ${(props) => (props.primary ? `${error}` : `${white}`)};
-  color: ${(props) => (props.primary ? `${white}` : `${blacklight}`)};
+  border: 1px solid ${(props) => (props.$primary ? `${error}` : `${greylight}`)};
+  background-color: ${(props) => (props.$primary ? `${error}` : `${white}`)};
+  color: ${(props) => (props.$primary ? `${white}` : `${blacklight}`)};
   border-radius: 0.275rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
@@ -133,7 +133,7 @@ const CompatibilityModal = ({ product }) => {
                 <ModalBody>
                   {product.compatibility.length > 0 &&
                     product.compatibility.map((item, index) => (
-                      <div key={index + item.title}>
+                      <div key={index}>
                         <ModalArticle>
                           <ModalTextCompatibily>
                             {item.title.toUpperCase()}
@@ -141,7 +141,7 @@ const CompatibilityModal = ({ product }) => {
 
                           {Array.isArray(item.model) ? (
                             item.model.map((model, index) => (
-                              <ModalListCompatibily key={index + model}>
+                              <ModalListCompatibily key={index}>
                                 {model}
                               </ModalListCompatibily>
                             ))
@@ -155,7 +155,7 @@ const CompatibilityModal = ({ product }) => {
                     ))}
                 </ModalBody>
                 <ModalFooter>
-                  <ModalButton primary={1} onClick={toggleModal}>
+                  <ModalButton $primary={1} onClick={toggleModal}>
                     Cerrar
                   </ModalButton>
                 </ModalFooter>

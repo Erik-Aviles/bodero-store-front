@@ -2,10 +2,6 @@ import styled from "styled-components";
 import { error, success, white } from "@/lib/colors";
 import ButtonLink from "./ButtonLink";
 import { WhatsappIcon } from "./Icons";
-import Button from "./Button";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -75,7 +71,7 @@ export default function ProductBox({ ...product }) {
         title={product?.title.toUpperCase()}
       />
       <ProductInfoBox>
-        <Title id={product._id}>{product?.title?.toUpperCase()}</Title>
+        <Title>{product?.title?.toUpperCase()}</Title>
         <Row>
           <Price>${product?.salePrice}</Price>
           {product?.quantity === 0 ? (

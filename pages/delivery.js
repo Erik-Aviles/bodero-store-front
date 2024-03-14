@@ -1,5 +1,4 @@
 import React from "react";
-import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
 import styled, { css } from "styled-components";
@@ -7,14 +6,16 @@ import { Category } from "@/models/Category";
 import { black, white } from "@/lib/colors";
 import Title from "@/components/Title";
 import Head from "next/head";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
   margin: 40px 0 80px;
   @media screen and (max-width: 768px) {
@@ -22,8 +23,10 @@ const Wrapper = styled.div`
   }
 `;
 const Box = styled.div`
+  max-width: 700px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   padding: 20px;
   height: fit-content;
   ${(props) =>
@@ -48,12 +51,15 @@ const Box = styled.div`
     color: ${white};
     box-shadow: 1px 4px 20px rgb(0 0 0 / 50%);
   }
+  p {
+    margin: 0;
+  }
   p,
   span {
     line-height: 1.6rem;
   }
   span {
-    padding: 7px 0 7px 10px;
+    padding: 7px 0 0 10px;
   }
 `;
 

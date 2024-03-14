@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Center from "./Center";
 
@@ -65,7 +65,7 @@ const Carousel = ({ data }) => {
     }, 4000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [data.length]);
 
   const goToSlide = (slideIndex) => {
     setIndex(slideIndex);

@@ -4,7 +4,7 @@ import { Category } from "@/models/Category";
 import styled from "styled-components";
 import Title from "@/components/Title";
 import Head from "next/head";
-import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -24,6 +24,7 @@ const SectionImagen = styled.section`
   margin: 20px;
   img {
     width: 100%;
+    height: auto;
   }
 `;
 const SectionText = styled.section`
@@ -56,9 +57,10 @@ export default function AboutUsPage({ categories }) {
           <Wrapper>
             <SectionImagen>
               <img
+                loading="lazy"
                 src="/logo.jpg"
                 alt="Equipo del taller"
-                text="Foto del equipo"
+                title="Foto del equipo"
               />
             </SectionImagen>
             <SectionText>

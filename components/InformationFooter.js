@@ -38,6 +38,12 @@ const ItemInformation = styled.li`
     border: 1px solid ${greylight};
     border-radius: 5px;
   }
+  &:hover {
+    color: ${white};
+    cursor: pointer;
+    outline: 1px solid ${grey};
+    border-radius: 5px;
+  }
 `;
 
 const StaledLink = styled(Link)`
@@ -53,10 +59,6 @@ const StaledLink = styled(Link)`
     width: 100%;
     margin: 3px 0 0;
     color: ${grey};
-  }
-  &:hover {
-    color: ${white};
-    cursor: pointer;
   }
 `;
 
@@ -86,11 +88,17 @@ const InformationFooter = () => {
     <Wrapper>
       <Center>
         <ListInformation>
-          {InfoData.map((item, index) => (
-            <ItemInformation key={`id${index}${item.name}`} title={item.name}>
+          {InfoData.map((item) => (
+            <ItemInformation key={item.id} title={item.name}>
               <StaledLink href={item.href}>
                 <ImagesInformationContainer>
-                  <img width={50} height={50} src={item.src} />
+                  <img
+                    loading="lazy"
+                    width={50}
+                    height={50}
+                    src={item.src}
+                    alt="Iconos"
+                  />
                 </ImagesInformationContainer>
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>

@@ -51,7 +51,7 @@ export default function SlinderHorizontal({ products }) {
     window.addEventListener("resize", () => {
       setSlides();
     });
-  }, []);
+  }, [products.length]);
 
   const settings = {
     arrows: true,

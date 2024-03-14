@@ -3,24 +3,28 @@ import * as React from "react";
 
 export const InfoData = [
   {
+    id: crypto.randomUUID(),
     name: "Quiénes somos",
     href: "/about-us",
     src: "/images/information/grupo.png",
     description: "Conoce nuestra historia y quienes somos",
   },
   {
+    id: crypto.randomUUID(),
     name: "Pedidos y entregas",
     href: "/delivery",
     src: "/images/information/lista-de-verificacion.png",
     description: "Conoce nuestro método de pedidos y entrega ",
   },
   {
+    id: crypto.randomUUID(),
     name: "Cómo llegar?",
     href: "/address",
     src: "/images/information/mapa.png",
     description: "Conoce la dirección en donde estamos ubicados",
   },
   {
+    id: crypto.randomUUID(),
     name: "Contáctenos",
     href: "/contact",
     src: "/images/information/comunicar.png",

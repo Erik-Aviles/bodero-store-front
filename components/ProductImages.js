@@ -11,6 +11,7 @@ const BigImageWrapper = styled.div`
 const BigImage = styled.img`
   max-width: 100%;
   height: auto;
+  padding: 5px;
 `;
 const Image = styled.img`
   width: 100%;
@@ -42,7 +43,7 @@ export default function ProductImages({ images }) {
   return (
     <>
       <BigImageWrapper>
-        <BigImage src={activeImage} alt="Producto" />
+        <BigImage loading="lazy" src={activeImage} alt="Producto" />
       </BigImageWrapper>
       <ImageButtons>
         {images.map((image) => (

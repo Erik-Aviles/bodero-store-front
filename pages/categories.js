@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { CenterSecction } from "@/components/StylesComponents/CenterSecction";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import ProductsGrid from "@/components/ProductsGrid";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -11,6 +10,7 @@ import { getData } from "@/utils/FetchData";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -113,7 +113,8 @@ export default function CategoriesPage({ categories, products, result }) {
           </section>
           {product?.length === 0 ? (
             <TextH4>
-              No se encontró productos en "{resultadoFiltrado[0]?.name}"
+              No se encontró productos en &ldquo;{resultadoFiltrado[0]?.name}
+              &rdquo;
             </TextH4>
           ) : (
             <ProductsGrid products={product} />
