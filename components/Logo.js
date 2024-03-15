@@ -7,6 +7,10 @@ import logoLetras from "../public/logoLetras.jpg";
 
 const StaledLink = styled(Link)`
   width: 250px;
+  img {
+    width: auto;
+    height: auto;
+  }
 
   @media screen and (max-width: 640px) {
     width: 200px;

@@ -93,7 +93,7 @@ export default function ProductPage({ product, categories }) {
   return (
     <>
       <Head>
-        <title>B.D.R | {product.title.toUpperCase()}</title>
+        <title>B.D.R | {product?.title?.toUpperCase()}</title>
       </Head>
       <main>
         <CategoriesComponent categories={categories} />
@@ -103,17 +103,17 @@ export default function ProductPage({ product, categories }) {
           </WrapperBackButtom>
           <ColWrapper>
             <WhiteBox>
-              <ProductImages images={product.images} />
+              <ProductImages images={product?.images} name={product?.title} />
             </WhiteBox>
             <Row>
               <InfoTitle>
-                <Title>{product.title.toUpperCase()}</Title>
+                <Title>{product?.title.toUpperCase()}</Title>
                 <span>
                   <strong>Código:</strong>
-                  {product.code}
+                  {product?.code}
                 </span>
               </InfoTitle>
-              <InfoText>{product.description}</InfoText>
+              <InfoText>{product?.description}</InfoText>
               <Info>
                 <span style={{ color: success, fontSize: 20 }}>
                   Precio Venta:
@@ -125,7 +125,7 @@ export default function ProductPage({ product, categories }) {
                   Disponibilidad:
                 </span>
                 <span>
-                  <strong>{product.quantity}</strong>
+                  <strong>{product?.quantity}</strong>
                 </span>
               </Info>
               <CompatibilityModal product={product} />

@@ -1,21 +1,20 @@
 import { greylight, success } from "@/lib/colors";
 import { useState } from "react";
 import styled from "styled-components";
+import emptyimage from "../public/images/vacio.png";
+import Image from "next/image";
 
 const BigImageWrapper = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
   border: 1px solid ${greylight};
   border-radius: 5px;
 `;
-const BigImage = styled.img`
+const BigImage = styled(Image)`
   max-width: 100%;
   height: auto;
   padding: 5px;
-`;
-const Image = styled.img`
-  width: 100%;
-  border-radius: 5px;
 `;
 
 const ImageButtons = styled.div`
@@ -26,6 +25,8 @@ const ImageButtons = styled.div`
 `;
 
 const ImageButton = styled.div`
+  display: flex;
+  align-items: center;
   width: fit-content;
   border: 1px solid ${greylight};
   cursor: pointer;
@@ -38,12 +39,20 @@ const ImageButton = styled.div`
       `}
 `;
 
-export default function ProductImages({ images }) {
-  const [activeImage, setActiveImage] = useState(images?.[0]);
+const SmallImage = styled(Image)`
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+`;
+
+export default function ProductImages({ images, name }) {
+  const [activeImage, setActiveImage] = useState(
+    images?.[0] ? images?.[0] : emptyimage
+  );
   return (
     <>
       <BigImageWrapper>
-        <BigImage loading="lazy" src={activeImage} alt="Producto" />
+        <BigImage src={activeImage} alt={name} width={300} height={300} />
       </BigImageWrapper>
       <ImageButtons>
         {images.map((image) => (
@@ -52,7 +61,7 @@ export default function ProductImages({ images }) {
             $actived={image === activeImage}
             onClick={() => setActiveImage(image)}
           >
-            <Image src={image} alt="Producto" />
+            <SmallImage src={image} alt={name} width={100} height={100} />
           </ImageButton>
         ))}
       </ImageButtons>

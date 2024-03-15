@@ -74,7 +74,12 @@ const Carousel = ({ data }) => {
           <List style={{ transform: `translateX(-${index * 100}%)` }}>
             {data.map((item) => (
               <li key={item.id}>
-                <Img width={960} height={314} src={item.imgUrl} />
+                <Img
+                  width={960}
+                  height={314}
+                  alt={`Promo ${item.id}`}
+                  src={item.imgUrl}
+                />
               </li>
             ))}
           </List>

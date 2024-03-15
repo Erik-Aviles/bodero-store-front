@@ -65,7 +65,7 @@ const InformationHeader = () => {
       <Center>
         <ListInformation>
           {linksUp.map((link, index) => (
-            <ItemInformation key={`id${index}${link.name}`} title={link.name}>
+            <ItemInformation key={`id${index}1`} title={link.name}>
               <StaledLink href={link.href}>{link.name}</StaledLink>
             </ItemInformation>
           ))}

@@ -25,6 +25,10 @@ const WrapperFooterSpan = styled.span`
   gap: 12px;
   text-align: center;
   font: small-caption;
+  img {
+    width: auto;
+    height: auto;
+  }
   font-size: 12px;
   @media screen and (max-width: 320px) {
     flex-direction: column;
