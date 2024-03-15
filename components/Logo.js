@@ -8,7 +8,7 @@ import logoLetras from "../public/logoLetras.jpg";
 const StaledLink = styled(Link)`
   width: 250px;
   img {
-    width: auto;
+    width: 100%;
     height: auto;
   }
 
@@ -20,13 +20,7 @@ const StaledLink = styled(Link)`
 export const LogoFull = ({ href }) => {
   return (
     <StaledLink href={href}>
-      <Image
-        alt="Logo B.D.R"
-        layout="responsive"
-        src={logo}
-        width={300}
-        height={140}
-      />
+      <Image alt="Logo B.D.R" src={logo} width={300} height={140} />
     </StaledLink>
   );
 };
@@ -34,7 +28,7 @@ export const LogoFull = ({ href }) => {
 export const LogoLetters = ({ href }) => {
   return (
     <StaledLink href={href}>
-      <Image alt="Logo B.D.R" src={logoLetras} layout="responsive" />
+      <Image alt="Logo B.D.R" src={logoLetras} width={300} height={140} />
     </StaledLink>
   );
 };

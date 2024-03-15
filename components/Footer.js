@@ -1,28 +1,34 @@
 import styled from "styled-components";
 import InformationFooter from "./InformationFooter";
 import { black, grey, white } from "@/lib/colors";
-import { LogoLetters } from "./Logo";
+import logoLetras from "../public/logoLetras.jpg";
 import Link from "next/link";
-import { InstagramIcon, FacebookIcon, TiktokIcon } from "./Icons";
 import Image from "next/image";
 import betimes from "../public/images/betimes/betimesCompany.png";
+import instagram from "../public/svg/instagram.svg";
+import facebook from "../public/svg/facebook.svg";
+import tiktok from "../public/svg/tiktok.svg";
 
 const WrapperFooter = styled.footer`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 30px;
   background-color: ${white};
   padding: 40px 20px;
   color: ${grey};
   p {
     margin: 0;
   }
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `;
 const WrapperFooterSpan = styled.span`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
   text-align: center;
   font: small-caption;
   img {
@@ -30,18 +36,40 @@ const WrapperFooterSpan = styled.span`
     height: auto;
   }
   font-size: 12px;
-  @media screen and (max-width: 320px) {
-    flex-direction: column;
-    gap: 2px;
+  @media screen and (min-width: 768px) {
+    order: 1;
   }
 `;
+const Logo = styled(Link)`
+  width: 280px;
+  img {
+    width: 100%;
+    height: auto;
+  }
+  @media screen and (min-width: 768px) {
+    order: 2;
+    width: 300px;
+  }
+`;
+
 const ListSocialMedia = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 5px;
+
   span {
     color: ${black};
     font-style: "italic";
+  }
+  @media screen and (min-width: 768px) {
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    order: 3;
+    a {
+      align-self: end;
+    }
   }
 `;
 
@@ -50,7 +78,6 @@ export default function Footer() {
     <>
       <InformationFooter />
       <WrapperFooter>
-        <LogoLetters href={"/"} />
         <ListSocialMedia>
           <span>Síganos en:</span>
           <Link
@@ -61,7 +88,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             title={"Instagram"}
           >
-            <InstagramIcon />
+            <Image src={instagram} alt="Instagram" width={25} height={25} />
           </Link>
           <Link
             href={"https://www.facebook.com/boderoracing?mibextid=LQQJ4d"}
@@ -69,7 +96,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             title={"FaceBook"}
           >
-            <FacebookIcon />
+            <Image src={facebook} alt="FaceBook" width={25} height={25} />
           </Link>
           <Link
             href={
@@ -79,17 +106,20 @@ export default function Footer() {
             rel="noopener noreferrer"
             title={"TikTok"}
           >
-            <TiktokIcon />
+            <Image src={tiktok} alt="TikTok" width={25} height={25} />
           </Link>
         </ListSocialMedia>
+        <Logo href={"/"}>
+          <Image alt="Logo B.D.R" src={logoLetras} />
+        </Logo>
         <WrapperFooterSpan>
-          © 2024 - Diseñado y Desarrollado por:
           <Image
-            width={300 / 3}
-            height={100 / 3}
+            width={300 / 4}
+            height={100 / 4}
             src={betimes}
             alt="Logo de Betimes Company"
           />
+          Diseño y Desarrollo Web - © 2024
         </WrapperFooterSpan>
       </WrapperFooter>
     </>
