@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
-import Center from "./Center";
+import Center from "./stylesComponents/Center";
 import { SearchIcon } from "./Icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -95,7 +95,7 @@ const CategoriesComponent = ({ categories }) => {
           ))}
         </select>
         <SlinderCategories categories={categories} />
-        <LinkSearch href={"/products"} title="Ir a búsqueda">
+        <LinkSearch href={"/products/search"} title="Ir a búsqueda">
           <SearchIcon />
         </LinkSearch>
       </DivContainert>

@@ -1,6 +1,6 @@
-import Center from "./Center";
+import Center from "./stylesComponents/Center";
 import SlinderHorizontal from "./SlinderHorizontal";
-import Title from "./Title";
+import Title from "./stylesComponents/Title";
 
 export default function NewProducts({ products }) {
   return (

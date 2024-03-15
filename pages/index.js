@@ -5,24 +5,22 @@ import { Category } from "@/models/Category";
 import Carousel from "@/components/Carousel";
 import { Product } from "@/models/Product";
 import Brands from "@/components/Brands";
-import Head from "next/head";
 import { dataCarousel } from "@/resource/data";
 import Testimonios from "@/components/Testimonios";
+import Layout from "@/components/Layout";
 
 export default function HomePage({ newProducts, categories }) {
   return (
-    <>
-      <Head>
-        <title>B.R.D | Quevedo</title>
-      </Head>
-      <main>
-        <CategoriesComponent categories={categories} />
-        <Carousel data={dataCarousel} />
-        <NewProducts products={newProducts} />
-        <Brands />
-        <Testimonios />
-      </main>
-    </>
+    <Layout
+      title="B.R.D | QUEVEDO - HOME"
+      description="Tienda de repuestos y accesorios originales de moto en Quevedo"
+    >
+      <CategoriesComponent categories={categories} />
+      <Carousel data={dataCarousel} />
+      <NewProducts products={newProducts} />
+      <Brands />
+      <Testimonios />
+    </Layout>
   );
 }
 

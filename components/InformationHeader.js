@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import { HomeIcon } from "./Icons";
-import Center from "./Center";
+import Center from "./stylesComponents/Center";
 
 const linksUp = [
   {

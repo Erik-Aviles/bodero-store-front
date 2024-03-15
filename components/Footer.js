@@ -22,7 +22,7 @@ const WrapperFooter = styled.footer`
   }
   @media screen and (min-width: 768px) {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 `;
 const WrapperFooterSpan = styled.span`

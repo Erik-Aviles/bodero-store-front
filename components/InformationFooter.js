@@ -3,7 +3,7 @@ import { white, grey, primary, greylight, white2 } from "@/lib/colors";
 import { InfoData } from "@/resource/data";
 import styled from "styled-components";
 import Link from "next/link";
-import Center from "./Center";
+import Center from "./stylesComponents/Center";
 import Image from "next/image";
 
 const Wrapper = styled.div`

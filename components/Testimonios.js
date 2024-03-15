@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Center from "./Center";
+import React from "react";
+import Center from "./stylesComponents/Center";
 import styled, { css } from "styled-components";
 import { testimonials } from "@/resource/data";
 import { black, grey, white } from "@/lib/colors";
-import Title from "./Title";
+import Title from "./stylesComponents/Title";
 import Image from "next/image";
 
 const WrapperTestimonial = styled.div`

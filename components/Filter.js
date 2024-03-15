@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Center from "./Center";
+import Center from "./stylesComponents/Center";
 import { grey } from "@/lib/colors";
+import { TitleH4 } from "./stylesComponents/TitleH4";
 
 const WrapperProductFilter = styled.div`
-  padding: 0 20px;
+  margin: 0 20px 20px;
+  @media screen and (max-width: 768px) {
+    padding: 0;
+  }
 `;
 const TitleH3 = styled.h3`
   display: none;
@@ -98,48 +102,45 @@ const Filter = ({ data }) => {
   useEffect(() => {
     filterSearch({
       router,
-      search: search ? search.toLowerCase() : "all",
+      search: search ? search.toLowerCase() : "",
     });
   }, [search]);
 
   return (
-    <Center>
-      <WrapperProductFilter>
-        <TitleH3>Búsqueda de productos...</TitleH3>
-        <FilterGroup>
-          <WrapperSelect>
-            <CustomSelect value={category} onChange={handleCategory}>
-              <option value="all"> Categorias </option>
-              {categories.map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item.name}
-                </option>
-              ))}
-            </CustomSelect>
-          </WrapperSelect>
+    <WrapperProductFilter>
+      <FilterGroup>
+        <WrapperSelect>
+          <CustomSelect value={category} onChange={handleCategory}>
+            <option value="all"> Categorias </option>
+            {categories.map((item) => (
+              <option key={item._id} value={item._id}>
+                {item.name}
+              </option>
+            ))}
+          </CustomSelect>
+        </WrapperSelect>
 
-          <Customform autoComplete="off">
-            <Input
-              type="text"
-              placeholder="Buscar..."
-              list="title_product"
-              value={search.toLowerCase()}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </Customform>
+        <Customform autoComplete="off">
+          <Input
+            type="text"
+            placeholder="Buscar..."
+            list="title_product"
+            value={search.toLowerCase()}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Customform>
 
-          <WrapperSelect>
-            <CustomSelect value={sort} onChange={handleSort}>
-              <option value="all">Ordenar por:</option>
-              <option value="-createdAt">Lo más nuevo</option>
-              <option value="oldest">Lo mas antiguo</option>
-              <option value="-salePrice">Precio: más caro primero</option>
-              <option value="salePrice">Precio: más barato primero</option>
-            </CustomSelect>
-          </WrapperSelect>
-        </FilterGroup>
-      </WrapperProductFilter>
-    </Center>
+        <WrapperSelect>
+          <CustomSelect value={sort} onChange={handleSort}>
+            <option value="all">Ordenar por:</option>
+            <option value="-createdAt">Lo más nuevo</option>
+            <option value="oldest">Lo mas antiguo</option>
+            <option value="-salePrice">Precio: más caro primero</option>
+            <option value="salePrice">Precio: más barato primero</option>
+          </CustomSelect>
+        </WrapperSelect>
+      </FilterGroup>
+    </WrapperProductFilter>
   );
 };
 

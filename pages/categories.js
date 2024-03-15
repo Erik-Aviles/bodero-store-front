@@ -7,20 +7,19 @@ import filterSearch from "@/utils/filterSearch";
 import { grey, secondary } from "@/lib/colors";
 import { Category } from "@/models/Category";
 import { getData } from "@/utils/FetchData";
-import Button from "@/components/Button";
+import Button from "@/components/buttonComponents/Button";
 import { useRouter } from "next/router";
-import Head from "next/head";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
+import Layout from "@/components/Layout";
+import { TitleH4 } from "@/components/stylesComponents/TitleH4";
+import BackButton from "@/components/buttonComponents/BackButton";
+import { FlexStyled } from "@/components/stylesComponents/Flex";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
-export const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-`;
 const Sorted = styled.div`
   display: inline-flex;
   align-items: center;
@@ -35,7 +34,6 @@ const Sorted = styled.div`
 const BreadCrumb = styled.span`
   display: inline-flex;
   align-items: center;
-  padding-top: 1rem;
 `;
 
 const Text = styled.span`
@@ -49,13 +47,6 @@ const Text = styled.span`
     `};
 `;
 
-const TextH4 = styled.h4`
-  font-size: 1.4rem;
-  color: ${grey};
-  @media screen and (max-width: 640px) {
-    padding-left: 1.2rem;
-  }
-`;
 const Divider = styled.span`
   color: ${grey};
   padding-left: 0.3rem;
@@ -67,6 +58,12 @@ export default function CategoriesPage({ categories, products, result }) {
   const [page, setPage] = useState(1);
 
   const router = useRouter();
+
+  const handleGoBack = (e) => {
+    e.preventDefault();
+    router.back();
+  };
+
   useEffect(() => {
     setProducts(products);
   }, [products]);
@@ -85,53 +82,48 @@ export default function CategoriesPage({ categories, products, result }) {
   );
 
   return (
-    <>
-      <Head>
-        <title>B.R.D | Categoria </title>
-        <meta
-          name="description"
-          content="Repuestos Originales  en diferentes marcas que hacen la diferencia"
-        />
-      </Head>
-      <main>
-        <CategoriesComponent categories={categories} />
-        <CenterDiv>
-          <section aria-label="breadcrumb">
-            <Sorted>
-              <BreadCrumb>
-                <Text>Categoría</Text>
-              </BreadCrumb>
-              <BreadCrumb aria-current="page">
-                <Divider> / </Divider>
-                <Text $big={1}>
-                  {resultadoFiltrado[0]?.name
-                    ? resultadoFiltrado[0]?.name
-                    : "Todas"}
-                </Text>
-              </BreadCrumb>
-            </Sorted>
-          </section>
-          {product?.length === 0 ? (
-            <TextH4>
-              No se encontró productos en &ldquo;{resultadoFiltrado[0]?.name}
-              &rdquo;
-            </TextH4>
-          ) : (
-            <ProductsGrid products={product} />
-          )}
+    <Layout
+      title="B.R.D | Categoria"
+      description="Repuestos Originales en diferentes marcas que hacen la diferencia"
+    >
+      <CategoriesComponent categories={categories} />
+      <CenterDiv>
+        <FlexStyled aria-label="breadcrumb">
+          <BackButton onClick={handleGoBack} />
+          <Sorted>
+            <BreadCrumb>
+              <Text>Categoría</Text>
+            </BreadCrumb>
+            <BreadCrumb aria-current="page">
+              <Divider> / </Divider>
+              <Text $big={1}>
+                {resultadoFiltrado[0]?.name
+                  ? resultadoFiltrado[0]?.name
+                  : "Todas"}
+              </Text>
+            </BreadCrumb>
+          </Sorted>
+        </FlexStyled>
+        {product?.length === 0 ? (
+          <TitleH4>
+            No se encontró productos en &ldquo;{resultadoFiltrado[0]?.name}
+            &rdquo;
+          </TitleH4>
+        ) : (
+          <ProductsGrid products={product} />
+        )}
 
-          {result < page * 6 ? (
-            ""
-          ) : (
-            <ButtonContainer>
-              <Button $black={1} $outline={1} size="m" onClick={handleLoadmore}>
-                Load more
-              </Button>
-            </ButtonContainer>
-          )}
-        </CenterDiv>
-      </main>
-    </>
+        {result < page * 10 ? (
+          ""
+        ) : (
+          <ButtonContainer>
+            <Button $black={1} $outline={1} size="m" onClick={handleLoadmore}>
+              Cargar más
+            </Button>
+          </ButtonContainer>
+        )}
+      </CenterDiv>
+    </Layout>
   );
 }
 
@@ -144,11 +136,13 @@ export async function getServerSideProps({ query }) {
   const search = query.search || "all";
 
   const categories = await Category.find({}, null, { sort: { _id: -1 } });
+
   const res = await getData(
     `products?limit=${
-      page * 6
+      page * 10
     }&category=${category}&sort=${sort}&title=${search}`
   );
+
   return {
     props: {
       products: res.products,

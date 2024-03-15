@@ -3,11 +3,15 @@ import { LocationIcon } from "@/components/Icons";
 import { black, white } from "@/lib/colors";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
-import Title from "@/components/Title";
+import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
 import Map from "@/components/Map";
 import Head from "next/head";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import Layout from "@/components/Layout";
+import { useRouter } from "next/navigation";
+import BackButton from "@/components/buttonComponents/BackButton";
+import { FlexStyled } from "@/components/stylesComponents/Flex";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -48,38 +52,41 @@ const MapWrapper = styled.div`
   width: 100%;
   border: 1px solid rgba(132, 135, 137, 0.1);
 `;
+
 export default function address({ categories }) {
+  const router = useRouter();
+  const handleGoBack = (e) => {
+    e.preventDefault();
+    router.back();
+  };
   return (
-    <>
-      <Head>
-        <title>B.R.D | Cómo llegar</title>
-        <meta
-          name="description"
-          content="Ubicada en Quevedo, Av. Walter Andrade y calle primera, esquina "
-        />
-      </Head>
-      <main>
-        <CategoriesComponent categories={categories} />
-        <CenterDiv>
+    <Layout
+      title="B.R.D | Cómo llegar"
+      description="Ubicada en Quevedo, Av. Walter Andrade y calle primera, esquina"
+    >
+      <CategoriesComponent categories={categories} />
+      <CenterDiv>
+        <FlexStyled>
+          <BackButton onClick={handleGoBack} />
           <Title>Tienda Física</Title>
-          <ColumnsWrapper>
-            <AddressWrapper>
-              <figure>
-                <LocationIcon />
-              </figure>
-              <p>
-                Av. Walter Andrade y calle primera esquina. Frente al parque El
-                Velero. Preguntar en el Taller de motos &ldquo;BODERO RACING
-                DEVELOPMENT&rdquo;
-              </p>
-            </AddressWrapper>
-            <MapWrapper>
-              <Map />
-            </MapWrapper>
-          </ColumnsWrapper>
-        </CenterDiv>
-      </main>
-    </>
+        </FlexStyled>
+        <ColumnsWrapper>
+          <AddressWrapper>
+            <figure>
+              <LocationIcon />
+            </figure>
+            <p>
+              Av. Walter Andrade y calle primera esquina. Frente al parque El
+              Velero. Preguntar en el Taller de motos &ldquo;BODERO RACING
+              DEVELOPMENT&rdquo;
+            </p>
+          </AddressWrapper>
+          <MapWrapper>
+            <Map />
+          </MapWrapper>
+        </ColumnsWrapper>
+      </CenterDiv>
+    </Layout>
   );
 }
 export async function getServerSideProps() {

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
-import Center from "./Center";
+import Center from "./stylesComponents/Center";
 import { black, primary, white } from "@/lib/colors";
-import { NextArrowCategory, PrevArrowCategory } from "./ArrowCat";
+import {
+  NextArrowCategory,
+  PrevArrowCategory,
+} from "./buttonComponents/ArrowCat";
 import { useRouter } from "next/router";
 
 const HorizontalSliderContainer = styled.div`

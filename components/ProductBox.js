@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { error, success, white } from "@/lib/colors";
-import ButtonLink from "./ButtonLink";
+import ButtonLink from "./buttonComponents/ButtonLink";
 import { WhatsappIcon } from "./Icons";
 import Image from "next/image";
 import emptyimage from "../public/images/vacio.png";

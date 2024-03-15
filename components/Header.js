@@ -4,7 +4,7 @@ import { black, grey, primary, white } from "@/lib/colors";
 import Link from "next/link";
 import { ProductIcon, WhatsappIcon } from "./Icons";
 import InformationHeader from "./InformationHeader";
-import Center from "./Center";
+import Center from "./stylesComponents/Center";
 
 const StyledHeader = styled.header`
   width: 100%;

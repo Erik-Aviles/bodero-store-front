@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { greylight, primary } from "@/lib/colors";
-import { NextArrow, PrevArrow } from "./Arrows";
+import { NextArrow, PrevArrow } from "./buttonComponents/Arrows";
 import styled from "styled-components";
 import ProductBox from "./ProductBox";
 import Slider from "react-slick";

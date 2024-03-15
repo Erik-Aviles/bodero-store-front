@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import Center from "./Center";
+import Center from "./stylesComponents/Center";
 import Image from "next/image";
 
 const SliderContainer = styled.div`

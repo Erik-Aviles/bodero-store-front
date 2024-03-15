@@ -5,10 +5,13 @@ import styled, { css } from "styled-components";
 import { Category } from "@/models/Category";
 import useLoading from "@/hooks/useLoading";
 import { black, white } from "@/lib/colors";
-import Title from "@/components/Title";
-import Head from "next/head";
+import Title from "@/components/stylesComponents/Title";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { FormContextProvider } from "@/components/formsLogin/FormContext";
+import Layout from "@/components/Layout";
+import BackButton from "@/components/buttonComponents/BackButton";
+import { useRouter } from "next/navigation";
+import { FlexStyled } from "@/components/stylesComponents/Flex";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -18,7 +21,7 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin: 40px 0 80px;
+  margin: 20px 0 80px;
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
     place-items: center;
@@ -67,6 +70,7 @@ const WrapperInputs = styled.div`
 `;
 export default function ContactPage({ categories }) {
   const { isLoading, startLoading, finishtLoading } = useLoading();
+  const router = useRouter();
   const authRouter = useAuthFetch();
 
   const contactSend = async (formData) => {
@@ -79,100 +83,101 @@ export default function ContactPage({ categories }) {
     finishtLoading();
   };
 
+  const handleGoBack = (e) => {
+    e.preventDefault();
+    router.back();
+  };
+
   return (
-    <>
-      <Head>
-        <title>B.R.D | Contacto</title>
-      </Head>
-      <main>
-        <CategoriesComponent categories={categories} />
-        <CenterDiv>
+    <Layout title="B.R.D | Contacto">
+      <CategoriesComponent categories={categories} />
+      <CenterDiv>
+        <FlexStyled>
+          <BackButton onClick={handleGoBack} />
           <Title>Contáctenos</Title>
-          <Wrapper>
-            <Box $black={1}>
-              <h3>
-                Podemos asesorarte en <br />
-                <TextStrong>todos tus pedidos! </TextStrong>
-              </h3>
-              <p>
-                &ldquo;En Bodero Racing Development, estamos enfocados en ti, el
-                apasionado dueño de una moto que busca lo mejor para su
-                vehículo. Nuestro equipo está compuesto por expertos en el mundo
-                de las motocicletas, listos para llevarte al siguiente nivel en
-                rendimiento y satisfacción.
-                <br />
-                <br />
-                Nos enorgullece ofrecer repuestos originales y un servicio de
-                reparación y preparación de motos de primer nivel. Sabemos que
-                cada moto es única y cada cliente tiene necesidades específicas,
-                por eso nos comprometemos a brindarte una atención
-                personalizada.
-                <br />
-                <br /> ¿Tienes alguna inquietud sobre tu moto? ¿Estás buscando
-                un repuesto específico o necesitas ayuda con la reparación?
-                Cuéntanos sobre tu moto y tus necesidades, estamos aquí para
-                ayudarte.
-                <br />
-                <br /> En Bodero Racing Development, tu satisfacción es nuestra
-                prioridad. ¡Contáctanos hoy mismo y descubre cómo podemos
-                mejorar tu experiencia en el mundo de las dos ruedas!&rdquo;
-              </p>
-            </Box>
-            <Box $white={1}>
-              <h4>
-                ¡Envíanos un mensaje ahora y nosotros nos contáctamos contigo!
-              </h4>
-              <FormContextProvider
-                onSubmit={contactSend}
-                description="Ingresa el correo electrónico y teléfono de uso frecuente"
-              >
-                <WrapperInputs>
-                  <FormContextProvider.Input
-                    label="Nombre completo"
-                    name="name"
-                    type="text"
-                    placeholder="Nombre..."
-                  />
-                  <FormContextProvider.Input
-                    label="Correo"
-                    name="email"
-                    type="email"
-                    placeholder="Correo..."
-                  />
-                  <FormContextProvider.Input
-                    label="Teléfono"
-                    name="phone"
-                    type="text"
-                    placeholder="Teléfono..."
-                  />
-                  <FormContextProvider.Input
-                    label="Ciudad"
-                    name="city"
-                    type="text"
-                    placeholder="Ciudad"
-                  />
-                  <FormContextProvider.Input
-                    label="País"
-                    name="country"
-                    type="text"
-                    placeholder="País"
-                  />
-                  <FormContextProvider.TextArea
-                    label="Mensaje"
-                    name="message"
-                    placeholder="Escribe tu mensaje aquí"
-                  />
-                </WrapperInputs>
-                <FormContextProvider.SubmitButton
-                  buttonText="ENVIAR"
-                  isLoading={isLoading}
+        </FlexStyled>
+        <Wrapper>
+          <Box $black={1}>
+            <h3>
+              Podemos asesorarte en <br />
+              <TextStrong>todos tus pedidos! </TextStrong>
+            </h3>
+            <p>
+              &ldquo;En Bodero Racing Development, estamos enfocados en ti, el
+              apasionado dueño de una moto que busca lo mejor para su vehículo.
+              Nuestro equipo está compuesto por expertos en el mundo de las
+              motocicletas, listos para llevarte al siguiente nivel en
+              rendimiento y satisfacción.
+              <br />
+              <br />
+              Nos enorgullece ofrecer repuestos originales y un servicio de
+              reparación y preparación de motos de primer nivel. Sabemos que
+              cada moto es única y cada cliente tiene necesidades específicas,
+              por eso nos comprometemos a brindarte una atención personalizada.
+              <br />
+              <br /> ¿Tienes alguna inquietud sobre tu moto? ¿Estás buscando un
+              repuesto específico o necesitas ayuda con la reparación? Cuéntanos
+              sobre tu moto y tus necesidades, estamos aquí para ayudarte.
+              <br />
+              <br /> En Bodero Racing Development, tu satisfacción es nuestra
+              prioridad. ¡Contáctanos hoy mismo y descubre cómo podemos mejorar
+              tu experiencia en el mundo de las dos ruedas!&rdquo;
+            </p>
+          </Box>
+          <Box $white={1}>
+            <h4>
+              ¡Envíanos un mensaje ahora y nosotros nos contáctamos contigo!
+            </h4>
+            <FormContextProvider
+              onSubmit={contactSend}
+              description="Ingresa el correo electrónico y teléfono de uso frecuente"
+            >
+              <WrapperInputs>
+                <FormContextProvider.Input
+                  label="Nombre completo"
+                  name="name"
+                  type="text"
+                  placeholder="Nombre..."
                 />
-              </FormContextProvider>
-            </Box>
-          </Wrapper>
-        </CenterDiv>
-      </main>
-    </>
+                <FormContextProvider.Input
+                  label="Correo"
+                  name="email"
+                  type="email"
+                  placeholder="Correo..."
+                />
+                <FormContextProvider.Input
+                  label="Teléfono"
+                  name="phone"
+                  type="text"
+                  placeholder="Teléfono..."
+                />
+                <FormContextProvider.Input
+                  label="Ciudad"
+                  name="city"
+                  type="text"
+                  placeholder="Ciudad"
+                />
+                <FormContextProvider.Input
+                  label="País"
+                  name="country"
+                  type="text"
+                  placeholder="País"
+                />
+                <FormContextProvider.TextArea
+                  label="Mensaje"
+                  name="message"
+                  placeholder="Escribe tu mensaje aquí"
+                />
+              </WrapperInputs>
+              <FormContextProvider.SubmitButton
+                buttonText="ENVIAR"
+                isLoading={isLoading}
+              />
+            </FormContextProvider>
+          </Box>
+        </Wrapper>
+      </CenterDiv>
+    </Layout>
   );
 }
 export async function getServerSideProps() {

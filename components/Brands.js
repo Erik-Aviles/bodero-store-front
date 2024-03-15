@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Center from "./Center";
-import Title from "./Title";
+import Center from "./stylesComponents/Center";
+import Title from "./stylesComponents/Title";
 import { BackgroundColor, black, white } from "@/lib/colors";
 import { brands } from "@/resource/data";
 import Image from "next/image";

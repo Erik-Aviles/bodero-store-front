@@ -4,11 +4,6 @@ export default function Document() {
   return (
     <Html lang="es">
       <Head>
-        <meta
-          name="description"
-          content="Tienda de repuestos y accesorios originales de las marcas más prestigiosas "
-        />
-
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
         <link rel="icon" href="/icons/favicon.ico" type="image/x-icon" />
         <link

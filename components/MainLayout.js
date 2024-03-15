@@ -1,14 +1,10 @@
-import styled from "styled-components";
+import Head from "next/head";
 
-const StyledDiv = styled.main`
-  min-height: calc(100vh - 244px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+export default function Layout({ children, title, description }) {
+  return;
+}
 
-const MainLayout = ({ children }) => {
-  return <StyledDiv>{children}</StyledDiv>;
+Layout.defaultProps = {
+  title: "B.R.D | Quevedo",
+  description: "Tienda de repuestos y accesorios originales de moto en Quevedo",
 };
-
-export default MainLayout;

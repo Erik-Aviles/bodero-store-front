@@ -1,5 +1,4 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { mongooseConnect } from "@/lib/mongoose";
 import { grey, greylight, primary, success } from "@/lib/colors";
 import ProductImages from "@/components/ProductImages";
@@ -9,17 +8,14 @@ import { Product } from "@/models/Product";
 import styled from "styled-components";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import CompatibilityModal from "@/components/CompatibilityModal";
-import BackButton from "@/components/BackButton";
+import BackButton from "@/components/buttonComponents/BackButton";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import Layout from "@/components/Layout";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
-const WrapperBackButtom = styled.div`
-  margin: 8px 0;
-  display: block;
-`;
 const ColWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -90,50 +86,42 @@ export default function ProductPage({ product, categories }) {
     e.preventDefault();
     router.back();
   };
+
   return (
-    <>
-      <Head>
-        <title>B.D.R | {product?.title?.toUpperCase()}</title>
-      </Head>
-      <main>
-        <CategoriesComponent categories={categories} />
-        <CenterDiv>
-          <WrapperBackButtom>
-            <BackButton onClick={handleGoBack} />
-          </WrapperBackButtom>
-          <ColWrapper>
-            <WhiteBox>
-              <ProductImages images={product?.images} name={product?.title} />
-            </WhiteBox>
-            <Row>
-              <InfoTitle>
-                <Title>{product?.title.toUpperCase()}</Title>
-                <span>
-                  <strong>Código:</strong>
-                  {product?.code}
-                </span>
-              </InfoTitle>
-              <InfoText>{product?.description}</InfoText>
-              <Info>
-                <span style={{ color: success, fontSize: 20 }}>
-                  Precio Venta:
-                </span>
-                <Price>${product.salePrice}</Price>
-              </Info>
-              <Info>
-                <span style={{ color: grey, fontSize: 16 }}>
-                  Disponibilidad:
-                </span>
-                <span>
-                  <strong>{product?.quantity}</strong>
-                </span>
-              </Info>
-              <CompatibilityModal product={product} />
-            </Row>
-          </ColWrapper>
-        </CenterDiv>
-      </main>
-    </>
+    <Layout title={`B.R.D | ${product?.title?.toUpperCase()}`}>
+      <CategoriesComponent categories={categories} />
+      <CenterDiv>
+        <BackButton onClick={handleGoBack} />
+        <ColWrapper>
+          <WhiteBox>
+            <ProductImages images={product?.images} name={product?.title} />
+          </WhiteBox>
+          <Row>
+            <InfoTitle>
+              <Title>{product?.title.toUpperCase()}</Title>
+              <span>
+                <strong>Código:</strong>
+                {product?.code}
+              </span>
+            </InfoTitle>
+            <InfoText>{product?.description}</InfoText>
+            <Info>
+              <span style={{ color: success, fontSize: 20 }}>
+                Precio Venta:
+              </span>
+              <Price>${product.salePrice}</Price>
+            </Info>
+            <Info>
+              <span style={{ color: grey, fontSize: 16 }}>Disponibilidad:</span>
+              <span>
+                <strong>{product?.quantity}</strong>
+              </span>
+            </Info>
+            <CompatibilityModal product={product} />
+          </Row>
+        </ColWrapper>
+      </CenterDiv>
+    </Layout>
   );
 }
 export async function getServerSideProps(context) {
