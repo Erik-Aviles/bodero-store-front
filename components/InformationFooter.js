@@ -4,6 +4,7 @@ import { InfoData } from "@/resource/data";
 import styled from "styled-components";
 import Link from "next/link";
 import Center from "./Center";
+import Image from "next/image";
 
 const Wrapper = styled.div`
   background-color: ${white2};
@@ -92,12 +93,11 @@ const InformationFooter = () => {
             <ItemInformation key={item.id} title={item.name}>
               <StaledLink href={item.href}>
                 <ImagesInformationContainer>
-                  <img
-                    loading="lazy"
+                  <Image
                     width={50}
                     height={50}
                     src={item.src}
-                    alt="Iconos"
+                    alt={`Imagen de ${item.name}`}
                   />
                 </ImagesInformationContainer>
                 <h3>{item.name}</h3>

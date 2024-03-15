@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Center from "./Center";
 import Title from "./Title";
-import { BackgroundColor, black, primary, white } from "@/lib/colors";
+import { BackgroundColor, black, white } from "@/lib/colors";
 import { brands } from "@/resource/data";
 import Image from "next/image";
 
@@ -63,16 +63,10 @@ export default function Brands() {
       <Center>
         <Title>Marcas destacadas</Title>
         <BrandsWrapper>
-          {brands?.map((brand) => (
-            <StyledCard key={brand.name}>
-              <BrandName>{brand.name.toUpperCase()}</BrandName>
-              <img
-                loading="lazy"
-                src={brand.src}
-                alt={brand.name}
-                width={50}
-                height={50}
-              />
+          {brands?.map(({ id, name, src }) => (
+            <StyledCard key={id}>
+              <BrandName>{name.toUpperCase()}</BrandName>
+              <Image src={src} alt={name} width={50} height={50} />
             </StyledCard>
           ))}
         </BrandsWrapper>

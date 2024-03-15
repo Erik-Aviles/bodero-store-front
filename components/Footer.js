@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import InformationFooter from "./InformationFooter";
-import { grey, white } from "@/lib/colors";
+import { black, grey, white } from "@/lib/colors";
 import { LogoLetters } from "./Logo";
 import Link from "next/link";
 import { InstagramIcon, FacebookIcon, TiktokIcon } from "./Icons";
+import Image from "next/image";
+import betimes from "../public/images/betimes/betimesCompany.png";
 
 const WrapperFooter = styled.footer`
   display: flex;
@@ -23,19 +25,20 @@ const WrapperFooterSpan = styled.span`
   gap: 12px;
   text-align: center;
   font: small-caption;
-  img {
-    aspect-ratio: 300/100;
-  }
+  font-size: 12px;
   @media screen and (max-width: 320px) {
     flex-direction: column;
     gap: 2px;
-    font-size: 12px;
   }
 `;
 const ListSocialMedia = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  span {
+    color: ${black};
+    font-style: "italic";
+  }
 `;
 
 export default function Footer() {
@@ -45,9 +48,7 @@ export default function Footer() {
       <WrapperFooter>
         <LogoLetters href={"/"} />
         <ListSocialMedia>
-          <span style={{ color: "black", fontStyle: "italic" }}>
-            Síganos en:
-          </span>
+          <span>Síganos en:</span>
           <Link
             href={
               "https://www.instagram.com/cesar_bodero?igsh=emZ4Y20yb2RnMjd6"
@@ -56,13 +57,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             title={"Instagram"}
           >
-            <img
-              loading="lazy"
-              src="/svg/instagram.svg"
-              alt="Repo Instagram"
-              width={17}
-              height={17}
-            />
+            <InstagramIcon />
           </Link>
           <Link
             href={"https://www.facebook.com/boderoracing?mibextid=LQQJ4d"}
@@ -85,11 +80,11 @@ export default function Footer() {
         </ListSocialMedia>
         <WrapperFooterSpan>
           © 2024 - Diseñado y Desarrollado por:
-          <img
-            width={100}
-            src="/images/betimes/betimesCompany.png"
+          <Image
+            width={300 / 3}
+            height={100 / 3}
+            src={betimes}
             alt="Logo de Betimes Company"
-            loading="lazy"
           />
         </WrapperFooterSpan>
       </WrapperFooter>

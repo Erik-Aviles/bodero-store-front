@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { error, success, white } from "@/lib/colors";
 import ButtonLink from "./ButtonLink";
 import { WhatsappIcon } from "./Icons";
+import Image from "next/image";
+import emptyimage from "../public/images/vacio.png";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -19,11 +21,15 @@ const ProductWrapper = styled.div`
   }
 `;
 
-const WhiteBox = styled.img`
-  height: 220px;
-  border-radius: 0.25rem 0.25rem 0 0;
-  object-position: 50%;
-  object-fit: cover;
+const ImageBox = styled.figure`
+  height: 240px;
+  width: 100%;
+  margin: 0;
+`;
+const ItemImage = styled(Image)`
+  width: 100%;
+  height: 240px;
+  object-fit: scale-down;
 `;
 
 const ProductInfoBox = styled.div`
@@ -65,11 +71,15 @@ const Price = styled.div`
 export default function ProductBox({ ...product }) {
   return (
     <ProductWrapper>
-      <WhiteBox
-        src={product?.images?.[0]}
-        alt={product?.title.toUpperCase()}
-        title={product?.title.toUpperCase()}
-      />
+      <ImageBox>
+        <ItemImage
+          src={product?.images?.[0] ? product?.images?.[0] : emptyimage}
+          alt={product?.title.toUpperCase()}
+          title={product?.title.toUpperCase()}
+          width={450}
+          height={450}
+        />
+      </ImageBox>
       <ProductInfoBox>
         <Title>{product?.title?.toUpperCase()}</Title>
         <Row>

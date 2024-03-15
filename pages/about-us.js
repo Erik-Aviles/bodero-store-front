@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Title from "@/components/Title";
 import Head from "next/head";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import Image from "next/image";
+import logo from "../public/logo.jpg";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -19,13 +21,11 @@ const Wrapper = styled.div`
   }
 `;
 const SectionImagen = styled.section`
-  width: 100%;
-  place-self: center;
-  margin: 20px;
-  img {
-    width: 100%;
-    height: auto;
-  }
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 5px;
+  padding: 8px;
 `;
 const SectionText = styled.section`
   padding: 0 20px;
@@ -56,11 +56,33 @@ export default function AboutUsPage({ categories }) {
           <Title>Quienes somos</Title>
           <Wrapper>
             <SectionImagen>
-              <img
-                loading="lazy"
-                src="/logo.jpg"
-                alt="Equipo del taller"
-                title="Foto del equipo"
+              <Image
+                alt="Logo B.D.R"
+                layout="responsive"
+                src={logo}
+                width={300}
+                height={140}
+              />
+              <Image
+                alt="Logo B.D.R"
+                layout="responsive"
+                src={logo}
+                width={300}
+                height={140}
+              />
+              <Image
+                alt="Logo B.D.R"
+                layout="responsive"
+                src={logo}
+                width={300}
+                height={140}
+              />
+              <Image
+                alt="Logo B.D.R"
+                layout="responsive"
+                src={logo}
+                width={300}
+                height={140}
               />
             </SectionImagen>
             <SectionText>

@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import { testimonials } from "@/resource/data";
 import { black, grey, white } from "@/lib/colors";
 import Title from "./Title";
+import Image from "next/image";
 
 const WrapperTestimonial = styled.div`
   display: flex;
@@ -107,7 +108,7 @@ const Testimonios = () => {
             ({ id, avatar, name, testimony, socialmedia }, index) => (
               <WrapperArticle key={id} $derecha={index % 2 !== 0 ? 1 : 0}>
                 <WrapperAvatar $derecha={index % 2 !== 0 ? 1 : 0}>
-                  <img src={avatar} alt={name} loading="lazy" />
+                  <Image src={avatar} alt={name} width={100} height={100} />
                 </WrapperAvatar>
                 <WrapperHeaderTestimonial>
                   <TitleTestimonial>{name}</TitleTestimonial>

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Center from "./Center";
+import Image from "next/image";
 
 const SliderContainer = styled.div`
   position: relative;
-  width: 100%;
-  max-height: 350px;
-  margin-bottom: 0;
+
   @media screen and (max-width: 640px) {
     padding-top: 150.43px;
   }
@@ -15,13 +14,11 @@ const SliderContainer = styled.div`
   }
 `;
 const ContainerImages = styled.div`
-  width: 100%;
-  border-radius: 2px;
   overflow: hidden;
 `;
 
 const List = styled.ul`
-  transition: transform 0.5s ease;
+  transition: transform 0.8s ease;
 `;
 
 const DotsContainer = styled.div`
@@ -40,7 +37,6 @@ const DotContainerItem = styled.div`
   cursor: pointer;
   font-size: 20px;
   text-align: center;
-
   ${(props) =>
     props.$active &&
     css`
@@ -50,7 +46,7 @@ const DotContainerItem = styled.div`
       border-radius: 50%;
     `};
 `;
-const Img = styled.img`
+const Img = styled(Image)`
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -78,7 +74,7 @@ const Carousel = ({ data }) => {
           <List style={{ transform: `translateX(-${index * 100}%)` }}>
             {data.map((item) => (
               <li key={item.id}>
-                <Img src={item.imgUrl} />
+                <Img width={960} height={314} src={item.imgUrl} />
               </li>
             ))}
           </List>

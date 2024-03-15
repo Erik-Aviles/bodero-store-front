@@ -28,8 +28,8 @@ html,body{
   li {
     display: inline;
   }
+   img {
 
-  img{
       object-fit: cover;
     }
    
