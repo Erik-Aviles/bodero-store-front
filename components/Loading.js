@@ -1,5 +1,6 @@
-import { primary, white } from "@/lib/colors";
 import styled from "styled-components";
+import { primary } from "@/lib/colors";
+import { ClockLoader } from "react-spinners";
 import Head from "next/head";
 
 const LoaderContainert = styled.div`
@@ -10,23 +11,7 @@ const LoaderContainert = styled.div`
   min-height: 100vh;
 `;
 
-const LoaderItem = styled.span`
-  border: 2px solid ${primary};
-  border-radius: 50%;
-  border-left-color: ${white};
-  animation: spin 0.8s ease infinite;
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
-export const Loading = ({ size }) => {
+export const Loading = () => {
   return (
     <>
       <Head>
@@ -34,7 +19,7 @@ export const Loading = ({ size }) => {
         <meta name="description" content="Esperando cargar la pagina..." />
       </Head>
       <LoaderContainert>
-        <LoaderItem style={{ width: size, height: size }} />
+        <ClockLoader color={primary} size={80} />;
       </LoaderContainert>
     </>
   );

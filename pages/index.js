@@ -1,3 +1,4 @@
+import { Loading } from "@/components/Loading";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import NewProducts from "@/components/NewProducts";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -9,7 +10,6 @@ import { dataCarousel } from "@/resource/data";
 import Testimonios from "@/components/Testimonios";
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
-import { Loading } from "@/components/Loading";
 
 export default function HomePage({ newProducts, categories }) {
   const [isUpLoanding, setIsUpLoanding] = useState(true);
@@ -22,7 +22,7 @@ export default function HomePage({ newProducts, categories }) {
   }, []);
 
   if (isUpLoanding) {
-    return <Loading size={80} />;
+    return <Loading />;
   }
 
   return (

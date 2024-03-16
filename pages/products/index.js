@@ -65,7 +65,7 @@ export default function ProductsPage({ products, result }) {
         ) : (
           <ProductsGrid products={product} />
         )}
-        {result < page * 10 ? (
+        {result < page * 18 ? (
           ""
         ) : (
           <ButtonContainer>
@@ -87,7 +87,7 @@ export async function getServerSideProps({ query }) {
 
   const res = await getData(
     `products?limit=${
-      page * 10
+      page * 18
     }&category=${category}&sort=${sort}&title=${search}`
   );
 

@@ -1,5 +1,5 @@
-import { white } from "@/lib/colors";
 import styled from "styled-components";
+import { white } from "@/lib/colors";
 
 const WhiteBox = styled.div`
   heigth: 500px;

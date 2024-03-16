@@ -1,8 +1,9 @@
+import styled, { css } from "styled-components";
 import { greylight, success } from "@/lib/colors";
-import { useState } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
 import emptyimage from "../public/images/vacio.png";
 import Image from "next/image";
+import Spinner from "./Spinner";
 
 const BigImageWrapper = styled.div`
   width: 100%;
@@ -26,11 +27,18 @@ const ImageButtons = styled.div`
 
 const ImageButton = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   border: 1px solid ${greylight};
   cursor: pointer;
   border-radius: 5px;
+  ${(props) =>
+    props.$spinner &&
+    css`
+      width: 80px;
+      height: 80px;
+    `}
   ${(props) =>
     props.$actived
       ? `border-color: ${success};
@@ -39,7 +47,7 @@ const ImageButton = styled.div`
       `}
 `;
 
-const SmallImage = styled(Image)`
+const SmallImage = styled.img`
   max-width: 100%;
   height: auto;
   border-radius: 5px;
@@ -49,21 +57,42 @@ export default function ProductImages({ images, name }) {
   const [activeImage, setActiveImage] = useState(
     images?.[0] ? images?.[0] : emptyimage
   );
+
+  const [isUpLoanding, setIsUpLoanding] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsUpLoanding(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <>
       <BigImageWrapper>
         <BigImage src={activeImage} alt={name} width={300} height={300} />
       </BigImageWrapper>
       <ImageButtons>
-        {images.map((image) => (
-          <ImageButton
-            key={image}
-            $actived={image === activeImage}
-            onClick={() => setActiveImage(image)}
-          >
-            <SmallImage src={image} alt={name} width={100} height={100} />
-          </ImageButton>
-        ))}
+        {isUpLoanding
+          ? images.map((image) => (
+              <ImageButton
+                $spinner={1}
+                key={image}
+                $actived={image === activeImage}
+                onClick={() => setActiveImage(image)}
+              >
+                <Spinner />
+              </ImageButton>
+            ))
+          : images.map((image) => (
+              <ImageButton
+                key={image}
+                $actived={image === activeImage}
+                onClick={() => setActiveImage(image)}
+              >
+                <SmallImage src={image} alt={name} width={100} height={100} />
+              </ImageButton>
+            ))}
       </ImageButtons>
     </>
   );
