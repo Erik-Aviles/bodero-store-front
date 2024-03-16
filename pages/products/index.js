@@ -69,7 +69,7 @@ export default function ProductsPage({ products, result }) {
           ""
         ) : (
           <ButtonContainer>
-            <Button $black={1} $outline={1} size="m" onClick={handleLoadmore}>
+            <Button $black={1} $outline={1} $size="m" onClick={handleLoadmore}>
               Cargar más
             </Button>
           </ButtonContainer>

@@ -10,10 +10,10 @@ import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
 import Layout from "@/components/Layout";
 import { brands } from "@/resource/data";
-import { ButtonContainer } from "../categories";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import BackButton from "@/components/buttonComponents/BackButton";
+import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 
 const CenterSecction = css`
   heigth: auto;
@@ -84,7 +84,7 @@ export default function SearchPage({ products, result }) {
           ""
         ) : (
           <ButtonContainer>
-            <Button $black={1} $outline={1} size="m" onClick={handleLoadmore}>
+            <Button $black={1} $outline={1} $size="m" onClick={handleLoadmore}>
               Cargar más
             </Button>
           </ButtonContainer>

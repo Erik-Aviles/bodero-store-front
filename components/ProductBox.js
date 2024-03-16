@@ -102,7 +102,7 @@ export default function ProductBox({ ...product }) {
             target="_blank"
             rel="noopener noreferrer"
             title={"Realizar pedido por Whatsapp"}
-            secondary={1}
+            $secondary={1}
           >
             <WhatsappIcon height={25} width={25} />
             PEDIR

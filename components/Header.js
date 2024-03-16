@@ -34,11 +34,6 @@ const StaledLink = styled(Link)`
   display: flex;
   text-decoration: none;
   color: ${grey};
-  ${(props) =>
-    props.hidden &&
-    css`
-      display: none;
-    `};
 `;
 
 const StylesSpan = styled.div`

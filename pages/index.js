@@ -8,11 +8,26 @@ import Brands from "@/components/Brands";
 import { dataCarousel } from "@/resource/data";
 import Testimonios from "@/components/Testimonios";
 import Layout from "@/components/Layout";
+import { useEffect, useState } from "react";
+import { Loading } from "@/components/Loading";
 
 export default function HomePage({ newProducts, categories }) {
+  const [isUpLoanding, setIsUpLoanding] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsUpLoanding(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (isUpLoanding) {
+    return <Loading size={80} />;
+  }
+
   return (
     <Layout
-      title="B.R.D | QUEVEDO - HOME"
+      title="B.R.D | INICIO"
       description="Tienda de repuestos y accesorios originales de moto en Quevedo"
     >
       <CategoriesComponent categories={categories} />

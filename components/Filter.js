@@ -102,7 +102,7 @@ const Filter = ({ data }) => {
   useEffect(() => {
     filterSearch({
       router,
-      search: search ? search.toLowerCase() : "",
+      search: search ? search.toLowerCase() : "all",
     });
   }, [search]);
 

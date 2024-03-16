@@ -21,20 +21,20 @@ export const ButtonStyle = css`
     height: 16px;
   }
   ${(props) =>
-    props.block &&
+    props.$block &&
     css`
       display: block;
       width: 100%;
     `};
   ${(props) =>
-    props.white &&
+    props.$white &&
     !props.$outline &&
     css`
       background-color: ${white};
       color: ${black};
     `};
   ${(props) =>
-    props.option &&
+    props.$option &&
     css`
       font-size: 1.2rem;
       background-color: transparent;
@@ -51,7 +51,7 @@ export const ButtonStyle = css`
       }
     `};
   ${(props) =>
-    props.white &&
+    props.$white &&
     props.$outline &&
     css`
       background-color: transparent;
@@ -64,7 +64,7 @@ export const ButtonStyle = css`
       }
     `};
   ${(props) =>
-    props.primary &&
+    props.$primary &&
     !props.$outline &&
     css`
       background-color: ${primary};
@@ -77,7 +77,7 @@ export const ButtonStyle = css`
       }
     `};
   ${(props) =>
-    props.primary &&
+    props.$primary &&
     props.$outline &&
     css`
       background-color: transparent;
@@ -90,7 +90,7 @@ export const ButtonStyle = css`
       }
     `};
   ${(props) =>
-    props.secondary &&
+    props.$secondary &&
     !props.$outline &&
     css`
       background-color: ${secondary};
@@ -98,7 +98,7 @@ export const ButtonStyle = css`
       border: 1px solid ${secondary};
     `};
   ${(props) =>
-    props.secondary &&
+    props.$secondary &&
     props.$outline &&
     css`
       background-color: transparent;
@@ -137,13 +137,13 @@ export const ButtonStyle = css`
     border: 1px solid ${black};
   }
   ${(props) =>
-    props.size === "l" &&
+    props.$size === "l" &&
     css`
       font-size: 1.2rem;
       padding: 10px 15px;
     `};
   ${(props) =>
-    props.size === "m" &&
+    props.$size === "m" &&
     css`
       font-size: 1rem;
       padding: 10px 15px;

@@ -33,13 +33,13 @@ const Box = styled.div`
   padding: 20px;
   height: fit-content;
   ${(props) =>
-    props.boxblack &&
+    props.$boxblack &&
     css`
       background-color: ${black};
       color: ${white};
     `};
   ${(props) =>
-    props.boxwhite &&
+    props.$boxwhite &&
     css`
       background-color: ${white};
       box-shadow: 1px 4px 20px rgb(0 0 0 / 50%);
@@ -81,7 +81,7 @@ export default function DeliveryPage({ categories }) {
           <Title>Información</Title>
         </FlexStyled>
         <Wrapper>
-          <Box boxwhite={1}>
+          <Box $boxwhite={1}>
             <h3>¿Cómo Comprar?</h3>
             <p>Para realizar tus compras vía web, solo sigue estos pasos:</p>
             <span>- Ingresa a www.boderoracing.com</span>
@@ -96,7 +96,7 @@ export default function DeliveryPage({ categories }) {
             </span>
             <span>- Especificar el método de pago</span>
           </Box>
-          <Box boxwhite={1}>
+          <Box $boxwhite={1}>
             <h3>Formas de pago aceptadas</h3>
             <p>
               En Boderoracing.com, nos complace ofrecerte opciones de pago para
@@ -125,8 +125,8 @@ export default function DeliveryPage({ categories }) {
               posible. No dudes en contactarnos si tienes alguna pregunta o
               necesitas asistencia adicional durante el proceso de compra.
             </p>
-          </Box>{" "}
-          <Box boxwhite={1}>
+          </Box>
+          <Box $boxwhite={1}>
             <h3>Tiempos de Entrega</h3>
             <p>
               Utilizamos los servicios de Servientrega o transporte público para

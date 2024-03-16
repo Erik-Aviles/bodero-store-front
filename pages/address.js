@@ -53,12 +53,14 @@ const MapWrapper = styled.div`
   border: 1px solid rgba(132, 135, 137, 0.1);
 `;
 
-export default function address({ categories }) {
+export default function AddressPage({ categories }) {
   const router = useRouter();
+
   const handleGoBack = (e) => {
     e.preventDefault();
     router.back();
   };
+
   return (
     <Layout
       title="B.R.D | Cómo llegar"

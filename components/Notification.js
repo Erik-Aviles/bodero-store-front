@@ -25,12 +25,12 @@ const NotifContainer = styled.div`
   }
 
   ${(props) =>
-    props.success &&
+    props.$success &&
     css`
       background-color: ${success};
     `};
   ${(props) =>
-    props.showError &&
+    props.$showError &&
     css`
       background-color: ${error};
     `};
@@ -48,11 +48,11 @@ export function Notification({ status, msj }) {
   return (
     <>
       {status === "success" ? (
-        <NotifContainer success={1}>
+        <NotifContainer $success={1}>
           <p>{msj}</p>
         </NotifContainer>
       ) : (
-        <NotifContainer showError={1}>
+        <NotifContainer $showError={1}>
           <p>{msj}</p>
         </NotifContainer>
       )}
