@@ -104,7 +104,7 @@ const Filter = ({ data }) => {
       router,
       search: search ? search.toLowerCase() : "all",
     });
-  }, [search, router]);
+  }, [search]);
 
   return (
     <WrapperProductFilter>

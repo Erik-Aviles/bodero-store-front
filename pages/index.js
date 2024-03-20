@@ -48,7 +48,7 @@ export async function getServerSideProps() {
   });
   const newProducts = await Product.find({}, null, {
     sort: { _id: -1 },
-    limit: 9,
+    limit: 10,
   });
 
   return {

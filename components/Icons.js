@@ -5,17 +5,18 @@ export const BackIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
+    stroke="currentColor"
+    strokeWidth={1.5}
+    className="w-6 h-6"
     viewBox="0 0 24 24"
     width="2em"
-    height="3.5em"
+    height="2em"
     {...props}
   >
     <path
-      stroke="#ff0810"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth={1.5}
-      d="m15 7-5 5 5 5"
+      d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
     />
   </svg>
 );

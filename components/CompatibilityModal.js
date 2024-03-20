@@ -4,6 +4,7 @@ import {
   error,
   grey,
   greylight,
+  primary,
   success,
   white,
 } from "@/lib/colors";
@@ -71,10 +72,10 @@ const ModalArticle = styled.article`
 `;
 const ModalTextCompatibily = styled.p`
   margin: 0 0 4px;
-  color: ${grey};
+  color: ${primary};
 `;
 const ModalListCompatibily = styled.span`
-  color: ${greylight};
+  color: ${grey};
   margin: 0;
   font-size: 0.7rem;
   word-break: break-all;

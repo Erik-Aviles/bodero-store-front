@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { mongooseConnect } from "@/lib/mongoose";
 import { grey, greylight, primary, success } from "@/lib/colors";
@@ -5,18 +6,19 @@ import ProductImages from "@/components/ProductImages";
 import WhiteBox from "@/components/WhiteBox";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
-import styled from "styled-components";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import CompatibilityModal from "@/components/CompatibilityModal";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Layout from "@/components/Layout";
+import { FlexStyled } from "@/components/stylesComponents/Flex";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
 const ColWrapper = styled.div`
+  font-size: 1rem;
   display: grid;
   grid-template-columns: 1fr;
   @media screen and (min-width: 768px) {
@@ -25,10 +27,13 @@ const ColWrapper = styled.div`
   gap: 40px;
 `;
 const Title = styled.h2`
-  font-size: 1.8rem;
+  font-size: 1rem;
   font-weight: 700;
   margin: 0 0 5px;
   color: ${primary};
+  @media screen and (min-width: 640px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const Row = styled.div`
@@ -48,7 +53,7 @@ const InfoText = styled.p`
   border-bottom: 1px solid;
   border-color: ${greylight};
   color: ${grey};
-  line-height: 1.4rem;
+  line-height: 1rem;
 `;
 const InfoTitle = styled.div`
   display: flex;
@@ -75,7 +80,7 @@ const Info = styled.div`
 `;
 
 const Price = styled.span`
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 600;
 `;
 
@@ -91,7 +96,9 @@ export default function ProductPage({ product, categories }) {
     <Layout title={`B.R.D | ${product?.title?.toUpperCase()}`}>
       <CategoriesComponent categories={categories} />
       <CenterDiv>
-        <BackButton onClick={handleGoBack} />
+        <FlexStyled>
+          <BackButton onClick={handleGoBack} />
+        </FlexStyled>
         <ColWrapper>
           <WhiteBox>
             <ProductImages images={product?.images} name={product?.title} />
