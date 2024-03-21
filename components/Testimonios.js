@@ -116,18 +116,6 @@ const Testimonios = () => {
                 <WrapperText>
                   <Text>{testimony}</Text>
                 </WrapperText>
-                <WrapperFooterTestimonial>
-                  {socialmedia?.length > 0 &&
-                    socialmedia.map(({ img, name }) => (
-                      <Image
-                        src={img}
-                        key={name}
-                        alt={name}
-                        width={25}
-                        height={25}
-                      />
-                    ))}
-                </WrapperFooterTestimonial>
               </WrapperArticle>
             )
           )}

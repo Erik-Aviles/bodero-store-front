@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Center from "./stylesComponents/Center";
 import { grey } from "@/lib/colors";
-import { TitleH4 } from "./stylesComponents/TitleH4";
 
 const WrapperProductFilter = styled.div`
   margin: 0 20px 20px;

@@ -9,14 +9,14 @@ import slide2 from "../public/images/slide/slinder2.jpg";
 import slide3 from "../public/images/slide/slinder3.jpg";
 import slide4 from "../public/images/slide/slinder4.jpg";
 import slide5 from "../public/images/slide/slinder5.jpg";
-import brand1 from "../public/images/brands/Honda-Logo.png";
-import brand2 from "../public/images/brands/Bajaj-Logo.png";
-import brand3 from "../public/images/brands/Suzuki-Logo.png";
-import brand4 from "../public/images/brands/KTM-Logo.png";
-import brand5 from "../public/images/brands/Benelli-Logo.png";
-import brand6 from "../public/images/brands/Kawasaki-Logo.png";
-import brand7 from "../public/images/brands/Yamaha-Logo.png";
-import brand8 from "../public/images/brands/Ducati-Logo.png";
+import honda from "../public/images/brands/Honda-Logo.png";
+import bajaj from "../public/images/brands/Bajaj-Logo.png";
+import suzuki from "../public/images/brands/Suzuki-Logo.png";
+import ktm from "../public/images/brands/KTM-Logo.png";
+import benelli from "../public/images/brands/Benelli-Logo.png";
+import kawasaki from "../public/images/brands/Kawasaki-Logo.png";
+import yamaha from "../public/images/brands/Yamaha-Logo.png";
+import ducati from "../public/images/brands/Ducati-Logo.png";
 import info1 from "../public/images/information/grupo.png";
 import info2 from "../public/images/information/lista-de-verificacion.png";
 import info3 from "../public/images/information/mapa.png";
@@ -82,42 +82,42 @@ export const brands = [
   {
     id: crypto.randomUUID(),
     name: "Honda",
-    src: brand1,
+    src: honda,
   },
   {
     id: crypto.randomUUID(),
     name: "Bajab",
-    src: brand2,
+    src: bajaj,
   },
   {
     id: crypto.randomUUID(),
     name: "Suzuki",
-    src: brand3,
-  },
-  {
-    id: crypto.randomUUID(),
-    name: "IGM",
-    src: brand4,
+    src: suzuki,
   },
   {
     id: crypto.randomUUID(),
     name: "KTM",
-    src: brand5,
+    src: ktm,
   },
   {
     id: crypto.randomUUID(),
     name: "Benelli",
-    src: brand6,
+    src: benelli,
   },
   {
     id: crypto.randomUUID(),
     name: "Kawasaki",
-    src: brand7,
+    src: kawasaki,
   },
   {
     id: crypto.randomUUID(),
     name: "Yamaha",
-    src: brand8,
+    src: yamaha,
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Ducati",
+    src: ducati,
   },
 ];
 

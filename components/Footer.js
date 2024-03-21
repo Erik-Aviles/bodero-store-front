@@ -32,7 +32,7 @@ const WrapperFooterSpan = styled.span`
   text-align: center;
   font: small-caption;
   img {
-    width: auto;
+    width: 35%;
     height: auto;
   }
   font-size: 12px;
@@ -113,12 +113,7 @@ export default function Footer() {
           <Image alt="Logo B.D.R" src={logoLetras} />
         </Logo>
         <WrapperFooterSpan>
-          <Image
-            width={300 / 4}
-            height={100 / 4}
-            src={betimes}
-            alt="Logo de Betimes Company"
-          />
+          <Image src={betimes} alt="Logo de Betimes Company" />
           Diseño y Desarrollo Web - © 2024
         </WrapperFooterSpan>
       </WrapperFooter>

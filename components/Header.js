@@ -1,6 +1,6 @@
-import { LogoFull, LogoLetters } from "./Logo";
+import { LogoFull } from "./Logo";
 import styled, { css } from "styled-components";
-import { black, grey, primary, white } from "@/lib/colors";
+import { grey, white } from "@/lib/colors";
 import Link from "next/link";
 import { ProductIcon, WhatsappIcon } from "./Icons";
 import InformationHeader from "./InformationHeader";

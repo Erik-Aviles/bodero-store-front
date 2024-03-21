@@ -1,20 +1,22 @@
-import styled from "styled-components";
 import Center from "./stylesComponents/Center";
 import Title from "./stylesComponents/Title";
-import { BackgroundColor, black, white } from "@/lib/colors";
+import { BackgroundColor, black } from "@/lib/colors";
 import { brands } from "@/resource/data";
 import Image from "next/image";
+import styled from "styled-components";
 
 const Wrapper = styled.section`
-  background-image: url("https://yamaha-motor.com/images/mock-homepage/homepage_bu_1.png");
+  background-image: url("images/brands/background.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  width: 100%;
+  width: 100vw;
   height: auto;
   h2 {
-    color: ${white};
     padding-top: 20px;
+  }
+  @media screen and (min-width: 640px) {
+    height: 100vh;
   }
 `;
 const BrandsWrapper = styled.div`

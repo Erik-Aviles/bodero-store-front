@@ -4,6 +4,8 @@ import ButtonLink from "./buttonComponents/ButtonLink";
 import { WhatsappIcon } from "./Icons";
 import Image from "next/image";
 import emptyimage from "../public/images/vacio.png";
+import awsS3Loader from "./awsS3Loader";
+import localLoader from "./localLoader";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -73,6 +75,7 @@ export default function ProductBox({ ...product }) {
     <ProductWrapper>
       <ImageBox>
         <ItemImage
+          loader={product?.images?.[0] ? awsS3Loader : localLoader}
           src={product?.images?.[0] ? product?.images?.[0] : emptyimage}
           alt={product?.title.toUpperCase()}
           title={product?.title.toUpperCase()}

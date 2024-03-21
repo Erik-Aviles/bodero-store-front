@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import emptyimage from "../public/images/vacio.png";
 import Image from "next/image";
 import Spinner from "./Spinner";
+import awsS3Loader from "./awsS3Loader";
 
 const BigImageWrapper = styled.div`
   width: 100%;
@@ -70,7 +71,13 @@ export default function ProductImages({ images, name }) {
   return (
     <>
       <BigImageWrapper>
-        <BigImage src={activeImage} alt={name} width={300} height={300} />
+        <BigImage
+          loader={awsS3Loader}
+          src={activeImage}
+          alt={name}
+          width={300}
+          height={300}
+        />
       </BigImageWrapper>
       <ImageButtons>
         {isUpLoanding

@@ -1,15 +1,21 @@
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Image from "next/image";
-import logo from "../public/logo.jpg";
+import logo from "@/public/logo.jpg";
+import horizontal1 from "@/public/images/about-us/horizontal1.jpg";
+import horizontal2 from "@/public/images/about-us/horizontal2.jpg";
+import vertical1 from "@/public/images/about-us/vertical1.jpg";
+import vertical2 from "@/public/images/about-us/vertical2.jpg";
+import vertical4 from "@/public/images/about-us/vertical4.jpg";
 import Title from "@/components/stylesComponents/Title";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/navigation";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
+import { greylight } from "@/lib/colors";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -25,10 +31,55 @@ const Wrapper = styled.div`
 `;
 const SectionImagen = styled.section`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 5px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: 0.1rem;
   padding: 8px;
+`;
+const BoxImage = styled.figure`
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  ${(props) =>
+    props.$uno &&
+    css`
+      grid-column: 1/3;
+      grid-row: 1/3;
+    `};
+  ${(props) =>
+    props.$dos &&
+    css`
+      grid-column: 3/5;
+      grid-row: 1/3;
+    `};
+  ${(props) =>
+    props.$tres &&
+    css`
+      grid-column: 5/7;
+      grid-row: 1/3;
+    `};
+  ${(props) =>
+    props.$cuatro &&
+    css`
+      grid-column: 1/4;
+      grid-row: 3/4;
+    `};
+  ${(props) =>
+    props.$cinco &&
+    css`
+      grid-column: 4/7;
+      grid-row: 3/4;
+    `};
+  img {
+    width: 100%;
+    height: auto;
+  }
+  figcaption {
+    color: ${greylight};
+    font-size: 0.8rem;
+    align-self: center;
+    margin-top: 0.2rem;
+  }
 `;
 const SectionText = styled.section`
   padding: 0 20px;
@@ -65,34 +116,26 @@ export default function AboutUsPage({ categories }) {
         </FlexStyled>
         <Wrapper>
           <SectionImagen>
-            <Image
-              alt="Logo B.D.R"
-              layout="responsive"
-              src={logo}
-              width={300}
-              height={140}
-            />
-            <Image
-              alt="Logo B.D.R"
-              layout="responsive"
-              src={logo}
-              width={300}
-              height={140}
-            />
-            <Image
-              alt="Logo B.D.R"
-              layout="responsive"
-              src={logo}
-              width={300}
-              height={140}
-            />
-            <Image
-              alt="Logo B.D.R"
-              layout="responsive"
-              src={logo}
-              width={300}
-              height={140}
-            />
+            <BoxImage $uno>
+              <Image alt="Taller B.D.R" src={vertical1} />
+              <figcaption>{"Area del taller"}</figcaption>
+            </BoxImage>
+            <BoxImage $dos>
+              <Image alt="Logo B.D.R" src={vertical2} />
+              <figcaption>{"Monitoreo digital"}</figcaption>
+            </BoxImage>
+            <BoxImage $tres>
+              <Image alt="Logo B.D.R" src={vertical4} />
+              <figcaption>{"Stok de productos"}</figcaption>
+            </BoxImage>
+            <BoxImage $cuatro>
+              <Image alt="Logo B.D.R" src={horizontal1} />
+              <figcaption>{"Area telescopica"}</figcaption>
+            </BoxImage>
+            <BoxImage $cinco>
+              <Image alt="Logo B.D.R" src={horizontal2} />
+              <figcaption>{"Checkeo computarizado"}</figcaption>
+            </BoxImage>
           </SectionImagen>
           <SectionText>
             <p>
