@@ -149,12 +149,13 @@ export default function DeliveryPage({ categories }) {
     </Layout>
   );
 }
-export async function getServerSideProps() {
+export async function getStaticProps() {
   await mongooseConnect();
   const categories = await Category.find({}, null, { sort: { _id: -1 } });
   return {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
     },
+    revalidate: 10,
   };
 }
