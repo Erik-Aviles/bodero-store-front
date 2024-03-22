@@ -10,7 +10,7 @@ const Wrapper = styled.section`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  width: 100vw;
+  width: 100%;
   height: auto;
   h2 {
     padding-top: 20px;
