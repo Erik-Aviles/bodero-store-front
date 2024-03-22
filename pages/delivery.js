@@ -156,6 +156,5 @@ export async function getStaticProps() {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
     },
-    revalidate: 10,
   };
 }

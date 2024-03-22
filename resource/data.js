@@ -1,4 +1,3 @@
-import { FacebookIcon } from "@/components/Icons";
 import * as React from "react";
 import avatar1 from "../public/images/testimonials/avatar1.png";
 import avatar2 from "../public/images/testimonials/avatar2.jpg";

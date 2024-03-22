@@ -54,6 +54,5 @@ export async function getStaticProps() {
     props: {
       newProducts: JSON.parse(JSON.stringify(newProducts)),
     },
-    revalidate: 10,
   };
 }
