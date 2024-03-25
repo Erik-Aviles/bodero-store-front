@@ -1,34 +1,19 @@
-import { black, primary } from "@/lib/colors";
 import { useState, useEffect, useRef } from "react";
-import styled, { keyframes } from "styled-components";
-
-const spinAnimation = keyframes`
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-`;
+import { black, primary } from "@/lib/colors";
+import Head from "next/head";
+import styled from "styled-components";
+import { RiseLoader } from "react-spinners";
 
 const LoaderContainert = styled.div`
   background-color: ${black};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
 `;
 
-const LoaderCircle = styled.div`
-  display: inline-block; /* Muestra el círculo como un bloque en línea */
-  border: 3px solid #f3f3f3; /* Light grey */
-  border-top: 3px solid ${primary}; /* Blue */
-  border-radius: 50%;
-  position: absolute;
-  color: white;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  animation: ${spinAnimation} 1s linear infinite;
-`;
-
 export const Loading = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  /* const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const images = Array.from(document.images);
     let loadedImagesCount = 0;
@@ -55,11 +40,16 @@ export const Loading = () => {
         image.removeEventListener("onload", handleImageLoaded);
       });
     };
-  }, []);
+  }, []); */
 
   return (
-    <LoaderContainert style={{ display: isLoading ? "block" : "none" }}>
-      <LoaderCircle />
-    </LoaderContainert>
+    <>
+      <Head>
+        <title>B.R.D | Cargando...</title>
+      </Head>
+      <LoaderContainert>
+        <RiseLoader color={primary} speedMultiplier={1} size={7} />;
+      </LoaderContainert>
+    </>
   );
 };

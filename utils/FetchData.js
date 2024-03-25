@@ -9,7 +9,7 @@ export const getData = async (url) => {
 
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error.message);
+    console.error("Error al obtener los datos :", error.message);
     throw error; // Re-lanza el error para que pueda ser manejado por el código que llama a esta función
   }
 };

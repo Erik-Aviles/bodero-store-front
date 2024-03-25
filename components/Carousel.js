@@ -73,11 +73,11 @@ const Carousel = ({ data }) => {
         <ContainerImages>
           <List style={{ transform: `translateX(-${index * 100}%)` }}>
             {data.map((item, index) => (
-              <li key={item.id}>
+              <li key={`${item.id.getTime()}-${index}`}>
                 <Img
                   width={960}
                   height={314}
-                  alt={`Promo ${item.id}`}
+                  alt={`Promo ${item.name}`}
                   src={item.imgUrl}
                 />
               </li>

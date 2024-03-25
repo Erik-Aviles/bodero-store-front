@@ -89,7 +89,7 @@ export default function ContactPage({ categories }) {
   };
 
   return (
-    <Layout title="B.R.D | Contacto">
+    <Layout title="B.R.D | Contactenos">
       <CategoriesComponent categories={categories} />
       <CenterDiv>
         <FlexStyled>
@@ -187,5 +187,6 @@ export async function getStaticProps() {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
     },
+    revalidate: 5,
   };
 }

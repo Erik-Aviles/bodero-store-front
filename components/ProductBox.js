@@ -5,7 +5,7 @@ import { WhatsappIcon } from "./Icons";
 import Image from "next/image";
 import emptyimage from "../public/images/vacio.png";
 import awsS3Loader from "./awsS3Loader";
-import localLoader from "./localLoader";
+import { localLoader } from "./localLoader";
 
 const ProductWrapper = styled.div`
   width: 18rem;

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";
+import Center from "@/components/stylesComponents/Center";
 
 const Custom404 = () => {
   const router = useRouter();
@@ -17,8 +18,10 @@ const Custom404 = () => {
 
   return (
     <Layout>
-      <TitleH4>404 - Página no encontrada</TitleH4>
-      <p>¡Serás redirigido a la página de inicio en unos segundos!</p>
+      <Center>
+        <TitleH4>404 - Página no encontrada</TitleH4>
+        <p>¡Serás redirigido a la página de inicio en unos segundos!</p>
+      </Center>
     </Layout>
   );
 };

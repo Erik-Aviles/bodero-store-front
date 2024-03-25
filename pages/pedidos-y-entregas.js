@@ -73,7 +73,7 @@ export default function DeliveryPage({ categories }) {
     router.back();
   };
   return (
-    <Layout title="B.R.D | Contactos">
+    <Layout title="B.R.D | Pedidos y Entregas">
       <CategoriesComponent categories={categories} />
       <CenterDiv>
         <FlexStyled>
@@ -156,5 +156,6 @@ export async function getStaticProps() {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
     },
+    revalidate: 5,
   };
 }

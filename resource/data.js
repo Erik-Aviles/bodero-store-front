@@ -25,30 +25,30 @@ import facebook from "../public/svg/facebook.svg";
 
 export const InfoData = [
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Quiénes somos",
-    href: "/about-us",
+    href: "/quienes-somos",
     src: info1,
     description: "Conoce nuestra historia y quienes somos",
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Pedidos y entregas",
-    href: "/delivery",
+    href: "/pedidos-y-entregas",
     src: info2,
     description: "Conoce nuestro método de pedidos y entrega ",
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Cómo llegar?",
-    href: "/address",
+    href: "/como-llegar",
     src: info3,
     description: "Conoce la dirección en donde estamos ubicados",
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Contáctenos",
-    href: "/contact",
+    href: "/contactenos",
     src: info4,
     description: "Tienes una duda, ingresa aquí",
   },
@@ -56,65 +56,65 @@ export const InfoData = [
 
 export const dataCarousel = [
   {
-    id: 1,
+    id: new Date(),
     imgUrl: slide1,
   },
   {
-    id: 2,
+    id: new Date(),
     imgUrl: slide2,
   },
   {
-    id: 3,
+    id: new Date(),
     imgUrl: slide3,
   },
   {
-    id: 4,
+    id: new Date(),
     imgUrl: slide4,
   },
   {
-    id: 5,
+    id: new Date(),
     imgUrl: slide5,
   },
 ];
 
 export const brands = [
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Honda",
     src: honda,
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Bajab",
     src: bajaj,
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Suzuki",
     src: suzuki,
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "KTM",
     src: ktm,
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Benelli",
     src: benelli,
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Kawasaki",
     src: kawasaki,
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Yamaha",
     src: yamaha,
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     name: "Ducati",
     src: ducati,
   },
@@ -122,7 +122,7 @@ export const brands = [
 
 export const testimonials = [
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     avatar: avatar1,
     name: "Carlos Pereira",
     testimony:
@@ -133,7 +133,7 @@ export const testimonials = [
     ],
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     avatar: avatar2,
     name: "Margarito Villares",
     testimony:
@@ -144,7 +144,7 @@ export const testimonials = [
     ],
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     avatar: avatar3,
     name: "Antonio Anzules",
     testimony:
@@ -155,7 +155,7 @@ export const testimonials = [
     ],
   },
   {
-    id: crypto.randomUUID(),
+    id: new Date(),
     avatar: avatar4,
     name: "Felix Arboleda",
     testimony:

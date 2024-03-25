@@ -1,3 +1,4 @@
+"use client";
 export default function awsS3Loader({ src, width, quality }) {
   const url = new URL(`${src}`);
   url.searchParams.set("format", "auto");

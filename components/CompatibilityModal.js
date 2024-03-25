@@ -77,7 +77,7 @@ const ModalTextCompatibily = styled.p`
 const ModalListCompatibily = styled.span`
   color: ${grey};
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   word-break: break-all;
   display: flex;
   flex-direction: column;
