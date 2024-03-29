@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import ProductsGrid from "@/components/ProductsGrid";
-import { mongooseConnect } from "@/lib/mongoose";
 import styled, { css } from "styled-components";
 import filterSearch from "@/utils/filterSearch";
 import { grey, secondary } from "@/lib/colors";
-import { Category } from "@/models/Category";
-import { getData } from "@/utils/FetchData";
 import Button from "@/components/buttonComponents/Button";
 import { useRouter } from "next/router";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
@@ -15,6 +12,7 @@ import Layout from "@/components/Layout";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
+import { DataContext } from "@/context/DataContext";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -53,7 +51,9 @@ const Divider = styled.span`
   padding-right: 0.3rem;
 `;
 
-export default function CategoriesPage({ categories, products, result }) {
+export default function CategoriesPage({ products, result }) {
+  const { data } = useContext(DataContext);
+  const { categories } = data;
   const [product, setProducts] = useState(products);
   const [page, setPage] = useState(1);
 
@@ -127,27 +127,53 @@ export default function CategoriesPage({ categories, products, result }) {
   );
 }
 
-export async function getServerSideProps({ query }) {
-  await mongooseConnect();
+function buildUrl(baseUrl, query) {
+  const url = new URL(baseUrl);
 
   const page = query.page || 1;
   const category = query.category || "all";
   const sort = query.sort || "";
-  const search = query.search || "all";
+  const search = query.search;
 
-  const categories = await Category.find({}, null, { sort: { _id: -1 } });
+  url.searchParams.set("page", page);
+  url.searchParams.set("category", category);
+  url.searchParams.set("sort", sort);
 
-  const res = await getData(
-    `products?limit=${
-      page * 10
-    }&category=${category}&sort=${sort}&title=${search}`
-  );
+  if (search !== undefined) {
+    url.searchParams.set("search", search);
+  }
 
-  return {
-    props: {
-      products: res.products,
-      result: res.result,
-      categories: JSON.parse(JSON.stringify(categories)),
-    },
-  };
+  return url.toString();
+}
+export async function getServerSideProps(context) {
+  const { query } = context;
+  const apiUrl = `${process.env.PUBLIC_URL}/api/products`;
+  const finalUrl = buildUrl(apiUrl, query);
+
+  try {
+    const response = await fetch(finalUrl, {
+      headers: {
+        "Content-Type": "application/json", // Ejemplo de otro encabezado
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return {
+      props: {
+        products: data.products,
+        result: data.result,
+      },
+    };
+  } catch (error) {
+    console.error("Error al obtener los datos:", error);
+    return {
+      props: {
+        error: "Error al obtener los datos ",
+      },
+    };
+  }
 }

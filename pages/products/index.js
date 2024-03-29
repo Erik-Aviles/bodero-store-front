@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import fetch from "isomorphic-unfetch";
 import ProductsGrid from "@/components/ProductsGrid";
 import { DataContext } from "@/context/DataContext";
 import filterSearch from "@/utils/filterSearch";
@@ -79,22 +80,53 @@ export default function ProductsPage({ products, result }) {
   );
 }
 
-export async function getServerSideProps({ query }) {
+function buildUrl(baseUrl, query) {
+  const url = new URL(baseUrl);
+
   const page = query.page || 1;
   const category = query.category || "all";
   const sort = query.sort || "";
-  const search = query.search || "all";
+  const search = query.search;
 
-  const res = await getData(
-    `products?limit=${
-      page * 18
-    }&category=${category}&sort=${sort}&title=${search}`
-  );
+  url.searchParams.set("page", page);
+  url.searchParams.set("category", category);
+  url.searchParams.set("sort", sort);
 
-  return {
-    props: {
-      products: res.products,
-      result: res.result,
-    },
-  };
+  if (search !== undefined) {
+    url.searchParams.set("search", search);
+  }
+
+  return url.toString();
+}
+export async function getServerSideProps(context) {
+  const { query } = context;
+  const apiUrl = `${process.env.PUBLIC_URL}/api/products`;
+  const finalUrl = buildUrl(apiUrl, query);
+
+  try {
+    const response = await fetch(finalUrl, {
+      headers: {
+        "Content-Type": "application/json", // Ejemplo de otro encabezado
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return {
+      props: {
+        products: data.products,
+        result: data.result,
+      },
+    };
+  } catch (error) {
+    console.error("Error al obtener los datos:", error);
+    return {
+      props: {
+        error: "Error al obtener los datos ",
+      },
+    };
+  }
 }
