@@ -1,7 +1,7 @@
+import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { black, primary } from "@/lib/colors";
 import Head from "next/head";
-import styled from "styled-components";
 import { RiseLoader } from "react-spinners";
 
 const LoaderContainert = styled.div`
@@ -48,7 +48,7 @@ export const Loading = () => {
         <title>B.R.D | Cargando...</title>
       </Head>
       <LoaderContainert>
-        <RiseLoader color={primary} speedMultiplier={1} size={7} />;
+        <RiseLoader color={primary} speedMultiplier={1} size={7} />
       </LoaderContainert>
     </>
   );

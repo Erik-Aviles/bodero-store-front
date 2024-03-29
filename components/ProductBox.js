@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { error, success, white } from "@/lib/colors";
+import styled, { css } from "styled-components";
+import { error, grey, success, white } from "@/lib/colors";
 import ButtonLink from "./buttonComponents/ButtonLink";
 import { WhatsappIcon } from "./Icons";
 import Image from "next/image";
 import emptyimage from "../public/images/vacio.png";
 import awsS3Loader from "./awsS3Loader";
-import { localLoader } from "./localLoader";
+import localLoader from "./localLoader";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -42,7 +42,7 @@ const ProductInfoBox = styled.div`
   p {
     font-size: 0.8rem;
     line-height: 1.2rem;
-    height: 52px;
+    max-height: 52px;
     overflow: hidden;
     margin: 0;
   }
@@ -61,16 +61,31 @@ const Row = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 5px 0;
-  span {
-    font-size: 0.8rem;
-  }
 `;
 const Price = styled.div`
   font-size: 1.2rem;
   font-weight: 600;
 `;
+const SpanCard = styled.span`
+  font-size: 0.7rem;
+  ${(props) =>
+    props.$error &&
+    css`
+      color: ${error};
+    `};
+  ${(props) =>
+    props.$success &&
+    css`
+      color: ${success};
+    `};
+  ${(props) =>
+    props.$brand &&
+    css`
+      color: ${grey};
+    `};
+`;
 
-export default function ProductBox({ ...product }) {
+export function ProductBox({ ...product }) {
   return (
     <ProductWrapper>
       <ImageBox>
@@ -88,11 +103,12 @@ export default function ProductBox({ ...product }) {
         <Row>
           <Price>${product?.salePrice}</Price>
           {product?.quantity === 0 ? (
-            <span style={{ color: error }}>¡Agotado!</span>
+            <SpanCard $error={1}>¡Agotado!</SpanCard>
           ) : (
-            <span style={{ color: success }}>¡En stock!</span>
+            <SpanCard $success={1}>¡En stock!</SpanCard>
           )}
         </Row>
+        <SpanCard $brand={1}>{product?.brand}</SpanCard>
         <p>{product?.description}</p>
         <Row>
           <ButtonLink href={`/product/${product._id}`} $black={1} $outline={1}>

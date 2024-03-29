@@ -1,8 +1,6 @@
-import React from "react";
-import CategoriesComponent from "@/components/CategoriesComponent";
-import { mongooseConnect } from "@/lib/mongoose";
 import styled, { css } from "styled-components";
-import { Category } from "@/models/Category";
+import React, { useContext, useEffect, useState } from "react";
+import CategoriesComponent from "@/components/CategoriesComponent";
 import { black, white } from "@/lib/colors";
 import Title from "@/components/stylesComponents/Title";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
@@ -10,6 +8,8 @@ import { useRouter } from "next/navigation";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
+import { DataContext } from "@/context/DataContext";
+import { Loading } from "@/components/Loading";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -66,12 +66,28 @@ const Box = styled.div`
   }
 `;
 
-export default function DeliveryPage({ categories }) {
+export default function DeliveryPage() {
+  const { categories } = useContext(DataContext);
   const router = useRouter();
+  const [isUpLoanding, setIsUpLoanding] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsUpLoanding(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
+
   const handleGoBack = (e) => {
     e.preventDefault();
     router.back();
   };
+
+  if (isUpLoanding) {
+    return <Loading />;
+  }
+
+  if (!categories) return <Loading />;
   return (
     <Layout title="B.R.D | Pedidos y Entregas">
       <CategoriesComponent categories={categories} />
@@ -148,14 +164,4 @@ export default function DeliveryPage({ categories }) {
       </CenterDiv>
     </Layout>
   );
-}
-export async function getStaticProps() {
-  await mongooseConnect();
-  const categories = await Category.find({}, null, { sort: { _id: -1 } });
-  return {
-    props: {
-      categories: JSON.parse(JSON.stringify(categories)),
-    },
-    revalidate: 5,
-  };
 }

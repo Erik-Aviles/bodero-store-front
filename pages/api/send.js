@@ -6,6 +6,12 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handle(req, res) {
+  /*   res.setHeader("Access-Control-Allow-Origin", "http://boderoracing.com");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  ); */
   try {
     const body = await req.body;
     const { name, email, phone, city, country, message } = body;

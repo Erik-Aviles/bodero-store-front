@@ -1,10 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import ProductsGrid from "@/components/ProductsGrid";
+import { useContext, useState } from "react";
 import { DataContext } from "@/context/DataContext";
 import filterSearch from "@/utils/filterSearch";
-import { getData } from "@/utils/FetchData";
 import Filter from "@/components/Filter";
-import Button from "@/components/buttonComponents/Button";
 import { useRouter } from "next/router";
 import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
@@ -14,6 +11,10 @@ import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
+import useSWR from "swr";
+import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
+import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
+import { ProductsGrid } from "@/components/ProductsGrid";
 
 const CenterSecction = css`
   heigth: auto;
@@ -32,33 +33,48 @@ const CenterSecction = css`
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-export default function SearchPage({ products, result }) {
-  const { data } = useContext(DataContext);
-  const [product, setProducts] = useState(products);
-
-  const [page, setPage] = useState(1);
+export default function SearchPage() {
+  const { categories } = useContext(DataContext);
   const router = useRouter();
+  const query = router.query;
+  const [pages, setPages] = useState(1);
+  const category = query.category || "all";
+  const sort = query.sort || "";
+  const search = query.search || "";
 
-  useEffect(() => {
-    setProducts(products);
-  }, [products]);
+  const { data, error } = useSWR(
+    `/api/products?page=${pages}&category=${category}&sort=${sort}&title=${search}`,
+    fetcher,
+    {
+      dedupingInterval: 2000,
+    }
+  );
 
-  useEffect(() => {
-    if (Object.keys(router.query).length === 0) setPage(1);
-  }, [router.query]);
+  if (error) return <div>Error al cargar los datos</div>;
 
-  const handleLoadmore = () => {
-    setPage(page + 1);
-    filterSearch({ router, page: page + 1 });
+  const handlePageChange = (newPage) => {
+    setPages(newPage);
+    filterSearch({ router, page: newPage });
   };
+
+  const hasNextPage = data?.products.length === 20;
 
   const brandNames = brands.map((brand) => brand.name);
   const brandNamesString = brandNames.join(", ");
 
   const handleGoBack = (e) => {
     e.preventDefault();
-    router.back();
+    if (router.query.page > 1) {
+      setPages(pages - 1);
+      filterSearch({ router, page: pages - 1 });
+    }
+    if (!router.query) {
+      router.push("/");
+    } else {
+      router.back();
+    }
   };
 
   return (
@@ -67,26 +83,34 @@ export default function SearchPage({ products, result }) {
       description={`Contammos con marcas reconocidas como: ${brandNamesString}`}
     >
       <CenterDiv>
-        <Filter data={data} />
-        {product?.length === 0 ? (
-          <TitleH4>Sin registro</TitleH4>
+        <Filter categories={categories} />
+        <FlexStyled>
+          <BackButton onClick={handleGoBack} />
+          <Title>Busqueda de productos </Title>
+        </FlexStyled>
+        {!data ? (
+          <SkeletorProducts />
+        ) : data?.products.length === 0 ? (
+          <TitleH4>Producto no registrado</TitleH4>
         ) : (
-          <>
-            <FlexStyled>
-              <BackButton onClick={handleGoBack} />
-              <Title>Busqueda de productos </Title>
-            </FlexStyled>
-            <ProductsGrid products={product} />
-          </>
+          <ProductsGrid products={data.products} />
         )}
-
-        {result < page * 20 ? (
-          ""
-        ) : (
+        {data?.products.length >= 20 && (
           <ButtonContainer>
-            <Button $black={1} $outline={1} $size="m" onClick={handleLoadmore}>
-              Cargar más
-            </Button>
+            <ButtonDisabled
+              $black
+              onClick={() => handlePageChange(pages - 1)}
+              disabled={pages === 1}
+            >
+              Anterior
+            </ButtonDisabled>
+            <ButtonDisabled
+              $white
+              onClick={() => handlePageChange(pages + 1)}
+              disabled={!hasNextPage}
+            >
+              Siguiente
+            </ButtonDisabled>
           </ButtonContainer>
         )}
       </CenterDiv>
@@ -94,7 +118,7 @@ export default function SearchPage({ products, result }) {
   );
 }
 
-export async function getServerSideProps({ query }) {
+/* export async function getServerSideProps({ query }) {
   const page = query.page || 1;
   const category = query.category || "all";
   const sort = query.sort || "";
@@ -113,3 +137,4 @@ export async function getServerSideProps({ query }) {
     },
   };
 }
+ */

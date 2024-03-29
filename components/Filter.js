@@ -78,21 +78,21 @@ const Input = styled.input`
   overflow: visible;
 `;
 
-const Filter = ({ data }) => {
+const Filter = ({ categories }) => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState("");
 
-  const { categories } = data;
-
   const router = useRouter();
 
   const handleCategory = (e) => {
+    e.preventDefault();
     setCategory(e.target.value);
     filterSearch({ router, category: e.target.value });
   };
 
   const handleSort = (e) => {
+    e.preventDefault();
     setSort(e.target.value);
     filterSearch({ router, sort: e.target.value });
   };
@@ -118,7 +118,7 @@ const Filter = ({ data }) => {
           </CustomSelect>
         </WrapperSelect>
 
-        <Customform autoComplete="off">
+        <Customform>
           <Input
             type="text"
             placeholder="Buscar..."

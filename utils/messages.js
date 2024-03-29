@@ -16,6 +16,7 @@ const messages = {
     emailSend: "Correo enviado con exito",
     msgSend: "Mensaje enviado con exito",
     passwordChanged: "Contraseña cambiada con exito",
+    successfullyObtainedData: "Datos obtenidos con éxito!",
     authorized: "Autorizado",
   },
 };

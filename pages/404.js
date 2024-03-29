@@ -17,7 +17,7 @@ const Custom404 = () => {
   }, [router]);
 
   return (
-    <Layout>
+    <Layout title="Redirigiendo al inicio">
       <Center>
         <TitleH4>404 - Página no encontrada</TitleH4>
         <p>¡Serás redirigido a la página de inicio en unos segundos!</p>

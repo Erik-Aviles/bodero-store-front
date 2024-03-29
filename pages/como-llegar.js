@@ -1,17 +1,17 @@
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { LocationIcon } from "@/components/Icons";
 import { black, white } from "@/lib/colors";
-import { mongooseConnect } from "@/lib/mongoose";
-import { Category } from "@/models/Category";
 import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
 import Map from "@/components/Map";
-import Head from "next/head";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/navigation";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
+import { DataContext } from "@/context/DataContext";
+import { useContext, useEffect, useState } from "react";
+import { Loading } from "@/components/Loading";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -53,13 +53,26 @@ const MapWrapper = styled.div`
   border: 1px solid rgba(132, 135, 137, 0.1);
 `;
 
-export default function AddressPage({ categories }) {
+export default function AddressPage() {
+  const { categories } = useContext(DataContext);
   const router = useRouter();
+  const [isUpLoanding, setIsUpLoanding] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsUpLoanding(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const handleGoBack = (e) => {
     e.preventDefault();
     router.back();
   };
+
+  if (isUpLoanding) {
+    return <Loading />;
+  }
 
   return (
     <Layout
@@ -90,14 +103,4 @@ export default function AddressPage({ categories }) {
       </CenterDiv>
     </Layout>
   );
-}
-export async function getStaticProps() {
-  await mongooseConnect();
-  const categories = await Category.find({}, null, { sort: { _id: -1 } });
-  return {
-    props: {
-      categories: JSON.parse(JSON.stringify(categories)),
-    },
-    revalidate: 5,
-  };
 }

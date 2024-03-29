@@ -1,7 +1,6 @@
-const baseUrl = process.env.NEXT_PUBLIC_URL;
 export const getData = async (url) => {
   try {
-    const response = await fetch(`${baseUrl}/api/${url}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${url}`, {
       method: "GET",
     });
 

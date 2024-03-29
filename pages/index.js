@@ -1,32 +1,28 @@
+import { DataContext } from "@/context/DataContext";
+import { useContext } from "react";
+import useSWR from "swr";
 import { Loading } from "@/components/Loading";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import NewProducts from "@/components/NewProducts";
-import { mongooseConnect } from "@/lib/mongoose";
 import Carousel from "@/components/Carousel";
-import { Product } from "@/models/Product";
 import Brands from "@/components/Brands";
 import { dataCarousel } from "@/resource/data";
 import Testimonios from "@/components/Testimonios";
 import Layout from "@/components/Layout";
-import { useContext, useEffect, useState } from "react";
-import { DataContext } from "@/context/DataContext";
 
-export default function HomePage({ newProducts }) {
-  const { data } = useContext(DataContext);
-  const { categories } = data;
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const [isUpLoanding, setIsUpLoanding] = useState(true);
+export default function HomePage() {
+  const { categories } = useContext(DataContext);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsUpLoanding(false);
-    }, 2000);
-    return () => clearTimeout(timeout);
-  }, []);
+  const { data, error } = useSWR(`/api/new-products`, fetcher, {
+    dedupingInterval: 2000,
+  });
 
-  if (isUpLoanding) {
-    return <Loading />;
-  }
+  if (error) return <div>Error al cargar los datos</div>;
+  if (!data) return <Loading />;
+
+  const newProducts = data?.newProducts;
 
   return (
     <Layout
@@ -40,19 +36,4 @@ export default function HomePage({ newProducts }) {
       <Testimonios />
     </Layout>
   );
-}
-
-export async function getStaticProps() {
-  await mongooseConnect();
-
-  const newProducts = await Product.find({}, null, {
-    sort: { _id: -1 },
-    limit: 10,
-  });
-
-  return {
-    props: {
-      newProducts: JSON.parse(JSON.stringify(newProducts)),
-    },
-  };
 }

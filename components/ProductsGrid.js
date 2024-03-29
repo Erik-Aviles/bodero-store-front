@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ProductBox from "./ProductBox";
+import { ProductBox } from "./ProductBox";
 
 const StyledProductsGrid = styled.div`
   display: flex;
@@ -8,7 +8,7 @@ const StyledProductsGrid = styled.div`
   margin: 20px 0;
 `;
 
-export default function ProductsGrid({ products }) {
+export function ProductsGrid({ products }) {
   return (
     <StyledProductsGrid>
       {products?.length > 0 &&

@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
-import CategoriesComponent from "@/components/CategoriesComponent";
-import ProductsGrid from "@/components/ProductsGrid";
-import { mongooseConnect } from "@/lib/mongoose";
 import styled, { css } from "styled-components";
+import { useContext, useState } from "react";
+import CategoriesComponent from "@/components/CategoriesComponent";
+import useSWR from "swr";
 import filterSearch from "@/utils/filterSearch";
 import { grey, secondary } from "@/lib/colors";
-import { Category } from "@/models/Category";
-import { getData } from "@/utils/FetchData";
-import Button from "@/components/buttonComponents/Button";
 import { useRouter } from "next/router";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
@@ -15,6 +11,10 @@ import Layout from "@/components/Layout";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
+import { DataContext } from "@/context/DataContext";
+import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
+import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
+import { ProductsGrid } from "@/components/ProductsGrid";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -37,6 +37,7 @@ const BreadCrumb = styled.span`
 `;
 
 const Text = styled.span`
+  text-transform: capitalize;
   color: ${grey};
   ${(props) =>
     props.$big &&
@@ -52,35 +53,43 @@ const Divider = styled.span`
   padding-left: 0.3rem;
   padding-right: 0.3rem;
 `;
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-export default function CategoriesPage({ categories, products, result }) {
-  const [product, setProducts] = useState(products);
-  const [page, setPage] = useState(1);
-
+export default function CategoriesPage() {
   const router = useRouter();
+  const { categories } = useContext(DataContext);
+  const [pages, setPages] = useState(1);
+  const query = router.query;
+  const category = query.category || "all";
+  const sort = query.sort || "";
+  const search = query.search || "all";
+
+  const { data, error } = useSWR(
+    `/api/products?page=${pages}&category=${category}&sort=${sort}&title=${search}`,
+    fetcher,
+    {
+      dedupingInterval: 2000,
+    }
+  );
+
+  const handlePageChange = (newPage) => {
+    setPages(newPage);
+    filterSearch({ router, page: newPage });
+  };
+
+  if (error) return <div>Error al cargar los datos</div>;
 
   const handleGoBack = (e) => {
     e.preventDefault();
     router.back();
   };
 
-  useEffect(() => {
-    setProducts(products);
-  }, [products]);
-
-  useEffect(() => {
-    if (Object.keys(router.query).length === 0) setPage(1);
-  }, [router.query]);
-
-  const handleLoadmore = () => {
-    setPage(page + 1);
-    filterSearch({ router, page: page + 1 });
-  };
+  const hasNextPage = data?.products.length === 20;
 
   const resultadoFiltrado = categories.filter((objeto) =>
     objeto._id.includes(router.query.category)
   );
-
+  const nameCategory = resultadoFiltrado[0]?.name;
   return (
     <Layout
       title="B.R.D | Categoria"
@@ -96,30 +105,35 @@ export default function CategoriesPage({ categories, products, result }) {
             </BreadCrumb>
             <BreadCrumb aria-current="page">
               <Divider> / </Divider>
-              <Text $big={1}>
-                {resultadoFiltrado[0]?.name
-                  ? resultadoFiltrado[0]?.name
-                  : "Todas"}
-              </Text>
+              <Text $big={1}>{nameCategory ? nameCategory : "Todas"}</Text>
             </BreadCrumb>
           </Sorted>
         </FlexStyled>
-        {product?.length === 0 ? (
+        {!data ? (
+          <SkeletorProducts />
+        ) : data?.products.length === 0 ? (
           <TitleH4>
-            No se encontró productos en &ldquo;{resultadoFiltrado[0]?.name}
-            &rdquo;
+            No se encontró productos en &ldquo;{nameCategory}&rdquo;
           </TitleH4>
         ) : (
-          <ProductsGrid products={product} />
+          <ProductsGrid products={data.products} />
         )}
-
-        {result < page * 10 ? (
-          ""
-        ) : (
+        {data?.products.length >= 20 && (
           <ButtonContainer>
-            <Button $black={1} $outline={1} $size="m" onClick={handleLoadmore}>
-              Cargar más
-            </Button>
+            <ButtonDisabled
+              $black
+              onClick={() => handlePageChange(pages - 1)}
+              disabled={pages === 1}
+            >
+              Anterior
+            </ButtonDisabled>
+            <ButtonDisabled
+              $white
+              onClick={() => handlePageChange(pages + 1)}
+              disabled={!hasNextPage}
+            >
+              Siguiente
+            </ButtonDisabled>
           </ButtonContainer>
         )}
       </CenterDiv>
@@ -127,7 +141,7 @@ export default function CategoriesPage({ categories, products, result }) {
   );
 }
 
-export async function getServerSideProps({ query }) {
+/* export async function getServerSideProps({ query }) {
   await mongooseConnect();
 
   const page = query.page || 1;
@@ -151,3 +165,4 @@ export async function getServerSideProps({ query }) {
     },
   };
 }
+ */

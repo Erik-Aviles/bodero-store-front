@@ -1,23 +1,24 @@
 import { mongooseConnect } from "@/lib/mongoose";
-import { Category } from "@/models/Category";
+import { Product } from "@/models/Product";
 import messages from "@/utils/messages";
 
 export default async function handle(req, res) {
   const { method } = req;
-  /*   res.setHeader("Access-Control-Allow-Origin", "http://boderoracing.com");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
- */
-  //Obtener
   await mongooseConnect();
+
   if (method === "GET") {
+    const fields =
+      req.query.fields ||
+      `title salePrice brand images quantity description createdAt updatedAt`;
     try {
-      const categories = await Category.find({}, null, { sort: { _id: -1 } });
+      let newProductsQuery = Product.find({}, null, {
+        sort: { _id: -1 },
+        limit: 10,
+      }).select(fields);
+
+      const newProducts = await newProductsQuery.exec();
       return res.status(200).json({
-        categories,
+        newProducts,
         message: messages.success.successfullyObtainedData,
       });
     } catch (err) {

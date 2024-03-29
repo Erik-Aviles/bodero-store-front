@@ -66,6 +66,7 @@ const CategoriesComponent = ({ categories }) => {
 
   const filterSearchCategory = ({ router, category }) => {
     const query = router.query;
+
     if (category) {
       query.category = category;
       router.push({

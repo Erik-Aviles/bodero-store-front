@@ -1,8 +1,6 @@
-import CategoriesComponent from "@/components/CategoriesComponent";
-import { mongooseConnect } from "@/lib/mongoose";
-import useAuthFetch from "@/hooks/useAuthFetch";
 import styled, { css } from "styled-components";
-import { Category } from "@/models/Category";
+import CategoriesComponent from "@/components/CategoriesComponent";
+import useAuthFetch from "@/hooks/useAuthFetch";
 import useLoading from "@/hooks/useLoading";
 import { black, white } from "@/lib/colors";
 import Title from "@/components/stylesComponents/Title";
@@ -12,6 +10,9 @@ import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { useRouter } from "next/navigation";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
+import { Loading } from "@/components/Loading";
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "@/context/DataContext";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -68,10 +69,29 @@ const WrapperInputs = styled.div`
   flex-direction: column;
   gap: 1rem;
 `;
-export default function ContactPage({ categories }) {
-  const { isLoading, startLoading, finishtLoading } = useLoading();
-  const router = useRouter();
+export default function ContactPage() {
+  const { categories } = useContext(DataContext);
   const authRouter = useAuthFetch();
+  const router = useRouter();
+  const { isLoading, startLoading, finishtLoading } = useLoading();
+  const [isUpLoanding, setIsUpLoanding] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsUpLoanding(false);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const handleGoBack = (e) => {
+    e.preventDefault();
+    router.back();
+  };
+
+  if (isUpLoanding) {
+    return <Loading />;
+  }
 
   const contactSend = async (formData) => {
     startLoading();
@@ -81,11 +101,6 @@ export default function ContactPage({ categories }) {
       formData,
     });
     finishtLoading();
-  };
-
-  const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
   };
 
   return (
@@ -179,14 +194,4 @@ export default function ContactPage({ categories }) {
       </CenterDiv>
     </Layout>
   );
-}
-export async function getStaticProps() {
-  await mongooseConnect();
-  const categories = await Category.find({}, null, { sort: { _id: -1 } });
-  return {
-    props: {
-      categories: JSON.parse(JSON.stringify(categories)),
-    },
-    revalidate: 5,
-  };
 }

@@ -1,19 +1,16 @@
+import styled from "styled-components";
 import Center from "./stylesComponents/Center";
 import Title from "./stylesComponents/Title";
 import { BackgroundColor, black } from "@/lib/colors";
 import { brands } from "@/resource/data";
 import Image from "next/image";
-import styled from "styled-components";
+import backgroundBrand from "../public/images/brands/background.jpg";
 
 const Wrapper = styled.section`
-  background-image: url("images/brands/background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 100%;
-  height: auto;
+  position: relative;
   h2 {
     padding-top: 20px;
+    position: relative;
   }
   @media screen and (min-width: 640px) {
     height: 100vh;
@@ -23,14 +20,16 @@ const BrandsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   justify-content: center;
-  gap: 10px;
+  gap: 30px;
   padding: 20px 0;
   @media screen and (max-width: 640px) {
     padding: 20px 20px;
+    gap: 10px;
   }
 `;
 
 const StyledCard = styled.article`
+  position: relative;
   background-color: ${BackgroundColor};
   padding: 10px;
   height: 120px;
@@ -62,6 +61,11 @@ const BrandName = styled.h3`
 export default function Brands() {
   return (
     <Wrapper>
+      <Image
+        alt="Imagen de fondo De un paisaje"
+        src={backgroundBrand}
+        layout="fill"
+      />
       <Center>
         <Title>Marcas destacadas</Title>
         <BrandsWrapper>

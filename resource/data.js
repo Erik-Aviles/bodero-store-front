@@ -23,6 +23,22 @@ import info4 from "../public/images/information/comunicar.png";
 import instagram from "../public/svg/instagram.svg";
 import facebook from "../public/svg/facebook.svg";
 
+export const palabras = [
+  "title",
+  "code",
+  "salePrice",
+  "brand",
+  "category",
+  "color",
+  "size",
+  "images",
+  "quantity",
+  "description",
+  "createdAt",
+  "updatedAt",
+  "compatibility",
+];
+
 export const InfoData = [
   {
     id: new Date(),
