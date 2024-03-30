@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import fetch from "isomorphic-unfetch";
 import { DataContext } from "@/context/DataContext";
 import filterSearch from "@/utils/filterSearch";
-import Button from "@/components/buttonComponents/Button";
 import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
@@ -15,35 +14,38 @@ import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import ProductsGrid from "@/components/ProductsGrid";
+import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
+import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
-export default function ProductsPage({ products, result }) {
-  const { categories } = useContext(DataContext);
-
-  const [product, setProducts] = useState(products);
-
-  const [page, setPage] = useState(1);
+export default function ProductsPage({ products }) {
   const router = useRouter();
-
-  const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
-  };
+  const { categories } = useContext(DataContext);
+  const [product, setProducts] = useState(products);
+  const [pages, setPages] = useState(1);
 
   useEffect(() => {
     setProducts(products);
   }, [products]);
 
-  useEffect(() => {
-    if (Object.keys(router.query).length === 0) setPage(1);
-  }, [router.query]);
+  const handlePageChange = (newPage) => {
+    setPages(newPage);
+    filterSearch({ router, page: newPage });
+  };
 
-  const handleLoadmore = () => {
-    setPage(page + 1);
-    filterSearch({ router, page: page + 1 });
+  const hasNextPage = products?.length === 20;
+
+  const handleGoBack = (e) => {
+    e.preventDefault();
+    if (router.query.page > 1) {
+      setPages(pages - 1);
+      filterSearch({ router, page: pages - 1 });
+    } else {
+      router.push("/");
+    }
   };
 
   const brandNames = brands.map((brand) => brand.name);
@@ -60,18 +62,29 @@ export default function ProductsPage({ products, result }) {
           <BackButton onClick={handleGoBack} />
           <Title>Todos los productos</Title>
         </FlexStyled>
-        {product?.length === 0 ? (
-          <TitleH4>Sin registro</TitleH4>
+        {!product ? (
+          <SkeletorProducts />
+        ) : product?.length === 0 ? (
+          <TitleH4>Productos no registrado</TitleH4>
         ) : (
           <ProductsGrid products={product} />
         )}
-        {result < page * 18 ? (
-          ""
-        ) : (
+        {product.length >= 20 && (
           <ButtonContainer>
-            <Button $black={1} $outline={1} $size="m" onClick={handleLoadmore}>
-              Cargar más
-            </Button>
+            <ButtonDisabled
+              $black
+              onClick={() => handlePageChange(pages - 1)}
+              disabled={pages === 1}
+            >
+              Anterior
+            </ButtonDisabled>
+            <ButtonDisabled
+              $white
+              onClick={() => handlePageChange(pages + 1)}
+              disabled={!hasNextPage}
+            >
+              Siguiente
+            </ButtonDisabled>
           </ButtonContainer>
         )}
       </CenterDiv>
@@ -92,7 +105,7 @@ function buildUrl(baseUrl, query) {
   url.searchParams.set("sort", sort);
 
   if (search !== undefined) {
-    url.searchParams.set("search", search);
+    url.searchParams.set("title", search);
   }
 
   return url.toString();

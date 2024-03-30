@@ -3,7 +3,6 @@ import { DataContext } from "@/context/DataContext";
 import ProductsGrid from "@/components/ProductsGrid";
 import filterSearch from "@/utils/filterSearch";
 import Filter from "@/components/Filter";
-import Button from "@/components/buttonComponents/Button";
 import { useRouter } from "next/router";
 import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
@@ -13,6 +12,8 @@ import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
+import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
+import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 
 const CenterSecction = css`
   heigth: auto;
@@ -32,32 +33,37 @@ const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
-export default function SearchPage({ products, result }) {
+export default function SearchPage({ products }) {
   const { categories } = useContext(DataContext);
   const [product, setProducts] = useState(products);
-
-  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
   const router = useRouter();
 
   useEffect(() => {
     setProducts(products);
   }, [products]);
 
-  useEffect(() => {
-    if (Object.keys(router.query).length === 0) setPage(1);
-  }, [router.query]);
-
-  const handleLoadmore = () => {
-    setPage(page + 1);
-    filterSearch({ router, page: page + 1 });
+  const handlePageChange = (newPage) => {
+    setPages(newPage);
+    filterSearch({ router, page: newPage });
   };
+
+  const hasNextPage = products?.length === 20;
 
   const brandNames = brands.map((brand) => brand.name);
   const brandNamesString = brandNames.join(", ");
 
   const handleGoBack = (e) => {
     e.preventDefault();
-    router.back();
+    if (router.query.page > 1) {
+      setPages(pages - 1);
+      filterSearch({ router, page: pages - 1 });
+    }
+    if (!router.query) {
+      router.push("/");
+    } else {
+      router.back();
+    }
   };
 
   return (
@@ -67,25 +73,33 @@ export default function SearchPage({ products, result }) {
     >
       <CenterDiv>
         <Filter categories={categories} />
-        {product?.length === 0 ? (
-          <TitleH4>Sin registro</TitleH4>
+        <FlexStyled>
+          <BackButton onClick={handleGoBack} />
+          <Title>Busqueda de productos </Title>
+        </FlexStyled>
+        {!product ? (
+          <SkeletorProducts />
+        ) : product?.length === 0 ? (
+          <TitleH4>Producto no registrado</TitleH4>
         ) : (
-          <>
-            <FlexStyled>
-              <BackButton onClick={handleGoBack} />
-              <Title>Busqueda de productos </Title>
-            </FlexStyled>
-            <ProductsGrid products={product} />
-          </>
+          <ProductsGrid products={product} />
         )}
-
-        {result < page * 20 ? (
-          ""
-        ) : (
+        {product?.length >= 20 && (
           <ButtonContainer>
-            <Button $black={1} $outline={1} $size="m" onClick={handleLoadmore}>
-              Cargar más
-            </Button>
+            <ButtonDisabled
+              $black
+              onClick={() => handlePageChange(pages - 1)}
+              disabled={pages === 1}
+            >
+              Anterior
+            </ButtonDisabled>
+            <ButtonDisabled
+              $white
+              onClick={() => handlePageChange(pages + 1)}
+              disabled={!hasNextPage}
+            >
+              Siguiente
+            </ButtonDisabled>
           </ButtonContainer>
         )}
       </CenterDiv>

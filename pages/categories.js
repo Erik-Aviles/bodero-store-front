@@ -13,6 +13,8 @@ import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { DataContext } from "@/context/DataContext";
 import ProductsGrid from "@/components/ProductsGrid";
+import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
+import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -53,32 +55,36 @@ const Divider = styled.span`
 
 export default function CategoriesPage({ products, result }) {
   const { categories } = useContext(DataContext);
-  const [product, setProducts] = useState(products);
-  const [page, setPage] = useState(1);
-
   const router = useRouter();
-
-  const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
-  };
+  const [product, setProducts] = useState(products);
+  const [pages, setPages] = useState(1);
 
   useEffect(() => {
     setProducts(products);
   }, [products]);
 
-  useEffect(() => {
-    if (Object.keys(router.query).length === 0) setPage(1);
-  }, [router.query]);
+  const handlePageChange = (newPage) => {
+    setPages(newPage);
+    filterSearch({ router, page: newPage });
+  };
 
-  const handleLoadmore = () => {
-    setPage(page + 1);
-    filterSearch({ router, page: page + 1 });
+  const hasNextPage = products?.length === 20;
+
+  const handleGoBack = (e) => {
+    e.preventDefault();
+    if (router.query.page > 1) {
+      setPages(pages - 1);
+      filterSearch({ router, page: pages - 1 });
+    } else {
+      router.push("/");
+    }
   };
 
   const resultadoFiltrado = categories.filter((objeto) =>
     objeto._id.includes(router.query.category)
   );
+
+  const nameCategory = resultadoFiltrado[0]?.name;
 
   return (
     <Layout
@@ -95,30 +101,37 @@ export default function CategoriesPage({ products, result }) {
             </BreadCrumb>
             <BreadCrumb aria-current="page">
               <Divider> / </Divider>
-              <Text $big={1}>
-                {resultadoFiltrado[0]?.name
-                  ? resultadoFiltrado[0]?.name
-                  : "Todas"}
-              </Text>
+              <Text $big={1}>{nameCategory ? nameCategory : "Todas"}</Text>
             </BreadCrumb>
           </Sorted>
         </FlexStyled>
-        {product?.length === 0 ? (
+        {!product ? (
+          <SkeletorProducts />
+        ) : product?.length === 0 ? (
           <TitleH4>
-            No se encontró productos en &ldquo;{resultadoFiltrado[0]?.name}
+            No se encontró productos en &ldquo;{nameCategory}
             &rdquo;
           </TitleH4>
         ) : (
           <ProductsGrid products={product} />
         )}
 
-        {result < page * 10 ? (
-          ""
-        ) : (
+        {product?.length >= 20 && (
           <ButtonContainer>
-            <Button $black={1} $outline={1} $size="m" onClick={handleLoadmore}>
-              Cargar más
-            </Button>
+            <ButtonDisabled
+              $black
+              onClick={() => handlePageChange(pages - 1)}
+              disabled={pages === 1}
+            >
+              Anterior
+            </ButtonDisabled>
+            <ButtonDisabled
+              $white
+              onClick={() => handlePageChange(pages + 1)}
+              disabled={!hasNextPage}
+            >
+              Siguiente
+            </ButtonDisabled>
           </ButtonContainer>
         )}
       </CenterDiv>
@@ -139,7 +152,7 @@ function buildUrl(baseUrl, query) {
   url.searchParams.set("sort", sort);
 
   if (search !== undefined) {
-    url.searchParams.set("search", search);
+    url.searchParams.set("title", search);
   }
 
   return url.toString();
