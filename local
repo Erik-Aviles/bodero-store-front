@@ -1,8 +1,1 @@
-MONGODB_URI="mongodb+srv://boderoracing2016:caminoalexito2024@bodero.zdiqp6m.mongodb.net/?retryWrites=true&w=majority"
-NEXT_PUBLIC_URL=http://localhost:3000
-NEXT_PUBLIC=https://bodero-e-commerce.vercel.app
-ENDPOINT_SECRET="whsec_4bead125135d8c830a1ec9d66d6b264fa2ddd75ea10f9b6a1421d0f91d3926b6"
-NEXT_PUBLIC_GOOGLE_API_KEY="AIzaSyA1_gLpX5-gmo_TAz80hLxF64U97QtUzWg"
-SECRET="Carmelito"
-RESEND_API_KEY="re_DbJKBZM3_CDQ9K4SsRGwqtRxxx2tftMr3"
-SECRET_EMAIL="onboarding@resend.dev"
+
