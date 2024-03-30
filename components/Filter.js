@@ -78,12 +78,10 @@ const Input = styled.input`
   overflow: visible;
 `;
 
-const Filter = ({ data }) => {
+const Filter = ({ categories }) => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState("");
-
-  const { categories } = data;
 
   const router = useRouter();
 

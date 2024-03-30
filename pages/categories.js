@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import CategoriesComponent from "@/components/CategoriesComponent";
-import ProductsGrid from "@/components/ProductsGrid";
 import styled, { css } from "styled-components";
 import filterSearch from "@/utils/filterSearch";
 import { grey, secondary } from "@/lib/colors";
@@ -13,6 +12,7 @@ import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { DataContext } from "@/context/DataContext";
+import ProductsGrid from "@/components/ProductsGrid";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -52,8 +52,7 @@ const Divider = styled.span`
 `;
 
 export default function CategoriesPage({ products, result }) {
-  const { data } = useContext(DataContext);
-  const { categories } = data;
+  const { categories } = useContext(DataContext);
   const [product, setProducts] = useState(products);
   const [page, setPage] = useState(1);
 
@@ -158,7 +157,7 @@ export async function getServerSideProps(context) {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("La respuesta de la red no fue correcta");
     }
 
     const data = await response.json();

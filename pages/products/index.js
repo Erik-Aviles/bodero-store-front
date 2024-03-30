@@ -1,10 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import fetch from "isomorphic-unfetch";
-import ProductsGrid from "@/components/ProductsGrid";
 import { DataContext } from "@/context/DataContext";
 import filterSearch from "@/utils/filterSearch";
-import { getData } from "@/utils/FetchData";
 import Button from "@/components/buttonComponents/Button";
 import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
@@ -16,14 +14,15 @@ import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
+import ProductsGrid from "@/components/ProductsGrid";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
 export default function ProductsPage({ products, result }) {
-  const { data } = useContext(DataContext);
-  const { categories } = data;
+  const { categories } = useContext(DataContext);
+
   const [product, setProducts] = useState(products);
 
   const [page, setPage] = useState(1);
@@ -111,7 +110,7 @@ export async function getServerSideProps(context) {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("La respuesta de la red no fue correcta");
     }
 
     const data = await response.json();

@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { primary } from "@/lib/colors";
-import { ClockLoader } from "react-spinners";
+import { useState, useEffect, useRef } from "react";
+import { black, primary } from "@/lib/colors";
 import Head from "next/head";
+import { RiseLoader } from "react-spinners";
 
 const LoaderContainert = styled.div`
   background-color: black;
@@ -10,16 +11,14 @@ const LoaderContainert = styled.div`
   align-items: center;
   min-height: 100vh;
 `;
-
 export const Loading = () => {
   return (
     <>
       <Head>
-        <title>B.R.D | QUEVEDO</title>
-        <meta name="description" content="Esperando cargar la pagina..." />
+        <title>B.R.D | Cargando...</title>
       </Head>
       <LoaderContainert>
-        <ClockLoader color={primary} size={80} />;
+        <RiseLoader color={primary} speedMultiplier={1} size={7} />
       </LoaderContainert>
     </>
   );

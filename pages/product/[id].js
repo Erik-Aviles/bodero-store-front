@@ -4,7 +4,6 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { grey, greylight, primary, success } from "@/lib/colors";
 import ProductImages from "@/components/ProductImages";
 import WhiteBox from "@/components/WhiteBox";
-import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import CompatibilityModal from "@/components/CompatibilityModal";
@@ -12,6 +11,8 @@ import BackButton from "@/components/buttonComponents/BackButton";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Layout from "@/components/Layout";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
+import { useContext } from "react";
+import { DataContext } from "@/context/DataContext";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -84,7 +85,8 @@ const Price = styled.span`
   font-weight: 600;
 `;
 
-export default function ProductPage({ product, categories }) {
+export default function ProductPage({ product }) {
+  const { categories } = useContext(DataContext);
   const router = useRouter();
 
   const handleGoBack = (e) => {
@@ -135,12 +137,10 @@ export async function getServerSideProps(context) {
   await mongooseConnect();
   const { id } = context.query;
   const product = await Product.findById(id);
-  const categories = await Category.find({}, null, { sort: { _id: -1 } });
 
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
-      categories: JSON.parse(JSON.stringify(categories)),
     },
   };
 }

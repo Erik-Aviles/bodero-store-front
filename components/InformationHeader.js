@@ -8,25 +8,25 @@ import Center from "./stylesComponents/Center";
 const linksUp = [
   {
     name: "Quiénes somos ",
-    href: "/about-us",
+    href: "/quienes-somos",
     icon: <HomeIcon />,
     description: "Conoce nuestra historia y quienes somos",
   },
   {
     name: "Pedidos y entregas ",
-    href: "/delivery",
+    href: "/pedidos-y-entregas",
     icon: <HomeIcon />,
     description: "Conoce nuestro método de pedidos y entrega ",
   },
   {
     name: "Como llegar? ",
-    href: "/address",
+    href: "/como-llegar",
     icon: <HomeIcon />,
     description: "Conoce la dirección en donde estamos ubicados",
   },
   {
     name: "Contáctenos",
-    href: "/contact",
+    href: "/contactenos",
     icon: <HomeIcon />,
     description: "Tines una duda, ingresa aqui",
   },

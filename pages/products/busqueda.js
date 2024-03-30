@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import ProductsGrid from "@/components/ProductsGrid";
 import { DataContext } from "@/context/DataContext";
+import ProductsGrid from "@/components/ProductsGrid";
 import filterSearch from "@/utils/filterSearch";
-import { getData } from "@/utils/FetchData";
 import Filter from "@/components/Filter";
 import Button from "@/components/buttonComponents/Button";
 import { useRouter } from "next/router";
@@ -34,7 +33,7 @@ const CenterDiv = styled.section`
 `;
 
 export default function SearchPage({ products, result }) {
-  const { data } = useContext(DataContext);
+  const { categories } = useContext(DataContext);
   const [product, setProducts] = useState(products);
 
   const [page, setPage] = useState(1);
@@ -67,7 +66,7 @@ export default function SearchPage({ products, result }) {
       description={`Contammos con marcas reconocidas como: ${brandNamesString}`}
     >
       <CenterDiv>
-        <Filter data={data} />
+        <Filter categories={categories} />
         {product?.length === 0 ? (
           <TitleH4>Sin registro</TitleH4>
         ) : (
@@ -100,14 +99,14 @@ function buildUrl(baseUrl, query) {
   const page = query.page || 1;
   const category = query.category || "all";
   const sort = query.sort || "";
-  const search = query.search;
+  const search = query.search || "";
 
   url.searchParams.set("page", page);
   url.searchParams.set("category", category);
   url.searchParams.set("sort", sort);
 
   if (search !== undefined) {
-    url.searchParams.set("search", search);
+    url.searchParams.set("title", search);
   }
 
   return url.toString();
@@ -125,7 +124,7 @@ export async function getServerSideProps(context) {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("La respuesta de la red no fue correcta");
     }
 
     const data = await response.json();

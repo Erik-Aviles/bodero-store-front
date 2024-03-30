@@ -8,7 +8,7 @@ export default async function handle(req, res) {
   //Obtener
   if (method === "GET") {
     try {
-      const categories = await Category.find();
+      const categories = await Category.find({}, null, { sort: { _id: -1 } });
       res.json(categories);
     } catch (err) {
       return res.status(500).json({ err: err.message });

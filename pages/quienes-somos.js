@@ -1,10 +1,7 @@
 import CategoriesComponent from "@/components/CategoriesComponent";
-import { mongooseConnect } from "@/lib/mongoose";
-import { Category } from "@/models/Category";
 import styled, { css } from "styled-components";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Image from "next/image";
-import logo from "@/public/logo.jpg";
 import horizontal1 from "@/public/images/about-us/horizontal1.jpg";
 import horizontal2 from "@/public/images/about-us/horizontal2.jpg";
 import vertical1 from "@/public/images/about-us/vertical1.jpg";
@@ -16,6 +13,9 @@ import { useRouter } from "next/navigation";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { greylight } from "@/lib/colors";
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "@/context/DataContext";
+import { Loading } from "@/components/Loading";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -98,13 +98,26 @@ const SectionText = styled.section`
   }
 `;
 
-export default function AboutUsPage({ categories }) {
+export default function AboutUsPage() {
+  const { categories } = useContext(DataContext);
   const router = useRouter();
+  const [isUpLoanding, setIsUpLoanding] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsUpLoanding(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const handleGoBack = (e) => {
     e.preventDefault();
     router.back();
   };
+
+  if (isUpLoanding) {
+    return <Loading />;
+  }
 
   return (
     <Layout title="B.R.D | Quienes somos">
@@ -221,13 +234,4 @@ export default function AboutUsPage({ categories }) {
       </CenterDiv>
     </Layout>
   );
-}
-export async function getServerSideProps() {
-  await mongooseConnect();
-  const categories = await Category.find({}, null, { sort: { _id: -1 } });
-  return {
-    props: {
-      categories: JSON.parse(JSON.stringify(categories)),
-    },
-  };
 }
