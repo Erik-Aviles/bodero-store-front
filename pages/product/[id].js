@@ -1,9 +1,18 @@
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { mongooseConnect } from "@/lib/mongoose";
-import { grey, greylight, primary, success } from "@/lib/colors";
+import {
+  black,
+  blacklight,
+  error,
+  grey,
+  greylight,
+  primary,
+  success,
+  white,
+  white2,
+} from "@/lib/colors";
 import ProductImages from "@/components/ProductImages";
-import WhiteBox from "@/components/WhiteBox";
 import { Product } from "@/models/Product";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import CompatibilityModal from "@/components/CompatibilityModal";
@@ -13,6 +22,8 @@ import Layout from "@/components/Layout";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { useContext } from "react";
 import { DataContext } from "@/context/DataContext";
+import { CardIcon } from "@/components/Icons";
+import Link from "next/link";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -71,6 +82,7 @@ const InfoTitle = styled.div`
 const Info = styled.div`
   display: flex;
   aling-items: center;
+  justify-content: space-between;
   padding: 0.8rem 0;
   gap: 10px;
   border-bottom: 1px solid;
@@ -78,11 +90,42 @@ const Info = styled.div`
   span {
     place-self: center;
   }
+  div {
+    display: flex;
+    gap: 10px;
+  }
+  @media screen and (max-width: 780px) {
+    flex-direction: column;
+  }
 `;
 
 const Price = styled.span`
   font-size: 1rem;
   font-weight: 600;
+`;
+const WrapperButton = styled.section`
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-evenly;
+`;
+const ButtonCard = styled.button`
+  border: 1px solid ${black};
+  background-color: ${black};
+  color: ${white};
+  border-radius: 0.275rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  &:hover {
+    border-color: ${success};
+    background-color: ${success};
+    color: ${white2};
+  }
+  &:focus {
+    background-color: ${success};
+    border-color: ${success};
+  }
 `;
 
 export default function ProductPage({ product }) {
@@ -114,18 +157,38 @@ export default function ProductPage({ product }) {
             </InfoTitle>
             <InfoText>{product?.description}</InfoText>
             <Info>
-              <span style={{ color: success, fontSize: 20 }}>
-                Precio Venta:
-              </span>
-              <Price>${product.salePrice}</Price>
+              <div>
+                <span style={{ color: success, fontSize: 20 }}>
+                  Precio Venta:
+                </span>
+                <Price>${product.salePrice}</Price>
+              </div>
             </Info>
             <Info>
-              <span style={{ color: grey, fontSize: 16 }}>Disponibilidad:</span>
-              <span>
-                <strong>{product?.quantity}</strong>
-              </span>
+              <div>
+                <span style={{ color: grey, fontSize: 16 }}>
+                  Disponibilidad:
+                </span>
+                <span>
+                  <strong>{product?.quantity}</strong>
+                </span>
+              </div>
+              <div>
+                <span style={{ color: grey, fontSize: 16 }}>Marca:</span>
+                <span>
+                  <strong>{product?.brand}</strong>
+                </span>
+              </div>
             </Info>
-            <CompatibilityModal product={product} />
+
+            <WrapperButton>
+              <CompatibilityModal product={product} />
+              <Link href={"/"}>
+                <ButtonCard $black={1}>
+                  <CardIcon />
+                </ButtonCard>
+              </Link>
+            </WrapperButton>
           </Row>
         </ColWrapper>
       </CenterDiv>

@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
-import { error, grey, success, white } from "@/lib/colors";
+import { black, error, grey, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./buttonComponents/ButtonLink";
-import { WhatsappIcon } from "./Icons";
+import { CardIcon, WhatsappIcon } from "./Icons";
 import Image from "next/image";
 import emptyimage from "../public/images/vacio.png";
 import awsS3Loader from "./awsS3Loader";
@@ -24,9 +24,30 @@ const ProductWrapper = styled.div`
 `;
 
 const ImageBox = styled.figure`
+  position: relative;
   height: 240px;
   width: 100%;
   margin: 0;
+`;
+const ImgCard = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  right: 0;
+  border-radius: 0 0.25rem 0 1.2rem;
+  background-color: ${black};
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  color: ${white2};
+  &:focus {
+    background-color: #5e5b5b;
+  }
+  &:hover {
+    background-color: #5e5b5b;
+    cursor: pointer;
+  }
 `;
 const ItemImage = styled(Image)`
   width: 100%;
@@ -89,6 +110,9 @@ export function ProductBox({ ...product }) {
   return (
     <ProductWrapper>
       <ImageBox>
+        <ImgCard>
+          <CardIcon />
+        </ImgCard>
         <ItemImage
           loader={product?.images?.[0] ? awsS3Loader : localLoader}
           src={product?.images?.[0] ? product?.images?.[0] : emptyimage}

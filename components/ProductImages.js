@@ -6,18 +6,6 @@ import Image from "next/image";
 import Spinner from "./Spinner";
 import awsS3Loader from "./awsS3Loader";
 
-const WhiteBox = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  heigth: 500px;
-  background-color: ${white};
-  border-radius: 10px;
-  padding: 0 20px;
-  @media screen and (min-width: 768px) {
-    padding: 0 20px 20px 0;
-  }
-`;
 const BigImageWrapper = styled.div`
   width: 100%;
   display: flex;
