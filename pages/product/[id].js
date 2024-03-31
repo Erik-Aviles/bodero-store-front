@@ -106,7 +106,7 @@ const Price = styled.span`
 const WrapperButton = styled.section`
   margin: 20px 0;
   display: flex;
-  justify-content: space-evenly;
+  gap: 30px;
 `;
 const ButtonCard = styled.button`
   border: 1px solid ${black};
