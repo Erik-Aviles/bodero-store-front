@@ -4,13 +4,14 @@ import { Input } from "./Input";
 import { Footer } from "./Footer";
 import { SubmitButton } from "./SubmitButton";
 import { TextArea } from "./TextArea";
-
+import Image from "next/image";
+import logo from "../../public/logoSimbolo.jpg";
 const FormWrapper = styled.form`
   padding: 1.3rem;
-  border: 0.5px solid #878787;
   border-radius: 10px;
   min-width: 300px;
   margin: 20px 0;
+  box-shadow: 1px 4px 20px rgb(0 0 0 / 50%);
 `;
 const DespContainer = styled.div`
   text-align: left;
@@ -24,6 +25,12 @@ const DespContainer = styled.div`
     font-weight: 400;
     font-size: 0.8rem;
   }
+`;
+const Imagen = styled.figure`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 20px;
 `;
 
 const formValues = {};
@@ -46,6 +53,14 @@ export function FormContextProvider({
   return (
     <FormContext.Provider value={{ formValues, setFormValues }}>
       <FormWrapper onSubmit={handleSutmit}>
+        <Imagen>
+          <Image
+            alt="Logo de la empresa con banderitas"
+            src={logo}
+            width={673 / 4}
+            height={286 / 4}
+          />
+        </Imagen>
         <DespContainer>
           <h2>{title}</h2>
           {description && <p>{description}</p>}

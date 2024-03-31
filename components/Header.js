@@ -2,7 +2,7 @@ import { LogoFull } from "./Logo";
 import styled, { css } from "styled-components";
 import { grey, white } from "@/lib/colors";
 import Link from "next/link";
-import { ProductIcon, WhatsappIcon } from "./Icons";
+import { ProductIcon, ShoppingIcon, UserIcon, WhatsappIcon } from "./Icons";
 import InformationHeader from "./InformationHeader";
 import Center from "./stylesComponents/Center";
 
@@ -46,10 +46,11 @@ const StylesSpan = styled.div`
     color: #ccc;
   }
   h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin: 0;
   }
   p {
+    font-size: 0.7rem;
     margin: 0;
   }
   svg {
@@ -88,12 +89,6 @@ export default function Header() {
         <Wrapper>
           <LogoFull href={"/"} />
           <StyleNav>
-            <StaledLink href={"/products"} title={"Ver todos los productos"}>
-              <StylesSpan>
-                <ProductIcon />
-                <p>Productos</p>
-              </StylesSpan>
-            </StaledLink>
             <StaledLink
               href={
                 "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
@@ -106,6 +101,34 @@ export default function Header() {
                 <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
                 <p>Escribenos</p>
                 <h3>0996501072</h3>
+              </StylesSpan>
+            </StaledLink>{" "}
+            <StaledLink href={"/products"} title={"Ver todos los productos"}>
+              <StylesSpan>
+                <ProductIcon />
+                <p>Productos</p>
+              </StylesSpan>
+            </StaledLink>
+            <StaledLink
+              hidden={1}
+              href={"/account/user-info"}
+              title={"Ver mi cuenta"}
+            >
+              <StylesSpan>
+                <UserIcon />
+                <p>Mi perfil</p>
+              </StylesSpan>
+            </StaledLink>
+            <StaledLink href={"/iniciar-sesion"} title={"Entrar a mi cuenta"}>
+              <StylesSpan>
+                <UserIcon />
+                <p>Iniciar sesión</p>
+              </StylesSpan>
+            </StaledLink>
+            <StaledLink href={"/cart"} title={"Ver mi carrito de compras"}>
+              <StylesSpan>
+                <ShoppingIcon />
+                <p>Carrito (0)</p>
               </StylesSpan>
             </StaledLink>
           </StyleNav>

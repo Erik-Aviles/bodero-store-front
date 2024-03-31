@@ -11,6 +11,7 @@ const messages = {
     tokenNotValid: "Token no valido",
   },
   success: {
+    allUsers: "Son todos los usuarios",
     userCreated: "Su cuenta ha sido creada",
     userLogged: "Que bueno verte de vuelta",
     emailSend: "Correo enviado con exito",

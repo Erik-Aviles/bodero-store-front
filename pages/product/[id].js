@@ -102,9 +102,8 @@ export default function ProductPage({ product }) {
           <BackButton onClick={handleGoBack} />
         </FlexStyled>
         <ColWrapper>
-          <WhiteBox>
-            <ProductImages images={product?.images} name={product?.title} />
-          </WhiteBox>
+          <ProductImages images={product?.images} name={product?.title} />
+
           <Row>
             <InfoTitle>
               <Title>{product?.title.toUpperCase()}</Title>

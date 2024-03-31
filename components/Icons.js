@@ -175,8 +175,8 @@ export const WhatsappIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-    width="3em"
-    height="3em"
+    width="2.5em"
+    height="2.5em"
     viewBox="0 0 105.885 105.885"
     {...props}
   >
@@ -365,8 +365,8 @@ export const ShoppingIcon = (props) => (
       enableBackground: "new 0 0 19.25 19.25",
     }}
     viewBox="0 0 19.25 19.25"
-    width="1.8em"
-    height="1.88em"
+    width="1.5em"
+    height="1.5em"
     {...props}
   >
     <path
@@ -539,6 +539,23 @@ export const TiktokIcon = (props) => (
     <path
       fill="#69C9D0"
       d="M20.544 4.046h-3.256v16.57c0 .582 0 1.144-.202 1.705-.328.896-1.028 1.704-1.96 2.063-1.4.539-2.493.48-3.798-.347a3.51 3.51 0 0 1-.844-.78c1.112.568 2.107.558 3.34.084.932-.359 1.632-1.168 1.96-2.064.205-.56.202-1.122.202-1.704V3h4.496s-.05.412.062 1.046ZM26.7 8.991v.922a7.29 7.29 0 0 1-1.524-.53c-.94-.45-1.673-1.183-1.817-1.332.167.105.34.2.517.285 1.143.547 2.27.71 2.824.655Z"
+    />
+  </svg>
+);
+export const WarningIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    className="h-5 w-5"
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <path
+      fillRule="evenodd"
+      d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5z"
+      clipRule="evenodd"
     />
   </svg>
 );
