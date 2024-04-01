@@ -6,6 +6,8 @@ import Image from "next/image";
 import emptyimage from "../public/images/vacio.png";
 import awsS3Loader from "./awsS3Loader";
 import localLoader from "./localLoader";
+import { useContext } from "react";
+import { CartContext } from "@/context/CartContext";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -41,12 +43,12 @@ const ImgCard = styled.div`
   background-color: ${black};
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   color: ${white2};
-  &:focus {
-    background-color: #5e5b5b;
-  }
   &:hover {
     background-color: #5e5b5b;
     cursor: pointer;
+  }
+  &:active {
+    background-color: ${success};
   }
 `;
 const ItemImage = styled(Image)`
@@ -107,10 +109,15 @@ const SpanCard = styled.span`
 `;
 
 export function ProductBox({ ...product }) {
+  const { addProduct } = useContext(CartContext);
+
   return (
     <ProductWrapper>
       <ImageBox>
-        <ImgCard>
+        <ImgCard
+          title="Agregar al garrito"
+          onClick={() => addProduct(product?._id)}
+        >
           <CardIcon />
         </ImgCard>
         <ItemImage

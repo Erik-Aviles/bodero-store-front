@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ProductIcon, ShoppingIcon, UserIcon, WhatsappIcon } from "./Icons";
 import InformationHeader from "./InformationHeader";
 import Center from "./stylesComponents/Center";
+import { CartContext } from "@/context/CartContext";
+import { useContext } from "react";
 
 const StyledHeader = styled.header`
   width: 100%;
@@ -20,14 +22,21 @@ const StyledHeader = styled.header`
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
   color: ${white};
+  padding: 0 10px 0 0;
+  @media screen and (min-width: 768px) {
+    justify-content: space-between;
+  }
 `;
 
 const StyleNav = styled.nav`
   display: flex;
   place-items: center;
-  gap: 20px;
+  gap: 8px;
+  @media screen and (min-width: 768px) {
+    gap: 20px;
+  }
 `;
 
 const StaledLink = styled(Link)`
@@ -74,14 +83,17 @@ const StylesSpan = styled.div`
       `};
   }
   @media screen and (max-width: 768px) {
-    h3,
-    p {
+    h3 {
       display: none;
+    }
+    p {
+      font-size: 0.5rem;
     }
   }
 `;
 
 export default function Header() {
+  const { cartProducts } = useContext(CartContext);
   return (
     <StyledHeader>
       <InformationHeader />
@@ -109,7 +121,7 @@ export default function Header() {
                 <p>Productos</p>
               </StylesSpan>
             </StaledLink>
-            <StaledLink
+            {/*  <StaledLink
               hidden={1}
               href={"/account/user-info"}
               title={"Ver mi cuenta"}
@@ -118,17 +130,20 @@ export default function Header() {
                 <UserIcon />
                 <p>Mi perfil</p>
               </StylesSpan>
-            </StaledLink>
+            </StaledLink> */}
             <StaledLink href={"/iniciar-sesion"} title={"Entrar a mi cuenta"}>
               <StylesSpan>
                 <UserIcon />
                 <p>Iniciar sesión</p>
               </StylesSpan>
             </StaledLink>
-            <StaledLink href={"/cart"} title={"Ver mi carrito de compras"}>
+            <StaledLink
+              href={"/carrito-de-compras"}
+              title={"Ver mi carrito de compras"}
+            >
               <StylesSpan>
                 <ShoppingIcon />
-                <p>Carrito (0)</p>
+                <p>Carrito ({cartProducts?.length})</p>
               </StylesSpan>
             </StaledLink>
           </StyleNav>
