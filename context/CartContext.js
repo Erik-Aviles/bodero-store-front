@@ -7,16 +7,20 @@ export function CartContextProvider({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
 
   useEffect(() => {
-    if (cartProducts?.length > 0) {
-      ls?.setItem("carrito-de-compras", JSON.stringify(cartProducts));
+    if (cartProducts?.length >= 0) {
+      ls?.setItem("cart", JSON.stringify(cartProducts));
     }
   }, [cartProducts]);
 
   useEffect(() => {
-    if (ls && ls.getItem("carrito-de-compras")) {
-      setCartProducts(JSON.parse(ls.getItem("carrito-de-compras")));
+    if (ls && ls.getItem("cart")) {
+      setCartProducts(JSON.parse(ls.getItem("cart")));
     }
   }, []);
+
+  /*  const updateLocalStorage = (cartProducts) => {
+    window.localStorage.setItem('cart', JSON.stringify(cartProducts));
+  }; */
 
   function addProduct(productId) {
     setCartProducts((prev) => [...prev, productId]);
