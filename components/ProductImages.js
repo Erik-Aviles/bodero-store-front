@@ -1,10 +1,20 @@
 import styled, { css } from "styled-components";
-import { greylight, success } from "@/lib/colors";
+import { greylight, success, white } from "@/lib/colors";
 import { useEffect, useState } from "react";
 import emptyimage from "../public/images/vacio.png";
 import Image from "next/image";
 import Spinner from "./Spinner";
 import awsS3Loader from "./awsS3Loader";
+import localLoader from "./localLoader";
+
+const WhiteBox = styled.div`
+  display: flex;
+  gap: 15px;
+  background-color: ${white};
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+  }
+`;
 
 const BigImageWrapper = styled.div`
   width: 100%;
@@ -21,9 +31,8 @@ const BigImage = styled(Image)`
 
 const ImageButtons = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(70px, 1fr));
   gap: 5px;
-  margin-top: 10px;
 `;
 
 const ImageButton = styled.div`
@@ -37,8 +46,8 @@ const ImageButton = styled.div`
   ${(props) =>
     props.$spinner &&
     css`
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
     `}
   ${(props) =>
     props.$actived
@@ -69,10 +78,10 @@ export default function ProductImages({ images, name }) {
   }, []);
 
   return (
-    <>
+    <WhiteBox>
       <BigImageWrapper>
         <BigImage
-          loader={awsS3Loader}
+          loader={images?.[0] ? awsS3Loader : localLoader}
           src={activeImage}
           alt={name}
           width={300}
@@ -97,10 +106,10 @@ export default function ProductImages({ images, name }) {
                 $actived={image === activeImage}
                 onClick={() => setActiveImage(image)}
               >
-                <SmallImage src={image} alt={name} width={100} height={100} />
+                <SmallImage src={image} alt={name} width={80} height={80} />
               </ImageButton>
             ))}
       </ImageButtons>
-    </>
+    </WhiteBox>
   );
 }

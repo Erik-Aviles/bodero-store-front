@@ -1,11 +1,13 @@
 import styled, { css } from "styled-components";
-import { error, grey, success, white } from "@/lib/colors";
+import { black, error, grey, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./buttonComponents/ButtonLink";
-import { WhatsappIcon } from "./Icons";
+import { AddToCartIcon, RemoveFromCartIcon, WhatsappIcon } from "./Icons";
 import Image from "next/image";
 import emptyimage from "../public/images/vacio.png";
 import awsS3Loader from "./awsS3Loader";
 import localLoader from "./localLoader";
+import { useContext } from "react";
+import { CartContext } from "@/context/CartContext";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -24,9 +26,30 @@ const ProductWrapper = styled.div`
 `;
 
 const ImageBox = styled.figure`
+  position: relative;
   height: 240px;
   width: 100%;
   margin: 0;
+`;
+const ImgCard = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  right: 0;
+  border-radius: 0 0.25rem 0 1.2rem;
+  background-color: ${black};
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  color: ${white2};
+  &:hover {
+    background-color: #5e5b5b;
+    cursor: pointer;
+  }
+  &:active {
+    background-color: ${success};
+  }
 `;
 const ItemImage = styled(Image)`
   width: 100%;
@@ -38,13 +61,14 @@ const ProductInfoBox = styled.div`
   padding: 0.8rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
   p {
     font-size: 0.8rem;
     line-height: 1.2rem;
     max-height: 52px;
     overflow: hidden;
     margin: 0;
+    text-transform: uppercase;
   }
 `;
 
@@ -68,6 +92,7 @@ const Price = styled.div`
 `;
 const SpanCard = styled.span`
   font-size: 0.7rem;
+  text-transform: uppercase;
   ${(props) =>
     props.$error &&
     css`
@@ -86,9 +111,30 @@ const SpanCard = styled.span`
 `;
 
 export function ProductBox({ ...product }) {
+  const { addProduct, cartProducts, removeOneProduct } =
+    useContext(CartContext);
+
+  const checkProductInCart = (product) => {
+    return cartProducts.some((item) => item === product);
+  };
+  const isProductInCart = checkProductInCart(product._id);
+
   return (
     <ProductWrapper>
       <ImageBox>
+        <ImgCard
+          style={{
+            backgroundColor: isProductInCart ? success : null,
+          }}
+          title={isProductInCart ? "Elimina del carrito" : "Agregar carrito"}
+          onClick={() =>
+            isProductInCart
+              ? removeOneProduct(product._id)
+              : addProduct(product._id)
+          }
+        >
+          {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}
+        </ImgCard>
         <ItemImage
           loader={product?.images?.[0] ? awsS3Loader : localLoader}
           src={product?.images?.[0] ? product?.images?.[0] : emptyimage}

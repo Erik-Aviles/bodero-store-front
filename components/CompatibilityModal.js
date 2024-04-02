@@ -11,10 +11,8 @@ import {
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const StyledDiv = styled.div``;
-
-const WrapperButton = styled.section`
-  margin: 20px 0;
+const StyledDiv = styled.div`
+  display: block;
 `;
 
 const ModalBackground = styled.div`
@@ -117,9 +115,7 @@ const CompatibilityModal = ({ product }) => {
   return (
     <StyledDiv>
       <div>
-        <WrapperButton>
-          <ModalButton onClick={toggleModal}>Compatibilidad</ModalButton>
-        </WrapperButton>
+        <ModalButton onClick={toggleModal}>Compatibilidad</ModalButton>
         {showModal && (
           <>
             <ModalBackground onClick={toggleModal} />

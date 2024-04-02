@@ -8,7 +8,7 @@ const FooterContainer = styled.div`
   justify-content: center;
   margin-top: 5px;
   span {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     color: ${grey};
   }
   a {

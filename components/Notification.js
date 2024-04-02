@@ -1,61 +1,63 @@
-import { error, success, white } from "@/lib/colors";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import { SuccessIcon, WarningIcon } from "./Icons";
+import { error, success } from "@/lib/colors";
 
-const NotifContainer = styled.div`
+const NotificationContainer = styled.div`
   position: fixed;
-  bottom: 100px;
-  right: 0;
-  margin-bottom: 1rem;
-  z-index: 1;
+  min-width: 260px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 16px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  transition-duration: 2000ms;
+`;
 
+const IconWrapper = styled.span`
   display: flex;
+  justify-content: center;
   align-items: center;
-  color: ${white};
-  animation: start 0.5s forwards;
-
-  height: 30px;
-  width: fit-content;
-  padding: 0.2rem 1rem;
-  transition: 0.3s;
-
-  border-radius: 3px;
-
-  @media screen and (max-width: 768px) {
-    bottom: 150px;
+  gap: 8px;
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
   }
+`;
 
-  ${(props) =>
-    props.$success &&
-    css`
-      background-color: ${success};
-    `};
-  ${(props) =>
-    props.$showError &&
-    css`
-      background-color: ${error};
-    `};
-  @keyframes start {
-    from {
-      left: -100%;
-    }
-    to {
-      left: 5%;
-    }
+const NotificationMessage = styled.strong`
+  display: block;
+  text-align: center;
+  font-weight: medium;
+  color: #333;
+  font-size: 0.8rem;
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
   }
+`;
+const CenterNotification = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
 `;
 
 export function Notification({ status, msj }) {
   return (
-    <>
-      {status === "success" ? (
-        <NotifContainer $success={1}>
-          <p>{msj}</p>
-        </NotifContainer>
-      ) : (
-        <NotifContainer $showError={1}>
-          <p>{msj}</p>
-        </NotifContainer>
-      )}
-    </>
+    <NotificationContainer role="alert">
+      <CenterNotification>
+        <IconWrapper>
+          {status === "success" ? (
+            <SuccessIcon fill={success} />
+          ) : (
+            <WarningIcon fill={error} />
+          )}
+        </IconWrapper>
+        <NotificationMessage>{msj}</NotificationMessage>
+      </CenterNotification>
+    </NotificationContainer>
   );
 }

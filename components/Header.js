@@ -1,10 +1,12 @@
 import { LogoFull } from "./Logo";
 import styled, { css } from "styled-components";
-import { grey, white } from "@/lib/colors";
+import { black, error, grey, success, white } from "@/lib/colors";
 import Link from "next/link";
-import { ProductIcon, WhatsappIcon } from "./Icons";
+import { ProductIcon, ShoppingIcon, UserIcon, WhatsappIcon } from "./Icons";
 import InformationHeader from "./InformationHeader";
 import Center from "./stylesComponents/Center";
+import { CartContext } from "@/context/CartContext";
+import { useContext } from "react";
 
 const StyledHeader = styled.header`
   width: 100%;
@@ -20,14 +22,26 @@ const StyledHeader = styled.header`
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
   color: ${white};
+  padding: 0 10px 0 0;
+  @media screen and (min-width: 412px) {
+    justify-content: space-between;
+  }
 `;
 
 const StyleNav = styled.nav`
   display: flex;
-  place-items: center;
-  gap: 20px;
+  place-items: end;
+  padding-bottom: 20px;
+  gap: 8px;
+  p {
+    font-size: 0.7rem;
+    margin: 0;
+  }
+  @media screen and (min-width: 768px) {
+    gap: 20px;
+  }
 `;
 
 const StaledLink = styled(Link)`
@@ -36,7 +50,8 @@ const StaledLink = styled(Link)`
   color: ${grey};
 `;
 
-const StylesSpan = styled.div`
+const StylesWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,12 +61,10 @@ const StylesSpan = styled.div`
     color: #ccc;
   }
   h3 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin: 0;
   }
-  p {
-    margin: 0;
-  }
+
   svg {
     cursor: pointer;
     ${(props) =>
@@ -73,14 +86,34 @@ const StylesSpan = styled.div`
       `};
   }
   @media screen and (max-width: 768px) {
-    h3,
-    p {
+    h3 {
       display: none;
+    }
+    p {
+      font-size: 0.5rem;
     }
   }
 `;
 
+const StyledSpan = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${success};
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  top: -4px;
+  right: -4px;
+  span {
+    color: ${white};
+    font-size: 0.7rem;
+  }
+`;
+
 export default function Header() {
+  const { cartProducts } = useContext(CartContext);
   return (
     <StyledHeader>
       <InformationHeader />
@@ -88,12 +121,6 @@ export default function Header() {
         <Wrapper>
           <LogoFull href={"/"} />
           <StyleNav>
-            <StaledLink href={"/products"} title={"Ver todos los productos"}>
-              <StylesSpan>
-                <ProductIcon />
-                <p>Productos</p>
-              </StylesSpan>
-            </StaledLink>
             <StaledLink
               href={
                 "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
@@ -102,11 +129,47 @@ export default function Header() {
               rel="noopener noreferrer"
               title={"Enviar mensaje por Whatsapp"}
             >
-              <StylesSpan $anim={1}>
+              <StylesWrapper $anim={1}>
                 <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
                 <p>Escribenos</p>
                 <h3>0996501072</h3>
-              </StylesSpan>
+              </StylesWrapper>
+            </StaledLink>{" "}
+            <StaledLink href={"/products"} title={"Ver todos los productos"}>
+              <StylesWrapper>
+                <ProductIcon />
+                <p>Productos</p>
+              </StylesWrapper>
+            </StaledLink>
+            {/*  <StaledLink
+              hidden={1}
+              href={"/account/user-info"}
+              title={"Ver mi cuenta"}
+            >
+              <StylesWrapper>
+                <UserIcon />
+                <p>Mi perfil</p>
+              </StylesWrapper>
+            </StaledLink> */}
+            {/*  <StaledLink href={"/iniciar-sesion"} title={"Entrar a mi cuenta"}>
+              <StylesWrapper>
+                <UserIcon />
+                <p>Iniciar sesión</p>
+              </StylesWrapper>
+            </StaledLink> */}
+            <StaledLink
+              href={"/carrito-de-compras"}
+              title={"Ver mi carrito de compras"}
+            >
+              <StylesWrapper>
+                {cartProducts?.length > 0 && (
+                  <StyledSpan>
+                    <span>{cartProducts?.length}</span>
+                  </StyledSpan>
+                )}
+                <ShoppingIcon />
+                <p>Carrito</p>
+              </StylesWrapper>
             </StaledLink>
           </StyleNav>
         </Wrapper>

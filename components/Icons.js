@@ -1,6 +1,53 @@
 import { white } from "@/lib/colors";
 import * as React from "react";
 
+export function RemoveFromCartIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      strokeWidth="1"
+      stroke="currentColor"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 17h-11v-14h-2" />
+      <path d="M6 5l8 .571m5.43 4.43l-.429 3h-13" />
+      <path d="M17 3l4 4" />
+      <path d="M21 3l-4 4" />
+    </svg>
+  );
+}
+
+export function AddToCartIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      strokeWidth="1"
+      stroke="currentColor"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 17h-11v-14h-2" />
+      <path d="M6 5l6 .429m7.138 6.573l-.143 1h-13" />
+      <path d="M15 6h6m-3 -3v6" />
+    </svg>
+  );
+}
+
 export const BackIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -92,8 +139,8 @@ export const DeleteIcon = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
     viewBox="0 0 40 40"
-    width="1em"
-    height="1em"
+    width=".8em"
+    height=".8em"
     {...props}
   >
     <path d="M28 40H11.8c-3.3 0-5.9-2.7-5.9-5.9V16c0-.6.4-1 1-1s1 .4 1 1v18.1c0 2.2 1.8 3.9 3.9 3.9H28c2.2 0 3.9-1.8 3.9-3.9V16c0-.6.4-1 1-1s1 .4 1 1v18.1c0 3.2-2.7 5.9-5.9 5.9zM33.3 4.9h-7.6C25.2 2.1 22.8 0 19.9 0s-5.3 2.1-5.8 4.9H6.5C4.2 4.9 2.4 6.7 2.4 9s1.8 4 4.1 4h26.9c2.3 0 4.1-1.8 4.1-4.1s-1.9-4-4.2-4zM19.9 2c1.8 0 3.3 1.2 3.7 2.9h-7.5c.5-1.7 2-2.9 3.8-2.9zm13.4 9H6.5c-1.1 0-2.1-.9-2.1-2.1 0-1.1.9-2.1 2.1-2.1h26.9c1.1 0 2.1.9 2.1 2.1-.1 1.2-1 2.1-2.2 2.1z" />
@@ -175,8 +222,8 @@ export const WhatsappIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-    width="3em"
-    height="3em"
+    width="2.5em"
+    height="2.5em"
     viewBox="0 0 105.885 105.885"
     {...props}
   >
@@ -365,8 +412,8 @@ export const ShoppingIcon = (props) => (
       enableBackground: "new 0 0 19.25 19.25",
     }}
     viewBox="0 0 19.25 19.25"
-    width="1.8em"
-    height="1.88em"
+    width="1.5em"
+    height="1.5em"
     {...props}
   >
     <path
@@ -539,6 +586,23 @@ export const TiktokIcon = (props) => (
     <path
       fill="#69C9D0"
       d="M20.544 4.046h-3.256v16.57c0 .582 0 1.144-.202 1.705-.328.896-1.028 1.704-1.96 2.063-1.4.539-2.493.48-3.798-.347a3.51 3.51 0 0 1-.844-.78c1.112.568 2.107.558 3.34.084.932-.359 1.632-1.168 1.96-2.064.205-.56.202-1.122.202-1.704V3h4.496s-.05.412.062 1.046ZM26.7 8.991v.922a7.29 7.29 0 0 1-1.524-.53c-.94-.45-1.673-1.183-1.817-1.332.167.105.34.2.517.285 1.143.547 2.27.71 2.824.655Z"
+    />
+  </svg>
+);
+export const WarningIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    className="h-5 w-5"
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <path
+      fillRule="evenodd"
+      d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5z"
+      clipRule="evenodd"
     />
   </svg>
 );

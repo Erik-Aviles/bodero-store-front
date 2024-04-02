@@ -1,6 +1,7 @@
+import GlobalStyle from "@/components/globalstyles";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { DataProvider } from "@/context/DataContext";
-import GlobalStyle from "@/components/globalstyles";
+import { CartContextProvider } from "@/context/CartContext";
 
 export default function App({ Component, pageProps }) {
   return (
@@ -8,7 +9,9 @@ export default function App({ Component, pageProps }) {
       <GlobalStyle />
       <NotificationProvider>
         <DataProvider>
-          <Component {...pageProps} />
+          <CartContextProvider>
+            <Component {...pageProps} />
+          </CartContextProvider>
         </DataProvider>
       </NotificationProvider>
     </>
