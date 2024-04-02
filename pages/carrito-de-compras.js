@@ -1,5 +1,5 @@
 import CategoriesComponent from "@/components/CategoriesComponent";
-import { AllDeleteIcon, DeleteIcon } from "@/components/Icons";
+import { DeleteIcon } from "@/components/Icons";
 import Layout from "@/components/Layout";
 import SuccessSend from "@/components/SuccessSend";
 import BackButton from "@/components/buttonComponents/BackButton";
@@ -31,7 +31,7 @@ const ColumnsWrapper = styled.div`
   @media screen and (min-width: 768px) {
     grid-template-columns: 1fr 0.7fr;
     gap: 40px;
-    margin: 0 0 40px;
+    margin: 20px 0 40px;
   }
 `;
 
@@ -51,16 +51,15 @@ const Box = styled.div`
     margin-left: 20px;
   }
   ${(props) =>
-    props.form &&
+    props.$form &&
     css`
       box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
     `}
   ${(props) =>
-    props.list &&
+    props.$list &&
     css`
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     `}
     @media screen and (min-width: 768px) {
     padding: 0;
@@ -228,7 +227,7 @@ export default function CartPage() {
           <Title>Carrito de compras</Title>
         </FlexStyled>
         <ColumnsWrapper>
-          <Box list={1}>
+          <Box $list={1}>
             {!cartProducts?.length && (
               <p>
                 El carrito esta vacio. Los productos adicionados se mostrarán
@@ -242,7 +241,7 @@ export default function CartPage() {
                 <Table>
                   <thead>
                     <tr>
-                      <th>Producto</th>
+                      <th style={{ width: "120px" }}>Producto</th>
                       <th></th>
                       <th>Und.</th>
                       <th>P. Und.</th>
@@ -323,7 +322,7 @@ export default function CartPage() {
             )}
           </Box>
           {!!cartProducts?.length && (
-            <Box white={1}>
+            <Box $white={1}>
               <h3>Información de envío </h3>
               <Input
                 type="text"

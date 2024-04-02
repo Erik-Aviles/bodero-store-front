@@ -5,6 +5,7 @@ import emptyimage from "../public/images/vacio.png";
 import Image from "next/image";
 import Spinner from "./Spinner";
 import awsS3Loader from "./awsS3Loader";
+import localLoader from "./localLoader";
 
 const WhiteBox = styled.div`
   display: flex;
@@ -80,7 +81,7 @@ export default function ProductImages({ images, name }) {
     <WhiteBox>
       <BigImageWrapper>
         <BigImage
-          loader={awsS3Loader}
+          loader={images?.[0] ? awsS3Loader : localLoader}
           src={activeImage}
           alt={name}
           width={300}

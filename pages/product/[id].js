@@ -22,8 +22,13 @@ import Layout from "@/components/Layout";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { useContext } from "react";
 import { DataContext } from "@/context/DataContext";
-import { CardIcon } from "@/components/Icons";
+import {
+  AddToCartIcon,
+  CardIcon,
+  RemoveFromCartIcon,
+} from "@/components/Icons";
 import Link from "next/link";
+import { CartContext } from "@/context/CartContext";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -109,11 +114,11 @@ const WrapperButton = styled.section`
   gap: 30px;
 `;
 const ButtonCard = styled.button`
-  border: 1px solid ${black};
+  border: none;
   background-color: ${black};
   color: ${white};
   border-radius: 0.275rem;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -122,15 +127,18 @@ const ButtonCard = styled.button`
     background-color: ${success};
     color: ${white2};
   }
-  &:focus {
-    background-color: ${success};
-    border-color: ${success};
-  }
 `;
 
 export default function ProductPage({ product }) {
+  const { addProduct, cartProducts, removeOneProduct } =
+    useContext(CartContext);
   const { categories } = useContext(DataContext);
   const router = useRouter();
+
+  const checkProductInCart = (product) => {
+    return cartProducts.some((item) => item === product);
+  };
+  const isProductInCart = checkProductInCart(product._id);
 
   const handleGoBack = (e) => {
     e.preventDefault();
@@ -183,11 +191,22 @@ export default function ProductPage({ product }) {
 
             <WrapperButton>
               <CompatibilityModal product={product} />
-              <Link href={"/"}>
-                <ButtonCard $black={1}>
-                  <CardIcon />
-                </ButtonCard>
-              </Link>
+              <ButtonCard
+                $black={1}
+                style={{
+                  backgroundColor: isProductInCart ? success : null,
+                }}
+                title={
+                  isProductInCart ? "Elimina del carrito" : "Agregar carrito"
+                }
+                onClick={() =>
+                  isProductInCart
+                    ? removeOneProduct(product._id)
+                    : addProduct(product._id)
+                }
+              >
+                {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}
+              </ButtonCard>
             </WrapperButton>
           </Row>
         </ColWrapper>

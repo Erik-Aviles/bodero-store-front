@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   gap: 20px;
   color: ${white};
   padding: 0 10px 0 0;
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 412px) {
     justify-content: space-between;
   }
 `;

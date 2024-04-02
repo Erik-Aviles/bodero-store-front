@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { black, error, grey, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./buttonComponents/ButtonLink";
-import { CardIcon, WhatsappIcon } from "./Icons";
+import { AddToCartIcon, RemoveFromCartIcon, WhatsappIcon } from "./Icons";
 import Image from "next/image";
 import emptyimage from "../public/images/vacio.png";
 import awsS3Loader from "./awsS3Loader";
@@ -109,16 +109,29 @@ const SpanCard = styled.span`
 `;
 
 export function ProductBox({ ...product }) {
-  const { addProduct } = useContext(CartContext);
+  const { addProduct, cartProducts, removeOneProduct } =
+    useContext(CartContext);
+
+  const checkProductInCart = (product) => {
+    return cartProducts.some((item) => item === product);
+  };
+  const isProductInCart = checkProductInCart(product._id);
 
   return (
     <ProductWrapper>
       <ImageBox>
         <ImgCard
-          title="Agregar al garrito"
-          onClick={() => addProduct(product?._id)}
+          style={{
+            backgroundColor: isProductInCart ? success : null,
+          }}
+          title={isProductInCart ? "Elimina del carrito" : "Agregar carrito"}
+          onClick={() =>
+            isProductInCart
+              ? removeOneProduct(product._id)
+              : addProduct(product._id)
+          }
         >
-          <CardIcon />
+          {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}
         </ImgCard>
         <ItemImage
           loader={product?.images?.[0] ? awsS3Loader : localLoader}
