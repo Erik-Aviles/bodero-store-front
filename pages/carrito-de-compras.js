@@ -5,7 +5,6 @@ import SuccessSend from "@/components/SuccessSend";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
-import Input from "@/components/stylesComponents/Input";
 import Table from "@/components/stylesComponents/Table";
 import Title from "@/components/stylesComponents/Title";
 import { CartContext } from "@/context/CartContext";
@@ -23,6 +22,7 @@ const CenterDiv = styled.section`
 `;
 
 const ColumnsWrapper = styled.div`
+  width: in;
   display: grid;
   grid-template-columns: 1fr;
   margin: 40px 0;
@@ -36,7 +36,6 @@ const ColumnsWrapper = styled.div`
 `;
 
 const Box = styled.div`
-  width: 100%;
   background-color: ${white};
   border-radius: 10px;
   padding: 0 10px;
@@ -103,14 +102,6 @@ const QuantityLabel = styled.span`
   padding: 0 3px;
 `;
 
-const WrapperDiv = styled.div`
-  display: flex;
-  gap: 1px;
-  @media screen and (min-width: 768px) {
-    gap: 5px;
-  }
-`;
-
 const ButtonCart = styled.button`
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.25rem;
@@ -119,13 +110,58 @@ const ButtonCart = styled.button`
   &:active {
     background-color: ${greylight};
   }
-  ${(props) =>
-    props.$more &&
-    css`
-      pa
-    `};
+  &:hover {
+    background-color: ${greylight};
+  }
+
   @media screen and (min-width: 768px) {
     padding: 5px 10px;
+  }
+`;
+
+const WrapperDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  @media screen and (min-width: 412px) {
+    flex-direction: row;
+    gap: 5px;
+  }
+`;
+
+const InputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 0 10px;
+  label {
+    font-size: 12px;
+    font-weight: 400;
+    color: ${grey};
+  }
+  input {
+    display: block;
+    color: ${grey};
+    padding: 0.5rem 1rem;
+    border: 0.5px solid #878787;
+    font-size: 0.7rem;
+    border-radius: 6px;
+    transition-duration: 0.3s;
+    outline: 0.5px solid transparent;
+    &:focus {
+      outline: 1px solid ${error};
+    }
+    &::placeholder {
+      color: ${greylight};
+      font-style: italic;
+    }
+  }
+`;
+const TH = styled.th`
+  width: 90px;
+  @media screen and (min-width: 412px) {
+    width: 120px;
   }
 `;
 
@@ -149,6 +185,7 @@ export default function CartPage() {
   const [streetAddress, setStreetAddress] = useState("");
   const [country, setCountry] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+
   useEffect(() => {
     if (cartProducts.length > 0) {
       axios.post("/api/cart", { ids: cartProducts }).then((response) => {
@@ -241,7 +278,7 @@ export default function CartPage() {
                 <Table>
                   <thead>
                     <tr>
-                      <th style={{ width: "120px" }}>Producto</th>
+                      <TH>Producto</TH>
                       <th></th>
                       <th>Und.</th>
                       <th>P. Und.</th>
@@ -324,52 +361,80 @@ export default function CartPage() {
           {!!cartProducts?.length && (
             <Box $white={1}>
               <h3>Información de envío </h3>
-              <Input
-                type="text"
-                placeholder="Nombre"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Correo"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Teléfono"
-                name="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <WrapperDiv>
-                <Input
+              <InputContainer>
+                <label htmlFor="name">Nombre y Apellido</label>
+                <input
                   type="text"
-                  placeholder="Ciudad"
-                  name="city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="Nombre.."
+                  id="name"
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
-              </WrapperDiv>
+              </InputContainer>
+              <WrapperDiv>
+                <InputContainer>
+                  <label htmlFor="email">Correo</label>
+                  <input
+                    type="text"
+                    placeholder="Correo..."
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </InputContainer>
 
-              <Input
-                type="text"
-                placeholder="Dirección"
-                name="streetAddress"
-                value={streetAddress}
-                onChange={(e) => setStreetAddress(e.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="País"
-                name="country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              />
-              <ButtonCart onClick={goToPayment}>Enviar pedido</ButtonCart>
+                <InputContainer>
+                  <label htmlFor="phone">Teléfono</label>
+                  <input
+                    type="text"
+                    placeholder="Teléfono..."
+                    id="phone"
+                    name="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </InputContainer>
+              </WrapperDiv>
+              <WrapperDiv>
+                <InputContainer>
+                  <label htmlFor="city">Ciudad</label>
+                  <input
+                    type="text"
+                    placeholder="Ciudad..."
+                    id="city"
+                    name="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </InputContainer>{" "}
+                <InputContainer>
+                  <label htmlFor="country">País</label>
+                  <input
+                    type="text"
+                    placeholder="País..."
+                    id="country"
+                    name="country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                  />
+                </InputContainer>
+              </WrapperDiv>{" "}
+              <InputContainer>
+                <label htmlFor="streetAddress">Dirección</label>
+                <input
+                  type="text"
+                  placeholder="Dirección..."
+                  id="streetAddress"
+                  name="streetAddress"
+                  value={streetAddress}
+                  onChange={(e) => setStreetAddress(e.target.value)}
+                />
+              </InputContainer>
+              <WrapperDiv>
+                <ButtonCart onClick={goToPayment}>Enviar pedido</ButtonCart>
+              </WrapperDiv>
             </Box>
           )}
         </ColumnsWrapper>

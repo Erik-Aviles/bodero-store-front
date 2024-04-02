@@ -61,13 +61,14 @@ const ProductInfoBox = styled.div`
   padding: 0.8rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
   p {
     font-size: 0.8rem;
     line-height: 1.2rem;
     max-height: 52px;
     overflow: hidden;
     margin: 0;
+    text-transform: uppercase;
   }
 `;
 
@@ -91,6 +92,7 @@ const Price = styled.div`
 `;
 const SpanCard = styled.span`
   font-size: 0.7rem;
+  text-transform: uppercase;
   ${(props) =>
     props.$error &&
     css`
