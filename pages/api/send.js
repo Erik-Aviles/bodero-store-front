@@ -1,5 +1,5 @@
 import { EmailTemplate } from "@/components/EmailTemplate";
-import { validateEmail } from "@/utils/isValidCredencials";
+import isValidEmail from "@/utils/isValidEmail";
 import messages from "@/utils/messages";
 import { Resend } from "resend";
 
@@ -19,7 +19,7 @@ export default async function handle(req, res) {
     }
 
     //validar si el email es un email
-    if (!validateEmail(email)) {
+    if (!isValidEmail(email)) {
       res.status(400).json({
         message: messages.error.emailNotValid,
       });

@@ -218,7 +218,7 @@ export default function CartPage() {
   function deleteProductAll() {
     clearCart();
   }
-  async function goToPayment() {
+  /*  async function goToPayment() {
     const response = await axios.post("/api/checkout", {
       name,
       email,
@@ -231,7 +231,7 @@ export default function CartPage() {
     if (response.data.url) {
       window.location = response.data.url;
     }
-  }
+  } */
 
   let total = 0;
   for (const productId of cartProducts) {
@@ -433,7 +433,7 @@ export default function CartPage() {
                 />
               </InputContainer>
               <WrapperDiv>
-                <ButtonCart onClick={goToPayment}>Enviar pedido</ButtonCart>
+                <ButtonCart>Enviar pedido</ButtonCart>
               </WrapperDiv>
             </Box>
           )}
