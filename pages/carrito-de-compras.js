@@ -261,16 +261,16 @@ export default function CartPage() {
     };
     try {
       const response = await axios.post("/api/checkout", data);
-
       showNotification({
         open: true,
         msj: response.data.message,
         status: "success",
       });
-      if (response.data) {
-        window.location = response.data;
-      }
-      console.log(response.data);
+      deleteProductAll();
+      const timeout = setTimeout(() => {
+        router.push("/");
+      }, 2000);
+      return () => clearTimeout(timeout);
     } catch (error) {
       showNotification({
         open: true,

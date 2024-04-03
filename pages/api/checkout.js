@@ -45,6 +45,10 @@ export default async function handle(req, res) {
         });
       }
     }
+    if (!name || !email || !phone || !city || !streetAddress || !country)
+      return res
+        .status(400)
+        .json({ message: messages.error.allFieldsAreRequired });
 
     const orderDoc = await Order.create({
       line_items,
