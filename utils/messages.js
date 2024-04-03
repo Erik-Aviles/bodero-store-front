@@ -13,6 +13,7 @@ const messages = {
   success: {
     allUsers: "Son todos los usuarios",
     userCreated: "Su cuenta ha sido creada",
+    orderSuccess: "Envio de pedido exitoso",
     userLogged: "Que bueno verte de vuelta",
     emailSend: "Correo enviado con exito",
     msgSend: "Mensaje enviado con exito",
