@@ -9,7 +9,16 @@ import Table from "@/components/stylesComponents/Table";
 import Title from "@/components/stylesComponents/Title";
 import { CartContext } from "@/context/CartContext";
 import { DataContext } from "@/context/DataContext";
-import { error, grey, greylight, success, white } from "@/lib/colors";
+import NotificationContext from "@/context/NotificationContext";
+import {
+  black,
+  error,
+  grey,
+  greylight,
+  primary,
+  success,
+  white,
+} from "@/lib/colors";
 import formatPrice from "@/utils/formatPrice";
 
 import axios from "axios";
@@ -34,7 +43,23 @@ const ColumnsWrapper = styled.div`
     margin: 20px 0 40px;
   }
 `;
-
+const WrapperDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  ${(props) =>
+    props.$center &&
+    css`
+      justify-content: space-evenly;
+    `}
+  ${(props) =>
+    props.$column &&
+    css`
+      @media screen and (max-width: 370px) {
+        flex-direction: column;
+      }
+    `}
+`;
 const Box = styled.div`
   background-color: ${white};
   border-radius: 10px;
@@ -113,19 +138,24 @@ const ButtonCart = styled.button`
   &:hover {
     background-color: ${greylight};
   }
+  ${(props) =>
+    props.$primary &&
+    css`
+      padding: 8px 12px;
+      margin: 10px 0 0;
+      text-transform: uppercase;
+      background-color: ${success};
+      color: ${white};
+      border: 1px solid ${success};
+      &:hover {
+        background-color: ${white};
+        color: ${success};
+        border: 1px solid ${success};
+      }
+    `};
 
   @media screen and (min-width: 768px) {
     padding: 5px 10px;
-  }
-`;
-
-const WrapperDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  @media screen and (min-width: 412px) {
-    flex-direction: row;
-    gap: 5px;
   }
 `;
 
@@ -166,6 +196,7 @@ const TH = styled.th`
 `;
 
 export default function CartPage() {
+  const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
   const { categories } = useContext(DataContext);
   const { asPath } = router;
@@ -218,8 +249,8 @@ export default function CartPage() {
   function deleteProductAll() {
     clearCart();
   }
-  /*  async function goToPayment() {
-    const response = await axios.post("/api/checkout", {
+  async function goToPayment() {
+    let data = {
       name,
       email,
       phone,
@@ -227,11 +258,27 @@ export default function CartPage() {
       streetAddress,
       country,
       cartProducts,
-    });
-    if (response.data.url) {
-      window.location = response.data.url;
+    };
+    try {
+      const response = await axios.post("/api/checkout", data);
+
+      showNotification({
+        open: true,
+        msj: response.data.message,
+        status: "success",
+      });
+      if (response.data) {
+        window.location = response.data;
+      }
+      console.log(response.data);
+    } catch (error) {
+      showNotification({
+        open: true,
+        msj: error.response.data.message,
+        status: "error",
+      });
     }
-  } */
+  }
 
   let total = 0;
   for (const productId of cartProducts) {
@@ -279,10 +326,9 @@ export default function CartPage() {
                   <thead>
                     <tr>
                       <TH>Producto</TH>
-                      <th></th>
-                      <th>Und.</th>
+                      <th>Unidades</th>
                       <th>P. Und.</th>
-                      <th>Total</th>
+                      <th>Sub Total</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -306,6 +352,12 @@ export default function CartPage() {
                             >
                               -
                             </ButtonCart>
+                            <QuantityLabel>
+                              {
+                                cartProducts.filter((id) => id === product._id)
+                                  .length
+                              }
+                            </QuantityLabel>
                             <ButtonCart
                               onClick={() => moreOfThisProduct(product._id)}
                             >
@@ -313,14 +365,7 @@ export default function CartPage() {
                             </ButtonCart>
                           </WrapperDiv>
                         </td>
-                        <td>
-                          <QuantityLabel>
-                            {
-                              cartProducts.filter((id) => id === product._id)
-                                .length
-                            }
-                          </QuantityLabel>
-                        </td>
+
                         <td>{formatPrice(product.salePrice)}</td>
                         <td>
                           {formatPrice(
@@ -339,7 +384,6 @@ export default function CartPage() {
                       </tr>
                     ))}
                     <tr>
-                      <td></td>
                       <td></td>
                       <td></td>
                       <td>TOTAL</td>
@@ -372,7 +416,7 @@ export default function CartPage() {
                   onChange={(e) => setName(e.target.value)}
                 />
               </InputContainer>
-              <WrapperDiv>
+              <WrapperDiv $column>
                 <InputContainer>
                   <label htmlFor="email">Correo</label>
                   <input
@@ -397,7 +441,7 @@ export default function CartPage() {
                   />
                 </InputContainer>
               </WrapperDiv>
-              <WrapperDiv>
+              <WrapperDiv $column>
                 <InputContainer>
                   <label htmlFor="city">Ciudad</label>
                   <input
@@ -432,8 +476,10 @@ export default function CartPage() {
                   onChange={(e) => setStreetAddress(e.target.value)}
                 />
               </InputContainer>
-              <WrapperDiv>
-                <ButtonCart>Enviar pedido</ButtonCart>
+              <WrapperDiv $center>
+                <ButtonCart $primary={1} onClick={goToPayment}>
+                  Enviar pedido
+                </ButtonCart>
               </WrapperDiv>
             </Box>
           )}

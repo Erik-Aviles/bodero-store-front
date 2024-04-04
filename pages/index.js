@@ -6,7 +6,6 @@ import Carousel from "@/components/Carousel";
 import { Product } from "@/models/Product";
 import Brands from "@/components/Brands";
 import { dataCarousel } from "@/resource/data";
-import Testimonios from "@/components/Testimonios";
 import Layout from "@/components/Layout";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "@/context/DataContext";
@@ -35,7 +34,6 @@ export default function HomePage({ newProducts }) {
       <Carousel data={dataCarousel} />
       <NewProducts products={newProducts} />
       <Brands />
-      <Testimonios />
     </Layout>
   );
 }
