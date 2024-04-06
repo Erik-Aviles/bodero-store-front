@@ -13,16 +13,8 @@ export default async function handle(req, res) {
   }
 
   try {
-    const {
-      name,
-      email,
-      phone,
-      city,
-      streetAddress,
-      country,
-      products,
-      cartProducts,
-    } = req.body;
+    const { name, email, phone, city, streetAddress, country, cartProducts } =
+      req.body;
 
     const productIds = cartProducts;
     const uniqueIds = [...new Set(productIds)];
@@ -37,14 +29,21 @@ export default async function handle(req, res) {
       if (quantity > 0 && productInfo) {
         line_items.push({
           quantity,
-          price_data: {
+          info_order: {
             currency: "USD",
-            product_data: { name: productInfo.title },
-            unit_amount: quantity * productInfo.salePrice * 100,
+            product_data: {
+              id: productInfo._id,
+              name: productInfo.title,
+              price: productInfo.salePrice,
+              brand: productInfo.brand,
+              code: productInfo.code,
+            },
+            unit_amount: quantity * productInfo.salePrice,
           },
         });
       }
     }
+
     if (!name || !email || !phone || !city || !streetAddress || !country)
       return res
         .status(400)

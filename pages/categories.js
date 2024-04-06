@@ -3,7 +3,6 @@ import CategoriesComponent from "@/components/CategoriesComponent";
 import styled, { css } from "styled-components";
 import filterSearch from "@/utils/filterSearch";
 import { grey, secondary } from "@/lib/colors";
-import Button from "@/components/buttonComponents/Button";
 import { useRouter } from "next/router";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
@@ -91,7 +90,7 @@ export default function CategoriesPage({ products, result }) {
       title="B.R.D | Categoria"
       description="Repuestos Originales en diferentes marcas que hacen la diferencia"
     >
-      <CategoriesComponent categories={categories} />
+      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled aria-label="breadcrumb">
           <BackButton onClick={handleGoBack} />

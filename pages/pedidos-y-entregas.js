@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { black, white } from "@/lib/colors";
 import Title from "@/components/stylesComponents/Title";
@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
-import { DataContext } from "@/context/DataContext";
 import { Loading } from "@/components/Loading";
 
 const CenterDiv = styled.section`
@@ -67,7 +66,6 @@ const Box = styled.div`
 `;
 
 export default function DeliveryPage() {
-  const { categories } = useContext(DataContext);
   const router = useRouter();
   const [isUpLoanding, setIsUpLoanding] = useState(true);
 
@@ -90,7 +88,7 @@ export default function DeliveryPage() {
   if (!categories) return <Loading />;
   return (
     <Layout title="B.R.D | Pedidos y Entregas">
-      <CategoriesComponent categories={categories} />
+      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

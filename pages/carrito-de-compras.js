@@ -8,7 +8,7 @@ import { FlexStyled } from "@/components/stylesComponents/Flex";
 import Table from "@/components/stylesComponents/Table";
 import Title from "@/components/stylesComponents/Title";
 import { CartContext } from "@/context/CartContext";
-import { DataContext } from "@/context/DataContext";
+
 import NotificationContext from "@/context/NotificationContext";
 import {
   black,
@@ -198,7 +198,6 @@ const TH = styled.th`
 export default function CartPage() {
   const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
-  const { categories } = useContext(DataContext);
   const { asPath } = router;
 
   const {
@@ -266,7 +265,8 @@ export default function CartPage() {
         msj: response.data.message,
         status: "success",
       });
-      deleteProductAll();
+      clearCart();
+
       const timeout = setTimeout(() => {
         router.push("/");
       }, 2000);
@@ -304,7 +304,7 @@ export default function CartPage() {
   }
   return (
     <Layout title="B.R.D | Mi carrito">
-      <CategoriesComponent categories={categories} />
+      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

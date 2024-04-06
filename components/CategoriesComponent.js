@@ -3,9 +3,10 @@ import styled from "styled-components";
 import Center from "./stylesComponents/Center";
 import { SearchIcon } from "./Icons";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import SlinderCategories from "./SlinderCategories";
 import { black, error, white } from "@/lib/colors";
+import { DataContext } from "@/context/DataContext";
 
 const DivContainert = styled.div`
   background-color: ${black};
@@ -15,12 +16,12 @@ const DivContainert = styled.div`
   box-shadow: none;
   white-space: nowrap;
   select {
+    width: 50%;
     padding-left: 20px;
     display: block;
     font-size: 16px;
     background-color: ${black};
     color: ${white};
-    width: 100%;
     height: 44.8px;
     border: 0;
     appearance: none;
@@ -59,7 +60,17 @@ const LinkSearch = styled(Link)`
   }
 `;
 
-const CategoriesComponent = ({ categories }) => {
+const StyledOption = styled.option`
+  font-size: 0.8rem;
+  line-height: 20px;
+  &:hover {
+    background-color: lightblue; /* Cambia al color deseado */
+  }
+`;
+
+const CategoriesComponent = () => {
+  const { categories } = useContext(DataContext);
+
   const [category, setCategory] = useState("");
 
   const router = useRouter();
@@ -88,11 +99,11 @@ const CategoriesComponent = ({ categories }) => {
           value={category}
           onChange={(e) => handleCategory(e.target.value)}
         >
-          <option value="all">CATEGORIAS</option>
+          <StyledOption value="all">CATEGORIAS</StyledOption>
           {categories.map((item) => (
-            <option key={item._id} value={item._id}>
+            <StyledOption key={item._id} value={item._id}>
               {item.name.toUpperCase()}
-            </option>
+            </StyledOption>
           ))}
         </select>
         <SlinderCategories categories={categories} />

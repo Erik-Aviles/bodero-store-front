@@ -23,6 +23,29 @@ export default async function handle(req, res) {
           title: { $regex: queryObj.title },
         });
       }
+      if (queryObj.brand !== "all" && typeof queryObj.brand === "string") {
+        this.query.find({
+          brand: { $regex: queryObj.brand },
+        });
+      }
+      if (queryObj.code !== "all" && typeof queryObj.code === "string") {
+        this.query.find({
+          code: { $regex: queryObj.code },
+        });
+      }
+      if (
+        queryObj.codeEnterprise !== "all" &&
+        typeof queryObj.codeEnterprise === "string"
+      ) {
+        this.query.find({
+          codeEnterprise: { $regex: queryObj.codeEnterprise },
+        });
+      }
+      if (queryObj.codeWeb !== "all" && typeof queryObj.codeWeb === "string") {
+        this.query.find({
+          codeWeb: { $regex: queryObj.codeWeb },
+        });
+      }
       this.query.find();
       return this;
     }
