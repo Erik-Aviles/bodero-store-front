@@ -111,29 +111,6 @@ const Filter = () => {
     });
   }, [search]);
 
-  /*   console.log(search);
-
-  const hasSearchFilter = Boolean(search);
-
-  console.log(categories);
-  const filteredItems = useMemo(() => {
-    let filteredProducts = [...products];
-
-    if (hasSearchFilter) {
-      filteredProducts = filteredProducts.filter(
-        (product) =>
-          product.title.toLowerCase().includes(search.toLowerCase()) ||
-          product.code.toLowerCase().includes(search.toLowerCase()) ||
-          product.codeWeb.toLowerCase().includes(search.toLowerCase()) ||
-          product.codeEnterprise
-            .toLowerCase()
-            .includes(filterValue.toLowerCase())
-      );
-    }
-
-    return filteredProducts;
-  }, [products, search]); */
-
   return (
     <WrapperProductFilter>
       <FilterGroup>
