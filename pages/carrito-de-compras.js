@@ -153,7 +153,9 @@ const ButtonCart = styled.button`
         border: 1px solid ${success};
       }
     `};
-
+  &:disabled {
+    cursor: not-allowed;
+  }
   @media screen and (min-width: 768px) {
     padding: 5px 10px;
   }
@@ -343,12 +345,19 @@ export default function CartPage() {
                               src={product.images[0]}
                             />
                           </ProductImageBox>
-                          <TitleSpan>{product.title.toUpperCase()}</TitleSpan>
+                          <TitleSpan>
+                            {product.title.toUpperCase()} {product.length}
+                          </TitleSpan>
+                          <TitleSpan> {product.quantity}</TitleSpan>
                         </ProductInfoCell>
                         <td>
                           <WrapperDiv>
                             <ButtonCart
                               onClick={() => lessOfThisProduct(product._id)}
+                              disabled={
+                                cartProducts.filter((id) => id === product._id)
+                                  .length === 1
+                              }
                             >
                               -
                             </ButtonCart>
@@ -360,6 +369,10 @@ export default function CartPage() {
                             </QuantityLabel>
                             <ButtonCart
                               onClick={() => moreOfThisProduct(product._id)}
+                              disabled={
+                                cartProducts.filter((id) => id === product._id)
+                                  .length >= product.quantity
+                              }
                             >
                               +
                             </ButtonCart>
@@ -391,7 +404,7 @@ export default function CartPage() {
                       <td>
                         <ButtonCart
                           title="Eliminar todo los productos"
-                          onClick={() => deleteProductAll()}
+                          onClick={() => clearCart()}
                         >
                           <DeleteIcon fill={error} />
                         </ButtonCart>
