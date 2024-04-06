@@ -70,7 +70,6 @@ const WrapperInputs = styled.div`
   gap: 1rem;
 `;
 export default function ContactPage() {
-  const { categories } = useContext(DataContext);
   const authRouter = useAuthFetch();
   const router = useRouter();
   const { isLoading, startLoading, finishtLoading } = useLoading();
@@ -105,7 +104,7 @@ export default function ContactPage() {
 
   return (
     <Layout title="B.R.D | Contactenos">
-      <CategoriesComponent categories={categories} />
+      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

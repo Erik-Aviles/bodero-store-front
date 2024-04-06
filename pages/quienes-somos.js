@@ -13,8 +13,7 @@ import { useRouter } from "next/navigation";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { greylight } from "@/lib/colors";
-import { useContext, useEffect, useState } from "react";
-import { DataContext } from "@/context/DataContext";
+import { useEffect, useState } from "react";
 import { Loading } from "@/components/Loading";
 
 const CenterDiv = styled.section`
@@ -99,7 +98,6 @@ const SectionText = styled.section`
 `;
 
 export default function AboutUsPage() {
-  const { categories } = useContext(DataContext);
   const router = useRouter();
   const [isUpLoanding, setIsUpLoanding] = useState(true);
 
@@ -121,7 +119,7 @@ export default function AboutUsPage() {
 
   return (
     <Layout title="B.R.D | Quienes somos">
-      <CategoriesComponent categories={categories} />
+      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

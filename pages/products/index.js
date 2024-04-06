@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import fetch from "isomorphic-unfetch";
-import { DataContext } from "@/context/DataContext";
 import filterSearch from "@/utils/filterSearch";
 import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
@@ -23,7 +22,6 @@ const CenterDiv = styled.section`
 
 export default function ProductsPage({ products }) {
   const router = useRouter();
-  const { categories } = useContext(DataContext);
   const [product, setProducts] = useState(products);
   const [pages, setPages] = useState(1);
 
@@ -56,7 +54,7 @@ export default function ProductsPage({ products }) {
       title="B.R.D | Todos los Productos"
       description={`Marcas reconocidas como: ${brandNamesString}`}
     >
-      <CategoriesComponent categories={categories} />
+      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

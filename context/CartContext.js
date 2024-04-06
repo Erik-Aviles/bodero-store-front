@@ -18,10 +18,6 @@ export function CartContextProvider({ children }) {
     }
   }, []);
 
-  /*  const updateLocalStorage = (cartProducts) => {
-    window.localStorage.setItem('cart', JSON.stringify(cartProducts));
-  }; */
-
   function addProduct(productId) {
     setCartProducts((prev) => [...prev, productId]);
   }
@@ -46,6 +42,7 @@ export function CartContextProvider({ children }) {
 
   function clearCart() {
     setCartProducts([]);
+    ls.removeItem("cart");
   }
 
   return (

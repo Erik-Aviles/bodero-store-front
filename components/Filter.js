@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { grey } from "@/lib/colors";
+import { DataContext } from "@/context/DataContext";
 
 const WrapperProductFilter = styled.div`
   margin: 0 20px 20px;
@@ -55,6 +56,13 @@ const CustomSelect = styled.select`
     order: 1;
   }
 `;
+
+const StyledOption = styled.option`
+  font-size: 0.8rem;
+  &:hover {
+    background-color: ${grey}; /* Cambia al color deseado */
+  }
+`;
 const Customform = styled.form`
   width: 100%;
   @media screen and (max-width: 768px) {
@@ -78,7 +86,8 @@ const Input = styled.input`
   overflow: visible;
 `;
 
-const Filter = ({ categories }) => {
+const Filter = () => {
+  const { categories } = useContext(DataContext);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState("");
@@ -102,21 +111,44 @@ const Filter = ({ categories }) => {
     });
   }, [search]);
 
+  /*   console.log(search);
+
+  const hasSearchFilter = Boolean(search);
+
+  console.log(categories);
+  const filteredItems = useMemo(() => {
+    let filteredProducts = [...products];
+
+    if (hasSearchFilter) {
+      filteredProducts = filteredProducts.filter(
+        (product) =>
+          product.title.toLowerCase().includes(search.toLowerCase()) ||
+          product.code.toLowerCase().includes(search.toLowerCase()) ||
+          product.codeWeb.toLowerCase().includes(search.toLowerCase()) ||
+          product.codeEnterprise
+            .toLowerCase()
+            .includes(filterValue.toLowerCase())
+      );
+    }
+
+    return filteredProducts;
+  }, [products, search]); */
+
   return (
     <WrapperProductFilter>
       <FilterGroup>
         <WrapperSelect>
           <CustomSelect value={category} onChange={handleCategory}>
-            <option value="all"> Categorias </option>
+            <StyledOption value="all"> Categorias </StyledOption>
             {categories.map((item) => (
-              <option key={item._id} value={item._id}>
+              <StyledOption key={item._id} value={item._id}>
                 {item.name}
-              </option>
+              </StyledOption>
             ))}
           </CustomSelect>
         </WrapperSelect>
 
-        <Customform autoComplete="off">
+        <Customform>
           <Input
             type="text"
             placeholder="Buscar..."
@@ -128,11 +160,15 @@ const Filter = ({ categories }) => {
 
         <WrapperSelect>
           <CustomSelect value={sort} onChange={handleSort}>
-            <option value="all">Ordenar por:</option>
-            <option value="-createdAt">Lo más nuevo</option>
-            <option value="oldest">Lo mas antiguo</option>
-            <option value="-salePrice">Precio: más caro primero</option>
-            <option value="salePrice">Precio: más barato primero</option>
+            <StyledOption value="all">Ordenar por:</StyledOption>
+            <StyledOption value="-createdAt">Lo más nuevo</StyledOption>
+            <StyledOption value="oldest">Lo mas antiguo</StyledOption>
+            <StyledOption value="-salePrice">
+              Precio: más caro primero
+            </StyledOption>
+            <StyledOption value="salePrice">
+              Precio: más barato primero
+            </StyledOption>
           </CustomSelect>
         </WrapperSelect>
       </FilterGroup>

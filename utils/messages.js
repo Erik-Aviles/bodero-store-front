@@ -1,6 +1,7 @@
 const messages = {
   error: {
-    needProps: "Falta algún campo",
+    allFieldsAreRequired: "Todos los campos son requeridos",
+    needProps: "Falta algún campo por llenar",
     emailNotValid: "Dirección de correo electrónico no válida.",
     passwordNotMatch: "Las contraseñas no coinciden",
     emailExist: "Ya existe un usuario con ese correo",

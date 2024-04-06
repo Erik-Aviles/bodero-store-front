@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { DataContext } from "@/context/DataContext";
+import { useEffect, useState } from "react";
 import ProductsGrid from "@/components/ProductsGrid";
 import filterSearch from "@/utils/filterSearch";
 import Filter from "@/components/Filter";
@@ -34,7 +33,6 @@ const CenterDiv = styled.section`
 `;
 
 export default function SearchPage({ products }) {
-  const { categories } = useContext(DataContext);
   const [product, setProducts] = useState(products);
   const [pages, setPages] = useState(1);
   const router = useRouter();
@@ -72,7 +70,7 @@ export default function SearchPage({ products }) {
       description={`Contammos con marcas reconocidas como: ${brandNamesString}`}
     >
       <CenterDiv>
-        <Filter categories={categories} />
+        <Filter />
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
           <Title>Busqueda de productos </Title>
