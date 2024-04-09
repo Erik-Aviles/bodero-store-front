@@ -13,6 +13,7 @@ import BackButton from "@/components/buttonComponents/BackButton";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
+import SearchComponent from "@/components/SearchComponent";
 
 const CenterSecction = css`
   heigth: auto;
@@ -33,9 +34,9 @@ const CenterDiv = styled.section`
 `;
 
 export default function SearchPage({ products }) {
+  const router = useRouter();
   const [product, setProducts] = useState(products);
   const [pages, setPages] = useState(1);
-  const router = useRouter();
 
   useEffect(() => {
     setProducts(products);
@@ -70,7 +71,8 @@ export default function SearchPage({ products }) {
       description={`Contammos con marcas reconocidas como: ${brandNamesString}`}
     >
       <CenterDiv>
-        <Filter />
+        {/* <Filter /> */}
+        <SearchComponent />
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
           <Title>Busqueda de productos </Title>

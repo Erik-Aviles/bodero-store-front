@@ -13,6 +13,7 @@ const WhiteBox = styled.div`
   background-color: ${white};
   @media screen and (max-width: 640px) {
     flex-direction: column;
+    padding: 10px;
   }
 `;
 
@@ -33,6 +34,9 @@ const ImageButtons = styled.div`
   display: grid;
   grid-template-rows: repeat(auto-fill, minmax(70px, 1fr));
   gap: 5px;
+  @media screen and (max-width: 640px) {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
 `;
 
 const ImageButton = styled.div`
