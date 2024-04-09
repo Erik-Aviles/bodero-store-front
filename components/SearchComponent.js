@@ -1,11 +1,11 @@
-import React, { useContext, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createAutocomplete } from "@algolia/autocomplete-core";
 import styled, { css } from "styled-components";
 import { grey, success } from "@/lib/colors";
 import { DataContext } from "@/context/DataContext";
-import { useRouter } from "next/router";
 import filterSearch from "@/utils/filterSearch";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const WrapperProductFilter = styled.div`
   margin: 0 20px 20px;
@@ -265,6 +265,13 @@ const SearchComponent = (props) => {
     setSort(e.target.value);
     filterSearch({ router, sort: e.target.value });
   };
+
+  useEffect(() => {
+    filterSearch({
+      router,
+      search: search ? search.toLocaleLowerCase() : "all",
+    });
+  }, [search]);
   return (
     <WrapperProductFilter>
       <FilterGroup>

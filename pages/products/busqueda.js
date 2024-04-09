@@ -72,11 +72,12 @@ export default function SearchPage({ products }) {
     >
       <CenterDiv>
         {/* <Filter /> */}
-        <SearchComponent />
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
           <Title>Busqueda de productos </Title>
         </FlexStyled>
+        <SearchComponent />
+
         {!product ? (
           <SkeletorProducts />
         ) : product?.length === 0 ? (
