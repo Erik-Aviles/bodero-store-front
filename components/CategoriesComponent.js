@@ -107,7 +107,7 @@ const CategoriesComponent = () => {
           ))}
         </select>
         <SlinderCategories categories={categories} />
-        <LinkSearch href={"/products/busqueda"} title="Ir a búsqueda">
+        <LinkSearch href={"/busqueda"} title="Ir a búsqueda">
           <SearchIcon />
         </LinkSearch>
       </DivContainert>

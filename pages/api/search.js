@@ -14,15 +14,17 @@ export default async function handle(req, res) {
     if (q) {
       const products = await Product.find({
         $or: [
-          { title: { $regex: new RegExp(q, "i") } },
-          { brand: { $regex: new RegExp(q, "i") } },
-          { code: { $regex: new RegExp(q, "i") } },
-          { codeWeb: { $regex: new RegExp(q, "i") } },
-          { codeEnterprise: { $regex: new RegExp(q, "i") } },
+          { title: { $regex: new RegExp(q, "iu") } },
+          { brand: { $regex: new RegExp(q, "iu") } },
+          { code: { $regex: new RegExp(q, "iu") } },
+          { codeWeb: { $regex: new RegExp(q, "iu") } },
+          { codeEnterprise: { $regex: new RegExp(q, "iu") } },
         ],
       })
         .collation({ locale: "es", strength: 2 })
-        .select("title brand code codeWeb codeEnterprise images compatibility");
+        .select(
+          "title brand code codeWeb codeEnterprise images compatibility quantity"
+        );
       return res.status(200).json(products);
     }
 

@@ -13,6 +13,7 @@ const StyledBackButton = styled.button`
   background-color: #f2f0f0;
   cursor: pointer;
   color: ${primary};
+  border-radius: 0.25rem 0 0 0.25rem;
   &:hover {
     background-color: ${greylight};
   }

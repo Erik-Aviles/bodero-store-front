@@ -31,7 +31,7 @@ const ImageBox = styled.figure`
   width: 100%;
   margin: 0;
 `;
-const ImgCard = styled.div`
+const ImgCard = styled.button`
   position: absolute;
   display: flex;
   justify-content: center;
@@ -39,6 +39,7 @@ const ImgCard = styled.div`
   width: 40px;
   height: 40px;
   right: 0;
+  border: none;
   border-radius: 0 0.25rem 0 1.2rem;
   background-color: ${black};
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -49,6 +50,14 @@ const ImgCard = styled.div`
   }
   &:active {
     background-color: ${success};
+  }
+  &:disabled {
+    &:active {
+      background: #5e5b5b;
+    }
+    &:hover {
+      cursor: no-drop;
+    }
   }
 `;
 const ItemImage = styled(Image)`
@@ -123,6 +132,7 @@ export function ProductBox({ ...product }) {
     <ProductWrapper>
       <ImageBox>
         <ImgCard
+          disabled={product?.quantity === 0 ? true : false}
           style={{
             backgroundColor: isProductInCart ? success : null,
           }}

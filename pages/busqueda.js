@@ -54,15 +54,7 @@ export default function SearchPage({ products }) {
 
   const handleGoBack = (e) => {
     e.preventDefault();
-    if (router.query.page > 1) {
-      setPages(pages - 1);
-      filterSearch({ router, page: pages - 1 });
-    }
-    if (!router.query) {
-      router.push("/");
-    } else {
-      router.back();
-    }
+    router.back();
   };
 
   return (
@@ -114,14 +106,14 @@ function buildUrl(baseUrl, query) {
   const page = query.page || 1;
   const category = query.category || "all";
   const sort = query.sort || "";
-  const search = query.search || "";
+  const q = query.q || "";
 
   url.searchParams.set("page", page);
   url.searchParams.set("category", category);
   url.searchParams.set("sort", sort);
 
-  if (search !== undefined) {
-    url.searchParams.set("title", search);
+  if (q !== undefined) {
+    url.searchParams.set("title", q);
   }
 
   return url.toString();
