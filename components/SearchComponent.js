@@ -1,12 +1,21 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createAutocomplete } from "@algolia/autocomplete-core";
 import styled, { css } from "styled-components";
-import { grey, secondary, success } from "@/lib/colors";
+import {
+  grey,
+  greylight,
+  primary,
+  secondary,
+  success,
+  warning,
+} from "@/lib/colors";
 import { DataContext } from "@/context/DataContext";
 import filterSearch from "@/utils/filterSearch";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SearchIcon } from "./Icons";
+import { normalize } from "@/utils/normalize";
+import { capitalize } from "@/utils/capitalize";
 
 const WrapperProductFilter = styled.div`
   margin: 0 20px 20px;
@@ -96,15 +105,22 @@ const WrapperInputAutocomplete = styled.div`
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   svg {
-    color: #365c9b;
+    fill: ${primary};
     width: 20px;
     height: 20px;
   }
   button {
+    padding: 8px 5px;
     border-radius: 0 0.25rem 0.25rem 0;
-    background-color: #fff;
+    background-color: #f2f0f0;
     border: 1px solid #ced4da;
     cursor: pointer;
+    &:hover {
+      background-color: ${greylight};
+    }
+    &:focus {
+      background-color: ${greylight};
+    }
   }
 `;
 const InputAutocomplete = styled.input`
@@ -144,6 +160,7 @@ const DivAutocompleteText = styled.div`
     text-transform: uppercase;
   }
   p {
+    text-transform: capitalize;
     margin: 0;
     font-size: 0.6rem; /* Equivalente a text-xs */
     color: ${grey}; /* Equivalente a text-gray-600 */
@@ -178,6 +195,19 @@ const BreadCrumb = styled.span`
   display: inline-flex;
   align-items: center;
 `;
+const TextComb = styled.span`
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  font-size: 0.6rem;
+  color: ${grey};
+  small {
+    font-size: 0.65rem;
+    color: ${warning};
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+`;
 const Text = styled.span`
   font-size: 0.8rem;
   color: ${grey};
@@ -185,7 +215,6 @@ const Text = styled.span`
     props.$big &&
     css`
       color: ${secondary};
-      font-size: 1rem;
       font-weight: 500;
       text-transform: uppercase;
     `};
@@ -199,6 +228,8 @@ const AutocompleteItem = ({
   codeEnterprice,
   codeWeb,
   compatibility,
+  quantity,
+  brand,
 }) => {
   return (
     <li>
@@ -211,7 +242,13 @@ const AutocompleteItem = ({
             />
           </FigureAutocomplete>
           <DivAutocompleteText>
-            <h3>{title}</h3>
+            <h3>{title} </h3>
+            <TextComb>
+              {"Marca: "}
+              <small> {brand}</small>
+              {"Cant: "}
+              <small>{quantity}</small>
+            </TextComb>
             <p>
               {"Cods: "}
               {code && (
@@ -266,7 +303,7 @@ const SearchComponent = (props) => {
         onStateChange: ({ state }) => setAutocompleteState(state),
         getSources: () => [
           {
-            sourceId: "features-api",
+            sourceId: "search-api",
             getItems: async ({ query }) => {
               if (!!query) {
                 const res = await fetch(`/api/search?q=${query}`);
@@ -284,12 +321,6 @@ const SearchComponent = (props) => {
   const inputRef = useRef(null);
   const panelRef = useRef(null);
 
-  useEffect(() => {
-    filterSearch({
-      router,
-    });
-  }, [search]);
-
   const formProps = autocomplete.getFormProps({
     inputElement: inputRef.current,
   });
@@ -297,26 +328,33 @@ const SearchComponent = (props) => {
     inputElement: inputRef.current,
   });
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setCategory("all");
+    const value = inputRef.current.value;
+    setSearch(value);
+    filterSearch({ router, category: "all", page: 1, q: value });
+  };
+
   const handleCategory = (e) => {
+    e.preventDefault();
+    setSearch("");
     setCategory(e.target.value);
-    filterSearch({ router, category: e.target.value });
+    filterSearch({ router, q: "all", category: e.target.value });
   };
 
   const handleSort = (e) => {
+    e.preventDefault();
     setSort(e.target.value);
     filterSearch({ router, sort: e.target.value });
-  };
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-    filterSearch({ router, search: e.target.value });
   };
 
   return (
     <WrapperProductFilter>
       <BreadCrumb>
-        {query.search && (
-          <Text ref={inputRef}>
-            Resultados de búsqueda para: <Text $big={1}>{query.search}</Text>
+        {query.q !== "all" && (
+          <Text>
+            Resultados de búsqueda para: <Text $big={1}>{query.q}</Text>
           </Text>
         )}
       </BreadCrumb>
@@ -347,13 +385,8 @@ const SearchComponent = (props) => {
         </WrapperSelect>
         <Customform ref={formRef} {...formProps}>
           <WrapperInputAutocomplete>
-            <InputAutocomplete
-              onChange={handleSearch}
-              ref={inputRef}
-              {...inputProps}
-            />
-            <button>
-              {" "}
+            <InputAutocomplete type="text" ref={inputRef} {...inputProps} />
+            <button onClick={handleSearch}>
               <SearchIcon />
             </button>
           </WrapperInputAutocomplete>
@@ -366,25 +399,23 @@ const SearchComponent = (props) => {
                 const { items } = colecction;
                 const quantity = items.length;
                 return (
-                  <>
+                  <section key={`section-${index}`}>
                     {quantity === 0 ? (
                       <p>{"No se han encontrado resultados"}</p>
                     ) : (
-                      <section key={`section-${index}`}>
-                        <ul {...autocomplete.getListProps()}>
-                          <BreadCrumb>
-                            <Text>
-                              {"Resultados: "}
-                              {quantity}
-                            </Text>
-                          </BreadCrumb>
-                          {items?.map((item, index) => (
-                            <AutocompleteItem key={item._id} {...item} />
-                          ))}
-                        </ul>
-                      </section>
+                      <ul {...autocomplete.getListProps()}>
+                        <BreadCrumb>
+                          <Text>
+                            {"Resultados: "}
+                            {quantity}
+                          </Text>
+                        </BreadCrumb>
+                        {items?.map((item) => (
+                          <AutocompleteItem key={item._id} {...item} />
+                        ))}
+                      </ul>
                     )}
-                  </>
+                  </section>
                 );
               })}
             </WrapperSearchAutocomplete>

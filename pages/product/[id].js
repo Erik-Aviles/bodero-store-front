@@ -95,6 +95,9 @@ const Info = styled.div`
   span {
     place-self: center;
   }
+  strong {
+    font-size: 0.9rem;
+  }
   div {
     display: flex;
     gap: 10px;
@@ -124,8 +127,20 @@ const ButtonCard = styled.button`
   cursor: pointer;
   &:hover {
     border-color: ${success};
-    background-color: ${success};
+    background: ${success};
     color: ${white2};
+  }
+  &:active {
+    background-color: ${success};
+  }
+  &:disabled {
+    &:active {
+      background: #5e5b5b;
+    }
+    &:hover {
+      cursor: no-drop;
+      background: #5e5b5b;
+    }
   }
 `;
 
@@ -193,6 +208,7 @@ export default function ProductPage({ product }) {
               <CompatibilityModal product={product} />
               <ButtonCard
                 $black={1}
+                disabled={product?.quantity === 0 ? true : false}
                 style={{
                   backgroundColor: isProductInCart ? success : null,
                 }}
