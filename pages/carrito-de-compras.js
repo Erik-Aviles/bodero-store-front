@@ -119,10 +119,15 @@ const ProductImageBox = styled.div`
   }
 `;
 
-const TitleSpan = styled.span`
-  font-size: 0.5rem;
-  color: ${success};
+const PropsSpan = styled.span`
+  font-size: 0.6rem;
+  ${(props) =>
+    props.$two &&
+    css`
+      color: ${success};
+    `};
 `;
+
 const QuantityLabel = styled.span`
   padding: 0 3px;
 `;
@@ -338,6 +343,10 @@ export default function CartPage() {
                     {products.map((product) => (
                       <tr key={product._id}>
                         <ProductInfoCell>
+                          <PropsSpan>
+                            {"Ref: "}
+                            {product.code.toUpperCase()}
+                          </PropsSpan>
                           <ProductImageBox>
                             <img
                               title={product.name}
@@ -345,10 +354,9 @@ export default function CartPage() {
                               src={product.images[0]}
                             />
                           </ProductImageBox>
-                          <TitleSpan>
-                            {product.title.toUpperCase()} {product.length}
-                          </TitleSpan>
-                          <TitleSpan> {product.quantity}</TitleSpan>
+                          <PropsSpan $two={1}>
+                            {product.title.toUpperCase()}
+                          </PropsSpan>
                         </ProductInfoCell>
                         <td>
                           <WrapperDiv>

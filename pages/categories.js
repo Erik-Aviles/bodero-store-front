@@ -143,16 +143,9 @@ function buildUrl(baseUrl, query) {
 
   const page = query.page || 1;
   const category = query.category || "all";
-  const sort = query.sort || "";
-  const search = query.search;
 
   url.searchParams.set("page", page);
   url.searchParams.set("category", category);
-  url.searchParams.set("sort", sort);
-
-  if (search !== undefined) {
-    url.searchParams.set("title", search);
-  }
 
   return url.toString();
 }

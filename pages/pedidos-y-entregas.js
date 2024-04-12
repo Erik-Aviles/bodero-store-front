@@ -85,7 +85,6 @@ export default function DeliveryPage() {
     return <Loading />;
   }
 
-  if (!categories) return <Loading />;
   return (
     <Layout title="B.R.D | Pedidos y Entregas">
       <CategoriesComponent />
