@@ -14,7 +14,7 @@ import filterSearch from "@/utils/filterSearch";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SearchIcon } from "./Icons";
-import { normalize } from "@/utils/normalize";
+import { normalizeQuery } from "@/utils/normalize";
 import { capitalize } from "@/utils/capitalize";
 
 const WrapperProductFilter = styled.div`
@@ -331,7 +331,7 @@ const SearchComponent = (props) => {
   const handleSearch = (e) => {
     e.preventDefault();
     setCategory("all");
-    const value = inputRef.current.value;
+    const value = normalizeQuery(inputRef.current.value);
     setSearch(value);
     filterSearch({ router, category: "all", page: 1, q: value });
   };
@@ -352,7 +352,7 @@ const SearchComponent = (props) => {
   return (
     <WrapperProductFilter>
       <BreadCrumb>
-        {query.q !== "all" && (
+        {query.q && (
           <Text>
             Resultados de búsqueda para: <Text $big={1}>{query.q}</Text>
           </Text>

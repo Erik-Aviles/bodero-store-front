@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductsGrid from "@/components/ProductsGrid";
 import filterSearch from "@/utils/filterSearch";
-import Filter from "@/components/Filter";
 import { useRouter } from "next/router";
 import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
@@ -120,15 +119,20 @@ function buildUrl(baseUrl, query) {
 }
 export async function getServerSideProps(context) {
   const { query } = context;
-  const apiUrl = `${process.env.PUBLIC_URL}/api/products`;
-  const finalUrl = buildUrl(apiUrl, query);
+  const page = query.page || 1;
+  const category = query.category || "all";
+  const sort = query.sort || "";
+  const q = query.q || "";
 
   try {
-    const response = await fetch(finalUrl, {
-      headers: {
-        "Content-Type": "application/json", // Ejemplo de otro encabezado
-      },
-    });
+    const response = await fetch(
+      `${process.env.PUBLIC_URL}/api/search?q=${q}&sort=${sort}&page=${page}&category=${category}`,
+      {
+        headers: {
+          "Content-Type": "application/json", // Ejemplo de otro encabezado
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("La respuesta de la red no fue correcta");
@@ -137,8 +141,7 @@ export async function getServerSideProps(context) {
     const data = await response.json();
     return {
       props: {
-        products: data.products,
-        result: data.result,
+        products: data,
       },
     };
   } catch (error) {
