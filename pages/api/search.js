@@ -78,7 +78,6 @@ export default async function handle(req, res) {
         .paginating();
 
       const products = await features.query;
-      console.log(products);
       return res.status(200).json(products);
     }
   } catch (err) {

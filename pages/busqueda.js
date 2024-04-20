@@ -120,7 +120,7 @@ export default function SearchPage() {
   );
 }
 
-export async function getServerSideProps(context) {
+/* export async function getServerSideProps(context) {
   const { category = "all", q, sort = "all", page = 1 } = context.query;
   let apiUrl = `${process.env.PUBLIC_URL}/api/search?sort=${sort}&page=${page}&limit=20`;
 
@@ -144,7 +144,7 @@ export async function getServerSideProps(context) {
     };
   }
 }
-
+ */
 /* function buildUrl(baseUrl, query) {
   const url = new URL(baseUrl);
 
