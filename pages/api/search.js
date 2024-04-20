@@ -35,7 +35,7 @@ export default async function handle(req, res) {
 
     paginating() {
       const page = this.queryString.page * 1 || 1;
-      const limit = this.queryString.limit * 1 || 20;
+      const limit = this.queryString.limit * 1;
       const skip = (page - 1) * limit;
       this.query = this.query.skip(skip).limit(limit);
       return this;
@@ -68,7 +68,7 @@ export default async function handle(req, res) {
 
     if (category) {
       const features = new APIfeatures(
-        Product.find().select(
+        Product.find({}, null).select(
           "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
         ),
         req.query
@@ -78,6 +78,7 @@ export default async function handle(req, res) {
         .paginating();
 
       const products = await features.query;
+      console.log(products);
       return res.status(200).json(products);
     }
   } catch (err) {

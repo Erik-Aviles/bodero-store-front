@@ -14,6 +14,8 @@ import { DataContext } from "@/context/DataContext";
 import ProductsGrid from "@/components/ProductsGrid";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
+import { Product } from "@/models/Product";
+import { mongooseConnect } from "@/lib/mongoose";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -138,7 +140,7 @@ export default function CategoriesPage({ products, result }) {
   );
 }
 
-function buildUrl(baseUrl, query) {
+/* function buildUrl(baseUrl, query) {
   const url = new URL(baseUrl);
 
   const page = query.page || 1;
@@ -180,4 +182,4 @@ export async function getServerSideProps(context) {
       },
     };
   }
-}
+} */

@@ -13,6 +13,10 @@ import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import SearchComponent from "@/components/SearchComponent";
+import axios from "axios";
+import useSWR from "swr";
+
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const CenterSecction = css`
   heigth: auto;
@@ -32,14 +36,23 @@ const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
-export default function SearchPage({ products }) {
+export default function SearchPage() {
   const router = useRouter();
-  const [product, setProducts] = useState(products);
+  const query = router.query;
   const [pages, setPages] = useState(1);
+  const [search, setSearch] = useState("");
+  const [sorting, setSort] = useState("-createdAt");
+  const [category, setCategory] = useState("all");
 
-  useEffect(() => {
-    setProducts(products);
-  }, [products]);
+  let apiUrl = `/api/search?limit=20&page=${pages}&sort=${sorting}`;
+
+  if (query.category || query.q) {
+    apiUrl += `&${query.category ? `category=${query.category}` : ""}${
+      query.q ? `${query.category ? "&" : ""}q=${query.q}` : ""
+    }`;
+  }
+
+  const { data: products } = useSWR(`${apiUrl}`, fetcher);
 
   const handlePageChange = (newPage) => {
     setPages(newPage);
@@ -56,6 +69,14 @@ export default function SearchPage({ products }) {
     router.back();
   };
 
+  const datos = {
+    sort: sorting,
+    category,
+    pages,
+    setSearch,
+    setSort,
+    setCategory,
+  };
   return (
     <Layout
       title="B.R.D | Busqueda de productos"
@@ -67,16 +88,16 @@ export default function SearchPage({ products }) {
           <BackButton onClick={handleGoBack} />
           <Title>Busqueda de productos </Title>
         </FlexStyled>
-        <SearchComponent />
+        <SearchComponent datos={datos} />
 
-        {!product ? (
+        {!products ? (
           <SkeletorProducts />
-        ) : product?.length === 0 ? (
+        ) : products?.length === 0 ? (
           <TitleH4>Producto no registrado</TitleH4>
         ) : (
-          <ProductsGrid products={product} />
+          <ProductsGrid products={products} />
         )}
-        {product?.length >= 20 && (
+        {(products?.length === 20 || pages > 1) && (
           <ButtonContainer>
             <ButtonDisabled
               $black
@@ -99,7 +120,32 @@ export default function SearchPage({ products }) {
   );
 }
 
-function buildUrl(baseUrl, query) {
+export async function getServerSideProps(context) {
+  const { category = "all", q, sort = "all", page = 1 } = context.query;
+  let apiUrl = `${process.env.PUBLIC_URL}/api/search?sort=${sort}&page=${page}&limit=20`;
+
+  if (category || q) {
+    apiUrl += `&${category ? `category=${category}` : ""}${
+      q ? `${category ? "&" : ""}q=${q}` : ""
+    }`;
+  }
+
+  try {
+    const initialData = await fetcher(apiUrl);
+    return {
+      props: {
+        initialData,
+      },
+    };
+  } catch (error) {
+    console.error("Error al obtener los datos del servidor:", error);
+    return {
+      props: {},
+    };
+  }
+}
+
+/* function buildUrl(baseUrl, query) {
   const url = new URL(baseUrl);
 
   const page = query.page || 1;
@@ -152,4 +198,4 @@ export async function getServerSideProps(context) {
       },
     };
   }
-}
+} */

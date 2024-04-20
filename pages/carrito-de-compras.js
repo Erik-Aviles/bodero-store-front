@@ -1,7 +1,6 @@
 import CategoriesComponent from "@/components/CategoriesComponent";
 import { DeleteIcon } from "@/components/Icons";
 import Layout from "@/components/Layout";
-import SuccessSend from "@/components/SuccessSend";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
@@ -205,7 +204,6 @@ const TH = styled.th`
 export default function CartPage() {
   const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
-  const { asPath } = router;
 
   const {
     cartProducts,
@@ -233,16 +231,6 @@ export default function CartPage() {
     }
   }, [cartProducts]);
 
-  useEffect(() => {
-    if (asPath === "undefined") {
-      return;
-    }
-    if (asPath?.includes("success")) {
-      setIsSuccess(true);
-      clearCart();
-    }
-  }, []);
-
   function moreOfThisProduct(id) {
     addProduct(id);
   }
@@ -252,9 +240,7 @@ export default function CartPage() {
   function deleteProduct(id) {
     removeOneProduct(id);
   }
-  function deleteProductAll() {
-    clearCart();
-  }
+
   async function goToPayment() {
     let data = {
       name,
@@ -302,13 +288,6 @@ export default function CartPage() {
     }
   };
 
-  if (asPath?.includes("success") || isSuccess) {
-    return (
-      <Layout title="B.R.D | Mi carrito - envio exitoso">
-        <SuccessSend />
-      </Layout>
-    );
-  }
   return (
     <Layout title="B.R.D | Mi carrito">
       <CategoriesComponent />

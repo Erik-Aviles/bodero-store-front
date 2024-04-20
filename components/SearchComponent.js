@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { SearchIcon } from "./Icons";
 import { normalizeQuery } from "@/utils/normalize";
 import { capitalize } from "@/utils/capitalize";
+import axios from "axios";
 
 const WrapperProductFilter = styled.div`
   margin: 0 20px 20px;
@@ -283,14 +284,16 @@ const AutocompleteItem = ({
     </li>
   );
 };
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-const SearchComponent = (props) => {
+const SearchComponent = ({ props, datos }) => {
+  const { sort, pages, category, setSearch, setSort, setCategory } = datos;
   const { categories } = useContext(DataContext);
   const router = useRouter();
   const { query } = router;
-  const [search, setSearch] = useState("");
+  /*   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(""); */
   const [autocompleteState, setAutocompleteState] = useState({
     collections: [],
     isOpen: false,
@@ -306,9 +309,10 @@ const SearchComponent = (props) => {
             sourceId: "search-api",
             getItems: async ({ query }) => {
               if (!!query) {
-                const res = await fetch(`/api/search?q=${query}`);
-                const data = await res.json();
-                return data;
+                const res = await fetcher(
+                  `/api/search?q=${query}&sort=${sort}&page=${pages}`
+                );
+                return res;
               }
             },
           },
@@ -330,17 +334,25 @@ const SearchComponent = (props) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setSort("all");
     setCategory("all");
     const value = normalizeQuery(inputRef.current.value);
     setSearch(value);
-    filterSearch({ router, category: "all", page: 1, q: value });
+    filterSearch({ router, sort: "all", category: "all", page: 1, q: value });
   };
 
   const handleCategory = (e) => {
     e.preventDefault();
     setSearch("");
+    setSort("all");
     setCategory(e.target.value);
-    filterSearch({ router, q: "all", category: e.target.value });
+    filterSearch({
+      router,
+      q: "all",
+      sort: "all",
+      page: 1,
+      category: e.target.value,
+    });
   };
 
   const handleSort = (e) => {
@@ -352,7 +364,7 @@ const SearchComponent = (props) => {
   return (
     <WrapperProductFilter>
       <BreadCrumb>
-        {query.q && (
+        {query.q !== "all" && (
           <Text>
             Resultados de búsqueda para: <Text $big={1}>{query.q}</Text>
           </Text>
