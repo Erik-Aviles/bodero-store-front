@@ -14,7 +14,6 @@ import {
 } from "@/lib/colors";
 import ProductImages from "@/components/ProductImages";
 import { Product } from "@/models/Product";
-import CategoriesComponent from "@/components/CategoriesComponent";
 import CompatibilityModal from "@/components/CompatibilityModal";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
@@ -147,7 +146,6 @@ const ButtonCard = styled.button`
 export default function ProductPage({ product }) {
   const { addProduct, cartProducts, removeOneProduct } =
     useContext(CartContext);
-  const { categories } = useContext(DataContext);
   const router = useRouter();
 
   const checkProductInCart = (product) => {
@@ -162,7 +160,6 @@ export default function ProductPage({ product }) {
 
   return (
     <Layout title={`B.R.D | ${product?.title?.toUpperCase()}`}>
-      <CategoriesComponent categories={categories} />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

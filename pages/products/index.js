@@ -5,7 +5,6 @@ import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
 import { brands } from "@/resource/data";
-import CategoriesComponent from "@/components/CategoriesComponent";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";
@@ -55,7 +54,6 @@ export default function ProductsPage({ products }) {
       title="B.R.D | Todos los Productos"
       description={`Marcas reconocidas como: ${brandNamesString}`}
     >
-      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

@@ -1,4 +1,3 @@
-import CategoriesComponent from "@/components/CategoriesComponent";
 import { DeleteIcon } from "@/components/Icons";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
@@ -290,7 +289,6 @@ export default function CartPage() {
 
   return (
     <Layout title="B.R.D | Mi carrito">
-      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

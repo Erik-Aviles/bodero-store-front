@@ -1,5 +1,4 @@
 import { Loading } from "@/components/Loading";
-import CategoriesComponent from "@/components/CategoriesComponent";
 import NewProducts from "@/components/NewProducts";
 import { mongooseConnect } from "@/lib/mongoose";
 import Carousel from "@/components/Carousel";
@@ -11,7 +10,6 @@ import { useContext, useEffect, useState } from "react";
 import { DataContext } from "@/context/DataContext";
 
 export default function HomePage({ newProducts }) {
-  const { categories } = useContext(DataContext);
   const [isUpLoanding, setIsUpLoanding] = useState(true);
 
   useEffect(() => {
@@ -30,7 +28,6 @@ export default function HomePage({ newProducts }) {
       title="B.R.D | INICIO"
       description="Tienda de repuestos y accesorios originales de moto en Quevedo"
     >
-      <CategoriesComponent categories={categories} />
       <Carousel data={dataCarousel} />
       <NewProducts products={newProducts} />
       <Brands />

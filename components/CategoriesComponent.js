@@ -68,14 +68,14 @@ const StyledOption = styled.option`
   }
 `;
 
-const CategoriesComponent = () => {
+const CategoriesComponent = ({ datos }) => {
   const { categories } = useContext(DataContext);
 
-  const [category, setCategory] = useState("");
+  const { category, setCategory } = datos;
 
   const router = useRouter();
 
-  const filterSearchCategory = ({ router, category }) => {
+  const filterSearchCategory = ({ router, category, page }) => {
     const query = router.query;
 
     if (category) {
@@ -87,18 +87,25 @@ const CategoriesComponent = () => {
     }
   };
 
-  const handleCategory = (id) => {
+  /*   const handleCategory = (id) => {
     setCategory(id);
     filterSearchCategory({ router, category: id });
+  }; */
+
+  const handleCategory = (e) => {
+    e.preventDefault();
+    setCategory(e.target.value);
+    filterSearchCategory({
+      router,
+      page: 1,
+      category: e.target.value,
+    });
   };
 
   return (
     <Center>
       <DivContainert>
-        <select
-          value={category}
-          onChange={(e) => handleCategory(e.target.value)}
-        >
+        <select value={category} onChange={handleCategory}>
           <StyledOption value="all">CATEGORIAS</StyledOption>
           {categories.map((item) => (
             <StyledOption key={item._id} value={item._id}>

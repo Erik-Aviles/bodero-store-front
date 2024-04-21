@@ -60,6 +60,7 @@ export default async function handle(req, res) {
           ),
         req.query
       )
+        .filtering()
         .sorting()
         .paginating();
       const products = await features.query;

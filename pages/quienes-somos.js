@@ -1,4 +1,3 @@
-import CategoriesComponent from "@/components/CategoriesComponent";
 import styled, { css } from "styled-components";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Image from "next/image";
@@ -119,7 +118,6 @@ export default function AboutUsPage() {
 
   return (
     <Layout title="B.R.D | Quienes somos">
-      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
