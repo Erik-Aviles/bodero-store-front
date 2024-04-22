@@ -17,6 +17,7 @@ import { SearchIcon } from "./Icons";
 import { normalizeQuery } from "@/utils/normalize";
 import { capitalize } from "@/utils/capitalize";
 import axios from "axios";
+import removeAccents from "@/utils/removeAccents";
 
 const WrapperProductFilter = styled.div`
   margin: 0 20px 20px;
@@ -73,7 +74,7 @@ const CustomSelect = styled.select`
 const StyledOption = styled.option`
   font-size: 0.8rem;
   &:hover {
-    background-color: ${grey}; /* Cambia al color deseado */
+    background-color: ${grey};
   }
 `;
 const Customform = styled.form`
@@ -143,36 +144,36 @@ const DivAutocomplete = styled.div`
   gap: 0.4rem;
   padding: 0.25rem 0.4rem;
   &:hover {
-    background-color: #ebe8e8; /* Cambia al color azul-300 */
+    background-color: #ebe8e8;
   }
   &:active {
-    background-color: #ebe8e8; /* Cambia al color azul-300 */
+    background-color: #ebe8e8;
   }
   &:focus {
-    background-color: #ebe8e8; /* Cambia al color azul-300 */
+    background-color: #ebe8e8;
   }
 `;
 const DivAutocompleteText = styled.div`
   white-space: normal;
   h3 {
     margin: 0;
-    font-size: 0.7rem; /* Equivalente a text-sm */
-    font-weight: 500; /* Equivalente a font-semibold */
+    font-size: 0.7rem;
+    font-weight: 500;
     text-transform: uppercase;
   }
   p {
     text-transform: capitalize;
     margin: 0;
-    font-size: 0.6rem; /* Equivalente a text-xs */
-    color: ${grey}; /* Equivalente a text-gray-600 */
+    font-size: 0.6rem;
+    color: ${grey};
   }
 `;
 const FigureAutocomplete = styled.figure`
   margin: 0;
   img {
-    width: 3rem; /* Equivalente a w-10 */
-    height: 3rem; /* Equivalente a h-10 */
-    object-fit: contain; /* Equivalente a object-contain */
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
   }
 `;
 
@@ -291,9 +292,6 @@ const SearchComponent = ({ props, datos }) => {
   const { categories } = useContext(DataContext);
   const router = useRouter();
   const { query } = router;
-  /*   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("");
-  const [category, setCategory] = useState(""); */
   const [autocompleteState, setAutocompleteState] = useState({
     collections: [],
     isOpen: false,
@@ -309,10 +307,16 @@ const SearchComponent = ({ props, datos }) => {
             sourceId: "search-api",
             getItems: async ({ query }) => {
               if (!!query) {
-                const res = await fetcher(
-                  `/api/search?q=${query}&sort=${sort}&page=${pages}`
-                );
-                return res;
+                let products;
+                if (query.length >= 3) {
+                  const res = await fetcher(
+                    `/api/search?q=${query}&sort=${sort}&page=${pages}&category=${category}`
+                  );
+                  products = res;
+                } else {
+                  products = [];
+                }
+                return products;
               }
             },
           },
