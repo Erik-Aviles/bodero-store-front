@@ -34,7 +34,9 @@ export default async function handle(req, res) {
   if (method === "GET") {
     try {
       const features = new APIfeatures(
-        Product.find().select(
+        Product.find({}, null, {
+          sort: { _id: -1 },
+        }).select(
           "title salePrice brand code codeWeb codeEnterprise images compatibility quantity"
         ),
         req.query

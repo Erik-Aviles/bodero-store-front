@@ -14,9 +14,11 @@
     "@react-google-maps/api": "^2.19.2",
     "axios": "^1.6.1",
     "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.1",
     "cookie": "^0.6.0",
     "isomorphic-unfetch": "^4.0.2",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.5.0",
     "mongoose": "^8.0.0",
     "next": "13.4.19",
     "react": "18.2.0",
@@ -27,7 +29,9 @@
     "resend": "^2.0.0",
     "sharp": "^0.33.2",
     "stripe": "^14.4.0",
-    "styled-components": "^6.0.7"
+    "styled-components": "^6.0.7",
+    "use-debounce": "^10.0.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "eslint": "8.48.0",

@@ -40,13 +40,12 @@ export default function SearchPage() {
   const query = router.query;
   const page = typeof query.page === "string" ? Number(query.page) : 1;
   const limit = typeof query.limit === "string" ? Number(query.limit) : 20;
-  const q =
-    typeof query.q === "string" ? normalizeQuery(query.q.toLowerCase()) : "";
+  const q = typeof query.q === "string" ? query.q : "";
   const [filterValue, setFilterValue] = useState([]);
 
   useEffect(() => {
     if (q.length >= 3) {
-      getProducts({ q, page, limit }).then((res) => {
+      getProducts({ query: q, page, limit }).then((res) => {
         setFilterValue(res);
       });
     }
@@ -74,7 +73,7 @@ export default function SearchPage() {
           <BackButton onClick={handleGoBack} />
           <Title>Busqueda de productos </Title>
         </FlexStyled>
-        <Search search={normalizeQuery(q.toLowerCase())} />
+        <Search search={q} />
         {!filterValue ? (
           <SkeletorProducts />
         ) : filterValue?.length === 0 ? (
