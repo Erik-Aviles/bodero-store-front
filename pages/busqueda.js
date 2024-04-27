@@ -13,6 +13,9 @@ import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import SearchComponent from "@/components/SearchComponent";
+import Search from "@/components/Search";
+import { getProducts } from "@/utils/FetchData";
+import { normalizeQuery } from "@/utils/normalize";
 
 const CenterSecction = css`
   heigth: auto;
@@ -32,23 +35,27 @@ const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
-export default function SearchPage({ products }) {
+export default function SearchPage() {
   const router = useRouter();
-  const [product, setProducts] = useState(products);
-  const [pages, setPages] = useState(1);
+  const query = router.query;
+  const page = typeof query.page === "string" ? Number(query.page) : 1;
+  const limit = typeof query.limit === "string" ? Number(query.limit) : 20;
+  const q =
+    typeof query.q === "string" ? normalizeQuery(query.q.toLowerCase()) : "";
+  const [filterValue, setFilterValue] = useState([]);
 
   useEffect(() => {
-    setProducts(products);
-  }, [products]);
+    if (q.length >= 3) {
+      getProducts({ q, page, limit }).then((res) => {
+        setFilterValue(res);
+      });
+    }
+  }, [q]);
 
-  const handlePageChange = (newPage) => {
-    setPages(newPage);
-    filterSearch({ router, page: newPage });
-  };
-
-  const hasNextPage = products?.length === 20;
+  console.log(filterValue);
 
   const brandNames = brands.map((brand) => brand.name);
+
   const brandNamesString = brandNames.join(", ");
 
   const handleGoBack = (e) => {
@@ -67,39 +74,20 @@ export default function SearchPage({ products }) {
           <BackButton onClick={handleGoBack} />
           <Title>Busqueda de productos </Title>
         </FlexStyled>
-        <SearchComponent />
-
-        {!product ? (
+        <Search search={normalizeQuery(q.toLowerCase())} />
+        {!filterValue ? (
           <SkeletorProducts />
-        ) : product?.length === 0 ? (
+        ) : filterValue?.length === 0 ? (
           <TitleH4>Producto no registrado</TitleH4>
         ) : (
-          <ProductsGrid products={product} />
-        )}
-        {product?.length >= 20 && (
-          <ButtonContainer>
-            <ButtonDisabled
-              $black
-              onClick={() => handlePageChange(pages - 1)}
-              disabled={pages === 1}
-            >
-              Anterior
-            </ButtonDisabled>
-            <ButtonDisabled
-              $white
-              onClick={() => handlePageChange(pages + 1)}
-              disabled={!hasNextPage}
-            >
-              Siguiente
-            </ButtonDisabled>
-          </ButtonContainer>
+          <ProductsGrid products={filterValue} />
         )}
       </CenterDiv>
     </Layout>
   );
 }
 
-function buildUrl(baseUrl, query) {
+/* function buildUrl(baseUrl, query) {
   const url = new URL(baseUrl);
 
   const page = query.page || 1;
@@ -153,3 +141,4 @@ export async function getServerSideProps(context) {
     };
   }
 }
+ */
