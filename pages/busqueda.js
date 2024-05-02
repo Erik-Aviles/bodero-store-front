@@ -207,10 +207,11 @@ const SearchPage = () => {
           />
         </FlexStyled>
       </CenterDiv>
-
-      <Suspense fallback={<SkeletorProducts />}>
-        <ProductsGrid products={searchResults} />
-      </Suspense>
+      <CenterDiv>
+        <Suspense fallback={<SkeletorProducts />}>
+          <ProductsGrid products={searchResults} />
+        </Suspense>
+      </CenterDiv>
       <CenterDiv>
         {(hasNextPage === 20 || pages > 1) && (
           <ButtonContainer>
