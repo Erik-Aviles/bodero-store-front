@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
-import ProductsGrid from "@/components/ProductsGrid";
+import React, { Suspense, useEffect, useState } from "react";
 import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
 import Layout from "@/components/Layout";
 import { brands } from "@/resource/data";
-import { TitleH4 } from "@/components/stylesComponents/TitleH4";
-import { FlexStyled } from "@/components/stylesComponents/Flex";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
-import SearchComponent from "@/components/SearchComponent";
-import axios from "axios";
-import useSWR from "swr";
+import { grey, secondary } from "@/lib/colors";
+import SearchProducts from "@/components/SearchProducts";
+import { removeAccents, removePluralEnding } from "@/utils/normalize";
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+const ProductsGrid = React.lazy(() => import("@/components/ProductsGrid"));
 
 const CenterSecction = css`
   heigth: auto;
@@ -36,68 +33,186 @@ const CenterDiv = styled.section`
   ${CenterSecction}
 `;
 
-export default function SearchPage() {
+const Sorted = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.25rem;
+`;
+
+const BreadCrumb = styled.span`
+  display: inline-flex;
+  align-items: center;
+`;
+
+const Text = styled.span`
+  font-size: 0.8rem;
+  white-space: nowrap;
+  color: ${grey};
+  ${(props) =>
+    props.$big &&
+    css`
+      color: ${secondary};
+      font-weight: 500;
+    `};
+`;
+
+const Divider = styled.span`
+  color: ${grey};
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+`;
+
+const FlexStyled = styled.section`
+  display: Flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  justify-content: space-between;
+  @media screen and (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+  }
+`;
+
+const stopwords = [
+  "el",
+  "la",
+  "las",
+  "los",
+  "de",
+  "y",
+  "a",
+  "en",
+  "con",
+  "para",
+  "un",
+  "una",
+  "uno",
+  "unas",
+  "unos",
+];
+
+const SearchPage = () => {
   const router = useRouter();
   const query = router.query;
+  const search = query.q || "";
   const [pages, setPages] = useState(1);
-  const [search, setSearch] = useState("");
-  const [sorting, setSort] = useState("-createdAt");
-  const [category, setCategory] = useState("all");
 
-  let apiUrl = `/api/search?limit=20&page=${pages}&sort=${sorting}`;
+  const [searchResults, setSearchResults] = useState();
 
-  if (query.category || query.q) {
-    apiUrl += `&${query.category ? `category=${query.category}` : ""}${
-      query.q ? `${query.category ? "&" : ""}q=${query.q}` : ""
-    }`;
+  async function FetchProductsFilter() {
+    try {
+      if (search.trim() === "") {
+        setSearchResults([]);
+        return;
+      }
+      if (search.length >= 3) {
+        const searchParts = removeAccents(search.toLowerCase())
+          .split(" ")
+          .filter((part) => !stopwords.includes(part))
+          .map((part) => removePluralEnding(part));
+
+        const apiUrl = `/api/search?q=${searchParts}&page=${pages}`;
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Error al obtener datos de la API");
+        }
+        const data = await response.json();
+
+        const filteredResults = data.filter((item) => {
+          const title = removeAccents(item.title.toLowerCase());
+          const code = removeAccents(item.code.toLowerCase());
+          const brand = removeAccents(item.brand.toLowerCase());
+          const compatibilityModels = (item.compatibility || []).map((compat) =>
+            removeAccents(compat.model.toLowerCase())
+          );
+
+          const matchesAllParts = searchParts.every((part) => {
+            return (
+              title.includes(part) ||
+              code.includes(part) ||
+              brand.includes(part) ||
+              compatibilityModels.some((model) => model.includes(part))
+            );
+          });
+          return matchesAllParts;
+        });
+
+        setSearchResults(filteredResults);
+      }
+    } catch (error) {
+      console.error("Error en la búsqueda:", error);
+    }
   }
 
-  const { data: products } = useSWR(`${apiUrl}`, fetcher);
+  useEffect(() => {
+    FetchProductsFilter();
+  }, [search]);
 
   const handlePageChange = (newPage) => {
     setPages(newPage);
     filterSearch({ router, page: newPage });
   };
-
-  const hasNextPage = products?.length === 20;
-
-  const brandNames = brands.map((brand) => brand.name);
-  const brandNamesString = brandNames.join(", ");
+  const HandleSearch = (e) => {
+    e.preventDefault();
+    FetchProductsFilter();
+  };
 
   const handleGoBack = (e) => {
     e.preventDefault();
     router.back();
   };
 
-  const datos = {
-    sort: sorting,
-    category,
-    pages,
-    setSearch,
-    setSort,
-    setCategory,
+  const onClear = () => {
+    setSearchResults([]);
+    router.push(`/busqueda`);
   };
+
+  const hasNextPage = searchResults?.length === 20;
+
+  const brandNames = brands.map((brand) => brand.name);
+  const brandNamesString = brandNames.join(", ");
+
   return (
     <Layout
       title="B.R.D | Busqueda de productos"
-      description={`Contammos con marcas reconocidas como: ${brandNamesString}`}
+      description={`Contamos con marcas reconocidas como: ${brandNamesString}`}
     >
       <CenterDiv>
-        {/* <Filter /> */}
-        <FlexStyled>
-          <BackButton onClick={handleGoBack} />
-          <Title>Busqueda de productos </Title>
+        <FlexStyled aria-label="breadcrumb">
+          <Sorted>
+            <BackButton onClick={handleGoBack} />
+            <Title>Búsqueda de productos </Title>
+          </Sorted>
+          <BreadCrumb aria-current="page">
+            <BreadCrumb>
+              <Text>Producto</Text>
+            </BreadCrumb>
+            <Divider> / </Divider>
+            <Text $big={1}>
+              {search ? search.toUpperCase() : "Todos los productos"}
+            </Text>
+          </BreadCrumb>
         </FlexStyled>
-        <SearchComponent datos={datos} />
+        <FlexStyled aria-label="breadcrumb">
+          <Text>Resultados: {searchResults?.length}</Text>
+          <SearchProducts
+            search={search}
+            onClear={onClear}
+            HandleSearch={HandleSearch}
+          />
+        </FlexStyled>
+      </CenterDiv>
 
-        {!products ? (
-          <SkeletorProducts />
-        ) : products?.length === 0 ? (
-          <TitleH4>Producto no registrado</TitleH4>
-        ) : (
-          <ProductsGrid products={products} />
-        )}
-        {(products?.length === 20 || pages > 1) && (
+      <Suspense fallback={<SkeletorProducts />}>
+        <ProductsGrid products={searchResults} />
+      </Suspense>
+      <CenterDiv>
+        {(hasNextPage === 20 || pages > 1) && (
           <ButtonContainer>
             <ButtonDisabled
               $black
@@ -118,84 +233,6 @@ export default function SearchPage() {
       </CenterDiv>
     </Layout>
   );
-}
+};
 
-/* export async function getServerSideProps(context) {
-  const { category = "all", q, sort = "all", page = 1 } = context.query;
-  let apiUrl = `${process.env.PUBLIC_URL}/api/search?sort=${sort}&page=${page}&limit=20`;
-
-  if (category || q) {
-    apiUrl += `&${category ? `category=${category}` : ""}${
-      q ? `${category ? "&" : ""}q=${q}` : ""
-    }`;
-  }
-
-  try {
-    const initialData = await fetcher(apiUrl);
-    return {
-      props: {
-        initialData,
-      },
-    };
-  } catch (error) {
-    console.error("Error al obtener los datos del servidor:", error);
-    return {
-      props: {},
-    };
-  }
-}
- */
-/* function buildUrl(baseUrl, query) {
-  const url = new URL(baseUrl);
-
-  const page = query.page || 1;
-  const category = query.category || "all";
-  const sort = query.sort || "";
-  const q = query.q || "";
-
-  url.searchParams.set("page", page);
-  url.searchParams.set("category", category);
-  url.searchParams.set("sort", sort);
-
-  if (q !== undefined) {
-    url.searchParams.set("title", q);
-  }
-
-  return url.toString();
-}
-export async function getServerSideProps(context) {
-  const { query } = context;
-  const page = query.page || 1;
-  const category = query.category || "all";
-  const sort = query.sort || "";
-  const q = query.q || "";
-
-  try {
-    const response = await fetch(
-      `${process.env.PUBLIC_URL}/api/search?q=${q}&sort=${sort}&page=${page}&category=${category}`,
-      {
-        headers: {
-          "Content-Type": "application/json", // Ejemplo de otro encabezado
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("La respuesta de la red no fue correcta");
-    }
-
-    const data = await response.json();
-    return {
-      props: {
-        products: data,
-      },
-    };
-  } catch (error) {
-    console.error("Error al obtener los datos:", error);
-    return {
-      props: {
-        error: "Error al obtener los datos ",
-      },
-    };
-  }
-} */
+export default SearchPage;

@@ -10,7 +10,7 @@ export const CenterSecction = css`
     padding: 0;
   }
   @media screen and (max-width: 640px) {
-    padding-top: 150.43px;
+    padding-top: 120.43px;
     margin-bottom: 60px;
   }
 `;

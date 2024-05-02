@@ -43,30 +43,6 @@ export default async function handle(req, res) {
   }
 
   try {
-    if (q !== "all") {
-      const features = new APIfeatures(
-        Product.find({
-          $or: [
-            { title: { $regex: new RegExp(q, "iu") } },
-            { brand: { $regex: new RegExp(q, "iu") } },
-            { code: { $regex: new RegExp(q, "iu") } },
-            { codeWeb: { $regex: new RegExp(q, "iu") } },
-            { codeEnterprise: { $regex: new RegExp(q, "iu") } },
-          ],
-        })
-          .collation({ locale: "es", strength: 3 })
-          .select(
-            "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
-          ),
-        req.query
-      )
-        .filtering()
-        .sorting()
-        .paginating();
-      const products = await features.query;
-      return res.status(200).json(products);
-    }
-
     if (category) {
       const features = new APIfeatures(
         Product.find({}, null).select(
@@ -75,6 +51,18 @@ export default async function handle(req, res) {
         req.query
       )
         .filtering()
+        .sorting()
+        .paginating();
+
+      const products = await features.query;
+      return res.status(200).json(products);
+    } else {
+      const features = new APIfeatures(
+        Product.find().select(
+          "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
+        ),
+        req.query
+      )
         .sorting()
         .paginating();
 

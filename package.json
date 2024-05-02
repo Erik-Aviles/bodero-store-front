@@ -28,7 +28,8 @@
     "sharp": "^0.33.2",
     "stripe": "^14.4.0",
     "styled-components": "^6.0.7",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "use-debounce": "^10.0.0"
   },
   "devDependencies": {
     "eslint": "8.48.0",

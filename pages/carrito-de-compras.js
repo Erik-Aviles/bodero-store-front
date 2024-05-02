@@ -1,6 +1,8 @@
-import { DeleteIcon } from "@/components/Icons";
+import { DeleteIcon, WhatsappIcon } from "@/components/Icons";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
+import Button from "@/components/buttonComponents/Button";
+import ButtonLink from "@/components/buttonComponents/ButtonLink";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import Table from "@/components/stylesComponents/Table";
@@ -475,9 +477,19 @@ export default function CartPage() {
                 />
               </InputContainer>
               <WrapperDiv $center>
-                <ButtonCart $primary={1} onClick={goToPayment}>
-                  Enviar pedido
-                </ButtonCart>
+                <Button $secondary={1} onClick={goToPayment}>
+                  ENVIAR PEDIDO
+                </Button>
+                <ButtonLink
+                  href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto&type=phone_number&app_absent=1`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={"Realizar pedido por Whatsapp"}
+                  $secondary={1}
+                >
+                  <WhatsappIcon height={25} width={25} />
+                  PEDIR POR WHATSAPP
+                </ButtonLink>
               </WrapperDiv>
             </Box>
           )}

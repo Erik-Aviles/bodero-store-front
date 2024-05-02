@@ -39,7 +39,7 @@ const DivContainert = styled.div`
   @media screen and (max-width: 640px) {
     position: fixed;
     z-index: 1;
-    margin-top: 105.63px;
+    margin-top: 75.63px;
   }
 `;
 

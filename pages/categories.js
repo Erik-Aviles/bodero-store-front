@@ -39,12 +39,12 @@ const BreadCrumb = styled.span`
 `;
 
 const Text = styled.span`
+  font-size: 0.8rem;
   color: ${grey};
   ${(props) =>
     props.$big &&
     css`
       color: ${secondary};
-      font-size: 1rem;
       font-weight: 500;
     `};
 `;
@@ -102,7 +102,9 @@ export default function CategoriesPage() {
             </BreadCrumb>
             <BreadCrumb aria-current="page">
               <Divider> / </Divider>
-              <Text $big={1}>{nameCategory ? nameCategory : "Todas"}</Text>
+              <Text $big={1}>
+                {nameCategory ? nameCategory.toUpperCase() : "Todas"}
+              </Text>
             </BreadCrumb>
           </Sorted>
         </FlexStyled>

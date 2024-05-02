@@ -10,6 +10,8 @@ import {
 } from "@/lib/colors";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { AllDeleteIcon } from "./Icons";
+import Button from "./buttonComponents/Button";
 
 const StyledDiv = styled.div`
   display: block;
@@ -34,7 +36,7 @@ const ModalContainer = styled.div`
 
 const ModalContent = styled.div`
   overflow: hidden;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   background-color: #fff;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   max-width: 40rem;
@@ -75,7 +77,7 @@ const ModalTextCompatibily = styled.p`
 const ModalListCompatibily = styled.span`
   color: ${grey};
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   word-break: break-all;
   display: flex;
   flex-direction: column;
@@ -86,17 +88,19 @@ const ModalFooter = styled.div`
   justify-content: flex-end;
   gap: 1rem;
   background-color: #f7fafc;
-  padding: 1rem;
+  padding: 0.4rem 1rem;
 `;
 
 const ModalButton = styled.button`
+  height: 30px;
   border: 1px solid ${(props) => (props.$primary ? `${error}` : `${greylight}`)};
   background-color: ${(props) => (props.$primary ? `${error}` : `${white}`)};
-  color: ${(props) => (props.$primary ? `${white}` : `${blacklight}`)};
-  border-radius: 0.275rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  color: ${(props) => (props.$primary ? `${white}` : `${black}`)};
+  border-radius: 3px;
+  padding: 10px 10px;
+  font-size: 0.6rem;
   font-weight: 500;
+  font-family: "Poppins", sans-serif;
   cursor: pointer;
   &:hover {
     border-color: ${black};
@@ -115,17 +119,16 @@ const CompatibilityModal = ({ product }) => {
   return (
     <StyledDiv>
       <div>
-        <ModalButton onClick={toggleModal}>Compatibilidad</ModalButton>
+        <Button $primary={1} $outline={1} onClick={toggleModal}>
+          COMPATIBILIDAD
+        </Button>
         {showModal && (
           <>
             <ModalBackground onClick={toggleModal} />
             <ModalContainer>
               <ModalContent>
                 <ModalHeader>
-                  <ModalTitle>
-                    Compatibilidad de:
-                    <span>{product.title.toUpperCase()}</span>
-                  </ModalTitle>
+                  <ModalTitle>Compatible con:</ModalTitle>
                 </ModalHeader>
                 <ModalBody>
                   {product.compatibility.length > 0 &&
@@ -152,9 +155,9 @@ const CompatibilityModal = ({ product }) => {
                     ))}
                 </ModalBody>
                 <ModalFooter>
-                  <ModalButton $primary={1} onClick={toggleModal}>
-                    Cerrar
-                  </ModalButton>
+                  <Button $primary={1} onClick={toggleModal}>
+                    <AllDeleteIcon />
+                  </Button>
                 </ModalFooter>
               </ModalContent>
             </ModalContainer>
