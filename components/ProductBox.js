@@ -8,6 +8,7 @@ import awsS3Loader from "./awsS3Loader";
 import localLoader from "./localLoader";
 import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
+import CompatibilityModal from "./CompatibilityModal";
 
 const ProductWrapper = styled.div`
   width: 18rem;
@@ -70,7 +71,7 @@ const ProductInfoBox = styled.div`
   padding: 0.8rem;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 2px;
   p {
     font-size: 0.8rem;
     line-height: 1.2rem;
@@ -82,7 +83,7 @@ const ProductInfoBox = styled.div`
 `;
 
 const Title = styled.h5`
-  font-size: 1rem;
+  font-size: 0.8rem;
   margin-top: 0;
   margin: 0;
   overflow: hidden;
@@ -167,21 +168,14 @@ export function ProductBox({ ...product }) {
         <SpanCard $brand={1}>{product?.brand}</SpanCard>
         <p>{product?.description}</p>
         <Row>
-          <ButtonLink href={`/product/${product._id}`} $black={1} $outline={1}>
+          <ButtonLink
+            href={`/product/${product._id}`}
+            $primary={1}
+            $outline={1}
+          >
             VER DETALLES
           </ButtonLink>
-          <ButtonLink
-            href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto. Producto: ${product?.title?.toUpperCase()}, Código: ${
-              product?.code
-            }&type=phone_number&app_absent=1`}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={"Realizar pedido por Whatsapp"}
-            $secondary={1}
-          >
-            <WhatsappIcon height={25} width={25} />
-            PEDIR
-          </ButtonLink>
+          <CompatibilityModal product={product} />
         </Row>
       </ProductInfoBox>
     </ProductWrapper>

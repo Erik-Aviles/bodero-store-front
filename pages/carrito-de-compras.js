@@ -1,8 +1,8 @@
-import CategoriesComponent from "@/components/CategoriesComponent";
-import { DeleteIcon } from "@/components/Icons";
+import { DeleteIcon, WhatsappIcon } from "@/components/Icons";
 import Layout from "@/components/Layout";
-import SuccessSend from "@/components/SuccessSend";
 import BackButton from "@/components/buttonComponents/BackButton";
+import Button from "@/components/buttonComponents/Button";
+import ButtonLink from "@/components/buttonComponents/ButtonLink";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import Table from "@/components/stylesComponents/Table";
@@ -205,7 +205,6 @@ const TH = styled.th`
 export default function CartPage() {
   const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
-  const { asPath } = router;
 
   const {
     cartProducts,
@@ -233,16 +232,6 @@ export default function CartPage() {
     }
   }, [cartProducts]);
 
-  useEffect(() => {
-    if (asPath === "undefined") {
-      return;
-    }
-    if (asPath?.includes("success")) {
-      setIsSuccess(true);
-      clearCart();
-    }
-  }, []);
-
   function moreOfThisProduct(id) {
     addProduct(id);
   }
@@ -252,9 +241,7 @@ export default function CartPage() {
   function deleteProduct(id) {
     removeOneProduct(id);
   }
-  function deleteProductAll() {
-    clearCart();
-  }
+
   async function goToPayment() {
     let data = {
       name,
@@ -302,16 +289,8 @@ export default function CartPage() {
     }
   };
 
-  if (asPath?.includes("success") || isSuccess) {
-    return (
-      <Layout title="B.R.D | Mi carrito - envio exitoso">
-        <SuccessSend />
-      </Layout>
-    );
-  }
   return (
     <Layout title="B.R.D | Mi carrito">
-      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
@@ -498,9 +477,19 @@ export default function CartPage() {
                 />
               </InputContainer>
               <WrapperDiv $center>
-                <ButtonCart $primary={1} onClick={goToPayment}>
-                  Enviar pedido
-                </ButtonCart>
+                <Button $secondary={1} onClick={goToPayment}>
+                  ENVIAR PEDIDO
+                </Button>
+                <ButtonLink
+                  href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto&type=phone_number&app_absent=1`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={"Realizar pedido por Whatsapp"}
+                  $secondary={1}
+                >
+                  <WhatsappIcon height={25} width={25} />
+                  PEDIR POR WHATSAPP
+                </ButtonLink>
               </WrapperDiv>
             </Box>
           )}

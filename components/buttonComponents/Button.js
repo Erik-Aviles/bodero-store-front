@@ -1,9 +1,16 @@
-import { black, primary, white, secondary, error, grey } from "@/lib/colors";
+import {
+  black,
+  primary,
+  white,
+  secondary,
+  error,
+  grey,
+  greylight,
+} from "@/lib/colors";
 import React from "react";
 import styled, { css } from "styled-components";
 
 export const ButtonStyle = css`
-  width: 45%;
   height: 30px;
   border: 0;
   padding: 12px 10px;
@@ -129,7 +136,7 @@ export const ButtonStyle = css`
     css`
       background-color: transparent;
       color: ${black};
-      border: 1px solid ${black};
+      border: 1px solid ${greylight};
     `};
   &:hover {
     background-color: ${black};

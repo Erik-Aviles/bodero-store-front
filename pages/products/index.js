@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import fetch from "isomorphic-unfetch";
 import filterSearch from "@/utils/filterSearch";
 import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
 import { brands } from "@/resource/data";
-import CategoriesComponent from "@/components/CategoriesComponent";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";
@@ -15,6 +13,8 @@ import { FlexStyled } from "@/components/stylesComponents/Flex";
 import ProductsGrid from "@/components/ProductsGrid";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
+import { mongooseConnect } from "@/lib/mongoose";
+import { Product } from "@/models/Product";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -54,7 +54,6 @@ export default function ProductsPage({ products }) {
       title="B.R.D | Todos los Productos"
       description={`Marcas reconocidas como: ${brandNamesString}`}
     >
-      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
@@ -89,8 +88,35 @@ export default function ProductsPage({ products }) {
     </Layout>
   );
 }
+export async function getServerSideProps(context) {
+  await mongooseConnect();
 
-function buildUrl(baseUrl, query) {
+  const { page = 1, limit = 20 } = context.query;
+  const skip = (page - 1) * limit;
+
+  try {
+    const products = await Product.find({}, null, { sort: { _id: -1 } })
+      .skip(skip)
+      .limit(limit)
+      .select(
+        "title salePrice brand code codeWeb codeEnterprise images compatibility quantity"
+      );
+
+    return {
+      props: {
+        products: JSON.parse(JSON.stringify(products)),
+      },
+    };
+  } catch (err) {
+    return {
+      props: {
+        error: err.message,
+      },
+    };
+  }
+}
+
+/* function buildUrl(baseUrl, query) {
   const url = new URL(baseUrl);
 
   const page = query.page || 1;
@@ -139,4 +165,4 @@ export async function getServerSideProps(context) {
       },
     };
   }
-}
+} */

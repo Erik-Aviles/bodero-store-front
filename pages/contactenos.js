@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import CategoriesComponent from "@/components/CategoriesComponent";
 import useAuthFetch from "@/hooks/useAuthFetch";
 import useLoading from "@/hooks/useLoading";
 import { black, white } from "@/lib/colors";
@@ -104,7 +103,6 @@ export default function ContactPage() {
 
   return (
     <Layout title="B.R.D | Contactenos">
-      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

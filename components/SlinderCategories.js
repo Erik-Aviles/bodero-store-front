@@ -41,13 +41,8 @@ const SlinderCategories = ({ categories }) => {
   const router = useRouter();
 
   const filterSearchCategory = ({ router, category }) => {
-    const query = router.query;
     if (category) {
-      query.category = category;
-      router.push({
-        pathname: "/categories",
-        query: query,
-      });
+      router.push(`/categories?category=${category}`);
     }
   };
 

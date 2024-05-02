@@ -35,7 +35,7 @@ export default async function handle(req, res) {
 
     paginating() {
       const page = this.queryString.page * 1 || 1;
-      const limit = this.queryString.limit * 1 || 20;
+      const limit = this.queryString.limit * 1;
       const skip = (page - 1) * limit;
       this.query = this.query.skip(skip).limit(limit);
       return this;
@@ -43,37 +43,26 @@ export default async function handle(req, res) {
   }
 
   try {
-    if (q !== "all") {
+    if (category) {
       const features = new APIfeatures(
-        Product.find({
-          $or: [
-            { title: { $regex: new RegExp(q, "iu") } },
-            { brand: { $regex: new RegExp(q, "iu") } },
-            { code: { $regex: new RegExp(q, "iu") } },
-            { codeWeb: { $regex: new RegExp(q, "iu") } },
-            { codeEnterprise: { $regex: new RegExp(q, "iu") } },
-          ],
-        })
-          .collation({ locale: "es", strength: 3 })
-          .select(
-            "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
-          ),
+        Product.find({}, null).select(
+          "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
+        ),
         req.query
       )
+        .filtering()
         .sorting()
         .paginating();
+
       const products = await features.query;
       return res.status(200).json(products);
-    }
-
-    if (category) {
+    } else {
       const features = new APIfeatures(
         Product.find().select(
           "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
         ),
         req.query
       )
-        .filtering()
         .sorting()
         .paginating();
 

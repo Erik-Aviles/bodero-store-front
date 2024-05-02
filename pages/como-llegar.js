@@ -1,4 +1,3 @@
-import CategoriesComponent from "@/components/CategoriesComponent";
 import { LocationIcon } from "@/components/Icons";
 import { black, white } from "@/lib/colors";
 import Title from "@/components/stylesComponents/Title";
@@ -54,7 +53,6 @@ const MapWrapper = styled.div`
 `;
 
 export default function AddressPage() {
-  const { categories } = useContext(DataContext);
   const router = useRouter();
   const [isUpLoanding, setIsUpLoanding] = useState(true);
 
@@ -79,7 +77,6 @@ export default function AddressPage() {
       title="B.R.D | Cómo llegar"
       description="Ubicada en Quevedo, Av. Walter Andrade y calle primera, esquina"
     >
-      <CategoriesComponent categories={categories} />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />

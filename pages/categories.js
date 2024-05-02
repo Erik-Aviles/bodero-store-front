@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import CategoriesComponent from "@/components/CategoriesComponent";
 import styled, { css } from "styled-components";
 import filterSearch from "@/utils/filterSearch";
 import { grey, secondary } from "@/lib/colors";
@@ -14,6 +13,10 @@ import { DataContext } from "@/context/DataContext";
 import ProductsGrid from "@/components/ProductsGrid";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
+import axios from "axios";
+import useSWR from "swr";
+
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -36,12 +39,12 @@ const BreadCrumb = styled.span`
 `;
 
 const Text = styled.span`
+  font-size: 0.8rem;
   color: ${grey};
   ${(props) =>
     props.$big &&
     css`
       color: ${secondary};
-      font-size: 1rem;
       font-weight: 500;
     `};
 `;
@@ -52,15 +55,15 @@ const Divider = styled.span`
   padding-right: 0.3rem;
 `;
 
-export default function CategoriesPage({ products, result }) {
+export default function CategoriesPage() {
   const { categories } = useContext(DataContext);
   const router = useRouter();
-  const [product, setProducts] = useState(products);
+  const query = router.query;
   const [pages, setPages] = useState(1);
 
-  useEffect(() => {
-    setProducts(products);
-  }, [products]);
+  let apiUrl = `/api/search?limit=20&page=${pages}&category=${query.category}`;
+
+  const { data: products } = useSWR(`${apiUrl}`, fetcher);
 
   const handlePageChange = (newPage) => {
     setPages(newPage);
@@ -90,7 +93,6 @@ export default function CategoriesPage({ products, result }) {
       title="B.R.D | Categoria"
       description="Repuestos Originales en diferentes marcas que hacen la diferencia"
     >
-      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled aria-label="breadcrumb">
           <BackButton onClick={handleGoBack} />
@@ -100,22 +102,24 @@ export default function CategoriesPage({ products, result }) {
             </BreadCrumb>
             <BreadCrumb aria-current="page">
               <Divider> / </Divider>
-              <Text $big={1}>{nameCategory ? nameCategory : "Todas"}</Text>
+              <Text $big={1}>
+                {nameCategory ? nameCategory.toUpperCase() : "Todas"}
+              </Text>
             </BreadCrumb>
           </Sorted>
         </FlexStyled>
-        {!product ? (
+        {!products ? (
           <SkeletorProducts />
-        ) : product?.length === 0 ? (
+        ) : products?.length === 0 ? (
           <TitleH4>
             No se encontró productos en &ldquo;{nameCategory}
             &rdquo;
           </TitleH4>
         ) : (
-          <ProductsGrid products={product} />
+          <ProductsGrid products={products} />
         )}
 
-        {product?.length >= 20 && (
+        {products?.length >= 20 && (
           <ButtonContainer>
             <ButtonDisabled
               $black
@@ -138,7 +142,7 @@ export default function CategoriesPage({ products, result }) {
   );
 }
 
-function buildUrl(baseUrl, query) {
+/* function buildUrl(baseUrl, query) {
   const url = new URL(baseUrl);
 
   const page = query.page || 1;
@@ -180,4 +184,4 @@ export async function getServerSideProps(context) {
       },
     };
   }
-}
+} */

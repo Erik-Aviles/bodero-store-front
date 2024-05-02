@@ -11,7 +11,6 @@ import { useContext } from "react";
 const StyledHeader = styled.header`
   width: 100%;
   background-color: ${white};
-
   @media screen and (max-width: 640px) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     position: fixed;
@@ -25,9 +24,7 @@ const Wrapper = styled.div`
   gap: 20px;
   color: ${white};
   padding: 0 10px 0 0;
-  @media screen and (min-width: 412px) {
-    justify-content: space-between;
-  }
+  justify-content: space-between;
 `;
 
 const StyleNav = styled.nav`

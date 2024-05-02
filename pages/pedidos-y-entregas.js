@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import React, { useEffect, useState } from "react";
-import CategoriesComponent from "@/components/CategoriesComponent";
 import { black, white } from "@/lib/colors";
 import Title from "@/components/stylesComponents/Title";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
@@ -87,7 +86,6 @@ export default function DeliveryPage() {
 
   return (
     <Layout title="B.R.D | Pedidos y Entregas">
-      <CategoriesComponent />
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
