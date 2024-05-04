@@ -88,9 +88,8 @@ const SearchPage = () => {
   const [searchResults, setSearchResults] = useState();
 
   useEffect(() => {
-    fetchProductsFilter(search, 5)
+    fetchProductsFilter(search, 4)
       .then((res) => {
-        console.log(res);
         setSearchResults(res);
       })
       .catch((error) => {
@@ -132,15 +131,17 @@ const SearchPage = () => {
             <BackButton onClick={handleGoBack} />
             <Title>Búsqueda de productos </Title>
           </Sorted>
-          <BreadCrumb aria-current="page">
-            <BreadCrumb>
-              <Text>Producto</Text>
+          {search && (
+            <BreadCrumb aria-current="page">
+              <BreadCrumb>
+                <Text>Producto</Text>
+              </BreadCrumb>
+              <Divider> / </Divider>
+              <Text $big={1}>
+                {search ? search.toUpperCase() : "Todos los productos"}
+              </Text>
             </BreadCrumb>
-            <Divider> / </Divider>
-            <Text $big={1}>
-              {search ? search.toUpperCase() : "Todos los productos"}
-            </Text>
-          </BreadCrumb>
+          )}
         </FlexStyled>
         <FlexStyled aria-label="breadcrumb">
           <Text>Resultados: {searchResults?.length}</Text>

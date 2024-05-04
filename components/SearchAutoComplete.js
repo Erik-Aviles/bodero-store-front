@@ -255,7 +255,7 @@ const SearchAutoComplete = ({ props }) => {
             sourceId: "search-api",
             getItems: async ({ query }) => {
               if (!!query) {
-                const products = fetchProductsFilter(query, 5)
+                const products = fetchProductsFilter(query, 4)
                   .then((res) => {
                     return res;
                   })

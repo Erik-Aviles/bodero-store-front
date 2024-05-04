@@ -24,6 +24,8 @@ export async function fetchProductsFilter(search, minLength) {
     const filteredResults = data.filter((item) => {
       const title = removeAccents(item.title.toLowerCase());
       const code = removeAccents(item.code.toLowerCase());
+      const codeEnterprise = removeAccents(item.codeEnterprise.toLowerCase());
+      const codeWeb = removeAccents(item.codeWeb.toLowerCase());
       const brand = removeAccents(item.brand.toLowerCase());
       const compatibilityModels = (item.compatibility || []).map((compat) =>
         removeAccents(compat.model.toLowerCase())
@@ -33,6 +35,8 @@ export async function fetchProductsFilter(search, minLength) {
         return (
           title.includes(part) ||
           code.includes(part) ||
+          codeEnterprise.includes(part) ||
+          codeWeb.includes(part) ||
           brand.includes(part) ||
           compatibilityModels.some((model) => model.includes(part))
         );

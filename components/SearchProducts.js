@@ -99,7 +99,6 @@ const SearchProducts = ({ search, onClear, HandleSearch }) => {
   const initialRender = useRef(true);
 
   const [text, setText] = useState(search);
-  console.log(text);
   useEffect(() => {
     if (initialRender.current) {
       initialRender.current = false;
@@ -133,7 +132,7 @@ const SearchProducts = ({ search, onClear, HandleSearch }) => {
             <div style={{ width: "32px", height: "100%" }}>
               <ButtonClear
                 onClick={onHandle}
-                disabled={text?.length || search?.length === 0}
+                disabled={text?.length && search?.length === 0}
               >
                 <AllDeleteIcon />
               </ButtonClear>
