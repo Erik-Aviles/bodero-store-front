@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Center from "./stylesComponents/Center";
 import Title from "./stylesComponents/Title";
 import { BackgroundColor, black } from "@/lib/colors";
-import { brands } from "@/resource/data";
+import { brands } from "@/resource/testimonialsData";
 import Image from "next/image";
 import backgroundBrand from "../public/images/brands/background.jpg";
 

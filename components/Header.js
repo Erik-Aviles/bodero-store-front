@@ -1,12 +1,12 @@
 import { LogoFull } from "./Logo";
 import styled, { css } from "styled-components";
-import { black, error, grey, success, white } from "@/lib/colors";
+import { grey, primary, success, white } from "@/lib/colors";
 import Link from "next/link";
 import { ProductIcon, ShoppingIcon, UserIcon, WhatsappIcon } from "./Icons";
 import InformationHeader from "./InformationHeader";
-import Center from "./stylesComponents/Center";
 import { CartContext } from "@/context/CartContext";
 import { useContext } from "react";
+import SearchAutoComplete from "./SearchAutoComplete";
 
 const StyledHeader = styled.header`
   width: 100%;
@@ -15,6 +15,7 @@ const StyledHeader = styled.header`
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     position: fixed;
     z-index: 1;
+    padding: 15px 0;
   }
 `;
 
@@ -23,21 +24,16 @@ const Wrapper = styled.div`
   display: flex;
   gap: 20px;
   color: ${white};
-  padding: 0 10px 0 0;
+  padding: 0 10px 0 40px;
   justify-content: space-between;
 `;
 
 const StyleNav = styled.nav`
   display: flex;
-  place-items: end;
-  padding-bottom: 20px;
-  gap: 8px;
+  place-items: center;
   p {
     font-size: 0.7rem;
     margin: 0;
-  }
-  @media screen and (min-width: 768px) {
-    gap: 20px;
   }
 `;
 
@@ -48,46 +44,46 @@ const StaledLink = styled(Link)`
 `;
 
 const StylesWrapper = styled.div`
-  position: relative;
+  width: 50px;
+  height: 35px;
+  border-radius: 0.5rem;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   &:hover {
-    color: #ccc;
+    border: 1px solid #ced4da;
+    background: transparent;
   }
-  h3 {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-
-  svg {
-    cursor: pointer;
-    ${(props) =>
-      props.$anim &&
-      css`
-        animation: bounce 1s infinite;
-
-        @keyframes bounce {
-          0%,
-          100% {
-            transform: translateY(-25%);
-            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-          }
-          50% {
-            transform: translateY(0);
-            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-          }
-        }
-      `};
-  }
-  @media screen and (max-width: 768px) {
+`;
+const StylesWrapperWhatsApp = styled.div`
+  display: none;
+  @media screen and (min-width: 640px) {
+    color: ${primary};
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     h3 {
-      display: none;
+      font-size: 1.2rem;
+      margin: 0;
     }
-    p {
-      font-size: 0.5rem;
+    svg {
+      cursor: pointer;
+      font-size: 0.8rem;
+      animation: bounce 1s infinite;
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(-25%);
+          animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+        }
+        50% {
+          transform: translateY(0);
+          animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        }
+      }
     }
   }
 `;
@@ -103,42 +99,39 @@ const StyledSpan = styled.div`
   border-radius: 50%;
   top: -4px;
   right: -4px;
-  span {
-    color: ${white};
-    font-size: 0.7rem;
-  }
 `;
 
 export default function Header() {
   const { cartProducts } = useContext(CartContext);
+
   return (
     <StyledHeader>
       <InformationHeader />
-      <Center>
-        <Wrapper>
-          <LogoFull href={"/"} />
-          <StyleNav>
-            <StaledLink
-              href={
-                "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-              title={"Enviar mensaje por Whatsapp"}
-            >
-              <StylesWrapper $anim={1}>
-                <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
-                <p>Escribenos</p>
-                <h3>0996501072</h3>
-              </StylesWrapper>
-            </StaledLink>{" "}
-            <StaledLink href={"/products"} title={"Ver todos los productos"}>
-              <StylesWrapper>
-                <ProductIcon />
-                <p>Productos</p>
-              </StylesWrapper>
-            </StaledLink>
-            {/*  <StaledLink
+
+      <Wrapper>
+        <LogoFull href={"/"} />
+
+        <SearchAutoComplete />
+
+        <StylesWrapperWhatsApp $anim={1}>
+          <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
+          <h3>0996501072</h3>
+        </StylesWrapperWhatsApp>
+        <StyleNav>
+          <StaledLink
+            href={
+              "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            title={"Enviar mensaje por Whatsapp"}
+          ></StaledLink>{" "}
+          <StaledLink href={"/products"} title={"Ver todos los productos"}>
+            <StylesWrapper>
+              <ProductIcon />
+            </StylesWrapper>
+          </StaledLink>
+          {/*  <StaledLink
               hidden={1}
               href={"/account/user-info"}
               title={"Ver mi cuenta"}
@@ -148,29 +141,26 @@ export default function Header() {
                 <p>Mi perfil</p>
               </StylesWrapper>
             </StaledLink> */}
-            {/*  <StaledLink href={"/iniciar-sesion"} title={"Entrar a mi cuenta"}>
-              <StylesWrapper>
-                <UserIcon />
-                <p>Iniciar sesión</p>
-              </StylesWrapper>
-            </StaledLink> */}
-            <StaledLink
-              href={"/carrito-de-compras"}
-              title={"Ver mi carrito de compras"}
-            >
-              <StylesWrapper>
-                {cartProducts?.length > 0 && (
-                  <StyledSpan>
-                    <span>{cartProducts?.length}</span>
-                  </StyledSpan>
-                )}
-                <ShoppingIcon />
-                <p>Carrito</p>
-              </StylesWrapper>
-            </StaledLink>
-          </StyleNav>
-        </Wrapper>
-      </Center>
+          <StaledLink
+            href={"/carrito-de-compras"}
+            title={"Ver mi carrito de compras"}
+          >
+            <StylesWrapper>
+              {cartProducts?.length > 0 && (
+                <StyledSpan>
+                  <span>{cartProducts?.length}</span>
+                </StyledSpan>
+              )}
+              <ShoppingIcon />
+            </StylesWrapper>
+          </StaledLink>
+          <StaledLink href={"#"} title={"Entrar a mi cuenta"}>
+            <StylesWrapper>
+              <UserIcon />
+            </StylesWrapper>
+          </StaledLink>
+        </StyleNav>
+      </Wrapper>
     </StyledHeader>
   );
 }

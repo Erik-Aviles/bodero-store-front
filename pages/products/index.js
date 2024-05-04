@@ -4,7 +4,7 @@ import filterSearch from "@/utils/filterSearch";
 import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
-import { brands } from "@/resource/data";
+import { brands } from "@/resource/testimonialsData";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";

@@ -3,7 +3,7 @@ import { black, error, grey, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./buttonComponents/ButtonLink";
 import { AddToCartIcon, RemoveFromCartIcon, WhatsappIcon } from "./Icons";
 import Image from "next/image";
-import emptyimage from "../public/images/vacio.png";
+import logo from "../public/logo.jpg";
 import awsS3Loader from "./awsS3Loader";
 import localLoader from "./localLoader";
 import { useContext } from "react";
@@ -148,7 +148,7 @@ export function ProductBox({ ...product }) {
         </ImgCard>
         <ItemImage
           loader={product?.images?.[0] ? awsS3Loader : localLoader}
-          src={product?.images?.[0] ? product?.images?.[0] : emptyimage}
+          src={product?.images?.[0] ? product?.images?.[0] : logo}
           alt={product?.title.toUpperCase()}
           title={product?.title.toUpperCase()}
           width={450}

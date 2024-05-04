@@ -4,14 +4,15 @@ import { useRouter } from "next/router";
 import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
 import Layout from "@/components/Layout";
-import { brands } from "@/resource/data";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import { grey, secondary } from "@/lib/colors";
 import SearchProducts from "@/components/SearchProducts";
-import { removeAccents, removePluralEnding } from "@/utils/normalize";
+
+import { brands } from "@/resource/brandsData";
+import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 
 const ProductsGrid = React.lazy(() => import("@/components/ProductsGrid"));
 
@@ -78,24 +79,6 @@ const FlexStyled = styled.section`
   }
 `;
 
-const stopwords = [
-  "el",
-  "la",
-  "las",
-  "los",
-  "de",
-  "y",
-  "a",
-  "en",
-  "con",
-  "para",
-  "un",
-  "una",
-  "uno",
-  "unas",
-  "unos",
-];
-
 const SearchPage = () => {
   const router = useRouter();
   const query = router.query;
@@ -104,53 +87,15 @@ const SearchPage = () => {
 
   const [searchResults, setSearchResults] = useState();
 
-  async function FetchProductsFilter() {
-    try {
-      if (search.trim() === "") {
-        setSearchResults([]);
-        return;
-      }
-      if (search.length >= 3) {
-        const searchParts = removeAccents(search.toLowerCase())
-          .split(" ")
-          .filter((part) => !stopwords.includes(part))
-          .map((part) => removePluralEnding(part));
-
-        const apiUrl = `/api/search?q=${searchParts}&page=${pages}`;
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("Error al obtener datos de la API");
-        }
-        const data = await response.json();
-
-        const filteredResults = data.filter((item) => {
-          const title = removeAccents(item.title.toLowerCase());
-          const code = removeAccents(item.code.toLowerCase());
-          const brand = removeAccents(item.brand.toLowerCase());
-          const compatibilityModels = (item.compatibility || []).map((compat) =>
-            removeAccents(compat.model.toLowerCase())
-          );
-
-          const matchesAllParts = searchParts.every((part) => {
-            return (
-              title.includes(part) ||
-              code.includes(part) ||
-              brand.includes(part) ||
-              compatibilityModels.some((model) => model.includes(part))
-            );
-          });
-          return matchesAllParts;
-        });
-
-        setSearchResults(filteredResults);
-      }
-    } catch (error) {
-      console.error("Error en la búsqueda:", error);
-    }
-  }
-
   useEffect(() => {
-    FetchProductsFilter();
+    fetchProductsFilter(search, 5)
+      .then((res) => {
+        console.log(res);
+        setSearchResults(res);
+      })
+      .catch((error) => {
+        console.error("Error en la búsqueda:", error);
+      });
   }, [search]);
 
   const handlePageChange = (newPage) => {
@@ -159,7 +104,6 @@ const SearchPage = () => {
   };
   const HandleSearch = (e) => {
     e.preventDefault();
-    FetchProductsFilter();
   };
 
   const handleGoBack = (e) => {
