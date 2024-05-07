@@ -1,47 +1,10 @@
-import { white, grey, primary, black, success, warning } from "@/lib/colors";
+import { white, primary, black, success, warning } from "@/lib/colors";
 import Link from "next/link";
 import React from "react";
 import styled, { css } from "styled-components";
-import { HomeIcon } from "./Icons";
-import { BsFillPersonVcardFill } from "react-icons/bs";
-import { BsEnvelopeFill } from "react-icons/bs";
-import { BsFillHouseFill } from "react-icons/bs";
-import { BsPinMapFill } from "react-icons/bs";
-import { BsPcDisplayHorizontal } from "react-icons/bs";
 import { useRouter } from "next/router";
-
-const linksUp = [
-  {
-    name: "Inicio ",
-    href: "/",
-    icon: <BsFillHouseFill />,
-    description: "Pagina principal",
-  },
-  {
-    name: "Quiénes somos ",
-    href: "/quienes-somos",
-    icon: <BsFillPersonVcardFill />,
-    description: "Conoce nuestra historia y quienes somos",
-  },
-  {
-    name: "Pedidos y entregas ",
-    href: "/pedidos-y-entregas",
-    icon: <BsPcDisplayHorizontal />,
-    description: "Conoce nuestro método de pedidos y entrega ",
-  },
-  {
-    name: "Como llegar? ",
-    href: "/como-llegar",
-    icon: <BsPinMapFill />,
-    description: "Conoce la dirección en donde estamos ubicados",
-  },
-  {
-    name: "Contáctenos",
-    href: "/contactenos",
-    icon: <BsEnvelopeFill />,
-    description: "Tines una duda, ingresa aqui",
-  },
-];
+import { linksUp } from "@/resource/linkRouterData";
+import { LogoFull } from "./Logo";
 
 const Wrapper = styled.div`
   background: ${black};
@@ -50,7 +13,7 @@ const Wrapper = styled.div`
   overflow: hidden;
   position: relative;
   @media screen and (max-width: 768px) {
-    display: none;
+    height: auto;
   }
 `;
 
@@ -61,6 +24,9 @@ const NavHeader = styled.nav`
   margin: 12px auto 0;
   max-width: 800px;
   width: 100%;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ListInformation = styled.ul`
@@ -144,6 +110,36 @@ const Icons = styled.i`
   display: block;
   line-height: 45px;
 `;
+const TextPresentation = styled.div`
+  display: flex;
+  gap: 10px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: ${success};
+  div {
+    padding: 5px;
+  }
+  p {
+    margin: 0;
+  }
+  span {
+    color: ${white};
+  }
+  a {
+    color: ${warning};
+    text-decoration: underline;
+  }
+  figure {
+    margin: 0;
+    width: 102px;
+  }
+  @media screen and (min-width: 480px) {
+    font-size: 1rem;
+  }
+  @media screen and (min-width: 769px) {
+    display: none;
+  }
+`;
 
 const InformationHeader = () => {
   const router = useRouter();
@@ -151,6 +147,25 @@ const InformationHeader = () => {
 
   return (
     <Wrapper>
+      <TextPresentation>
+        <figure>
+          <LogoFull href={"/"} />
+        </figure>
+        <div>
+          <p>Si no encuentas lo que buscas... </p>
+          <span>Nosotros lo conseguimos!</span>
+          <br />
+          <Link
+            href={
+              "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Escríbenos!
+          </Link>
+        </div>
+      </TextPresentation>
       <NavHeader>
         <ListInformation>
           {linksUp.map((link, index) => (
@@ -177,19 +192,3 @@ const InformationHeader = () => {
 };
 
 export default InformationHeader;
-
-// const InformationHeader = () => {
-//   return (
-//     <Wrapper>
-//       <ListInformation>
-//         {linksUp.map((link, index) => (
-//           <ItemInformation key={`id${index}1`} title={link.name}>
-//             <StaledLink href={link.href}>{link.name}</StaledLink>
-//           </ItemInformation>
-//         ))}
-//       </ListInformation>
-//     </Wrapper>
-//   );
-// };
-
-// export default InformationHeader;

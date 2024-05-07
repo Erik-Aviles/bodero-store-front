@@ -72,8 +72,8 @@ export const HamburguerIcon = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"
     viewBox="0 0 24 24"
-    width="2.2em"
-    height="2.2em"
+    width="2em"
+    height="2em"
     className={`w-6 h-6 `}
     {...props}
   >

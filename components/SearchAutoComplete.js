@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { createAutocomplete } from "@algolia/autocomplete-core";
 import styled, { css } from "styled-components";
 import {
@@ -10,36 +10,26 @@ import {
   success,
   warning,
 } from "@/lib/colors";
-import filterSearch from "@/utils/filterSearch";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SearchIcon } from "./Icons";
-import { removeAccents, removePluralEnding } from "@/utils/normalize";
-
-import { stopwords } from "@/resource/stopwordsData";
-import { fetcher } from "@/utils/fetcher";
 import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 
 const WrapperProductFilter = styled.div`
-  width: 400px;
-  margin: 0 20px;
-  padding: 0;
-  display: none;
-  @media screen and (min-width: 768px) {
+  width: 100%;
+  margin: 0;
+  @media screen and (min-width: 769px) {
     display: flex;
     align-items: center;
   }
 `;
 
 const Customform = styled.form`
-  display: none;
-  @media screen and (min-width: 768px) {
-    display: block;
-    position: relative;
-    width: 100%;
-    border-radius: 0.25rem;
-    box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
-  }
+  display: block;
+  position: relative;
+  width: 100%;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
 `;
 const WrapperSearchAutocomplete = styled.div`
   width: 100%;

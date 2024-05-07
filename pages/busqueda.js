@@ -13,23 +13,10 @@ import SearchProducts from "@/components/SearchProducts";
 
 import { brands } from "@/resource/brandsData";
 import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 
 const ProductsGrid = React.lazy(() => import("@/components/ProductsGrid"));
 
-const CenterSecction = css`
-  heigth: auto;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
-  @media screen and (max-width: 480px) {
-    margin-bottom: 0;
-    padding: 0;
-  }
-  @media screen and (max-width: 640px) {
-    padding-top: 109.63px;
-    margin-bottom: 60px;
-  }
-`;
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
@@ -156,7 +143,7 @@ const SearchPage = () => {
       <Suspense fallback={<SkeletorProducts />}>
         <ProductsGrid products={searchResults} />
       </Suspense>
-      <CenterDiv>
+      {/*       <CenterDiv>
         {(hasNextPage === 20 || pages > 1) && (
           <ButtonContainer>
             <ButtonDisabled
@@ -175,7 +162,7 @@ const SearchPage = () => {
             </ButtonDisabled>
           </ButtonContainer>
         )}
-      </CenterDiv>
+      </CenterDiv> */}
     </Layout>
   );
 };

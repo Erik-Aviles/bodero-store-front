@@ -5,6 +5,7 @@ import { black, primary, white } from "@/lib/colors";
 
 const ContainerArrow = styled.div`
   position: absolute;
+  z-index: 1;
   top: -55px;
   ${(props) =>
     props.$anex &&
@@ -45,7 +46,6 @@ const ArrowBox = styled.div`
   }
   @media screen and (max-width: 640px) {
     position: absolute;
-    z-index: 10;
   }
 `;
 

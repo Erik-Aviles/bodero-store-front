@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   background-color: ${black};
   box-shadow: none;
   white-space: nowrap;
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `;

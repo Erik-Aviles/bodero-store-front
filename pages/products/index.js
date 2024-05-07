@@ -4,7 +4,6 @@ import filterSearch from "@/utils/filterSearch";
 import Title from "@/components/stylesComponents/Title";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
-import { brands } from "@/resource/testimonialsData";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { TitleH4 } from "@/components/stylesComponents/TitleH4";
@@ -15,6 +14,7 @@ import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
+import { brands } from "@/resource/brandsData";
 
 const CenterDiv = styled.section`
   ${CenterSecction}

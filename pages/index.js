@@ -9,6 +9,15 @@ import { useContext, useEffect, useState } from "react";
 import { DataContext } from "@/context/DataContext";
 import SearchAutoComplete from "@/components/SearchAutoComplete";
 import { dataCarousel } from "@/resource/carouselData";
+import styled from "styled-components";
+
+const DisplayNoneCpmponente = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: end;
+`;
 
 export default function HomePage({ newProducts }) {
   const [isUpLoanding, setIsUpLoanding] = useState(true);

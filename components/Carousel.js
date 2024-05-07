@@ -7,7 +7,7 @@ const SliderContainer = styled.div`
   position: relative;
 
   @media screen and (max-width: 640px) {
-    padding-top: 150.43px;
+    padding-top: 20.43px;
   }
   @media screen and (min-width: 480px) {
     margin-bottom: 60px;

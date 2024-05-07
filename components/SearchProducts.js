@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import { error, greylight, primary } from "@/lib/colors";
 import { useRouter } from "next/router";
 import { AllDeleteIcon, SearchIcon } from "./Icons";
-import { useDebounce } from "use-debounce";
 
 const WrapperProductFilter = styled.div`
   @media screen and (max-width: 768px) {
@@ -19,7 +18,6 @@ const FilterGroup = styled.div`
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
-    gap: 10px;
   }
 `;
 

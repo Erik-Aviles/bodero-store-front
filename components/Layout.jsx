@@ -3,6 +3,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import CategoriesComponent from "./CategoriesComponent";
 import { useState } from "react";
+import { styled } from "styled-components";
+import NavMovil from "./NavMovil";
 
 export default function Layout({ children, title, description }) {
   const [category, setCategory] = useState("all");
@@ -17,6 +19,7 @@ export default function Layout({ children, title, description }) {
       <CategoriesComponent datos={datos} />
       <main>{children}</main>
       <Footer />
+      <NavMovil />
     </div>
   );
 }
