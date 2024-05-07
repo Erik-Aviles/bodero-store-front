@@ -4,31 +4,19 @@ import { useRouter } from "next/router";
 import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
 import Layout from "@/components/Layout";
-import { brands } from "@/resource/data";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import { grey, secondary } from "@/lib/colors";
 import SearchProducts from "@/components/SearchProducts";
-import { removeAccents, removePluralEnding } from "@/utils/normalize";
+
+import { brands } from "@/resource/brandsData";
+import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 
 const ProductsGrid = React.lazy(() => import("@/components/ProductsGrid"));
 
-const CenterSecction = css`
-  heigth: auto;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
-  @media screen and (max-width: 480px) {
-    margin-bottom: 0;
-    padding: 0;
-  }
-  @media screen and (max-width: 640px) {
-    padding-top: 109.63px;
-    margin-bottom: 60px;
-  }
-`;
 const CenterDiv = styled.section`
   ${CenterSecction}
 `;
@@ -78,88 +66,30 @@ const FlexStyled = styled.section`
   }
 `;
 
-const stopwords = [
-  "el",
-  "la",
-  "las",
-  "los",
-  "de",
-  "y",
-  "a",
-  "en",
-  "con",
-  "para",
-  "un",
-  "una",
-  "uno",
-  "unas",
-  "unos",
-];
-
 const SearchPage = () => {
   const router = useRouter();
   const query = router.query;
   const search = query.q || "";
-  const [pages, setPages] = useState(1);
+  // const [pages, setPages] = useState(1);
 
   const [searchResults, setSearchResults] = useState();
 
-  async function FetchProductsFilter() {
-    try {
-      if (search.trim() === "") {
-        setSearchResults([]);
-        return;
-      }
-      if (search.length >= 3) {
-        const searchParts = removeAccents(search.toLowerCase())
-          .split(" ")
-          .filter((part) => !stopwords.includes(part))
-          .map((part) => removePluralEnding(part));
-
-        const apiUrl = `/api/search?q=${searchParts}&page=${pages}`;
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("Error al obtener datos de la API");
-        }
-        const data = await response.json();
-
-        const filteredResults = data.filter((item) => {
-          const title = removeAccents(item.title.toLowerCase());
-          const code = removeAccents(item.code.toLowerCase());
-          const brand = removeAccents(item.brand.toLowerCase());
-          const compatibilityModels = (item.compatibility || []).map((compat) =>
-            removeAccents(compat.model.toLowerCase())
-          );
-
-          const matchesAllParts = searchParts.every((part) => {
-            return (
-              title.includes(part) ||
-              code.includes(part) ||
-              brand.includes(part) ||
-              compatibilityModels.some((model) => model.includes(part))
-            );
-          });
-          return matchesAllParts;
-        });
-
-        setSearchResults(filteredResults);
-      }
-    } catch (error) {
-      console.error("Error en la búsqueda:", error);
-    }
-  }
-
   useEffect(() => {
-    FetchProductsFilter();
+    fetchProductsFilter(search, 4)
+      .then((res) => {
+        setSearchResults(res);
+      })
+      .catch((error) => {
+        console.error("Error en la búsqueda:", error);
+      });
   }, [search]);
 
-  const handlePageChange = (newPage) => {
+  /*   const handlePageChange = (newPage) => {
     setPages(newPage);
     filterSearch({ router, page: newPage });
-  };
+  }; */
   const HandleSearch = (e) => {
     e.preventDefault();
-    FetchProductsFilter();
   };
 
   const handleGoBack = (e) => {
@@ -188,15 +118,17 @@ const SearchPage = () => {
             <BackButton onClick={handleGoBack} />
             <Title>Búsqueda de productos </Title>
           </Sorted>
-          <BreadCrumb aria-current="page">
-            <BreadCrumb>
-              <Text>Producto</Text>
+          {search && (
+            <BreadCrumb aria-current="page">
+              <BreadCrumb>
+                <Text>Producto</Text>
+              </BreadCrumb>
+              <Divider> / </Divider>
+              <Text $big={1}>
+                {search ? search.toUpperCase() : "Todos los productos"}
+              </Text>
             </BreadCrumb>
-            <Divider> / </Divider>
-            <Text $big={1}>
-              {search ? search.toUpperCase() : "Todos los productos"}
-            </Text>
-          </BreadCrumb>
+          )}
         </FlexStyled>
         <FlexStyled aria-label="breadcrumb">
           <Text>Resultados: {searchResults?.length}</Text>
@@ -212,7 +144,7 @@ const SearchPage = () => {
           <ProductsGrid products={searchResults} />
         </Suspense>
       </CenterDiv>
-      <CenterDiv>
+      {/*     <CenterDiv>
         {(hasNextPage === 20 || pages > 1) && (
           <ButtonContainer>
             <ButtonDisabled
@@ -231,7 +163,7 @@ const SearchPage = () => {
             </ButtonDisabled>
           </ButtonContainer>
         )}
-      </CenterDiv>
+      </CenterDiv>  */}
     </Layout>
   );
 };

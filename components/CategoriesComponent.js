@@ -8,13 +8,23 @@ import SlinderCategories from "./SlinderCategories";
 import { black, error, white } from "@/lib/colors";
 import { DataContext } from "@/context/DataContext";
 
-const DivContainert = styled.div`
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 0 25px;
   background-color: ${black};
+  box-shadow: none;
+  white-space: nowrap;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const DivContainert = styled.div`
   width: 100%;
   height: auto;
   position: relative;
-  box-shadow: none;
-  white-space: nowrap;
+
   select {
     width: 50%;
     padding-left: 20px;
@@ -44,8 +54,6 @@ const DivContainert = styled.div`
 `;
 
 const LinkSearch = styled(Link)`
-  position: absolute;
-  display: inline-block;
   border-left: 1px solid ${white};
   top: 0px;
   right: 5px;
@@ -103,22 +111,19 @@ const CategoriesComponent = ({ datos }) => {
   };
 
   return (
-    <Center>
+    <Wrapper>
       <DivContainert>
-        <select value={category} onChange={handleCategory}>
+        {/*         <select value={category} onChange={handleCategory}>
           <StyledOption value="all">CATEGORIAS</StyledOption>
           {categories.map((item) => (
             <StyledOption key={item._id} value={item._id}>
               {item.name.toUpperCase()}
             </StyledOption>
           ))}
-        </select>
+        </select> */}
         <SlinderCategories categories={categories} />
-        <LinkSearch href={"/busqueda"} title="Ir a búsqueda">
-          <SearchIcon />
-        </LinkSearch>
       </DivContainert>
-    </Center>
+    </Wrapper>
   );
 };
 export default CategoriesComponent;

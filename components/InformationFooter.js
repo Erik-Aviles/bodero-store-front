@@ -1,10 +1,10 @@
 import React from "react";
 import { white, grey, primary, greylight, white2 } from "@/lib/colors";
-import { InfoData } from "@/resource/data";
 import styled from "styled-components";
 import Link from "next/link";
 import Center from "./stylesComponents/Center";
 import Image from "next/image";
+import { InfoData } from "@/resource/infoData";
 
 const Wrapper = styled.div`
   background-color: ${white2};

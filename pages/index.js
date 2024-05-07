@@ -4,10 +4,20 @@ import { mongooseConnect } from "@/lib/mongoose";
 import Carousel from "@/components/Carousel";
 import { Product } from "@/models/Product";
 import Brands from "@/components/Brands";
-import { dataCarousel } from "@/resource/data";
 import Layout from "@/components/Layout";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "@/context/DataContext";
+import SearchAutoComplete from "@/components/SearchAutoComplete";
+import { dataCarousel } from "@/resource/carouselData";
+import styled from "styled-components";
+
+const DisplayNoneCpmponente = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: end;
+`;
 
 export default function HomePage({ newProducts }) {
   const [isUpLoanding, setIsUpLoanding] = useState(true);
@@ -40,7 +50,9 @@ export async function getServerSideProps() {
   const newProducts = await Product.find({}, null, {
     sort: { _id: -1 },
     limit: 10,
-  });
+  }).select(
+    "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
+  );
 
   return {
     props: {

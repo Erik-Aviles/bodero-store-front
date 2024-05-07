@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { greylight, success, white } from "@/lib/colors";
 import { useEffect, useState } from "react";
-import emptyimage from "../public/images/vacio.png";
+import logo from "../public/logo.jpg";
 import Image from "next/image";
 import Spinner from "./Spinner";
 import awsS3Loader from "./awsS3Loader";
@@ -69,7 +69,7 @@ const SmallImage = styled.img`
 
 export default function ProductImages({ images, name }) {
   const [activeImage, setActiveImage] = useState(
-    images?.[0] ? images?.[0] : emptyimage
+    images?.[0] ? images?.[0] : logo
   );
 
   const [isUpLoanding, setIsUpLoanding] = useState(true);
