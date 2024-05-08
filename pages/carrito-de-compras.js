@@ -63,14 +63,13 @@ const Box = styled.div`
   height: fit-content;
   background-color: ${white};
   border-radius: 10px;
-  margin: 0 15px;
   padding: 15px;
   h3 {
     font-size: 1rem;
     margin: 0 0 20px;
   }
   p {
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin: 0;
     color: ${grey};
     margin-left: 20px;

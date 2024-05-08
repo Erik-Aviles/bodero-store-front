@@ -49,9 +49,6 @@ const StaledLink = styled(Link)`
     `};
 `;
 const StaledDiv = styled.div`
-  svg {
-    font-size: 13px;
-  }
   width: 45px;
   height: 20px;
   display: flex;
@@ -61,12 +58,10 @@ const StaledDiv = styled.div`
     props.$active &&
     css`
       color: ${black};
-      background: rgba(247, 247, 247, 0.7);
+      background: #f7f7f7;
       border-radius: 15px;
       p {
         color: #f7f7f7;
-      }
-      svg {
       }
     `}
 `;
@@ -94,7 +89,7 @@ const StylesWrapperWhatsApp = styled.div`
 const TextSpan = styled.p`
   margin: 0;
   color: ${white};
-  font-size: 0.5rem;
+  font-size: 0.6rem;
 `;
 
 export default function NavMovil() {
