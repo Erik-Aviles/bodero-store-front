@@ -1,13 +1,21 @@
-import { white, primary, black, success, warning } from "@/lib/colors";
+import {
+  white,
+  primary,
+  black,
+  success,
+  warning,
+  grey,
+  blacklight,
+} from "@/lib/colors";
 import Link from "next/link";
 import React from "react";
 import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
 import { linksUp } from "@/resource/linkRouterData";
-import { LogoFull } from "./Logo";
+import { LogoFull, LogoLetters } from "./Logo";
 
 const Wrapper = styled.div`
-  background: ${black};
+  background: #0e0f14;
   width: 100%;
   height: 41px;
   overflow: hidden;
@@ -112,12 +120,17 @@ const Icons = styled.i`
 `;
 const TextPresentation = styled.div`
   display: flex;
-  gap: 10px;
+  align-items: center;
   font-size: 0.7rem;
   font-weight: bold;
-  color: ${success};
+  color: #ffff00;
   div {
-    padding: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 8px 0 0;
   }
   p {
     margin: 0;
@@ -131,7 +144,8 @@ const TextPresentation = styled.div`
   }
   figure {
     margin: 0;
-    width: 102px;
+    width: 160px;
+    height: 100%;
   }
   @media screen and (min-width: 480px) {
     font-size: 1rem;
@@ -154,7 +168,6 @@ const InformationHeader = () => {
         <div>
           <p>Si no encuentas lo que buscas... </p>
           <span>Nosotros lo conseguimos!</span>
-          <br />
           <Link
             href={
               "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"

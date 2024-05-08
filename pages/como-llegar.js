@@ -18,13 +18,15 @@ const CenterDiv = styled.section`
 
 const ColumnsWrapper = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr;
+  grid-template-columns: 1fr;
   gap: 40px;
-  margin: 20px 0 80px;
-  @media screen and (max-width: 768px) {
-    grid-template-columns: 1fr;
+  padding: 10px;
+  @media screen and (min-width: 820px) {
+    grid-template-columns: 0.5fr 1.5fr;
+    padding: 0 60px 60px;
   }
 `;
+
 const AddressWrapper = styled.aside`
   padding: 20px;
   background-color: ${black};

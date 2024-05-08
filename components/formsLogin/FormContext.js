@@ -10,8 +10,9 @@ const FormWrapper = styled.form`
   padding: 1.3rem;
   border-radius: 10px;
   min-width: 300px;
-  margin: 20px 0;
-  box-shadow: 1px 4px 20px rgb(0 0 0 / 50%);
+  @media screen and (min-width: 768px) {
+    padding: 0;
+  }
 `;
 const DespContainer = styled.div`
   text-align: left;
@@ -30,7 +31,7 @@ const Imagen = styled.figure`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 0 0 20px;
+  margin: 0 0 10px;
 `;
 
 const formValues = {};

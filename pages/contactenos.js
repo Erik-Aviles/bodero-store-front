@@ -19,17 +19,17 @@ const CenterDiv = styled.section`
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(1fr, 450px);
   gap: 20px;
-  margin: 20px 0 80px;
-  @media screen and (max-width: 768px) {
-    grid-template-columns: 1fr;
-    place-items: center;
+  padding: 10px 0;
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    padding: 0 60px 60px;
   }
 `;
 const Box = styled.div`
-  padding: 0 20px;
-  max-width: 450px;
+  padding: 30px 0;
   height: fit-content;
   box-shadow: 1px 4px 20px rgb(0 0 0 / 20%);
   ${(props) =>
@@ -45,22 +45,35 @@ const Box = styled.div`
     `};
   h3 {
     padding: 15px;
-    margin-top: 16px;
-    font-size: 1.6rem;
-    line-height: 2.4rem;
+    margin: 16px;
+    font-size: 1.3rem;
     font-weight: normal;
     background-color: ${white};
     color: ${black};
+    @media screen and (min-width: 768px) {
+      line-height: 2.4rem;
+      font-size: 1.6rem;
+    }
   }
   p {
-    line-height: 1.6rem;
+    padding: 15px;
+    line-height: 1.3rem;
   }
   h4 {
-    margin-bottom: 0;
+    padding: 0 15px;
+    margin: 0;
+  }
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    padding: 20px;
   }
 `;
 const TextStrong = styled.strong`
-  font-size: 2rem;
+  font-size: 1.4rem;
+  @media screen and (min-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 const WrapperInputs = styled.div`
   margin: 10px 0;

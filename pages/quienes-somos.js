@@ -11,7 +11,7 @@ import Layout from "@/components/Layout";
 import { useRouter } from "next/navigation";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
-import { greylight } from "@/lib/colors";
+import { black, grey, greylight } from "@/lib/colors";
 import { useEffect, useState } from "react";
 import { Loading } from "@/components/Loading";
 
@@ -22,9 +22,9 @@ const CenterDiv = styled.section`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-bottom: 60px;
-  @media screen and (max-width: 768px) {
-    padding-bottom: 0;
+  padding: 10px;
+  @media screen and (min-width: 768px) {
+    padding: 0 60px 60px;
   }
 `;
 const SectionImagen = styled.section`
@@ -73,7 +73,7 @@ const BoxImage = styled.figure`
     height: auto;
   }
   figcaption {
-    color: ${greylight};
+    color: ${black};
     font-size: 0.8rem;
     align-self: center;
     margin-top: 0.2rem;
@@ -82,11 +82,11 @@ const BoxImage = styled.figure`
 const SectionText = styled.section`
   padding: 0 20px;
   letter-spacing: 0.025em;
-  line-height: 30px;
-  font-size: 18px;
+  line-height: 24px;
+  font-size: 16px;
   text-wrap: pretty;
   h3 {
-    font-size: 1.5rem;
+    font-size: 1.33rem;
   }
   p {
     margin: 0;

@@ -18,7 +18,7 @@ const ContainerArrow = styled.div`
       right: 80px;
     `};
   @media screen and (max-width: 640px) {
-    top: 435px;
+    top: 345px;
     ${(props) =>
       props.$anex &&
       css`

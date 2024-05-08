@@ -2,6 +2,8 @@ import styled, { css } from "styled-components";
 import { black, grey, greylight, primary, success, white } from "@/lib/colors";
 import Link from "next/link";
 import { ProductIcon, UserIcon, WhatsappIcon } from "./Icons";
+import { BsCardList, BsViewStacked } from "react-icons/bs";
+import { SlUser } from "react-icons/sl";
 import { CartContext } from "@/context/CartContext";
 import { useContext, useState } from "react";
 import ToogleNavBar from "./buttonComponents/ButtonHamburger";
@@ -24,7 +26,7 @@ const StyleNav = styled.nav`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   justify-items: center;
-  align-items: center;
+  align-items: end;
   border-radius: 15px 15px 0 0;
   background: ${black};
 `;
@@ -32,16 +34,14 @@ const StyleNav = styled.nav`
 const StaledLink = styled(Link)`
   width: 100%;
   height: 100%;
-  padding: 12px 0;
+  padding: 5px 0;
+  gap: 5px;
   display: flex;
+  color: ${white};
   align-items: center;
   flex-direction: column;
+  justify-content: end;
   border-right: 0.1px solid ${greylight};
-  ${(props) =>
-    props.$active &&
-    css`
-      background: ${primary};
-    `};
   ${(props) =>
     props.$endBorder &&
     css`
@@ -49,19 +49,33 @@ const StaledLink = styled(Link)`
     `};
 `;
 const StaledDiv = styled.div`
-  width: 100%;
-  padding: 12px 0;
+  svg {
+    font-size: 13px;
+  }
+  width: 45px;
+  height: 20px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  flex-direction: column;
-  border-right: 0.1px solid ${greylight};
+  ${(props) =>
+    props.$active &&
+    css`
+      color: ${black};
+      background: rgba(247, 247, 247, 0.7);
+      border-radius: 15px;
+      p {
+        color: #f7f7f7;
+      }
+      svg {
+      }
+    `}
 `;
 
 const StylesWrapperWhatsApp = styled.div`
-  height: 28px;
+  height: 20px;
   svg {
     cursor: pointer;
-    font-size: 0.7rem;
+    font-size: 0.5rem;
     animation: bounce 1s infinite;
     @keyframes bounce {
       0%,
@@ -80,46 +94,41 @@ const StylesWrapperWhatsApp = styled.div`
 const TextSpan = styled.p`
   margin: 0;
   color: ${white};
-  font-size: 0.6rem;
+  font-size: 0.5rem;
 `;
 
 export default function NavMovil() {
   const router = useRouter();
   const path = router.pathname;
-  const [showModal, setShowModal] = useState(false);
-
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
 
   return (
     <StyledHeader>
       <StyleNav>
-        <StaledDiv $active={showModal ? 1 : 0} onClick={toggleModal}>
-          <ToogleNavBar showModal={showModal} toggleModal={toggleModal} />
-        </StaledDiv>
-        <StaledLink
-          $active={path === "/products" ? 1 : 0}
-          href={"/products"}
-          title={"Ver todos los productos"}
-        >
-          <ProductIcon />
+        <StaledLink href={"/products"} title={"Ver todos los productos"}>
+          <StaledDiv $active={path === "/products" ? 1 : 0}>
+            <BsCardList />
+          </StaledDiv>
           <TextSpan>Productos</TextSpan>
         </StaledLink>
         <StaledLink
-          $active={path === "/carrito-de-compras" ? 1 : 0}
           href={"/carrito-de-compras"}
           title={"Ver mi carrito de compras"}
         >
-          <CartComponent />
+          <StaledDiv $active={path === "/carrito-de-compras" ? 1 : 0}>
+            <CartComponent />
+          </StaledDiv>
           <TextSpan>Carrito</TextSpan>
         </StaledLink>
-        <StaledLink
-          $active={path === "#" ? 1 : 0}
-          href={"#"}
-          title={"Entrar a mi cuenta"}
-        >
-          <UserIcon />
+        <StaledLink href={"/categories"} title={"Ver categorias"}>
+          <StaledDiv $active={path === "/categories" ? 1 : 0}>
+            <BsViewStacked />
+          </StaledDiv>
+          <TextSpan>Categorias</TextSpan>
+        </StaledLink>
+        <StaledLink href={"#"} title={"Entrar a mi cuenta"}>
+          <StaledDiv $active={path === "#" ? 1 : 0}>
+            <SlUser />
+          </StaledDiv>
           <TextSpan>Usuario</TextSpan>
         </StaledLink>
         <StaledLink
@@ -134,6 +143,7 @@ export default function NavMovil() {
           <StylesWrapperWhatsApp $anim={1}>
             <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
           </StylesWrapperWhatsApp>
+
           <TextSpan>Chat</TextSpan>
         </StaledLink>
       </StyleNav>

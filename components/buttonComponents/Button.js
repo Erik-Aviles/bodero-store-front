@@ -30,7 +30,9 @@ export const ButtonStyle = css`
   ${(props) =>
     props.$block &&
     css`
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
     `};
   ${(props) =>

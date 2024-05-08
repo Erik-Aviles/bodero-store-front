@@ -8,10 +8,9 @@ import awsS3Loader from "./awsS3Loader";
 import localLoader from "./localLoader";
 import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
-import CompatibilityModal from "./CompatibilityModal";
 
 const ProductWrapper = styled.div`
-  width: 18rem;
+  width: 9rem;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -20,15 +19,22 @@ const ProductWrapper = styled.div`
   border-radius: 0.25rem;
   margin: 8px auto;
   transition: transform 0.3s, box-shadow 0.3s;
-  &:hover {
-    transform: scale(1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  @media screen and (min-width: 360px) {
+    width: 11rem;
+  }
+  @media screen and (min-width: 768px) {
+    box-shadow: none;
+    &:hover {
+      transform: scale(1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
   }
 `;
 
 const ImageBox = styled.figure`
   position: relative;
-  height: 240px;
+  height: 180px;
   width: 100%;
   margin: 0;
 `;
@@ -63,7 +69,7 @@ const ImgCard = styled.button`
 `;
 const ItemImage = styled(Image)`
   width: 100%;
-  height: 240px;
+  height: 180px;
   object-fit: scale-down;
 `;
 
@@ -83,6 +89,7 @@ const ProductInfoBox = styled.div`
 `;
 
 const Title = styled.h5`
+  height: 30px;
   font-size: 0.8rem;
   margin-top: 0;
   margin: 0;
@@ -101,7 +108,7 @@ const Price = styled.div`
   font-weight: 600;
 `;
 const SpanCard = styled.span`
-  font-size: 0.7rem;
+  font-size: 0.5rem;
   text-transform: uppercase;
   ${(props) =>
     props.$error &&
@@ -172,10 +179,10 @@ export function ProductBox({ ...product }) {
             href={`/product/${product._id}`}
             $primary={1}
             $outline={1}
+            $block={1}
           >
             VER DETALLES
           </ButtonLink>
-          <CompatibilityModal product={product} />
         </Row>
       </ProductInfoBox>
     </ProductWrapper>

@@ -33,15 +33,15 @@ const Progress = styled.div`
 
 export default function SlinderHorizontal({ products }) {
   const [progress, setProgress] = useState(0);
-  const [slideToShow, serSlideToShow] = useState(3);
+  const [slideToShow, serSlideToShow] = useState(5);
 
   const setSlides = () => {
     if (window.innerWidth <= 1280 && window.innerWidth > 1000) {
-      serSlideToShow(3);
+      serSlideToShow(5);
     } else if (window.innerWidth <= 1000 && window.innerWidth > 600) {
-      serSlideToShow(2);
+      serSlideToShow(3);
     } else if (window.innerWidth <= 650) {
-      serSlideToShow(1);
+      serSlideToShow(2);
     }
   };
 
@@ -57,31 +57,37 @@ export default function SlinderHorizontal({ products }) {
     arrows: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 5,
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
       {
-        breakpoint: 1280,
+        breakpoint: 1100,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 5,
         },
       },
       {
         breakpoint: 1000,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 4,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
         },
       },
       {
         breakpoint: 540,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 280,
         settings: {
           slidesToShow: 1,
         },

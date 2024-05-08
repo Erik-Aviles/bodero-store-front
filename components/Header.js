@@ -1,12 +1,17 @@
 import { LogoFull } from "./Logo";
 import styled, { css } from "styled-components";
-import { grey, greylight, primary, white } from "@/lib/colors";
+import { black, grey, greylight, primary, white } from "@/lib/colors";
 import Link from "next/link";
 import { ProductIcon, UserIcon, WhatsappIcon } from "./Icons";
+import { BsCardList } from "react-icons/bs";
+import { SlUser } from "react-icons/sl";
+
 import InformationHeader from "./InformationHeader";
 import SearchAutoComplete from "./SearchAutoComplete";
 import { useRouter } from "next/router";
 import CartComponent from "./CartComponent";
+import { useState } from "react";
+import ToogleNavBar from "./buttonComponents/ButtonHamburger";
 
 const DisplayNoneCpmponente = styled.div`
   display: none;
@@ -46,14 +51,19 @@ const Wrapper = styled.div`
 
 const StyleNav = styled.nav`
   display: flex;
+  gap: 5px;
   place-items: center;
 `;
 
 const StaledLink = styled(Link)`
   position: relative;
   display: flex;
+
   text-decoration: none;
-  color: ${grey};
+  color: ${black};
+  &:hover {
+    color: ${primary};
+  }
 `;
 
 const StylesWrapper = styled.div`
@@ -62,15 +72,30 @@ const StylesWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   &:hover {
     border-radius: 0.5rem;
-    border: 0.3px solid ${greylight};
+    border: 0.3px solid ${primary};
     cursor: pointer;
   }
+  svg {
+    height: 1.5em;
+    width: 1.5em;
+  }
+  ${(props) =>
+    props.$active &&
+    css`
+      border-radius: 0.5rem;
+      border: 0.3px solid ${primary};
+      p {
+        color: #f7f7f7;
+      }
+    `}
 `;
 
 const StylesWrapperWhatsApp = styled.div`
-  font-size: 1.2rem;
+  width: fit-content;
+
   color: ${primary};
   position: relative;
   display: flex;
@@ -94,7 +119,15 @@ const StylesWrapperWhatsApp = styled.div`
     }
   }
   h3 {
-    margin: 0;
+    display: none;
+  }
+  @media screen and (min-width: 1024px) {
+    h3 {
+      display: block;
+      margin: 0;
+      font-size: 1.6rem;
+      ${"" /* display: none; */}
+    }
   }
 `;
 
@@ -108,6 +141,11 @@ const SectionRigthNav = styled.section`
 export default function Header() {
   const router = useRouter();
   const path = router.pathname;
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
 
   return (
     <StyledHeader>
@@ -118,6 +156,7 @@ export default function Header() {
             <LogoFull href={"/"} />
           </SectionRigthNav>
         </DisplayNoneCpmponente>
+        <ToogleNavBar showModal={showModal} toggleModal={toggleModal} />
         <SearchAutoComplete />
         <DisplayNoneCpmponente>
           <SectionRigthNav>
@@ -135,21 +174,21 @@ export default function Header() {
                 title={"Enviar mensaje por Whatsapp"}
               ></StaledLink>{" "}
               <StaledLink href={"/products"} title={"Ver todos los productos"}>
-                <StylesWrapper>
-                  <ProductIcon />
+                <StylesWrapper $active={path === "/products" ? 1 : 0}>
+                  <BsCardList />
                 </StylesWrapper>
               </StaledLink>
               <StaledLink
                 href={"/carrito-de-compras"}
                 title={"Ver mi carrito de compras"}
               >
-                <StylesWrapper>
+                <StylesWrapper $active={path === "/carrito-de-compras" ? 1 : 0}>
                   <CartComponent />
                 </StylesWrapper>
               </StaledLink>
               <StaledLink href={"#"} title={"Entrar a mi cuenta"}>
-                <StylesWrapper>
-                  <UserIcon />
+                <StylesWrapper $active={path === "#" ? 1 : 0}>
+                  <SlUser />
                 </StylesWrapper>
               </StaledLink>
             </StyleNav>

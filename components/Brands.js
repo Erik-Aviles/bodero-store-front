@@ -18,13 +18,15 @@ const Wrapper = styled.section`
 `;
 const BrandsWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, minmax(100px, 1fr));
   justify-content: center;
-  gap: 30px;
-  padding: 20px 0;
-  @media screen and (max-width: 640px) {
-    padding: 20px 20px;
-    gap: 10px;
+  padding: 20px;
+  gap: 10px;
+
+  @media screen and (min-width: 641px) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
   }
 `;
 

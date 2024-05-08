@@ -9,7 +9,7 @@ const InputContainer = styled.div`
   gap: 4px;
 
   label {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
   }
   input {

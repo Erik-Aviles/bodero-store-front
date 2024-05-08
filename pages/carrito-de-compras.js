@@ -34,7 +34,6 @@ const ColumnsWrapper = styled.div`
   width: in;
   display: grid;
   grid-template-columns: 1fr;
-  margin: 40px 0;
   gap: 20px;
 
   @media screen and (min-width: 768px) {
@@ -61,11 +60,13 @@ const WrapperDiv = styled.div`
     `}
 `;
 const Box = styled.div`
+  height: fit-content;
   background-color: ${white};
   border-radius: 10px;
-  padding: 0 10px;
+  margin: 0 15px;
+  padding: 15px;
   h3 {
-    font-size: 1.3rem;
+    font-size: 1rem;
     margin: 0 0 20px;
   }
   p {
@@ -86,7 +87,7 @@ const Box = styled.div`
       flex-direction: column;
     `}
     @media screen and (min-width: 768px) {
-    padding: 0;
+    padding: 20px;
   }
 `;
 

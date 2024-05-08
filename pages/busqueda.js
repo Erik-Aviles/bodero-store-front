@@ -138,8 +138,6 @@ const SearchPage = () => {
             HandleSearch={HandleSearch}
           />
         </FlexStyled>
-      </CenterDiv>
-      <CenterDiv>
         <Suspense fallback={<SkeletorProducts />}>
           <ProductsGrid products={searchResults} />
         </Suspense>

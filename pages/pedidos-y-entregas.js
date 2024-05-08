@@ -18,9 +18,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin: 20px 0 80px;
-  @media screen and (max-width: 768px) {
-    margin: 0 20px 20px;
+  padding: 20px 20px 40px;
+  @media screen and (min-width: 768px) {
+    padding: 20px 60px 40px;
   }
 `;
 const Box = styled.div`
@@ -45,8 +45,8 @@ const Box = styled.div`
   h3 {
     padding: 15px;
     margin: 16px 0 0;
-    font-size: 1.6rem;
-    line-height: 2.4rem;
+    font-size: 1.2rem;
+    line-height: 2rem;
     font-weight: normal;
     background-color: ${black};
     color: ${white};
@@ -57,7 +57,7 @@ const Box = styled.div`
   }
   p,
   span {
-    line-height: 1.6rem;
+    line-height: 1.3rem;
   }
   span {
     padding: 7px 0 0 10px;

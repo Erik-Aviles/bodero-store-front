@@ -153,7 +153,7 @@ const ToogleNavBar = ({ toggleModal, showModal }) => {
   return (
     <StyledDiv>
       <div>
-        <SectionButton>
+        <SectionButton onClick={toggleModal}>
           <HamburguerIcon fill={grey} />
         </SectionButton>
         {showModal && (

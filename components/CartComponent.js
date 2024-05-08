@@ -2,10 +2,24 @@ import { CartContext } from "@/context/CartContext";
 import { success, white } from "@/lib/colors";
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { ShoppingIcon } from "./Icons";
+import { BsCart2 } from "react-icons/bs";
 
 const WrapperIcon = styled.div`
   position: relative;
+  width: 16px;
+  height: 16px;
+  svg {
+    height: 1em;
+    width: 1em;
+  }
+  @media screen and (min-width: 767px) {
+    width: 20px;
+    height: 20px;
+    svg {
+      height: 24px;
+      width: 24px;
+    }
+  }
 `;
 const StyledSpan = styled.div`
   position: absolute;
@@ -13,13 +27,18 @@ const StyledSpan = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${success};
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  top: -4px;
-  right: -4px;
-  font-size: 0.6rem;
+  top: 0px;
+  right: -10px;
+  font-size: 0.5rem;
   color: ${white};
+  @media screen and (min-width: 767px) {
+    width: 20px;
+    height: 20px;
+    right: -10px;
+  }
 `;
 
 const CartComponent = () => {
@@ -29,7 +48,7 @@ const CartComponent = () => {
       {cartProducts?.length > 0 && (
         <StyledSpan>{cartProducts?.length}</StyledSpan>
       )}
-      <ShoppingIcon />
+      <BsCart2 />
     </WrapperIcon>
   );
 };
