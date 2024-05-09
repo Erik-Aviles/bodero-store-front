@@ -77,7 +77,7 @@ export default function CategoriesInStar() {
         </FlexLink>
         <ListHorizontalCategory>
           {categories.map((item) => (
-            <ItemCard item={item} />
+            <ItemCard key={item._id} item={item} />
           ))}
         </ListHorizontalCategory>
       </Wrapper>
