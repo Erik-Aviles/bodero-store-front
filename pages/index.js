@@ -5,18 +5,13 @@ import Carousel from "@/components/Carousel";
 import { Product } from "@/models/Product";
 import Brands from "@/components/Brands";
 import Layout from "@/components/Layout";
-import { useContext, useEffect, useState } from "react";
-import { DataContext } from "@/context/DataContext";
-import SearchAutoComplete from "@/components/SearchAutoComplete";
+import { useEffect, useState } from "react";
 import { dataCarousel } from "@/resource/carouselData";
 import styled from "styled-components";
+import CategoriesInStar from "@/components/CategoriesInStar";
 
-const DisplayNoneCpmponente = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: end;
+const BackgroundColor = styled.div`
+  background-color: #f7f7f7;
 `;
 
 export default function HomePage({ newProducts }) {
@@ -38,9 +33,12 @@ export default function HomePage({ newProducts }) {
       title="B.R.D | INICIO"
       description="Tienda de repuestos y accesorios originales de moto en Quevedo"
     >
-      <Carousel data={dataCarousel} />
-      <NewProducts products={newProducts} />
-      <Brands />
+      <BackgroundColor>
+        <Carousel data={dataCarousel} />
+        <CategoriesInStar />
+        <NewProducts products={newProducts} />
+        <Brands />
+      </BackgroundColor>
     </Layout>
   );
 }

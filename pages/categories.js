@@ -1,7 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import filterSearch from "@/utils/filterSearch";
-import { grey, secondary } from "@/lib/colors";
+import {
+  grey,
+  greylight,
+  secondary,
+  success,
+  white,
+  white2,
+} from "@/lib/colors";
 import { useRouter } from "next/router";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
@@ -15,11 +22,17 @@ import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import axios from "axios";
 import useSWR from "swr";
+import Title from "@/components/stylesComponents/Title";
+import ItemCard from "@/components/ItemCard";
+import Text from "@/components/stylesComponents/HighlightedText";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const CenterDiv = styled.section`
   ${CenterSecction}
+  @media screen and (min-width: 768px) {
+    padding: 20px 60px 60px;
+  }
 `;
 
 const Sorted = styled.div`
@@ -38,21 +51,26 @@ const BreadCrumb = styled.span`
   align-items: center;
 `;
 
-const Text = styled.span`
-  font-size: 0.8rem;
-  color: ${grey};
-  ${(props) =>
-    props.$big &&
-    css`
-      color: ${secondary};
-      font-weight: 500;
-    `};
-`;
-
 const Divider = styled.span`
   color: ${grey};
   padding-left: 0.3rem;
   padding-right: 0.3rem;
+`;
+
+const Wrapper = styled.div``;
+
+const ListCategory = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(100px, 1fr));
+  grid-template-rows: minmax(100px, 1fr);
+  justify-content: center;
+  gap: 15px;
+  padding: 0 15px;
+  @media screen and (min-width: 641px) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-rows: 200px;
+    padding: 0 80px;
+  }
 `;
 
 export default function CategoriesPage() {
@@ -94,11 +112,16 @@ export default function CategoriesPage() {
       description="Repuestos Originales en diferentes marcas que hacen la diferencia"
     >
       <CenterDiv>
+        <Title>Categorias</Title>
         <FlexStyled aria-label="breadcrumb">
           <BackButton onClick={handleGoBack} />
           <Sorted>
             <BreadCrumb>
-              <Text>Categoría</Text>
+              {!nameCategory ? (
+                <Text>Total, {categories.length} Categorías</Text>
+              ) : (
+                <Text>Categoría</Text>
+              )}
             </BreadCrumb>
             <BreadCrumb aria-current="page">
               <Divider> / </Divider>
@@ -108,40 +131,54 @@ export default function CategoriesPage() {
             </BreadCrumb>
           </Sorted>
         </FlexStyled>
-        {!products ? (
-          <SkeletorProducts />
-        ) : products?.length === 0 ? (
-          <TitleH4>
-            No se encontró productos en &ldquo;{nameCategory}
-            &rdquo;
-          </TitleH4>
-        ) : (
-          <ProductsGrid products={products} />
-        )}
 
-        {products?.length >= 20 && (
-          <ButtonContainer>
-            <ButtonDisabled
-              $black
-              onClick={() => handlePageChange(pages - 1)}
-              disabled={pages === 1}
-            >
-              Anterior
-            </ButtonDisabled>
-            <ButtonDisabled
-              $white
-              onClick={() => handlePageChange(pages + 1)}
-              disabled={!hasNextPage}
-            >
-              Siguiente
-            </ButtonDisabled>
-          </ButtonContainer>
+        {query.category ? (
+          <Wrapper>
+            {!products ? (
+              <SkeletorProducts />
+            ) : products?.length === 0 ? (
+              <TitleH4>
+                No se encontró productos en &ldquo;{nameCategory}
+                &rdquo;
+              </TitleH4>
+            ) : (
+              <ProductsGrid products={products} />
+            )}
+
+            {products?.length >= 20 && (
+              <ButtonContainer>
+                <ButtonDisabled
+                  $black
+                  onClick={() => handlePageChange(pages - 1)}
+                  disabled={pages === 1}
+                >
+                  Anterior
+                </ButtonDisabled>
+                <ButtonDisabled
+                  $white
+                  onClick={() => handlePageChange(pages + 1)}
+                  disabled={!hasNextPage}
+                >
+                  Siguiente
+                </ButtonDisabled>
+              </ButtonContainer>
+            )}
+          </Wrapper>
+        ) : (
+          <Wrapper>
+            <ListCategory>
+              {categories.map((item) => (
+                <ItemCard item={item} />
+              ))}
+            </ListCategory>
+          </Wrapper>
         )}
       </CenterDiv>
     </Layout>
   );
 }
 
+//////////////////////
 /* function buildUrl(baseUrl, query) {
   const url = new URL(baseUrl);
 
@@ -185,3 +222,35 @@ export async function getServerSideProps(context) {
     };
   }
 } */
+
+///////////////////////////
+
+/* {!products ? (
+  <SkeletorProducts />
+) : products?.length === 0 ? (
+  <TitleH4>
+    No se encontró productos en &ldquo;{nameCategory}
+    &rdquo;
+  </TitleH4>
+) : (
+  <ProductsGrid products={products} />
+)}
+
+{products?.length >= 20 && (
+  <ButtonContainer>
+    <ButtonDisabled
+      $black
+      onClick={() => handlePageChange(pages - 1)}
+      disabled={pages === 1}
+    >
+      Anterior
+    </ButtonDisabled>
+    <ButtonDisabled
+      $white
+      onClick={() => handlePageChange(pages + 1)}
+      disabled={!hasNextPage}
+    >
+      Siguiente
+    </ButtonDisabled>
+  </ButtonContainer>
+)} */

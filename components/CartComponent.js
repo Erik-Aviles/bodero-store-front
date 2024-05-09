@@ -13,8 +13,8 @@ const WrapperIcon = styled.div`
     width: 1em;
   }
   @media screen and (min-width: 767px) {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 28px;
     svg {
       height: 24px;
       width: 24px;

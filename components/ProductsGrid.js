@@ -5,7 +5,6 @@ const StyledProductsGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 20px 0;
 `;
 
 const ProductsGrid = ({ products }) => {

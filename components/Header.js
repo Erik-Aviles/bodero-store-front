@@ -2,8 +2,8 @@ import { LogoFull } from "./Logo";
 import styled, { css } from "styled-components";
 import { black, grey, greylight, primary, white } from "@/lib/colors";
 import Link from "next/link";
-import { ProductIcon, UserIcon, WhatsappIcon } from "./Icons";
-import { BsCardList } from "react-icons/bs";
+import { WhatsappIcon } from "./Icons";
+import { BsCardList, BsViewStacked } from "react-icons/bs";
 import { SlUser } from "react-icons/sl";
 
 import InformationHeader from "./InformationHeader";
@@ -23,12 +23,20 @@ const DisplayNoneCpmponente = styled.div`
 const StyledHeader = styled.header`
   width: 100%;
   background-color: ${white};
-  @media screen and (max-width: 768px) {
+  ${"" /* border-bottom: 1px solid rgba(0, 0, 0, 0.125); */}
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.125);
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+  ${
+    "" /*   @media screen and (max-width: 768px) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     position: -webkit-sticky;
     position: sticky;
     top: 0px;
     z-index: 2;
+  } */
   }
 `;
 
@@ -50,52 +58,44 @@ const Wrapper = styled.div`
 `;
 
 const StyleNav = styled.nav`
+  width: 100%;
   display: flex;
-  gap: 5px;
+  gap: 10px;
   place-items: center;
 `;
 
 const StaledLink = styled(Link)`
   position: relative;
   display: flex;
-
-  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   color: ${black};
   &:hover {
     color: ${primary};
-  }
-`;
-
-const StylesWrapper = styled.div`
-  width: 50px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    border-radius: 0.5rem;
-    border: 0.3px solid ${primary};
-    cursor: pointer;
-  }
-  svg {
-    height: 1.5em;
-    width: 1.5em;
+    p {
+      color: ${primary};
+    }
   }
   ${(props) =>
     props.$active &&
     css`
-      border-radius: 0.5rem;
-      border: 0.3px solid ${primary};
+      color: ${primary};
       p {
-        color: #f7f7f7;
+        color: ${primary};
       }
     `}
 `;
 
+const StylesWrapper = styled.div`
+  svg {
+    height: 1.5em;
+    width: 1.5em;
+  }
+`;
+
 const StylesWrapperWhatsApp = styled.div`
   width: fit-content;
-
   color: ${primary};
   position: relative;
   display: flex;
@@ -137,6 +137,11 @@ const SectionRigthNav = styled.section`
   align-items: center;
   gap: 20px;
 `;
+const TextSpan = styled.p`
+  margin: 0;
+  font-size: 0.6rem;
+  white-space: nowrap;
+`;
 
 export default function Header() {
   const router = useRouter();
@@ -173,23 +178,45 @@ export default function Header() {
                 rel="noopener noreferrer"
                 title={"Enviar mensaje por Whatsapp"}
               ></StaledLink>{" "}
-              <StaledLink href={"/products"} title={"Ver todos los productos"}>
-                <StylesWrapper $active={path === "/products" ? 1 : 0}>
+              <StaledLink
+                $active={path === "/products" ? 1 : 0}
+                href={"/products"}
+                title={"Ver todos los productos"}
+              >
+                <StylesWrapper>
                   <BsCardList />
                 </StylesWrapper>
+                <TextSpan>Productos</TextSpan>
               </StaledLink>
               <StaledLink
+                $active={path === "/categories" ? 1 : 0}
+                href={"/categories"}
+                title={"Ver todas las categorias"}
+              >
+                <StylesWrapper>
+                  <BsViewStacked />
+                </StylesWrapper>
+                <TextSpan>Categorias</TextSpan>
+              </StaledLink>
+              <StaledLink
+                $active={path === "/carrito-de-compras" ? 1 : 0}
                 href={"/carrito-de-compras"}
                 title={"Ver mi carrito de compras"}
               >
-                <StylesWrapper $active={path === "/carrito-de-compras" ? 1 : 0}>
+                <StylesWrapper>
                   <CartComponent />
                 </StylesWrapper>
+                <TextSpan>Carrito</TextSpan>
               </StaledLink>
-              <StaledLink href={"#"} title={"Entrar a mi cuenta"}>
-                <StylesWrapper $active={path === "#" ? 1 : 0}>
+              <StaledLink
+                $active={path === "#" ? 1 : 0}
+                href={"#"}
+                title={"Entrar a mi cuenta"}
+              >
+                <StylesWrapper>
                   <SlUser />
                 </StylesWrapper>
+                <TextSpan>Mi cuenta</TextSpan>
               </StaledLink>
             </StyleNav>
           </SectionRigthNav>

@@ -1,12 +1,9 @@
 import styled, { css } from "styled-components";
 import { black, grey, greylight, primary, success, white } from "@/lib/colors";
 import Link from "next/link";
-import { ProductIcon, UserIcon, WhatsappIcon } from "./Icons";
+import { WhatsappIcon } from "./Icons";
 import { BsCardList, BsViewStacked } from "react-icons/bs";
 import { SlUser } from "react-icons/sl";
-import { CartContext } from "@/context/CartContext";
-import { useContext, useState } from "react";
-import ToogleNavBar from "./buttonComponents/ButtonHamburger";
 import CartComponent from "./CartComponent";
 import { useRouter } from "next/router";
 
@@ -34,10 +31,10 @@ const StyleNav = styled.nav`
 const StaledLink = styled(Link)`
   width: 100%;
   height: 100%;
-  padding: 5px 0;
+  padding: 10px 0;
   gap: 5px;
-  display: flex;
   color: ${white};
+  display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: end;

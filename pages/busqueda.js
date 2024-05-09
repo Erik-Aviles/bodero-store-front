@@ -75,7 +75,7 @@ const SearchPage = () => {
   const [searchResults, setSearchResults] = useState();
 
   useEffect(() => {
-    fetchProductsFilter(search, 4)
+    fetchProductsFilter(search, 3)
       .then((res) => {
         setSearchResults(res);
       })

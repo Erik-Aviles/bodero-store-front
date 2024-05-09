@@ -20,9 +20,11 @@ const ProductWrapper = styled.div`
   margin: 8px auto;
   transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
   @media screen and (min-width: 360px) {
     width: 11rem;
   }
+
   @media screen and (min-width: 768px) {
     box-shadow: none;
     &:hover {

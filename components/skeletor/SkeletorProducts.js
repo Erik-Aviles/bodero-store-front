@@ -1,5 +1,5 @@
 import { primary, white } from "@/lib/colors";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RiseLoader } from "react-spinners";
 import styled from "styled-components";
 
@@ -7,10 +7,9 @@ const SkeletorProductsGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 20px 0;
   div {
-    height: 389px;
-    width: 18rem;
+    height: 327px;
+    width: 8rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,21 +18,41 @@ const SkeletorProductsGrid = styled.div`
     background-color: ${white};
     padding: 0.8rem;
     margin: 8px auto;
+    @media screen and (min-width: 360px) {
+      width: 11rem;
+    }
   }
 `;
 
 const SkeletorProducts = () => {
+  const [slideToShow, serSlideToShow] = useState(7);
+
+  const setSlides = () => {
+    if (window.innerWidth <= 1280 && window.innerWidth > 1024) {
+      serSlideToShow(7);
+    } else if (window.innerWidth <= 1024 && window.innerWidth > 820) {
+      serSlideToShow(5);
+    } else if (window.innerWidth <= 820 && window.innerWidth > 412) {
+      serSlideToShow(3);
+    } else if (window.innerWidth <= 412 && window.innerWidth >= 320) {
+      serSlideToShow(2);
+    } else if (window.innerWidth < 320) {
+      serSlideToShow(1);
+    }
+  };
+
+  useEffect(() => {
+    setSlides();
+  }, []);
+
   return (
     <SkeletorProductsGrid>
-      <div>
-        <RiseLoader color={primary} speedMultiplier={1} size={7} />
-      </div>
-      <div>
-        <RiseLoader color={primary} speedMultiplier={1} size={7} />
-      </div>
-      <div>
-        <RiseLoader color={primary} speedMultiplier={1} size={7} />
-      </div>
+      {/* Usamos un bucle for para generar los elementos */}
+      {Array.from({ length: slideToShow }, (_, index) => (
+        <div key={index}>
+          <RiseLoader color={primary} speedMultiplier={1} size={7} />
+        </div>
+      ))}
     </SkeletorProductsGrid>
   );
 };
