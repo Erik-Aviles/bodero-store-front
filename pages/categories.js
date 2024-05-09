@@ -168,7 +168,7 @@ export default function CategoriesPage() {
           <Wrapper>
             <ListCategory>
               {categories.map((item) => (
-                <ItemCard item={item} />
+                <ItemCard key={item._id} item={item} />
               ))}
             </ListCategory>
           </Wrapper>
