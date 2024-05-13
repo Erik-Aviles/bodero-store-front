@@ -5,6 +5,9 @@ import { BackgroundColor, black } from "@/lib/colors";
 import Image from "next/image";
 import backgroundBrand from "../public/images/brands/background.jpg";
 import { brands } from "@/resource/brandsData";
+import { useEffect, useState } from "react";
+import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.section`
   position: relative;
@@ -30,7 +33,7 @@ const BrandsWrapper = styled.div`
   }
 `;
 
-const StyledCard = styled.article`
+const StyledCard = styled.button`
   position: relative;
   background-color: ${BackgroundColor};
   padding: 10px;
@@ -41,6 +44,7 @@ const StyledCard = styled.article`
   align-items: center;
   justify-content: center;
   gap: 5px;
+  border: none;
   border-radius: 5px;
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
   cursor: pointer;
@@ -61,6 +65,16 @@ const BrandName = styled.h3`
 `;
 
 export default function Brands() {
+  const router = useRouter();
+
+  const handleSearch = (name) => {
+    const normalized = name;
+
+    if (name) {
+      router.push(`/busqueda?q=${name.toLowerCase()}`);
+    }
+  };
+
   return (
     <Wrapper>
       <Image
@@ -72,7 +86,7 @@ export default function Brands() {
         <Title>Marcas destacadas</Title>
         <BrandsWrapper>
           {brands?.map(({ id, name, src }) => (
-            <StyledCard key={id}>
+            <StyledCard key={id} onClick={() => handleSearch(name)}>
               <BrandName>{name.toUpperCase()}</BrandName>
               <Image src={src} alt={name} width={50} height={50} />
             </StyledCard>

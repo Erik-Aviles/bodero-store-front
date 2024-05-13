@@ -15,7 +15,7 @@ export const brands = [
   },
   {
     id: crypto.randomUUID(),
-    name: "Bajab",
+    name: "Bajaj",
     src: bajaj,
   },
   {

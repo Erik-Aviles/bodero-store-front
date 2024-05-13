@@ -4,7 +4,7 @@ import Link from "next/link";
 import { WhatsappIcon } from "./Icons";
 import { BsCardList, BsViewStacked } from "react-icons/bs";
 import { SlUser } from "react-icons/sl";
-import CartComponent from "./CartComponent";
+import CartComponent from "./cart/CartComponent";
 import { useRouter } from "next/router";
 
 const StyledHeader = styled.header`

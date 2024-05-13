@@ -92,13 +92,17 @@ export default function CategoriesPage() {
 
   const handleGoBack = (e) => {
     e.preventDefault();
+    router.push("/");
+  };
+  /*   const handleGoBack = (e) => {
+    e.preventDefault();
     if (router.query.page > 1) {
       setPages(pages - 1);
       filterSearch({ router, page: pages - 1 });
     } else {
       router.push("/");
     }
-  };
+  }; */
 
   const resultadoFiltrado = categories.filter((objeto) =>
     objeto._id.includes(router.query.category)

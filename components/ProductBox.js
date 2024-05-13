@@ -2,12 +2,12 @@ import styled, { css } from "styled-components";
 import { black, error, grey, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./buttonComponents/ButtonLink";
 import { AddToCartIcon, RemoveFromCartIcon, WhatsappIcon } from "./Icons";
-import Image from "next/image";
 import logo from "../public/logo.jpg";
 import awsS3Loader from "./awsS3Loader";
 import localLoader from "./localLoader";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "@/context/CartContext";
+import Image from "next/image";
 
 const ProductWrapper = styled.div`
   width: 9rem;
@@ -15,7 +15,8 @@ const ProductWrapper = styled.div`
   flex-direction: column;
   min-width: 0;
   background-color: ${white};
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  ${"" /* border: 1px solid rgba(0, 0, 0, 0.125); */}
+  border: 1px solid rgba(255, 0, 0, 0.5);
   border-radius: 0.25rem;
   margin: 8px auto;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -130,6 +131,11 @@ const SpanCard = styled.span`
 `;
 
 export function ProductBox({ ...product }) {
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
   const { addProduct, cartProducts, removeOneProduct } =
     useContext(CartContext);
 
@@ -162,6 +168,7 @@ export function ProductBox({ ...product }) {
           title={product?.title.toUpperCase()}
           width={450}
           height={450}
+          onClick={toggleModal}
         />
       </ImageBox>
       <ProductInfoBox>
@@ -179,7 +186,7 @@ export function ProductBox({ ...product }) {
         <Row>
           <ButtonLink
             href={`/product/${product._id}`}
-            $primary={1}
+            $black={1}
             $outline={1}
             $block={1}
           >

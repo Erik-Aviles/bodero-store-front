@@ -138,13 +138,14 @@ export const ButtonStyle = css`
     css`
       background-color: transparent;
       color: ${black};
-      border: 1px solid ${greylight};
+      border: 1px solid ${black};
+      &:hover {
+        background-color: ${black};
+        color: ${white};
+        border: 1px solid ${black};
+      }
     `};
-  &:hover {
-    background-color: ${black};
-    color: ${white};
-    border: 1px solid ${black};
-  }
+
   ${(props) =>
     props.$size === "l" &&
     css`

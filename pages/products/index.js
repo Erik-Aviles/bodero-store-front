@@ -38,12 +38,7 @@ export default function ProductsPage({ products }) {
 
   const handleGoBack = (e) => {
     e.preventDefault();
-    if (router.query.page > 1) {
-      setPages(pages - 1);
-      filterSearch({ router, page: pages - 1 });
-    } else {
-      router.push("/");
-    }
+    router.back;
   };
 
   const brandNames = brands.map((brand) => brand.name);

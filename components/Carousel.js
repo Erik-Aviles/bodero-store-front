@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import Center from "./stylesComponents/Center";
 import Image from "next/image";
 
 const SliderContainer = styled.div`
   position: relative;
 
-  @media screen and (max-width: 640px) {
-    padding-top: 20.43px;
-  }
-  @media screen and (min-width: 480px) {
-    margin-bottom: 60px;
+  @media screen and (min-width: 780px) {
+    margin-bottom: 80px;
   }
 `;
 const ContainerImages = styled.div`

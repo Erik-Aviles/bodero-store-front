@@ -12,7 +12,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
 import { linksUp } from "@/resource/linkRouterData";
-import { LogoFull, LogoLetters } from "./Logo";
+import { LogoFull } from "./Logo";
 
 const Wrapper = styled.div`
   background: #0e0f14;
@@ -168,6 +168,9 @@ const InformationHeader = () => {
         <div>
           <p>Si no encuentas lo que buscas... </p>
           <span>Nosotros lo conseguimos!</span>
+          {/* <span>
+            Todo lo que necesitas para tu vehículo, sin salir de casa.
+          </span> */}
           <Link
             href={
               "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"

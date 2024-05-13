@@ -1,29 +1,19 @@
-import { DeleteIcon, WhatsappIcon } from "@/components/Icons";
+import { WhatsappIcon } from "@/components/Icons";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
 import Button from "@/components/buttonComponents/Button";
 import ButtonLink from "@/components/buttonComponents/ButtonLink";
+import TableCart from "@/components/cart/TableCart";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
-import Table from "@/components/stylesComponents/Table";
 import Title from "@/components/stylesComponents/Title";
 import { CartContext } from "@/context/CartContext";
-
 import NotificationContext from "@/context/NotificationContext";
-import {
-  black,
-  error,
-  grey,
-  greylight,
-  primary,
-  success,
-  white,
-} from "@/lib/colors";
-import formatPrice from "@/utils/formatPrice";
+import { error, grey, greylight, success, white } from "@/lib/colors";
 
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styled, { css } from "styled-components";
 
 const CenterDiv = styled.section`
@@ -42,6 +32,7 @@ const ColumnsWrapper = styled.div`
     margin: 20px 0 40px;
   }
 `;
+
 const WrapperDiv = styled.div`
   display: flex;
   align-items: center;
@@ -59,6 +50,7 @@ const WrapperDiv = styled.div`
       }
     `}
 `;
+
 const Box = styled.div`
   height: fit-content;
   background-color: ${white};
@@ -87,82 +79,6 @@ const Box = styled.div`
     `}
     @media screen and (min-width: 768px) {
     padding: 20px;
-  }
-`;
-
-const ProductInfoCell = styled.td`
-  padding: 10px 0;
-  font-weight: 700;
-`;
-
-const ProductImageBox = styled.div`
-  width: 70px;
-  height: 70px;
-  padding: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  img {
-    max-width: 60px;
-    max-height: 60px;
-  }
-  @media screen and (min-width: 412px) {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 5px;
-    img {
-      max-width: 70px;
-      max-height: 70px;
-    }
-  }
-`;
-
-const PropsSpan = styled.span`
-  font-size: 0.6rem;
-  ${(props) =>
-    props.$two &&
-    css`
-      color: ${success};
-    `};
-`;
-
-const QuantityLabel = styled.span`
-  padding: 0 3px;
-`;
-
-const ButtonCart = styled.button`
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0.25rem;
-  padding: 2px 7px;
-  cursor: pointer;
-  &:active {
-    background-color: ${greylight};
-  }
-  &:hover {
-    background-color: ${greylight};
-  }
-  ${(props) =>
-    props.$primary &&
-    css`
-      padding: 8px 12px;
-      margin: 10px 0 0;
-      text-transform: uppercase;
-      background-color: ${success};
-      color: ${white};
-      border: 1px solid ${success};
-      &:hover {
-        background-color: ${white};
-        color: ${success};
-        border: 1px solid ${success};
-      }
-    `};
-  &:disabled {
-    cursor: not-allowed;
-  }
-  @media screen and (min-width: 768px) {
-    padding: 5px 10px;
   }
 `;
 
@@ -195,52 +111,18 @@ const InputContainer = styled.div`
     }
   }
 `;
-const TH = styled.th`
-  width: 90px;
-  @media screen and (min-width: 412px) {
-    width: 120px;
-  }
-`;
 
 export default function CartPage() {
   const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
-
-  const {
-    cartProducts,
-    addProduct,
-    removeProduct,
-    removeOneProduct,
-    clearCart,
-  } = useContext(CartContext);
-  const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [country, setCountry] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
 
-  useEffect(() => {
-    if (cartProducts.length > 0) {
-      axios.post("/api/cart", { ids: cartProducts }).then((response) => {
-        setProducts(response.data);
-      });
-    } else {
-      setProducts([]);
-    }
-  }, [cartProducts]);
-
-  function moreOfThisProduct(id) {
-    addProduct(id);
-  }
-  function lessOfThisProduct(id) {
-    removeProduct(id);
-  }
-  function deleteProduct(id) {
-    removeOneProduct(id);
-  }
+  const { cartProducts, clearCart } = useContext(CartContext);
 
   async function goToPayment() {
     let data = {
@@ -252,6 +134,7 @@ export default function CartPage() {
       country,
       cartProducts,
     };
+
     try {
       const response = await axios.post("/api/checkout", data);
       showNotification({
@@ -259,6 +142,7 @@ export default function CartPage() {
         msj: response.data.message,
         status: "success",
       });
+
       clearCart();
 
       const timeout = setTimeout(() => {
@@ -274,19 +158,9 @@ export default function CartPage() {
     }
   }
 
-  let total = 0;
-  for (const productId of cartProducts) {
-    const salePrice = products.find((p) => p._id === productId)?.salePrice || 0;
-    total += salePrice;
-  }
   const handleGoBack = (e) => {
     e.preventDefault();
-    if (router.query.page > 1) {
-      setPages(pages - 1);
-      filterSearch({ router, page: pages - 1 });
-    } else {
-      router.push("/");
-    }
+    router.back();
   };
 
   return (
@@ -298,109 +172,7 @@ export default function CartPage() {
         </FlexStyled>
         <ColumnsWrapper>
           <Box $list={1}>
-            {!cartProducts?.length && (
-              <p>
-                El carrito esta vacio. Los productos adicionados se mostrarán
-                aquí.
-              </p>
-            )}
-
-            {products?.length > 0 && (
-              <>
-                <h3>Tus productos en el carrito </h3>
-                <Table>
-                  <thead>
-                    <tr>
-                      <TH>Producto</TH>
-                      <th>Unidades</th>
-                      <th>P. Und.</th>
-                      <th>Sub Total</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {products.map((product) => (
-                      <tr key={product._id}>
-                        <ProductInfoCell>
-                          <PropsSpan>
-                            {"Ref: "}
-                            {product.code.toUpperCase()}
-                          </PropsSpan>
-                          <ProductImageBox>
-                            <img
-                              title={product.name}
-                              alt={product.title}
-                              src={product.images[0]}
-                            />
-                          </ProductImageBox>
-                          <PropsSpan $two={1}>
-                            {product.title.toUpperCase()}
-                          </PropsSpan>
-                        </ProductInfoCell>
-                        <td>
-                          <WrapperDiv>
-                            <ButtonCart
-                              onClick={() => lessOfThisProduct(product._id)}
-                              disabled={
-                                cartProducts.filter((id) => id === product._id)
-                                  .length === 1
-                              }
-                            >
-                              -
-                            </ButtonCart>
-                            <QuantityLabel>
-                              {
-                                cartProducts.filter((id) => id === product._id)
-                                  .length
-                              }
-                            </QuantityLabel>
-                            <ButtonCart
-                              onClick={() => moreOfThisProduct(product._id)}
-                              disabled={
-                                cartProducts.filter((id) => id === product._id)
-                                  .length >= product.quantity
-                              }
-                            >
-                              +
-                            </ButtonCart>
-                          </WrapperDiv>
-                        </td>
-
-                        <td>{formatPrice(product.salePrice)}</td>
-                        <td>
-                          {formatPrice(
-                            cartProducts.filter((id) => id === product._id)
-                              .length * product.salePrice
-                          )}
-                        </td>
-                        <td>
-                          <ButtonCart
-                            title="Eliminar este productos"
-                            onClick={(e) => deleteProduct(product._id)}
-                          >
-                            <DeleteIcon fill={error} />
-                          </ButtonCart>
-                        </td>
-                      </tr>
-                    ))}
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>TOTAL</td>
-                      <td>{formatPrice(total)}</td>
-                      <td>
-                        <ButtonCart
-                          title="Eliminar todo los productos"
-                          onClick={() => clearCart()}
-                        >
-                          <DeleteIcon fill={error} />
-                        </ButtonCart>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </>
-            )}
+            <TableCart />
           </Box>
           {!!cartProducts?.length && (
             <Box $white={1}>

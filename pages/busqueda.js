@@ -84,10 +84,6 @@ const SearchPage = () => {
       });
   }, [search]);
 
-  /*   const handlePageChange = (newPage) => {
-    setPages(newPage);
-    filterSearch({ router, page: newPage });
-  }; */
   const HandleSearch = (e) => {
     e.preventDefault();
   };
