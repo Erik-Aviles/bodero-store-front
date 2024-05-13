@@ -6,6 +6,8 @@ import styled, { css } from "styled-components";
 import { error, grey, greylight, success, white } from "@/lib/colors";
 import Table from "../stylesComponents/Table";
 import axios from "axios";
+import { FlexStyled } from "../stylesComponents/Flex";
+import Text from "../stylesComponents/HighlightedText";
 
 const ProductInfoCell = styled.td`
   padding: 10px 0;
@@ -157,7 +159,10 @@ const TableCart = () => {
 
   return (
     <>
-      <h3>Tus productos en el carrito </h3>
+      <FlexStyled $between={1} $cart={1}>
+        <h3>Tus productos en el carrito </h3>{" "}
+        <Text>{cartProducts?.length}, Articulos</Text>
+      </FlexStyled>
       {!cartProducts?.length && (
         <Message>
           El carrito esta vacio. Los productos adicionados se mostrarán aquí.

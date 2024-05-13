@@ -37,7 +37,7 @@ const WrapperdDopDown = styled.div`
 
 const WrapperTableCart = styled.div`
   overflow: overlay;
-  max-height: 33rem;
+  max-height: 25rem;
   padding: 0 1rem;
 `;
 const WrapperButtonCart = styled.div`

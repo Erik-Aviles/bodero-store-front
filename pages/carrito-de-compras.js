@@ -76,6 +76,7 @@ const Box = styled.div`
     css`
       display: flex;
       flex-direction: column;
+      padding: 10px;
     `}
     @media screen and (min-width: 768px) {
     padding: 20px;

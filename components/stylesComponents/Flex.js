@@ -10,4 +10,14 @@ export const FlexStyled = styled.section`
     css`
       justify-content: center;
     `};
+  ${(props) =>
+    props.$cart &&
+    css`
+      align-items: start;
+    `};
+  ${(props) =>
+    props.$between &&
+    css`
+      justify-content: space-between;
+    `};
 `;

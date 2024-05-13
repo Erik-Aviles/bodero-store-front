@@ -255,12 +255,14 @@ export default function Header() {
             </SectionRigthNav>
           </DisplayNoneCpmponente>
         </Wrapper>
-        {showCart && (
-          <DropdownCartComponents
-            showCart={showCart}
-            dropdownCart={dropdownCart}
-          />
-        )}
+        <DisplayNoneCpmponente>
+          {showCart && (
+            <DropdownCartComponents
+              showCart={showCart}
+              dropdownCart={dropdownCart}
+            />
+          )}
+        </DisplayNoneCpmponente>
       </StyledHeader>
     </>
   );
