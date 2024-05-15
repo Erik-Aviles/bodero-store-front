@@ -9,18 +9,19 @@ import localLoader from "./localLoader";
 
 const WhiteBox = styled.div`
   display: flex;
-  gap: 15px;
-  background-color: ${white};
+  gap: 10px;
   @media screen and (max-width: 640px) {
     flex-direction: column;
-    padding: 10px;
+    justify-content: center;
+    padding: 0 20px;
   }
 `;
 
 const BigImageWrapper = styled.div`
-  width: 100%;
+  padding: 20px;
   display: flex;
   justify-content: center;
+  background-color: ${white};
   border: 1px solid ${greylight};
   border-radius: 5px;
 `;
@@ -64,6 +65,8 @@ const ImageButton = styled.div`
 const SmallImage = styled.img`
   max-width: 100%;
   height: auto;
+  padding: 5px;
+  background-color: ${white};
   border-radius: 5px;
 `;
 

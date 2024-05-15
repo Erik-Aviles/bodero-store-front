@@ -1,13 +1,15 @@
 import styled, { css } from "styled-components";
 import { black, error, grey, success, white, white2 } from "@/lib/colors";
 import ButtonLink from "./buttonComponents/ButtonLink";
-import { AddToCartIcon, RemoveFromCartIcon, WhatsappIcon } from "./Icons";
+import { AddToCartIcon, RemoveFromCartIcon } from "./Icons";
 import logo from "../public/logo.jpg";
 import awsS3Loader from "./awsS3Loader";
 import localLoader from "./localLoader";
 import { useContext, useState } from "react";
 import { CartContext } from "@/context/CartContext";
 import Image from "next/image";
+import ProductDetailsModal from "./ProductDetailsModal";
+import { useRouter } from "next/router";
 
 const ProductWrapper = styled.div`
   width: 9rem;
@@ -74,6 +76,7 @@ const ItemImage = styled(Image)`
   width: 100%;
   height: 180px;
   object-fit: scale-down;
+  cursor: pointer;
 `;
 
 const ProductInfoBox = styled.div`
@@ -131,10 +134,13 @@ const SpanCard = styled.span`
 `;
 
 export function ProductBox({ ...product }) {
-  const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
+  const path = router.pathname;
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
+  const [showProductDetailsModal, setShowProductDetailsModal] = useState(false);
+
+  const toggleProductDetailsModal = () => {
+    setShowProductDetailsModal(!showProductDetailsModal);
   };
   const { addProduct, cartProducts, removeOneProduct } =
     useContext(CartContext);
@@ -145,55 +151,63 @@ export function ProductBox({ ...product }) {
   const isProductInCart = checkProductInCart(product._id);
 
   return (
-    <ProductWrapper>
-      <ImageBox>
-        <ImgCard
-          disabled={product?.quantity === 0 ? true : false}
-          style={{
-            backgroundColor: isProductInCart ? success : null,
-          }}
-          title={isProductInCart ? "Elimina del carrito" : "Agregar carrito"}
-          onClick={() =>
-            isProductInCart
-              ? removeOneProduct(product._id)
-              : addProduct(product._id)
-          }
-        >
-          {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}
-        </ImgCard>
-        <ItemImage
-          loader={product?.images?.[0] ? awsS3Loader : localLoader}
-          src={product?.images?.[0] ? product?.images?.[0] : logo}
-          alt={product?.title.toUpperCase()}
-          title={product?.title.toUpperCase()}
-          width={450}
-          height={450}
-          onClick={toggleModal}
-        />
-      </ImageBox>
-      <ProductInfoBox>
-        <Title>{product?.title?.toUpperCase()}</Title>
-        <Row>
-          <Price>${product?.salePrice}</Price>
-          {product?.quantity === 0 ? (
-            <SpanCard $error={1}>¡Agotado!</SpanCard>
-          ) : (
-            <SpanCard $success={1}>¡En stock!</SpanCard>
-          )}
-        </Row>
-        <SpanCard $brand={1}>{product?.brand}</SpanCard>
-        <p>{product?.description}</p>
-        <Row>
-          <ButtonLink
-            href={`/product/${product._id}`}
-            $black={1}
-            $outline={1}
-            $block={1}
+    <>
+      <ProductWrapper>
+        <ImageBox>
+          <ImgCard
+            disabled={product?.quantity === 0 ? true : false}
+            style={{
+              backgroundColor: isProductInCart ? success : null,
+            }}
+            title={isProductInCart ? "Elimina del carrito" : "Agregar carrito"}
+            onClick={() =>
+              isProductInCart
+                ? removeOneProduct(product._id)
+                : addProduct(product._id)
+            }
           >
-            VER DETALLES
-          </ButtonLink>
-        </Row>
-      </ProductInfoBox>
-    </ProductWrapper>
+            {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}
+          </ImgCard>
+          <ItemImage
+            loader={product?.images?.[0] ? awsS3Loader : localLoader}
+            src={product?.images?.[0] ? product?.images?.[0] : logo}
+            alt={product?.title.toUpperCase()}
+            title="Vista previa"
+            width={450}
+            height={450}
+            onClick={toggleProductDetailsModal}
+          />
+        </ImageBox>
+        <ProductInfoBox>
+          <Title>{product?.title?.toUpperCase()}</Title>
+          <Row>
+            <Price>${product?.salePrice}</Price>
+            {product?.quantity === 0 ? (
+              <SpanCard $error={1}>¡Agotado!</SpanCard>
+            ) : (
+              <SpanCard $success={1}>¡En stock!</SpanCard>
+            )}
+          </Row>
+          <SpanCard $brand={1}>{product?.brand}</SpanCard>
+          <p>{product?.description}</p>
+          <Row>
+            <ButtonLink
+              href={`/product/${product._id}`}
+              $black={1}
+              $outline={1}
+              $block={1}
+            >
+              VER DETALLES
+            </ButtonLink>
+          </Row>
+        </ProductInfoBox>
+      </ProductWrapper>
+      {showProductDetailsModal && path !== "/" && (
+        <ProductDetailsModal
+          toggleProductDetailsModal={toggleProductDetailsModal}
+          product={product}
+        />
+      )}
+    </>
   );
 }

@@ -92,7 +92,7 @@ export default function CategoriesPage() {
 
   const handleGoBack = (e) => {
     e.preventDefault();
-    router.push("/");
+    router.back();
   };
   /*   const handleGoBack = (e) => {
     e.preventDefault();

@@ -112,7 +112,6 @@ const ItemCard = ({ item }) => {
 
   const handle = (id) => {
     filterSearchCategory({ router, category: id });
-    console.log(item.image[0]);
   };
   return (
     <ItemInformation key={item._id} title={item.name.toUpperCase()}>

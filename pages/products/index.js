@@ -38,7 +38,7 @@ export default function ProductsPage({ products }) {
 
   const handleGoBack = (e) => {
     e.preventDefault();
-    router.back;
+    router.back();
   };
 
   const brandNames = brands.map((brand) => brand.name);

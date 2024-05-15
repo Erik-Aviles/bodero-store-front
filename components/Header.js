@@ -57,7 +57,7 @@ const Wrapper = styled.div`
         display: none;
       `};
   }
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 769px) {
     padding: 0 15px;
   }
 `;

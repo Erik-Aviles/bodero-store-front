@@ -37,11 +37,18 @@ const ColWrapper = styled.div`
   font-size: 1rem;
   display: grid;
   grid-template-columns: 1fr;
-  @media screen and (min-width: 768px) {
-    grid-template-columns: 1.2fr 0.8fr;
+  gap: 20px;
+  @media screen and (min-width: 640px) {
+    padding: 0 20px;
   }
-  gap: 40px;
+  @media screen and (min-width: 768px) {
+    max-width: 1000px;
+    margin: 0 auto;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
 `;
+
 const Title = styled.h2`
   font-size: 1rem;
   font-weight: 700;
@@ -56,10 +63,7 @@ const Row = styled.div`
   display: flex;
   flex-direction: column;
   aling-items: center;
-
-  @media screen and (max-width: 480px) {
-    padding: 0 1.4rem;
-  }
+  padding: 0 20px;
 `;
 
 const InfoText = styled.p`
@@ -165,8 +169,9 @@ export default function ProductPage({ product }) {
           <BackButton onClick={handleGoBack} />
         </FlexStyled>
         <ColWrapper>
-          <ProductImages images={product?.images} name={product?.title} />
-
+          <Row>
+            <ProductImages images={product?.images} name={product?.title} />
+          </Row>
           <Row>
             <InfoTitle>
               <Title>{product?.title.toUpperCase()}</Title>

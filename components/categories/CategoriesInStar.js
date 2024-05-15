@@ -59,7 +59,8 @@ const Text = styled.span`
 
 export default function CategoriesInStar() {
   const { categories } = useContext(DataContext);
-  const fewCategories = categories.slice(0, 4);
+  const fewCategories = categories.slice(0, 10);
+
   return (
     <Center>
       <Title>Categorias</Title>
@@ -76,7 +77,7 @@ export default function CategoriesInStar() {
           </Link>
         </FlexLink>
         <ListHorizontalCategory>
-          {categories.map((item) => (
+          {fewCategories.map((item) => (
             <ItemCard key={item._id} item={item} />
           ))}
         </ListHorizontalCategory>
