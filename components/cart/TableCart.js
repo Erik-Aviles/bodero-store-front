@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DeleteIcon } from "../Icons";
+import { AllDeleteIcon, DeleteIcon } from "../Icons";
 import formatPrice from "@/utils/formatPrice";
 import { CartContext } from "@/context/CartContext";
 import styled, { css } from "styled-components";
@@ -121,6 +121,25 @@ const Message = styled.p`
   color: ${grey};
   margin-left: 20px;
 `;
+const Flexdiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h3 {
+    margin: 10px 0;
+  }
+  ${(props) =>
+    props.$end &&
+    css`
+      justify-content: flex-end;
+      svg {
+        &:hover {
+          color: ${grey};
+          cursor: pointer;
+        }
+      }
+    `}
+`;
 
 const TableCart = () => {
   const {
@@ -129,6 +148,8 @@ const TableCart = () => {
     removeProduct,
     removeOneProduct,
     clearCart,
+    showCart,
+    dropdownCart,
   } = useContext(CartContext);
   const [products, setProducts] = useState([]);
 
@@ -159,10 +180,16 @@ const TableCart = () => {
 
   return (
     <>
-      <FlexStyled $between={1} $cart={1}>
+      {showCart && (
+        <Flexdiv $end={1}>
+          <AllDeleteIcon onClick={dropdownCart} width={25} height={25} />
+        </Flexdiv>
+      )}
+
+      <Flexdiv>
         <h3>Tus productos en el carrito </h3>{" "}
-        <Text>{cartProducts?.length}, Articulos</Text>
-      </FlexStyled>
+        <Text>{cartProducts?.length}, Articulos</Text>{" "}
+      </Flexdiv>
       {!cartProducts?.length && (
         <Message>
           El carrito esta vacio. Los productos adicionados se mostrarán aquí.

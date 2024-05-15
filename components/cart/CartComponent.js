@@ -42,9 +42,9 @@ const StyledSpan = styled.div`
 `;
 
 const CartComponent = () => {
-  const { cartProducts } = useContext(CartContext);
+  const { cartProducts, dropdownCart } = useContext(CartContext);
   return (
-    <WrapperIcon>
+    <WrapperIcon onClick={dropdownCart}>
       {cartProducts?.length > 0 && (
         <StyledSpan>{cartProducts?.length}</StyledSpan>
       )}

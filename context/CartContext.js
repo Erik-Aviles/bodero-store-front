@@ -6,6 +6,12 @@ export function CartContextProvider({ children }) {
   const ls = typeof window !== "undefined" ? window.localStorage : null;
   const [cartProducts, setCartProducts] = useState([]);
 
+  const [showCart, setSetShowCart] = useState(false);
+
+  const dropdownCart = () => {
+    setSetShowCart(!showCart);
+  };
+
   useEffect(() => {
     if (cartProducts?.length > 0) {
       ls?.setItem("cart", JSON.stringify(cartProducts));
@@ -54,6 +60,8 @@ export function CartContextProvider({ children }) {
         removeProduct,
         removeOneProduct,
         clearCart,
+        showCart,
+        dropdownCart,
       }}
     >
       {children}

@@ -1,12 +1,12 @@
-import Center from "./stylesComponents/Center";
-import Title from "./stylesComponents/Title";
+import Center from "../stylesComponents/Center";
+import Title from "../stylesComponents/Title";
 import { useContext } from "react";
 import { DataContext } from "@/context/DataContext";
 import ItemCard from "./ItemCard";
 import styled, { css } from "styled-components";
 import { BsArrowRight } from "react-icons/bs";
 import Link from "next/link";
-import { FlexStyled } from "./stylesComponents/Flex";
+import { FlexStyled } from "../stylesComponents/Flex";
 import { grey, secondary } from "@/lib/colors";
 
 const Wrapper = styled.div`

@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
-import Button from "./buttonComponents/Button";
+import React from "react";
 import styled from "styled-components";
 import { black, grey, greylight, white } from "@/lib/colors";
 import { useRouter } from "next/router";
-import backgroundCategory from "../public/images/categories/filtro.jpg";
 import Image from "next/image";
-import Text from "./stylesComponents/HighlightedText";
+import Text from "../stylesComponents/HighlightedText";
+import boderoLoader from "../boderoLoader";
 
 const ItemInformation = styled.li`
   height: 200px;
@@ -113,12 +112,14 @@ const ItemCard = ({ item }) => {
 
   const handle = (id) => {
     filterSearchCategory({ router, category: id });
+    console.log(item.image[0]);
   };
   return (
     <ItemInformation key={item._id} title={item.name.toUpperCase()}>
       <ItemImage
+        loader={boderoLoader}
         onClick={() => handle(item._id)}
-        src={item?.image ? item?.image : "/logo.jpg"}
+        src={item?.image ? item?.image[0] : "/logo.jpg"}
         alt={item.name.toUpperCase()}
         title={item.name.toUpperCase()}
         width={250}

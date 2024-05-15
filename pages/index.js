@@ -8,7 +8,7 @@ import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { dataCarousel } from "@/resource/carouselData";
 import styled from "styled-components";
-import CategoriesInStar from "@/components/CategoriesInStar";
+import CategoriesInStar from "@/components/categories/CategoriesInStar";
 
 const BackgroundColor = styled.div`
   background-color: #f7f7f7;

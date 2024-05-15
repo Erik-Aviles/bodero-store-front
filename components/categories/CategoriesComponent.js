@@ -1,10 +1,10 @@
 import Link from "next/link";
 import styled from "styled-components";
-import Center from "./stylesComponents/Center";
-import { SearchIcon } from "./Icons";
+import Center from "../stylesComponents/Center";
+import { SearchIcon } from "../Icons";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import SlinderCategories from "./SlinderCategories";
+import SlinderCategories from "../SlinderCategories";
 import { black, error, white } from "@/lib/colors";
 import { DataContext } from "@/context/DataContext";
 

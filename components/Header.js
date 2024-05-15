@@ -10,9 +10,10 @@ import InformationHeader from "./InformationHeader";
 import SearchAutoComplete from "./SearchAutoComplete";
 import { useRouter } from "next/router";
 import CartComponent from "./cart/CartComponent";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ToogleNavBar from "./buttonComponents/ButtonHamburger";
 import DropdownCartComponents from "./cart/DropdownCartComponents";
+import { CartContext } from "@/context/CartContext";
 
 const DisplayNoneCpmponente = styled.div`
   display: none;
@@ -171,17 +172,13 @@ const TextSpan = styled.p`
 `;
 
 export default function Header() {
+  const { dropdownCart } = useContext(CartContext);
   const router = useRouter();
   const path = router.pathname;
   const [showModal, setShowModal] = useState(false);
-  const [showCart, setSetShowCart] = useState(false);
 
   const toggleModal = () => {
     setShowModal(!showModal);
-  };
-
-  const dropdownCart = () => {
-    setSetShowCart(!showCart);
   };
 
   return (
@@ -232,7 +229,6 @@ export default function Header() {
                   <TextSpan>Categorias</TextSpan>
                 </StaledLink>
                 <ButtonCart
-                  onClick={dropdownCart}
                   $active={path === "/carrito-de-compras" ? 1 : 0}
                   title={"Ver mi carrito de compras"}
                 >
@@ -255,14 +251,6 @@ export default function Header() {
             </SectionRigthNav>
           </DisplayNoneCpmponente>
         </Wrapper>
-        <DisplayNoneCpmponente>
-          {showCart && (
-            <DropdownCartComponents
-              showCart={showCart}
-              dropdownCart={dropdownCart}
-            />
-          )}
-        </DisplayNoneCpmponente>
       </StyledHeader>
     </>
   );

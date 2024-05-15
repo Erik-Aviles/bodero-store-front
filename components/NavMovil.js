@@ -45,6 +45,25 @@ const StaledLink = styled(Link)`
       border-right: 0;
     `};
 `;
+
+const ButtonCart = styled.button`
+  width: 100%;
+  height: 100%;
+  padding: 10px 0;
+  gap: 5px;
+  color: ${white};
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: transparent;
+  justify-content: end;
+  border-right: 0.1px solid ${greylight};
+  ${(props) =>
+    props.$endBorder &&
+    css`
+      border-right: 0;
+    `};
+`;
 const StaledDiv = styled.div`
   width: 45px;
   height: 20px;
@@ -102,15 +121,12 @@ export default function NavMovil() {
           </StaledDiv>
           <TextSpan>Productos</TextSpan>
         </StaledLink>
-        <StaledLink
-          href={"/carrito-de-compras"}
-          title={"Ver mi carrito de compras"}
-        >
+        <ButtonCart title={"Ver mi pedido"}>
           <StaledDiv $active={path === "/carrito-de-compras" ? 1 : 0}>
             <CartComponent />
           </StaledDiv>
           <TextSpan>Carrito</TextSpan>
-        </StaledLink>
+        </ButtonCart>
         <StaledLink href={"/categories"} title={"Ver categorias"}>
           <StaledDiv $active={path === "/categories" ? 1 : 0}>
             <BsViewStacked />

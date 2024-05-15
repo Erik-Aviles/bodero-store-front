@@ -23,7 +23,7 @@ import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import axios from "axios";
 import useSWR from "swr";
 import Title from "@/components/stylesComponents/Title";
-import ItemCard from "@/components/ItemCard";
+import ItemCard from "@/components/categories/ItemCard";
 import Text from "@/components/stylesComponents/HighlightedText";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -142,7 +142,7 @@ export default function CategoriesPage() {
               <SkeletorProducts />
             ) : products?.length === 0 ? (
               <TitleH4>
-                No se encontró productos en &ldquo;{nameCategory}
+                No se encontró productos en &ldquo;{nameCategory.toUpperCase()}
                 &rdquo;
               </TitleH4>
             ) : (
