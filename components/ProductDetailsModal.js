@@ -5,6 +5,7 @@ import { AllDeleteIcon } from "./Icons";
 import { TitleH4 } from "./stylesComponents/TitleH4";
 import ProductImages from "./ProductImages";
 import { FlexStyled } from "./stylesComponents/Flex";
+import ButtonClose from "./buttonComponents/ButtonClose";
 
 const Container = styled.div`
   position: fixed;
@@ -24,9 +25,9 @@ const DopDownContainer = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 3;
-  right: 0;
+  right: -17px;
   background-color: rgba(37, 37, 37, 0.5);
-  filter: blur(5px);
+  backdrop-filter: blur(5px);
 `;
 
 const WrapperdDopDown = styled.div`
@@ -40,30 +41,6 @@ const WrapperdDopDown = styled.div`
   outline: 0.1px solid ${greylight};
   background-color: #f7f7f7;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
-`;
-
-const ButtonCart = styled.button`
-  position: absolute;
-  padding: 0;
-  z-index: 4;
-  top: -10px;
-  right: 15px;
-  width: 25px;
-  height: 25px;
-  display: flex;
-  cursor: pointer;
-  justify-content: center;
-  align-items: center;
-  color: ${white};
-  background: ${black};
-  outline: 0.1px solid ${white};
-  border: none;
-  &:hover {
-    background-color: ${primary};
-  }
-  @media screen and (min-width: 768px) {
-    right: -10px;
-  }
 `;
 
 const BodyProductDetailsModal = styled.article`
@@ -100,6 +77,7 @@ const TextP = styled.p`
 const TextSmall = styled.span`
   color: ${grey};
   font-size: 10px;
+  white-space: nowrap;
   strong {
     margin-right: 5px;
   }
@@ -136,9 +114,7 @@ const ProductDetailsModal = ({ toggleProductDetailsModal, product }) => {
     <Container>
       <DopDownContainer />
       <WrapperdDopDown>
-        <ButtonCart onClick={toggleProductDetailsModal}>
-          <AllDeleteIcon />
-        </ButtonCart>
+        <ButtonClose onClick={toggleProductDetailsModal} />
         <BodyProductDetailsModal>
           <FlexStyled $between={1}>
             <NameProduct>{product.title.toUpperCase()}</NameProduct>

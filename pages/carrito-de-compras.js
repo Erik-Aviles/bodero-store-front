@@ -254,10 +254,12 @@ export default function CartPage() {
                   ENVIAR PEDIDO
                 </Button>
                 <ButtonLink
-                  href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto&type=phone_number&app_absent=1`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={"Realizar pedido por Whatsapp"}
+                  // href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto&type=phone_number&app_absent=1`}
+                  href="#"
+                  // target="_blank"
+                  // rel="noopener noreferrer"
+                  // title={"Realizar pedido por Whatsapp"}
+                  title={"Boton deshabilitado"}
                   $secondary={1}
                 >
                   <WhatsappIcon height={25} width={25} />

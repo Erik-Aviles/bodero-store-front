@@ -5,8 +5,22 @@ export const CartContext = createContext({});
 export function CartContextProvider({ children }) {
   const ls = typeof window !== "undefined" ? window.localStorage : null;
   const [cartProducts, setCartProducts] = useState([]);
-
   const [showCart, setSetShowCart] = useState(false);
+
+  useEffect(() => {
+    if (showCart) {
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = "17px";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    };
+  }, [showCart]);
 
   const dropdownCart = () => {
     setSetShowCart(!showCart);

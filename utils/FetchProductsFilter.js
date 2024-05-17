@@ -1,10 +1,10 @@
 import { stopwords } from "@/resource/stopwordsData";
 import { removeAccents, removePluralEnding } from "./normalize";
 
-export async function fetchProductsFilter(search, minLength) {
+export async function fetchProductsFilter(search, minLength, signal) {
   try {
     if (!search || search.trim() === "" || search.length < minLength) {
-      return []; // Si la búsqueda está vacía o no alcanza la longitud mínima, retorna un arreglo vacío
+      return [];
     }
 
     const searchParts = removeAccents(search.toLowerCase())
@@ -12,8 +12,8 @@ export async function fetchProductsFilter(search, minLength) {
       .filter((part) => !stopwords.includes(part))
       .map((part) => removePluralEnding(part));
 
-    const apiUrl = `/api/search?q=${searchParts}`;
-    const response = await fetch(apiUrl);
+    const apiUrl = `/api/search?q=${searchParts.join("+")}`;
+    const response = await fetch(apiUrl, { signal });
 
     if (!response.ok) {
       throw new Error("Error al obtener datos de la API");
@@ -44,9 +44,11 @@ export async function fetchProductsFilter(search, minLength) {
       return matchesAllParts;
     });
 
-    return filteredResults; // Retorna los resultados filtrados
+    return filteredResults;
   } catch (error) {
-    console.error("Error en la búsqueda:", error);
-    return []; // En caso de error, retorna un arreglo vacío
+    if (error.name !== "Error de cancelación") {
+      console.error("Error en la búsqueda:", error);
+    }
+    return [];
   }
 }

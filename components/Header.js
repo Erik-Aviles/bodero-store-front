@@ -88,7 +88,7 @@ const StaledLink = styled(Link)`
       }
     `}
 `;
-const ButtonCart = styled.button`
+const ButtonOppenModal = styled.button`
   position: relative;
   display: flex;
   justify-content: center;
@@ -171,7 +171,7 @@ const TextSpan = styled.p`
   }
 `;
 
-export default function Header() {
+export default function Header({ showAuthModal, toggleAuthModal }) {
   const { dropdownCart } = useContext(CartContext);
   const router = useRouter();
   const path = router.pathname;
@@ -228,7 +228,7 @@ export default function Header() {
                   </StylesWrapper>
                   <TextSpan>Categorias</TextSpan>
                 </StaledLink>
-                <ButtonCart
+                <ButtonOppenModal
                   $active={path === "/carrito-de-compras" ? 1 : 0}
                   title={"Ver mi carrito de compras"}
                 >
@@ -236,17 +236,17 @@ export default function Header() {
                     <CartComponent />
                   </StylesWrapper>
                   <TextSpan>Carrito</TextSpan>
-                </ButtonCart>
-                <StaledLink
+                </ButtonOppenModal>
+                <ButtonOppenModal
                   $active={path === "#" ? 1 : 0}
-                  href={"#"}
+                  onClick={toggleAuthModal}
                   title={"Entrar a mi cuenta"}
                 >
                   <StylesWrapper>
                     <SlUser />
                   </StylesWrapper>
                   <TextSpan>Mi cuenta</TextSpan>
-                </StaledLink>
+                </ButtonOppenModal>
               </StyleNav>
             </SectionRigthNav>
           </DisplayNoneCpmponente>

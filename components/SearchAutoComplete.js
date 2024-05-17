@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createAutocomplete } from "@algolia/autocomplete-core";
 import styled, { css } from "styled-components";
 import {
@@ -177,10 +177,11 @@ const AutocompleteItem = ({
   compatibility,
   quantity,
   brand,
+  openPanel,
 }) => {
   return (
     <li>
-      <Link href={`/product/${_id}`}>
+      <Link href={`/product/${_id}`} onClick={openPanel}>
         <DivAutocomplete>
           <FigureAutocomplete>
             <img src={images?.[0] ? images?.[0] : "/logo.jpg"} alt={title} />
@@ -193,26 +194,6 @@ const AutocompleteItem = ({
               {"Cant: "}
               <small>{quantity}</small>
             </TextComb>
-            {/* <p>
-              {"Cods: "}
-              {code && (
-                <SpanItemsAutocomplete $codes={1}>{code}</SpanItemsAutocomplete>
-              )}
-              {codeEnterprice && (
-                <SpanItemsAutocomplete $codes={1}>
-                  {" _ "}
-                  {codeEnterprice}
-                  {" _ "}
-                </SpanItemsAutocomplete>
-              )}
-              {codeWeb && (
-                <SpanItemsAutocomplete $codes={1}>
-                  {" "}
-                  {" _ "}
-                  {codeWeb}
-                </SpanItemsAutocomplete>
-              )}
-            </p> */}
             {compatibility?.map((ctd, index) => (
               <p key={index}>
                 {ctd.title} {": "}
@@ -230,14 +211,39 @@ const AutocompleteItem = ({
 
 const SearchAutoComplete = ({ props }) => {
   const router = useRouter();
+  const formRef = useRef(null);
+  const inputRef = useRef(null);
+  const panelRef = useRef(null);
+
   const [autocompleteState, setAutocompleteState] = useState({
     collections: [],
     isOpen: false,
   });
 
+  useEffect(() => {
+    if (autocompleteState.isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = "17px";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    };
+  }, [autocompleteState.isOpen]);
+
+  const openPanel = () => {
+    setAutocompleteState(!autocompleteState.isOpen);
+  };
+
   const autocomplete = useMemo(
     () =>
       createAutocomplete({
+        enterKeyHint: "search",
+        autoFocus: true,
         placeholder: "Búsqueda de productos...",
         onStateChange: ({ state }) => setAutocompleteState(state),
         getSources: () => [
@@ -245,15 +251,20 @@ const SearchAutoComplete = ({ props }) => {
             sourceId: "search-api",
             getItems: async ({ query }) => {
               if (!!query) {
-                const products = fetchProductsFilter(query, 3)
-                  .then((res) => {
-                    return res;
-                  })
-                  .catch((error) => {
+                const abortController = new AbortController();
+                const signal = abortController.signal;
+
+                try {
+                  const products = await fetchProductsFilter(query, 3, signal);
+                  return products;
+                } catch (error) {
+                  if (error.name !== "AbortError") {
                     console.error("Error en la búsqueda:", error);
-                  });
-                return products;
+                  }
+                  return [];
+                }
               }
+              return [];
             },
           },
         ],
@@ -261,10 +272,6 @@ const SearchAutoComplete = ({ props }) => {
       }),
     [props]
   );
-
-  const formRef = useRef(null);
-  const inputRef = useRef(null);
-  const panelRef = useRef(null);
 
   const formProps = autocomplete.getFormProps({
     inputElement: inputRef.current,
@@ -301,21 +308,22 @@ const SearchAutoComplete = ({ props }) => {
               const quantity = items.length;
               return (
                 <section key={`section-${index}`}>
-                  {quantity === 0 ? (
-                    <p>{"No se han encontrado resultados"}</p>
-                  ) : (
-                    <ul {...autocomplete.getListProps()}>
-                      <BreadCrumb>
-                        <Text>
-                          {"Resultados: "}
-                          {quantity}
-                        </Text>
-                      </BreadCrumb>
-                      {items?.map((item) => (
-                        <AutocompleteItem key={item._id} {...item} />
-                      ))}
-                    </ul>
-                  )}
+                  <ul {...autocomplete.getListProps()}>
+                    <BreadCrumb>
+                      <Text>
+                        {quantity > 0
+                          ? `Resultados:  ${quantity}`
+                          : "No se encontraron resultados"}
+                      </Text>
+                    </BreadCrumb>
+                    {items?.map((item) => (
+                      <AutocompleteItem
+                        key={item._id}
+                        {...item}
+                        openPanel={openPanel}
+                      />
+                    ))}
+                  </ul>
                 </section>
               );
             })}

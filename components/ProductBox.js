@@ -5,7 +5,7 @@ import { AddToCartIcon, RemoveFromCartIcon } from "./Icons";
 import logo from "../public/logo.jpg";
 import awsS3Loader from "./awsS3Loader";
 import localLoader from "./localLoader";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/context/CartContext";
 import Image from "next/image";
 import ProductDetailsModal from "./ProductDetailsModal";
@@ -17,7 +17,6 @@ const ProductWrapper = styled.div`
   flex-direction: column;
   min-width: 0;
   background-color: ${white};
-  ${"" /* border: 1px solid rgba(0, 0, 0, 0.125); */}
   border: 1px solid rgba(255, 0, 0, 0.5);
   border-radius: 0.25rem;
   margin: 8px auto;
@@ -139,9 +138,25 @@ export function ProductBox({ ...product }) {
 
   const [showProductDetailsModal, setShowProductDetailsModal] = useState(false);
 
+  useEffect(() => {
+    if (showProductDetailsModal) {
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = "17px";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    };
+  }, [showProductDetailsModal]);
+
   const toggleProductDetailsModal = () => {
     setShowProductDetailsModal(!showProductDetailsModal);
   };
+
   const { addProduct, cartProducts, removeOneProduct } =
     useContext(CartContext);
 

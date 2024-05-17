@@ -15,9 +15,14 @@ const WhiteBox = styled.div`
     justify-content: center;
     padding: 0 20px;
   }
+  img {
+    object-fit: contain;
+  }
 `;
 
 const BigImageWrapper = styled.div`
+  width: 325px;
+  height: 325px;
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -25,6 +30,7 @@ const BigImageWrapper = styled.div`
   border: 1px solid ${greylight};
   border-radius: 5px;
 `;
+
 const BigImage = styled(Image)`
   max-width: 100%;
   height: auto;
@@ -44,21 +50,16 @@ const ImageButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: fit-content;
-  border: 1px solid ${greylight};
+  width: 70px;
+  height: 70px;
+  outline: 1px solid ${greylight};
   cursor: pointer;
   border-radius: 5px;
   ${(props) =>
-    props.$spinner &&
-    css`
-      width: 70px;
-      height: 70px;
-    `}
-  ${(props) =>
     props.$actived
-      ? `border-color: ${success};
+      ? `outline: 1px solid ${success};
       `
-      : `border-color: ${greylight};
+      : `outline: 1px solid ${greylight};
       `}
 `;
 
@@ -71,11 +72,13 @@ const SmallImage = styled.img`
 `;
 
 export default function ProductImages({ images, name }) {
-  const [activeImage, setActiveImage] = useState(
-    images?.[0] ? images?.[0] : logo
-  );
+  const [activeImage, setActiveImage] = useState(images?.[0]);
 
   const [isUpLoanding, setIsUpLoanding] = useState(true);
+
+  useEffect(() => {
+    setActiveImage(images.length > 0 ? images?.[0] : logo);
+  }, [images]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -88,7 +91,7 @@ export default function ProductImages({ images, name }) {
     <WhiteBox>
       <BigImageWrapper>
         <BigImage
-          loader={images?.[0] ? awsS3Loader : localLoader}
+          loader={activeImage === logo ? localLoader : awsS3Loader}
           src={activeImage}
           alt={name}
           width={300}
@@ -98,12 +101,7 @@ export default function ProductImages({ images, name }) {
       <ImageButtons>
         {isUpLoanding
           ? images.map((image) => (
-              <ImageButton
-                $spinner={1}
-                key={image}
-                $actived={image === activeImage}
-                onClick={() => setActiveImage(image)}
-              >
+              <ImageButton key={image}>
                 <Spinner />
               </ImageButton>
             ))
@@ -113,7 +111,7 @@ export default function ProductImages({ images, name }) {
                 $actived={image === activeImage}
                 onClick={() => setActiveImage(image)}
               >
-                <SmallImage src={image} alt={name} width={80} height={80} />
+                <SmallImage src={image} alt={name} width={70} height={70} />
               </ImageButton>
             ))}
       </ImageButtons>

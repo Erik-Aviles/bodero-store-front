@@ -1,16 +1,12 @@
 import React, { Suspense, useEffect, useState } from "react";
-import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
-import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
-import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import { grey, secondary } from "@/lib/colors";
 import SearchProducts from "@/components/SearchProducts";
-
 import { brands } from "@/resource/brandsData";
 import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
@@ -70,18 +66,26 @@ const SearchPage = () => {
   const router = useRouter();
   const query = router.query;
   const search = query.q || "";
-  // const [pages, setPages] = useState(1);
 
   const [searchResults, setSearchResults] = useState();
 
   useEffect(() => {
-    fetchProductsFilter(search, 3)
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    fetchProductsFilter(search, 3, signal)
       .then((res) => {
         setSearchResults(res);
       })
       .catch((error) => {
-        console.error("Error en la búsqueda:", error);
+        if (error.name !== "Error de cancelación") {
+          console.error("Error en la búsqueda:", error);
+        }
       });
+
+    return () => {
+      abortController.abort();
+    };
   }, [search]);
 
   const HandleSearch = (e) => {
