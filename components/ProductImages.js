@@ -9,10 +9,10 @@ import localLoader from "./localLoader";
 
 const WhiteBox = styled.div`
   display: flex;
+  justify-content: center;
   gap: 10px;
   @media screen and (max-width: 640px) {
     flex-direction: column;
-    justify-content: center;
     padding: 0 20px;
   }
   img {
@@ -21,8 +21,6 @@ const WhiteBox = styled.div`
 `;
 
 const BigImageWrapper = styled.div`
-  width: 325px;
-  height: 325px;
   padding: 20px;
   display: flex;
   justify-content: center;

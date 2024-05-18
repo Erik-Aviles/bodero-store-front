@@ -25,7 +25,7 @@ const DopDownContainer = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 3;
-  right: -17px;
+  right: 0;
   background-color: rgba(37, 37, 37, 0.5);
   backdrop-filter: blur(5px);
 `;
@@ -91,7 +91,7 @@ const TextSmall = styled.span`
 
 const CompatibilyArticle = styled.article`
   padding: 0.5rem;
-  margin: 0 0 10px;
+  margin: 0;
   border: 1px solid ${greylight};
   border-radius: 0.5rem;
   background-color: ${white};
@@ -107,6 +107,11 @@ const ListCompatibily = styled.span`
   word-break: break-all;
   display: flex;
   flex-direction: column;
+`;
+const FlexModel = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 `;
 
 const ProductDetailsModal = ({ toggleProductDetailsModal, product }) => {
@@ -137,10 +142,10 @@ const ProductDetailsModal = ({ toggleProductDetailsModal, product }) => {
             <TextP>Compatible con:</TextP>
             <Price>${product.salePrice}</Price>
           </FlexStyled>
-          {product.compatibility.length > 0 &&
-            product.compatibility.map((item, index) => (
-              <div key={index}>
-                <CompatibilyArticle>
+          <FlexModel>
+            {product.compatibility.length > 0 &&
+              product.compatibility.map((item, index) => (
+                <CompatibilyArticle key={index}>
                   <NameCompatibily>{item.title.toUpperCase()}</NameCompatibily>
 
                   {Array.isArray(item.model) ? (
@@ -153,8 +158,8 @@ const ProductDetailsModal = ({ toggleProductDetailsModal, product }) => {
                     </ListCompatibily>
                   )}
                 </CompatibilyArticle>
-              </div>
-            ))}
+              ))}
+          </FlexModel>
         </BodyProductDetailsModal>
       </WrapperdDopDown>{" "}
     </Container>
