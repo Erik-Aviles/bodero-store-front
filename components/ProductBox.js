@@ -139,7 +139,7 @@ export function ProductBox({ ...product }) {
   const [showProductDetailsModal, setShowProductDetailsModal] = useState(false);
 
   useEffect(() => {
-    if (showProductDetailsModal) {
+    if (showProductDetailsModal && path !== "/") {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
