@@ -29,9 +29,14 @@ import Text from "@/components/stylesComponents/HighlightedText";
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const CenterDiv = styled.section`
-  ${CenterSecction}
-  @media screen and (min-width: 768px) {
-    padding: 20px 60px 60px;
+  heigth: auto;
+  margin: 0 auto;
+  background: #f7f7f7;
+  @media screen and (min-width: 640px) {
+    padding: 0 40px 20px;
+  }
+  @media screen and (min-width: 1024px) {
+    padding: 0 60px 40px;
   }
 `;
 
@@ -94,15 +99,6 @@ export default function CategoriesPage() {
     e.preventDefault();
     router.back();
   };
-  /*   const handleGoBack = (e) => {
-    e.preventDefault();
-    if (router.query.page > 1) {
-      setPages(pages - 1);
-      filterSearch({ router, page: pages - 1 });
-    } else {
-      router.push("/");
-    }
-  }; */
 
   const resultadoFiltrado = categories.filter((objeto) =>
     objeto._id.includes(router.query.category)

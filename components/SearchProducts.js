@@ -96,7 +96,7 @@ const SearchProducts = ({ search, onClear, HandleSearch }) => {
   const router = useRouter();
   const initialRender = useRef(true);
 
-  const [text, setText] = useState(search);
+  const [text, setText] = useState(search || "");
   useEffect(() => {
     if (initialRender.current) {
       initialRender.current = false;
@@ -106,7 +106,7 @@ const SearchProducts = ({ search, onClear, HandleSearch }) => {
     if (!text) {
       onClear();
     } else {
-      router.push(`/busqueda?q=${text}`);
+      router.push(`/busqueda?q=${text.toLowerCase()}`);
     }
   }, [text]);
 

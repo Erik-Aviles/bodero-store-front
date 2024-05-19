@@ -10,11 +10,20 @@ import SearchProducts from "@/components/SearchProducts";
 import { brands } from "@/resource/brandsData";
 import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import Pagination from "@/components/Pagination";
 
 const ProductsGrid = React.lazy(() => import("@/components/ProductsGrid"));
 
 const CenterDiv = styled.section`
-  ${CenterSecction}
+  heigth: auto;
+  margin: 0 auto;
+  background: #f7f7f7;
+  @media screen and (min-width: 640px) {
+    padding: 0 40px !important;
+  }
+  @media screen and (min-width: 1024px) {
+    padding: 0 60px;
+  }
 `;
 
 const Sorted = styled.div`
@@ -66,27 +75,36 @@ const SearchPage = () => {
   const router = useRouter();
   const query = router.query;
   const search = query.q || "";
+  const pages = query.page || 1;
 
-  const [searchResults, setSearchResults] = useState();
+  const [searchResults, setSearchResults] = useState([]);
+  const [totalResults, setTotalResults] = useState(0);
+  const resultsPerPage = 20;
 
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
 
-    fetchProductsFilter(search, 3, signal)
-      .then((res) => {
-        setSearchResults(res);
-      })
-      .catch((error) => {
+    const loadResults = async () => {
+      try {
+        const allResults = await fetchProductsFilter(search, 3, signal);
+        setTotalResults(allResults.length);
+        const paginatedResults = allResults.slice(
+          (pages - 1) * resultsPerPage,
+          pages * resultsPerPage
+        );
+        setSearchResults(paginatedResults);
+      } catch (error) {
         if (error.name !== "Error de cancelación") {
-          console.error("Error en la búsqueda:", error);
+          console.error("No se pudieron obtener los productos:", error);
         }
-      });
-
+      }
+    };
+    loadResults();
     return () => {
       abortController.abort();
     };
-  }, [search]);
+  }, [search, pages]);
 
   const HandleSearch = (e) => {
     e.preventDefault();
@@ -102,7 +120,7 @@ const SearchPage = () => {
     router.push(`/busqueda`);
   };
 
-  const hasNextPage = searchResults?.length === 20;
+  const totalAccumulator = searchResults?.length;
 
   const brandNames = brands.map((brand) => brand.name);
   const brandNamesString = brandNames.join(", ");
@@ -131,7 +149,15 @@ const SearchPage = () => {
           )}
         </FlexStyled>
         <FlexStyled aria-label="breadcrumb">
-          <Text>Resultados: {searchResults?.length}</Text>
+          <Text>
+            Resultados:{" "}
+            <Text $big={1}>
+              {pages > 1 ? "+" : ""}
+              {totalAccumulator}
+            </Text>
+            {" de "}
+            <Text $big={1}>{totalResults}</Text>
+          </Text>
           <SearchProducts
             search={search}
             onClear={onClear}
@@ -141,27 +167,12 @@ const SearchPage = () => {
         <Suspense fallback={<SkeletorProducts />}>
           <ProductsGrid products={searchResults} />
         </Suspense>
+        <Pagination
+          totalResults={totalResults}
+          resultsPerPage={resultsPerPage}
+          currentPage={parseInt(pages, 10)}
+        />
       </CenterDiv>
-      {/*     <CenterDiv>
-        {(hasNextPage === 20 || pages > 1) && (
-          <ButtonContainer>
-            <ButtonDisabled
-              $black
-              onClick={() => handlePageChange(pages - 1)}
-              disabled={pages === 1}
-            >
-              Anterior
-            </ButtonDisabled>
-            <ButtonDisabled
-              $white
-              onClick={() => handlePageChange(pages + 1)}
-              disabled={!hasNextPage}
-            >
-              Siguiente
-            </ButtonDisabled>
-          </ButtonContainer>
-        )}
-      </CenterDiv>  */}
     </Layout>
   );
 };

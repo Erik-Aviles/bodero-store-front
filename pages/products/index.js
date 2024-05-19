@@ -17,7 +17,15 @@ import { Product } from "@/models/Product";
 import { brands } from "@/resource/brandsData";
 
 const CenterDiv = styled.section`
-  ${CenterSecction}
+  heigth: auto;
+  margin: 0 auto;
+  background: #f7f7f7;
+  @media screen and (min-width: 640px) {
+    padding: 0 40px 20px;
+  }
+  @media screen and (min-width: 1024px) {
+    padding: 0 60px 40px;
+  }
 `;
 
 export default function ProductsPage({ products }) {

@@ -9,11 +9,13 @@ import {
   secondary,
   success,
   warning,
+  white,
 } from "@/lib/colors";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SearchIcon } from "./Icons";
 import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
+import { BsArrowRight } from "react-icons/bs";
 
 const WrapperProductFilter = styled.div`
   width: 100%;
@@ -169,6 +171,32 @@ const Text = styled.span`
       text-transform: uppercase;
     `};
 `;
+const WrapperAutocomplete = styled.section`
+  position: relative;
+`;
+const WrapperButtonGoBusqueda = styled.div`
+  position: sticky;
+  bottom: 10px;
+  right: 0;
+  display: flex;
+  justify-content: end;
+  padding: 0 10px;
+`;
+
+const ButtonGoBusqueda = styled.button`
+  padding: 5px 10px;
+  display: flex;
+  align--items: center;
+  gap: 5px;
+  border: 1px solid ${greylight};
+  border-radius: 3px;
+  background: ${white};
+  color: ${success};
+  cursor: pointer;
+  &:hover {
+    background: #f0f0f0;
+  }
+`;
 
 const AutocompleteItem = ({
   _id,
@@ -181,11 +209,11 @@ const AutocompleteItem = ({
 }) => {
   return (
     <li>
-      <Link href={`/product/${_id}`} onClick={openPanel}>
-        <DivAutocomplete>
-          <FigureAutocomplete>
-            <img src={images?.[0] ? images?.[0] : "/logo.jpg"} alt={title} />
-          </FigureAutocomplete>
+      <DivAutocomplete>
+        <FigureAutocomplete>
+          <img src={images?.[0] ? images?.[0] : "/logo.jpg"} alt={title} />
+        </FigureAutocomplete>
+        <Link href={`/product/${_id}`} onClick={openPanel}>
           <DivAutocompleteText>
             <h3>{title} </h3>
             <TextComb>
@@ -203,14 +231,15 @@ const AutocompleteItem = ({
               </p>
             ))}
           </DivAutocompleteText>
-        </DivAutocomplete>
-      </Link>
+        </Link>
+      </DivAutocomplete>
     </li>
   );
 };
 
 const SearchAutoComplete = ({ props }) => {
   const router = useRouter();
+  const path = router.pathname;
   const formRef = useRef(null);
   const inputRef = useRef(null);
   const panelRef = useRef(null);
@@ -243,7 +272,7 @@ const SearchAutoComplete = ({ props }) => {
     () =>
       createAutocomplete({
         enterKeyHint: "search",
-        autoFocus: true,
+        autoFocus: path !== "/busqueda" ? true : false,
         placeholder: "Búsqueda de productos...",
         onStateChange: ({ state }) => setAutocompleteState(state),
         getSources: () => [
@@ -255,15 +284,21 @@ const SearchAutoComplete = ({ props }) => {
                 const signal = abortController.signal;
 
                 try {
-                  const products = await fetchProductsFilter(query, 3, signal);
+                  const data = await fetchProductsFilter(query, 3, signal);
+                  const fewProducts = data.slice(0, 8);
+                  const products = { fewProducts, data };
                   return products;
                 } catch (error) {
-                  if (error.name !== "AbortError") {
-                    console.error("Error en la búsqueda:", error);
+                  if (error.name !== "Error de cancelación") {
+                    console.error(
+                      "No se pudieron obtener los productos:",
+                      error
+                    );
                   }
                   return [];
                 }
               }
+
               return [];
             },
           },
@@ -283,6 +318,7 @@ const SearchAutoComplete = ({ props }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (inputRef?.current?.value) {
+      setAutocompleteState(!autocompleteState.isOpen);
       router.push(`/busqueda?q=${inputRef?.current?.value}`);
     } else {
       router.push("/busqueda");
@@ -305,18 +341,21 @@ const SearchAutoComplete = ({ props }) => {
           >
             {autocompleteState.collections.map((colecction, index) => {
               const { items } = colecction;
-              const quantity = items.length;
+              const quantityTotal = items[0].data.length;
+              const fewProducts = items[0].fewProducts;
+              const quantity = fewProducts.length;
+
               return (
-                <section key={`section-${index}`}>
+                <WrapperAutocomplete key={`section-${index}`}>
                   <ul {...autocomplete.getListProps()}>
                     <BreadCrumb>
                       <Text>
-                        {quantity > 0
-                          ? `Resultados:  ${quantity}`
-                          : "No se encontraron resultados"}
+                        {quantityTotal < 3
+                          ? "Buscando..."
+                          : `Resultados:  ${quantity} de ${quantityTotal}`}
                       </Text>
                     </BreadCrumb>
-                    {items?.map((item) => (
+                    {fewProducts?.map((item) => (
                       <AutocompleteItem
                         key={item._id}
                         {...item}
@@ -324,7 +363,14 @@ const SearchAutoComplete = ({ props }) => {
                       />
                     ))}
                   </ul>
-                </section>
+                  {quantityTotal > 8 && (
+                    <WrapperButtonGoBusqueda>
+                      <ButtonGoBusqueda onClick={handleSearch}>
+                        Ver todo <BsArrowRight />
+                      </ButtonGoBusqueda>
+                    </WrapperButtonGoBusqueda>
+                  )}
+                </WrapperAutocomplete>
               );
             })}
           </WrapperSearchAutocomplete>
