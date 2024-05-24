@@ -16,7 +16,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 30px;
   background-color: transparent;
 `;
 
@@ -31,7 +31,7 @@ const DopDownContainer = styled.div`
 `;
 
 const WrapperdDopDown = styled.div`
-  max-height: 90%;
+  max-height: 80%;
   max-width: 500px;
   position: relative;
   display: flex;
@@ -41,6 +41,10 @@ const WrapperdDopDown = styled.div`
   outline: 0.1px solid ${greylight};
   background-color: #f7f7f7;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+
+  @media screen and (min-width: 600px) {
+    max-height: 90%;
+  }
 `;
 
 const BodyProductDetailsModal = styled.article`
@@ -101,9 +105,9 @@ const NameCompatibily = styled.p`
   color: ${primary};
 `;
 const ListCompatibily = styled.span`
-  color: ${grey};
+  color: ${black};
   margin: 0;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   word-break: break-all;
   display: flex;
   flex-direction: column;
@@ -112,6 +116,24 @@ const FlexModel = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+`;
+const SpanContainer = styled.span`
+  color: ${grey};
+  font-size: 14px;
+  white-space: nowrap;
+  @media screen and (min-width: 600px) {
+    font-size: 16px;
+  }
+`;
+const SpanBrand = styled.span`
+  font-size: 14px;
+  color: ${success};
+  @media screen and (min-width: 600px) {
+    font-size: 16px;
+  }
+  @media screen and (min-width: 800px) {
+    font-size: 18px;
+  }
 `;
 
 const ProductDetailsModal = ({ toggleProductDetailsModal, product }) => {
@@ -131,12 +153,12 @@ const ProductDetailsModal = ({ toggleProductDetailsModal, product }) => {
           <ProductImages images={product?.images} name={product?.title} />
 
           <FlexStyled $between={1}>
-            <span style={{ color: success }}>
+            <SpanBrand>
               <strong>{product?.brand.toUpperCase()}</strong>
-            </span>
-            <span style={{ color: grey, fontSize: 16 }}>
+            </SpanBrand>
+            <SpanContainer>
               Disponible: <strong>{product?.quantity}</strong>
-            </span>
+            </SpanContainer>
           </FlexStyled>
           <FlexStyled $between={1}>
             <TextP>Compatible con:</TextP>

@@ -30,6 +30,9 @@ export async function fetchProductsFilter(search, minLength, signal) {
       const compatibilityModels = (item.compatibility || []).map((compat) =>
         removeAccents(compat.model.toLowerCase())
       );
+      const compatibilityTitle = (item.compatibility || []).map((compat) =>
+        removeAccents(compat.title.toLowerCase())
+      );
 
       const matchesAllParts = searchParts.every((part) => {
         return (
@@ -38,7 +41,8 @@ export async function fetchProductsFilter(search, minLength, signal) {
           codeEnterprise.includes(part) ||
           codeWeb.includes(part) ||
           brand.includes(part) ||
-          compatibilityModels.some((model) => model.includes(part))
+          compatibilityModels.some((model) => model.includes(part)) ||
+          compatibilityTitle.some((title) => title.includes(part))
         );
       });
       return matchesAllParts;

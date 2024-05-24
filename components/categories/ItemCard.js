@@ -39,6 +39,9 @@ const StaledDiv = styled.div`
   h3 {
     text-align: center;
     text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
     margin: 0;
     padding: 0 0 10px;
     font-weight: 700;
@@ -103,6 +106,7 @@ const ImagesIContainer = styled.div`
 
 const ItemCard = ({ item }) => {
   const router = useRouter();
+  console.log(item);
 
   const filterSearchCategory = ({ router, category }) => {
     if (category) {
@@ -115,16 +119,21 @@ const ItemCard = ({ item }) => {
   };
   return (
     <ItemInformation key={item._id} title={item.name.toUpperCase()}>
-      <ItemImage
-        loader={boderoLoader}
-        onClick={() => handle(item._id)}
-        src={item?.image ? item?.image[0] : "/logo.jpg"}
-        alt={item.name.toUpperCase()}
-        title={item.name.toUpperCase()}
-        width={250}
-        height={250}
-      />
-
+      <div style={{ height: 60 }}>
+        <ItemImage
+          loader={boderoLoader}
+          onClick={() => handle(item._id)}
+          src={
+            !item?.image || item.image.length === 0
+              ? "/logo.jpg"
+              : item?.image[0]
+          }
+          alt={item.name.toUpperCase()}
+          title={item.name.toUpperCase()}
+          width={250}
+          height={250}
+        />
+      </div>
       <StaledDiv>
         <h3>{item.name}</h3>
         <p>
