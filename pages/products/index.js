@@ -69,7 +69,8 @@ export default function ProductsPage({ products }) {
         ) : (
           <ProductsGrid products={product} />
         )}
-        {product.length >= 20 && (
+        {/*no modificar */}
+        {product && (
           <ButtonContainer>
             <ButtonDisabled
               $black

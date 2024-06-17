@@ -144,8 +144,8 @@ export default function CategoriesPage() {
             ) : (
               <ProductsGrid products={products} />
             )}
-
-            {products?.length >= 20 && (
+            {/*no modificar */}
+            {products && (
               <ButtonContainer>
                 <ButtonDisabled
                   $black

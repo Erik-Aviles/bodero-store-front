@@ -4,9 +4,9 @@ const nextConfig = {
   images: {
     loader: "custom",
     loaderFile:
-      "./components/localLoader.js" ||
-      "./components/awsS3Loader.js" ||
-      "./components/boderoLoader.js.js",
+      "./components/loaderes/localLoader.js" ||
+      "./components/loaderes/awsS3Loader.js" ||
+      "./components/loaderes/cloudinaryLoader.js",
   },
 };
 

@@ -4,7 +4,9 @@ import { black, grey, greylight, white } from "@/lib/colors";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Text from "../stylesComponents/HighlightedText";
-import boderoLoader from "../boderoLoader";
+import logo from "../../public/logo.jpg";
+import cloudinaryLoader from "../loaderes/cloudinaryLoader";
+import localLoader from "../loaderes/localLoader";
 
 const ItemInformation = styled.li`
   height: 200px;
@@ -54,6 +56,7 @@ const StaledDiv = styled.div`
     }
   }
   p {
+    text-transform: capitalize;
     text-align: center;
     font-size: 12px;
     height: 30px;
@@ -104,9 +107,8 @@ const ImagesIContainer = styled.div`
   }
 `;
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item: { _id, name, image, description } }) => {
   const router = useRouter();
-  console.log(item);
 
   const filterSearchCategory = ({ router, category }) => {
     if (category) {
@@ -118,30 +120,26 @@ const ItemCard = ({ item }) => {
     filterSearchCategory({ router, category: id });
   };
   return (
-    <ItemInformation key={item._id} title={item.name.toUpperCase()}>
+    <ItemInformation key={_id} title={name.toUpperCase()}>
       <div style={{ height: 60 }}>
         <ItemImage
-          loader={boderoLoader}
-          onClick={() => handle(item._id)}
-          src={
-            !item?.image || item.image.length === 0
-              ? "/logo.jpg"
-              : item?.image[0]
-          }
-          alt={item.name.toUpperCase()}
-          title={item.name.toUpperCase()}
+          loader={!image || image.length === 0 ? localLoader : cloudinaryLoader}
+          onClick={() => handle(_id)}
+          src={!image || image.length === 0 ? logo : image[0]}
+          alt={name.toUpperCase()}
+          title={name.toUpperCase()}
           width={250}
           height={250}
         />
       </div>
       <StaledDiv>
-        <h3>{item.name}</h3>
+        <h3>{name}</h3>
         <p>
-          {item?.description
-            ? item?.description
-            : "Descripcion de la categoria en especifica"}
+          {description
+            ? description
+            : "Descripción de la categoria en especifica."}
         </p>
-        <Text $big={1} onClick={() => handle(item._id)}>
+        <Text $big={1} onClick={() => handle(_id)}>
           Ver productos
         </Text>
       </StaledDiv>

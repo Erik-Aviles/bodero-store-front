@@ -13,9 +13,8 @@ const Container = styled.div`
   z-index: 2;
   right: 0;
   background-color: transparent;
-
-  ${"" /* background-color: transparent; */};
 `;
+
 const DopDownContainer = styled.div`
   position: absolute;
   width: 100vw;
@@ -24,7 +23,6 @@ const DopDownContainer = styled.div`
   right: 0;
   background-color: rgba(37, 37, 37, 0.5);
   filter: blur(5px);
-  ${"" /* background-color: transparent; */}
 `;
 
 const WrapperdDopDown = styled.div`
@@ -41,7 +39,7 @@ const WrapperdDopDown = styled.div`
 const WrapperTableCart = styled.div`
   overflow: overlay;
   padding: 1rem 1rem 0;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 130px);
 `;
 
 const WrapperButtonCart = styled.div`

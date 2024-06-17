@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import logo from "../public/logo.jpg";
 import Image from "next/image";
 import Spinner from "./Spinner";
-import awsS3Loader from "./awsS3Loader";
-import localLoader from "./localLoader";
+import awsS3Loader from "./loaderes/awsS3Loader";
+import localLoader from "./loaderes/localLoader";
 
 const WhiteBox = styled.div`
   display: flex;
