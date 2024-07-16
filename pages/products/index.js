@@ -1,18 +1,18 @@
-import { useRouter } from "next/router";
-import Title from "@/components/stylesComponents/Title";
-import styled, { css } from "styled-components";
-import Layout from "@/components/Layout";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
-import BackButton from "@/components/buttonComponents/BackButton";
-import { FlexStyled } from "@/components/stylesComponents/Flex";
-import ProductsGrid from "@/components/ProductsGrid";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
+import BackButton from "@/components/buttonComponents/BackButton";
+import { FlexStyled } from "@/components/stylesComponents/Flex";
+import Title from "@/components/stylesComponents/Title";
+import ProductsGrid from "@/components/ProductsGrid";
+import filterSearch from "@/utils/filterSearch";
+import styled, { css } from "styled-components";
 import { brands } from "@/resource/brandsData";
 import { grey, secondary } from "@/lib/colors";
 import useProducts from "@/hooks/useProducts";
+import { useRouter } from "next/router";
+import Layout from "@/components/Layout";
 import { useEffect } from "react";
-import filterSearch from "@/utils/filterSearch";
 
 const CenterDiv = styled.section`
   height: auto;
@@ -59,7 +59,7 @@ export default function ProductsPage() {
     handlePageChange,
   } = useProducts();
   const router = useRouter();
-  const query = router.query;
+  const { query } = router;
 
   useEffect(() => {
     if ("page" in query) {
@@ -68,7 +68,7 @@ export default function ProductsPage() {
       filterSearch({ router, page: query.page });
       mutate();
     }
-  }, ["page" in query]);
+  }, [query.page]);
 
   const totalPages = data ? Math.ceil(data?.totalProducts / 20) : 1;
 

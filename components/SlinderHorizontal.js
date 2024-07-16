@@ -1,25 +1,29 @@
 import { NextArrow, PrevArrow } from "./buttonComponents/Arrows";
+import Text from "./stylesComponents/HighlightedText";
 import { greylight, primary } from "@/lib/colors";
 import { useEffect, useState } from "react";
 import { ProductBox } from "./ProductBox";
 import styled from "styled-components";
+import { Loader } from "./Loader";
 import Slider from "react-slick";
 
 const HorizontalSliderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
-  margin: 30px 0 60px;
-  z-index: 10px;
 `;
 
 const SliderContainer = styled.div`
   position: relative;
+  margin-bottom: 30px;
 `;
 const ProgressContainer = styled.div`
   background-color: ${greylight};
   height: 2px;
   width: 250px;
   position: absolute;
-  top: 0px;
+  top: -3px;
   right: 0;
 `;
 const Progress = styled.div`
@@ -31,33 +35,52 @@ const Progress = styled.div`
   transition-duration: 150ms;
 `;
 
-export default function SlinderHorizontal({ products }) {
+const BreadCrumb = styled.span`
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  @media screen and (min-width: 640px) {
+    padding: 0;
+  }
+`;
+
+export default function SlinderHorizontal({ products, isLoading }) {
   const [progress, setProgress] = useState(1);
-  const [slideToShow, serSlideToShow] = useState(5);
+  const [slideToShow, setSlideToShow] = useState(5);
 
   const setSlides = () => {
     if (window.innerWidth <= 1280 && window.innerWidth > 1000) {
-      serSlideToShow(5);
-    } else if (window.innerWidth <= 1000 && window.innerWidth > 600) {
-      serSlideToShow(3);
-    } else if (window.innerWidth <= 650) {
-      serSlideToShow(2);
+      setSlideToShow(5);
+    } else if (window.innerWidth <= 1000 && window.innerWidth > 650) {
+      setSlideToShow(4);
+    } else if (window.innerWidth <= 650 && window.innerWidth > 540) {
+      setSlideToShow(3);
+    } else if (window.innerWidth <= 540 && window.innerWidth > 280) {
+      setSlideToShow(2);
+    } else if (window.innerWidth <= 280) {
+      setSlideToShow(1);
     }
   };
 
   useEffect(() => {
     setSlides();
+    window.addEventListener("resize", setSlides);
+
+    return () => {
+      window.removeEventListener("resize", setSlides);
+    };
+  }, []);
+
+  useEffect(() => {
     setProgress(100 / (products?.length - slideToShow + 1));
-    window.addEventListener("resize", () => {
-      setSlides();
-    });
-  }, [products?.length]);
+  }, [products?.length, slideToShow]);
 
   const settings = {
     arrows: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: slideToShow,
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
@@ -65,31 +88,31 @@ export default function SlinderHorizontal({ products }) {
       {
         breakpoint: 1100,
         settings: {
-          slidesToShow: 5,
+          slideToShow: 5,
         },
       },
       {
         breakpoint: 1000,
         settings: {
-          slidesToShow: 4,
+          slideToShow: 4,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slideToShow: 3,
         },
       },
       {
         breakpoint: 540,
         settings: {
-          slidesToShow: 2,
+          slideToShow: 2,
         },
       },
       {
         breakpoint: 280,
         settings: {
-          slidesToShow: 1,
+          slideToShow: 1,
         },
       },
     ],
@@ -100,6 +123,13 @@ export default function SlinderHorizontal({ products }) {
 
   return (
     <HorizontalSliderContainer>
+      <BreadCrumb>
+        <Text>Utimos productos incluidos: </Text>
+        <Text $big>{slideToShow}</Text>
+        <Text>de</Text>
+        <Text $big>{isLoading ? <Loader /> : products.length}</Text>
+        <Text>Productos.</Text>
+      </BreadCrumb>{" "}
       <SliderContainer>
         <Slider {...settings}>
           {products?.length > 0 &&

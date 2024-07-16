@@ -18,7 +18,7 @@ import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
-const CenterDiv = styled.section`
+const ContentSection = styled.section`
   height: auto;
   margin: 0 auto;
   background: #f7f7f7;
@@ -72,35 +72,22 @@ const FlexFooter = styled.div`
   display: Flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 4px;
   padding-bottom: ;
-`;
-
-const TextFooter = styled.span`
-  color: ${grey};
-  font-size: 0.8rem;
-  padding: 0 10px;
-  @media screen and (min-width: 641px) {
-    padding: 0;
-    font-size: 1rem;
-  }
-  ${(props) =>
-    props.$big &&
-    css`
-      color: ${secondary};
-      font-weight: 500;
-    `};
 `;
 
 // tercera solucion
 export default function CategoriesPage() {
   const router = useRouter();
   const { query } = router;
-  const getCategory = query.category;
-  const [category, setCategory] = useState(getCategory || "");
-  const [pages, setPages] = useState(1);
-  const [pageCat, setPageCat] = useState(1);
+  const queryCategory = query.category;
+  const queryPage = parseInt(query.page) || 1;
+
+  const [category, setCategory] = useState(queryCategory || "");
+  const [pages, setPages] = useState(queryPage);
+  const [pageCat, setPageCat] = useState(queryPage);
   const [nameCategory, setNameCategory] = useState("");
+
   const pageSize = 20;
 
   const apiUrlCategories = `/api/categories/pagination?limit=${pageSize}&page=${pageCat}`;
@@ -122,12 +109,12 @@ export default function CategoriesPage() {
 
   useEffect(() => {
     const resultadoFiltrado = categories?.categories?.find(
-      (cat) => cat._id === router.query.category
+      (cat) => cat._id === queryCategory
     );
     setNameCategory(resultadoFiltrado?.name);
-    setPages(parseInt(router.query.page) || 1);
-    setCategory(router.query.category);
-  }, [router.query.category]);
+    setPages(queryPage);
+    setCategory(queryCategory);
+  }, [categories, queryCategory, queryPage]);
 
   const handlePageChange = (newPage, setPage, mutate) => {
     setPage(newPage);
@@ -194,16 +181,14 @@ export default function CategoriesPage() {
     const totalPagesProducts = products ? Math.ceil(totalProducts / 20) : 1;
     return (
       <FlexFooter>
-        <TextFooter>
-          Página <TextFooter $big>{category ? pages : pageCat}</TextFooter> de{" "}
-          <TextFooter $big>
-            {category ? totalPagesProducts : totalPagesCategory}
-          </TextFooter>
-          , Total de {category ? "producto/s" : "categorías"}:{" "}
-          <TextFooter $big>
-            {category ? totalProducts : categories?.totalCategories}
-          </TextFooter>
-        </TextFooter>
+        <Text>Página</Text>
+        <Text $big>{category ? pages : pageCat}</Text>
+        <Text>de</Text>
+        <Text $big>{category ? totalPagesProducts : totalPagesCategory},</Text>
+        <Text>Total de {category ? "producto/s" : "categorías"}:</Text>
+        <Text $big>
+          {category ? totalProducts : categories?.totalCategories}
+        </Text>
       </FlexFooter>
     );
   };
@@ -213,9 +198,9 @@ export default function CategoriesPage() {
       title="B.R.D | Categoria"
       description="Repuestos Originales en diferentes marcas que hacen la diferencia"
     >
-      <CenterDiv>
+      <ContentSection>
         <Title>Categorías</Title>
-        {getCategory ? (
+        {queryCategory ? (
           <>
             <Sorted>
               <BackButton
@@ -266,7 +251,7 @@ export default function CategoriesPage() {
           </>
         )}
         {renderFooter()}
-      </CenterDiv>
+      </ContentSection>
     </Layout>
   );
 }
@@ -275,7 +260,7 @@ export default function CategoriesPage() {
 /* export default function CategoriesPage() {
   const router = useRouter();
   const { query } = router;
-  const getCategory = query.category;
+  const queryCategory = query.category;
   const [pages, setPages] = useState(1);
   const [pageCat, setPageCat] = useState(1);
   const [nameCategory, setNameCategory] = useState("");
@@ -296,7 +281,7 @@ export default function CategoriesPage() {
   } = useSWR(apiUrlProducts, fetcher);
 
   const resultadoFiltrado = categories?.categories?.find(
-    (cat) => cat._id === getCategory
+    (cat) => cat._id === queryCategory
   );
 
   useEffect(() => {
@@ -444,9 +429,9 @@ export default function CategoriesPage() {
       title="B.R.D | Categoria"
       description="Repuestos Originales en diferentes marcas que hacen la diferencia"
     >
-      <CenterDiv>
+      <ContentSection>
         <Title>Categorías</Title>
-        {getCategory ? (
+        {queryCategory ? (
           <>
             <Sorted>
               <BackButton
@@ -482,7 +467,7 @@ export default function CategoriesPage() {
             {renderFooter()}
           </>
         )}
-      </CenterDiv>
+      </ContentSection>
     </Layout>
   );
 } */
@@ -491,7 +476,7 @@ export default function CategoriesPage() {
 /* export default function CategoriesPage() {
   const router = useRouter();
   const query = router.query;
-  const getCategory = query.category;
+  const queryCategory = query.category;
   const [pages, setPages] = useState(1);
   const [pageCat, setPageCat] = useState(1);
   const [nameCategory, setNameCategory] = useState("");
@@ -561,7 +546,7 @@ export default function CategoriesPage() {
       title="B.R.D | Categoria"
       description="Repuestos Originales en diferentes marcas que hacen la diferencia"
     >
-      <CenterDiv>
+      <ContentSection>
         <Title>Categorias</Title>
         {getCategory ? (
           <>
@@ -681,7 +666,7 @@ export default function CategoriesPage() {
             </Wrapper>
           </>
         )}
-      </CenterDiv>
+      </ContentSection>
     </Layout>
   );
 }

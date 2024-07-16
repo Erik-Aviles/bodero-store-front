@@ -1,19 +1,18 @@
-import { LogoFull } from "./Logo";
-import styled, { css } from "styled-components";
 import { black, grey, greylight, primary, white } from "@/lib/colors";
-import Link from "next/link";
-import { WhatsappIcon } from "./Icons";
+import DropdownCartComponents from "./cart/DropdownCartComponents";
+import ToogleNavBar from "./buttonComponents/ButtonHamburger";
 import { BsCardList, BsViewStacked } from "react-icons/bs";
-import { SlUser } from "react-icons/sl";
-
-import InformationHeader from "./InformationHeader";
 import SearchAutoComplete from "./SearchAutoComplete";
-import { useRouter } from "next/router";
+import InformationHeader from "./InformationHeader";
+import { CartContext } from "@/context/CartContext";
+import styled, { css } from "styled-components";
 import CartComponent from "./cart/CartComponent";
 import { useContext, useState } from "react";
-import ToogleNavBar from "./buttonComponents/ButtonHamburger";
-import DropdownCartComponents from "./cart/DropdownCartComponents";
-import { CartContext } from "@/context/CartContext";
+import { useRouter } from "next/router";
+import { SlUser } from "react-icons/sl";
+import { WhatsappIcon } from "./Icons";
+import { LogoFull } from "./Logo";
+import Link from "next/link";
 
 const DisplayNoneCpmponente = styled.div`
   display: none;
@@ -25,21 +24,11 @@ const DisplayNoneCpmponente = styled.div`
 const StyledHeader = styled.header`
   width: 100%;
   background-color: ${white};
-  ${"" /* border-bottom: 1px solid rgba(0, 0, 0, 0.125); */}
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.125);
   position: -webkit-sticky;
   position: sticky;
   top: 0px;
   z-index: 2;
-  ${
-    "" /*   @media screen and (max-width: 768px) {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0px;
-    z-index: 2;
-  } */
-  }
 `;
 
 const Wrapper = styled.div`

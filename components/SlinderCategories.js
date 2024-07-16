@@ -55,7 +55,7 @@ const SlinderCategories = ({ categories, isLoading }) => {
       {categories?.categories &&
         categories.categories.map((item) =>
           isLoading ? (
-            <Loader />
+            <Loader key={item._id} />
           ) : (
             <CategoryBox
               key={item._id}

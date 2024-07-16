@@ -29,8 +29,10 @@ export const LogoFull = ({ href }) => {
 
 export const LogoLetters = ({ href }) => {
   return (
-    <StaledLink href={href}>
-      <Image alt="Logo B.D.R" src={logoLetras} width={300} height={140} />
-    </StaledLink>
+    <Link href={href}>
+      <Figure>
+        <Image alt="Logo B.D.R" src={logoLetras} width={300} height={140} />
+      </Figure>
+    </Link>
   );
 };

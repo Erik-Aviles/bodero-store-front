@@ -8,6 +8,9 @@ import Table from "../stylesComponents/Table";
 import axios from "axios";
 import { FlexStyled } from "../stylesComponents/Flex";
 import Text from "../stylesComponents/HighlightedText";
+import Image from "next/image";
+import awsS3Loader from "../loaderes/awsS3Loader";
+import localLoader from "../loaderes/localLoader";
 
 const ProductInfoCell = styled.td`
   padding: 10px 0;
@@ -49,10 +52,6 @@ const ProductImageBox = styled.div`
     width: 80px;
     height: 80px;
     margin-bottom: 5px;
-    img {
-      max-width: 70px;
-      max-height: 70px;
-    }
   }
 `;
 
@@ -215,10 +214,13 @@ const TableCart = () => {
                     {product.code.toUpperCase()}
                   </PropsSpan>
                   <ProductImageBox>
-                    <img
+                    <Image
+                      loader={product.images[0] ? awsS3Loader : localLoader}
+                      src={product.images[0] ? product.images[0] : "logo.jpg"}
                       title={product.name}
-                      alt={product.title}
-                      src={product.images[0]}
+                      alt={product?.title.toUpperCase()}
+                      width={70}
+                      height={70}
                     />
                   </ProductImageBox>
                   <PropsSpan $two={1}>{product.title.toUpperCase()}</PropsSpan>

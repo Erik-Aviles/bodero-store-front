@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { SearchIcon } from "./Icons";
 import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 import { BsArrowRight } from "react-icons/bs";
+import Image from "next/image";
 
 const WrapperProductFilter = styled.div`
   width: 100%;
@@ -211,7 +212,12 @@ const AutocompleteItem = ({
     <li>
       <DivAutocomplete>
         <FigureAutocomplete>
-          <img src={images?.[0] ? images?.[0] : "/logo.jpg"} alt={title} />
+          <Image
+            src={images?.[0] ? images?.[0] : "/logo.jpg"}
+            alt={title}
+            width={200}
+            height={40}
+          />
         </FigureAutocomplete>
         <Link href={`/product/${_id}`} onClick={openPanel}>
           <DivAutocompleteText>

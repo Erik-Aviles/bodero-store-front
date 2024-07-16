@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
 import { dataCarousel } from "@/resource/carouselData";
@@ -51,14 +51,15 @@ const Img = styled(Image)`
 
 const Carousel = () => {
   const [index, setIndex] = useState(0);
+  const dataCarouselLengthRef = useRef(dataCarousel.length);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % dataCarousel.length);
+      setIndex((prevIndex) => (prevIndex + 1) % dataCarouselLengthRef.current);
     }, 4000);
 
     return () => clearInterval(intervalId);
-  }, [dataCarousel.length]);
+  }, []);
 
   const goToSlide = (slideIndex) => {
     setIndex(slideIndex);

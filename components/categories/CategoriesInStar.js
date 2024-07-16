@@ -1,24 +1,53 @@
 import SkeletorCategories from "../skeletor/SkeletorCategories";
-import { FlexStyled } from "../stylesComponents/Flex";
-import { grey, secondary } from "@/lib/colors";
-import Center from "../stylesComponents/Center";
+import Text from "../stylesComponents/HighlightedText";
 import Title from "../stylesComponents/Title";
 import styled, { css } from "styled-components";
 import { BsArrowRight } from "react-icons/bs";
-import { fetcher } from "@/utils/fetcher";
 import ItemCard from "./ItemCard";
 import { Loader } from "../Loader";
 import Link from "next/link";
-import useSWR from "swr";
+
+const ContainerSesion = styled.section`
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  max-width: 1000px;
+  margin: 0 auto;
+  @media screen and (min-width: 640px) {
+    padding: 20px;
+  }
+`;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: auto;
-  padding: 20px 20px 50px 20px;
   span {
     text-align: end;
+  }
+`;
+const FlexTitles = styled.div`
+  width: 100%;
+  display: Flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+`;
+const FlexInfo = styled.div`
+  width: 100%;
+  display: Flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+`;
+const BreadCrumb = styled.span`
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  @media screen and (min-width: 640px) {
+    padding: 0;
   }
 `;
 
@@ -30,56 +59,31 @@ const ListHorizontalCategory = styled.ul`
   overflow-y: hidden;
   display: flex;
   gap: 15px;
-  padding: 0 2px;
-`;
-
-const FlexLink = styled.div`
-  width: 100%;
-  display: Flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-`;
-
-const Text = styled.span`
-  color: ${grey};
-  font-size: 0.8rem;
-  padding: 0 10px;
-  @media screen and (min-width: 641px) {
-    padding: 0;
-    font-size: 1rem;
-  }
-  ${(props) =>
-    props.$big &&
-    css`
-      color: ${secondary};
-      font-weight: 500;
-    `};
+  padding: 0 20px;
 `;
 
 export default function CategoriesInStar({ categories, isLoading }) {
   return (
-    <Center>
-      <Title>Categorias</Title>
-      <FlexStyled style={{ padding: 0 }} $center={1} aria-label="breadcrumb">
+    <ContainerSesion>
+      <FlexTitles style={{ padding: 0 }} $center={1} aria-label="breadcrumb">
+        <Title>Categorias</Title>
         <Text>Todo lo que necesitas para tu vehículo, sin salir de casa.</Text>
-      </FlexStyled>
+      </FlexTitles>
       <Wrapper>
-        <FlexLink>
-          <FlexStyled>
+        <FlexInfo>
+          <BreadCrumb>
             <Text>Existen </Text>
             <Text $big={1}>
               {isLoading ? <Loader /> : categories?.totalCategories}
             </Text>
             <Text> categorias. </Text>
-          </FlexStyled>
+          </BreadCrumb>
           <Link href="/categories">
             <Text $big={1}>
               Ver Todas <BsArrowRight />
             </Text>
           </Link>
-        </FlexLink>
-
+        </FlexInfo>
         <ListHorizontalCategory>
           {isLoading ? (
             <SkeletorCategories />
@@ -90,6 +94,6 @@ export default function CategoriesInStar({ categories, isLoading }) {
           )}
         </ListHorizontalCategory>
       </Wrapper>
-    </Center>
+    </ContainerSesion>
   );
 }
