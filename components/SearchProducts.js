@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import styled, { css } from "styled-components";
 import { error, greylight, primary } from "@/lib/colors";
-import { useRouter } from "next/router";
 import { AllDeleteIcon, SearchIcon } from "./Icons";
+import { useRouter } from "next/router";
+import styled from "styled-components";
+import React, { useRef } from "react";
 
 const WrapperProductFilter = styled.div`
-  @media screen and (max-width: 768px) {
+  @media screen and (min-width: 768px) {
     padding: 0;
   }
 `;
@@ -15,7 +15,6 @@ const FilterGroup = styled.div`
   display: flex;
   align-items: stretch;
   width: 100%;
-
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
@@ -29,7 +28,7 @@ const Customform = styled.div`
   }
 `;
 
-const WrapperInputAutocomplete = styled.div`
+const WrapperInputAutocomplete = styled.form`
   position: relative;
   display: flex;
   width: 100%;
@@ -46,7 +45,7 @@ const WrapperInputAutocomplete = styled.div`
   }
 `;
 
-const InputAutocomplete = styled.input`
+const InputSearch = styled.input`
   width: 100%;
   font-size: 0.8rem;
   padding: 0.375rem 1.75rem 0.375rem 0.75rem;
@@ -60,6 +59,11 @@ const InputAutocomplete = styled.input`
   @media screen and (min-width: 640px) {
     width: 400px;
   }
+`;
+
+const ContainerClear = styled.div`
+  width: 32px;
+  height: 100%;
 `;
 
 const ButtonClear = styled.button`
@@ -92,50 +96,29 @@ const ButtonSearch = styled.button`
   }
 `;
 
-const SearchProducts = ({ search, onClear, HandleSearch }) => {
-  const router = useRouter();
-  const initialRender = useRef(true);
-
-  const [text, setText] = useState(search || "");
-  useEffect(() => {
-    if (initialRender.current) {
-      initialRender.current = false;
-      return;
-    }
-
-    if (!text) {
-      onClear();
-    } else {
-      router.push(`/busqueda?q=${text.toLowerCase()}`);
-    }
-  }, [text]);
-
-  const onHandle = () => {
-    onClear();
-    setText("");
-  };
-
+const SearchProducts = ({ name, value, onClick, onSubmit, onChange }) => {
   return (
     <WrapperProductFilter>
       <FilterGroup>
         <Customform>
-          <WrapperInputAutocomplete>
-            <InputAutocomplete
+          <WrapperInputAutocomplete onSubmit={onSubmit}>
+            <InputSearch
+              name={name}
               type="text"
-              list="title_product"
-              value={text ? text : search}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Buscar..."
+              value={value}
+              onChange={onChange}
+              placeholder="Buscar producto..."
             />
-            <div style={{ width: "32px", height: "100%" }}>
+            <ContainerClear>
               <ButtonClear
-                onClick={onHandle}
-                disabled={text?.length && search?.length === 0}
+                type="button"
+                onClick={onClick}
+                disabled={value?.length === 0}
               >
                 <AllDeleteIcon />
               </ButtonClear>
-            </div>
-            <ButtonSearch onClick={HandleSearch}>
+            </ContainerClear>
+            <ButtonSearch type="submit">
               <SearchIcon />
             </ButtonSearch>
           </WrapperInputAutocomplete>

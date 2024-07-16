@@ -1,30 +1,26 @@
 import { mongooseConnect } from "@/lib/mongoose";
-import { Product } from "@/models/Product";
+import { Category } from "@/models/Category";
 
 export default async function handle(req, res) {
   await mongooseConnect();
   const { method } = req;
   const query = req.query;
 
+  //Obtener
   if (method === "GET") {
     try {
       const page = parseInt(query.page) || 1;
       const limit = parseInt(query.limit) || 20;
       const skip = (page - 1) * limit;
-      const products = await Product.find({}, null, {
-        sort: { _id: -1 },
-      })
+      const categories = await Category.find({}, null, { sort: { _id: -1 } })
         .skip(skip)
-        .limit(limit)
-        .select(
-          "title salePrice brand code codeWeb codeEnterprise images compatibility quantity"
-        );
-      const totalProducts = await Product.countDocuments();
+        .limit(limit);
 
-      return res.status(200).json({
-        result: products.length,
-        totalProducts,
-        products,
+      const totalCategories = await Category.countDocuments();
+      return res.json({
+        result: categories.length,
+        totalCategories,
+        categories,
       });
     } catch (err) {
       return res.status(500).json({ err: err.message });

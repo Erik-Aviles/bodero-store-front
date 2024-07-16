@@ -1,13 +1,15 @@
-import Center from "../stylesComponents/Center";
-import Title from "../stylesComponents/Title";
-import { useContext } from "react";
-import { DataContext } from "@/context/DataContext";
-import ItemCard from "./ItemCard";
-import styled, { css } from "styled-components";
-import { BsArrowRight } from "react-icons/bs";
-import Link from "next/link";
+import SkeletorCategories from "../skeletor/SkeletorCategories";
 import { FlexStyled } from "../stylesComponents/Flex";
 import { grey, secondary } from "@/lib/colors";
+import Center from "../stylesComponents/Center";
+import Title from "../stylesComponents/Title";
+import styled, { css } from "styled-components";
+import { BsArrowRight } from "react-icons/bs";
+import { fetcher } from "@/utils/fetcher";
+import ItemCard from "./ItemCard";
+import { Loader } from "../Loader";
+import Link from "next/link";
+import useSWR from "swr";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,15 +24,13 @@ const Wrapper = styled.div`
 
 const ListHorizontalCategory = styled.ul`
   width: 100%;
+  height: 230px;
   position: relative;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   display: flex;
   gap: 15px;
-  padding-bottom: 30px;
-  li {
-    min-width: 200px;
-    border: 1px solid rgba(255, 0, 0, 0.5);
-  }
+  padding: 0 2px;
 `;
 
 const FlexLink = styled.div`
@@ -57,10 +57,7 @@ const Text = styled.span`
     `};
 `;
 
-export default function CategoriesInStar() {
-  const { categories } = useContext(DataContext);
-  const fewCategories = categories.slice(0, 10);
-
+export default function CategoriesInStar({ categories, isLoading }) {
   return (
     <Center>
       <Title>Categorias</Title>
@@ -69,17 +66,28 @@ export default function CategoriesInStar() {
       </FlexStyled>
       <Wrapper>
         <FlexLink>
-          <Text>Existen {categories.length} categorias, </Text>
+          <FlexStyled>
+            <Text>Existen </Text>
+            <Text $big={1}>
+              {isLoading ? <Loader /> : categories?.totalCategories}
+            </Text>
+            <Text> categorias. </Text>
+          </FlexStyled>
           <Link href="/categories">
             <Text $big={1}>
               Ver Todas <BsArrowRight />
             </Text>
           </Link>
         </FlexLink>
+
         <ListHorizontalCategory>
-          {fewCategories.map((item) => (
-            <ItemCard key={item._id} item={item} />
-          ))}
+          {isLoading ? (
+            <SkeletorCategories />
+          ) : (
+            categories?.categories.map((item) => (
+              <ItemCard key={item._id} item={item} />
+            ))
+          )}
         </ListHorizontalCategory>
       </Wrapper>
     </Center>

@@ -13,7 +13,7 @@ const Message = styled.p`
   margin-left: 20px;
 `;
 
-const Custom404 = () => {
+const PageError = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -37,4 +37,4 @@ const Custom404 = () => {
   );
 };
 
-export default Custom404;
+export default PageError;

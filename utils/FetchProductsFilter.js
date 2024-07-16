@@ -1,7 +1,68 @@
 import { stopwords } from "@/resource/stopwordsData";
 import { removeAccents, removePluralEnding } from "./normalize";
 
-export async function fetchProductsFilter(search, minLength, signal) {
+export async function fetchProductsFilter(
+  search,
+  minLength,
+  page = 1,
+  pageSize = 10
+) {
+  try {
+    if (!search || search.trim() === "" || search.length < minLength) {
+      return { products: [], totalProducts: 0 };
+    }
+
+    const searchParts = removeAccents(search.toLowerCase())
+      .split(" ")
+      .filter((part) => !stopwords.includes(part))
+      .map((part) => removePluralEnding(part));
+
+    const apiUrl = `/api/search?q=${searchParts.join(
+      "+"
+    )}&page=${page}&pageSize=${pageSize}`;
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error("Error al obtener datos de la API");
+    }
+
+    const { products, totalProducts } = await response.json();
+
+    return { products, totalProducts };
+  } catch (error) {
+    console.error("Error en la búsqueda:", error);
+    return { products: [], totalProducts: 0 };
+  }
+}
+
+export async function fetchProductsFilterForCategory(
+  category,
+  page = 1,
+  pageSize = 10
+) {
+  try {
+    const apiUrl = `/api/search?category=${category}&page=${page}&pageSize=${pageSize}`;
+
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error("Error al obtener datos de la API");
+    }
+
+    const { products, totalProducts } = await response.json();
+
+    return { products, totalProducts };
+  } catch (error) {
+    console.error("Error en la búsqueda:", error);
+    return { products: [], totalProducts: 0 };
+  }
+}
+
+/* import { stopwords } from "@/resource/stopwordsData";
+import { removeAccents, removePluralEnding } from "./normalize";
+
+export async function fetchProductsFilter(search, minLength) {
+  console.log(minLength);
   try {
     if (!search || search.trim() === "" || search.length < minLength) {
       return [];
@@ -13,7 +74,7 @@ export async function fetchProductsFilter(search, minLength, signal) {
       .map((part) => removePluralEnding(part));
 
     const apiUrl = `/api/search?q=${searchParts.join("+")}`;
-    const response = await fetch(apiUrl, { signal });
+    const response = await fetch(apiUrl);
 
     if (!response.ok) {
       throw new Error("Error al obtener datos de la API");
@@ -47,7 +108,7 @@ export async function fetchProductsFilter(search, minLength, signal) {
       });
       return matchesAllParts;
     });
-
+    console.log(filteredResults);
     return filteredResults;
   } catch (error) {
     if (error.name !== "Error de cancelación") {
@@ -56,3 +117,4 @@ export async function fetchProductsFilter(search, minLength, signal) {
     return [];
   }
 }
+ */

@@ -1,16 +1,15 @@
-import { LocationIcon } from "@/components/Icons";
-import { black, white } from "@/lib/colors";
-import Title from "@/components/stylesComponents/Title";
-import styled from "styled-components";
-import Map from "@/components/Map";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
-import { DataContext } from "@/context/DataContext";
-import { useContext, useEffect, useState } from "react";
+import Title from "@/components/stylesComponents/Title";
+import { LocationIcon } from "@/components/Icons";
 import { Loading } from "@/components/Loading";
+import { black, white } from "@/lib/colors";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
+import Map from "@/components/Map";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -61,7 +60,7 @@ export default function AddressPage() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsUpLoanding(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(timeout);
   }, []);
 

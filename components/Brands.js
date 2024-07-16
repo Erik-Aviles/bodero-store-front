@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 const Wrapper = styled.section`
   position: relative;
   h2 {
-    padding-top: 20px;
+    padding-top: 40px;
     position: relative;
   }
   @media screen and (min-width: 640px) {

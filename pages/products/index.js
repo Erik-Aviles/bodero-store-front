@@ -1,56 +1,83 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import filterSearch from "@/utils/filterSearch";
 import Title from "@/components/stylesComponents/Title";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Layout from "@/components/Layout";
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import { TitleH4 } from "@/components/stylesComponents/TitleH4";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import ProductsGrid from "@/components/ProductsGrid";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
-import { mongooseConnect } from "@/lib/mongoose";
-import { Product } from "@/models/Product";
 import { brands } from "@/resource/brandsData";
+import { grey, secondary } from "@/lib/colors";
+import useProducts from "@/hooks/useProducts";
+import { useEffect } from "react";
+import filterSearch from "@/utils/filterSearch";
 
 const CenterDiv = styled.section`
-  heigth: auto;
+  height: auto;
   margin: 0 auto;
   background: #f7f7f7;
   @media screen and (min-width: 640px) {
-    padding: 0 40px 20px;
-  }
-  @media screen and (min-width: 1024px) {
-    padding: 0 60px 40px;
+    padding: 20px 40px;
   }
 `;
+const FlexFooter = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+`;
 
-export default function ProductsPage({ products }) {
+const TextFooter = styled.span`
+  color: ${grey};
+  font-size: 0.8rem;
+  padding: 0 10px;
+  @media screen and (min-width: 641px) {
+    padding: 0;
+    font-size: 1rem;
+  }
+  ${(props) =>
+    props.$big &&
+    css`
+      color: ${secondary};
+      font-weight: 500;
+    `};
+`;
+
+export default function ProductsPage() {
+  const {
+    data,
+    error,
+    isLoading,
+    isValidating,
+    pages,
+    setPages,
+    mutate,
+    handleGoBack,
+    handlePageChange,
+  } = useProducts();
   const router = useRouter();
-  const [product, setProducts] = useState(products);
-  const [pages, setPages] = useState(1);
+  const query = router.query;
 
   useEffect(() => {
-    setProducts(products);
-  }, [products]);
+    if ("page" in query) {
+      const newPage = parseInt(query.page, 10);
+      setPages(newPage);
+      filterSearch({ router, page: query.page });
+      mutate();
+    }
+  }, ["page" in query]);
 
-  const handlePageChange = (newPage) => {
-    setPages(newPage);
-    filterSearch({ router, page: newPage });
-  };
+  const totalPages = data ? Math.ceil(data?.totalProducts / 20) : 1;
 
-  const hasNextPage = products?.length === 20;
-
-  const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
-  };
+  const hasNextPage = data && data?.result === 20;
 
   const brandNames = brands.map((brand) => brand.name);
   const brandNamesString = brandNames.join(", ");
+
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <Layout
@@ -62,111 +89,38 @@ export default function ProductsPage({ products }) {
           <BackButton onClick={handleGoBack} />
           <Title>Todos los productos</Title>
         </FlexStyled>
-        {!product ? (
+        {isLoading ? (
           <SkeletorProducts />
-        ) : product?.length === 0 ? (
-          <TitleH4>Productos no registrado</TitleH4>
         ) : (
-          <ProductsGrid products={product} />
-        )}
-        {/*no modificar */}
-        {product && (
-          <ButtonContainer>
-            <ButtonDisabled
-              $black
-              onClick={() => handlePageChange(pages - 1)}
-              disabled={pages === 1}
-            >
-              Anterior
-            </ButtonDisabled>
-            <ButtonDisabled
-              $white
-              onClick={() => handlePageChange(pages + 1)}
-              disabled={!hasNextPage}
-            >
-              Siguiente
-            </ButtonDisabled>
-          </ButtonContainer>
+          <>
+            <ProductsGrid products={data?.products} />
+            <ButtonContainer>
+              <ButtonDisabled
+                $black
+                onClick={() => handlePageChange(pages - 1)}
+                disabled={pages === 1}
+              >
+                Anterior
+              </ButtonDisabled>
+              <ButtonDisabled
+                $white
+                onClick={() => handlePageChange(pages + 1)}
+                disabled={!hasNextPage}
+              >
+                Siguiente
+              </ButtonDisabled>
+            </ButtonContainer>
+            <FlexFooter>
+              <TextFooter>
+                Pagina <TextFooter $big={1}>{pages}</TextFooter> de{" "}
+                <TextFooter $big={1}>{totalPages}, </TextFooter>
+                Total de productos:
+                <TextFooter $big={1}> {data?.totalProducts}</TextFooter>
+              </TextFooter>
+            </FlexFooter>
+          </>
         )}
       </CenterDiv>
     </Layout>
   );
 }
-export async function getServerSideProps(context) {
-  await mongooseConnect();
-
-  const { page = 1, limit = 20 } = context.query;
-  const skip = (page - 1) * limit;
-
-  try {
-    const products = await Product.find({}, null, { sort: { _id: -1 } })
-      .skip(skip)
-      .limit(limit)
-      .select(
-        "title salePrice brand code codeWeb codeEnterprise images compatibility quantity"
-      );
-
-    return {
-      props: {
-        products: JSON.parse(JSON.stringify(products)),
-      },
-    };
-  } catch (err) {
-    return {
-      props: {
-        error: err.message,
-      },
-    };
-  }
-}
-
-/* function buildUrl(baseUrl, query) {
-  const url = new URL(baseUrl);
-
-  const page = query.page || 1;
-  const category = query.category || "all";
-  const sort = query.sort || "";
-  const search = query.search;
-
-  url.searchParams.set("page", page);
-  url.searchParams.set("category", category);
-  url.searchParams.set("sort", sort);
-
-  if (search !== undefined) {
-    url.searchParams.set("title", search);
-  }
-
-  return url.toString();
-}
-export async function getServerSideProps(context) {
-  const { query } = context;
-  const apiUrl = `${process.env.PUBLIC_URL}/api/products`;
-  const finalUrl = buildUrl(apiUrl, query);
-
-  try {
-    const response = await fetch(finalUrl, {
-      headers: {
-        "Content-Type": "application/json", // Ejemplo de otro encabezado
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("La respuesta de la red no fue correcta");
-    }
-
-    const data = await response.json();
-    return {
-      props: {
-        products: data.products,
-        result: data.result,
-      },
-    };
-  } catch (error) {
-    console.error("Error al obtener los datos:", error);
-    return {
-      props: {
-        error: "Error al obtener los datos ",
-      },
-    };
-  }
-} */

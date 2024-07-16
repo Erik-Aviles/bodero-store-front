@@ -59,6 +59,7 @@ const Wrapper = styled.div`
   }
   @media screen and (min-width: 769px) {
     padding: 0 15px;
+    height: 109.69px;
   }
 `;
 
@@ -162,6 +163,7 @@ const SectionRigthNav = styled.section`
   align-items: center;
   gap: 20px;
 `;
+
 const TextSpan = styled.p`
   margin: 0;
   font-size: 0.6rem;

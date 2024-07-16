@@ -1,13 +1,30 @@
 const filterSearch = ({ router, page, category, sort, q }) => {
   const path = router.pathname;
-  const query = router.query;
+  const query = { ...router.query };
 
   if (category) {
     query.category = category;
+  } else {
+    delete query.category;
   }
-  if (page) query.page = page;
-  if (q) query.q = q;
-  if (sort) query.sort = sort;
+
+  if (page && page !== 1) {
+    query.page = page;
+  } else {
+    delete query.page;
+  }
+
+  if (q) {
+    query.q = q;
+  } else {
+    delete query.q;
+  }
+
+  if (sort) {
+    query.sort = sort;
+  } else {
+    delete query.sort;
+  }
 
   router.push({
     pathname: path,
@@ -16,3 +33,5 @@ const filterSearch = ({ router, page, category, sort, q }) => {
 };
 
 export default filterSearch;
+
+// const query = router.query;

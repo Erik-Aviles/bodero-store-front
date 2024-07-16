@@ -3,7 +3,7 @@ import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { grey } from "@/lib/colors";
-import { DataContext } from "@/context/DataContext";
+import { useCategories } from "@/context/CategoryContext";
 
 const WrapperProductFilter = styled.div`
   margin: 0 20px 20px;
@@ -87,7 +87,16 @@ const Input = styled.input`
 `;
 
 const Filter = () => {
-  const { categories } = useContext(DataContext);
+  const {
+    data: categories,
+    data,
+    error,
+    isLoading,
+    isValidating,
+    mutate,
+    page,
+    handlePageChange,
+  } = useCategories();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState("");

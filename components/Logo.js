@@ -5,13 +5,13 @@ import Link from "next/link";
 import logo from "../public/logo.jpg";
 import logoLetras from "../public/logoLetras.jpg";
 
-const StaledLink = styled(Link)`
+const Figure = styled.figure`
   width: 150px;
+  margin: 0;
   img {
     width: 100%;
     height: auto;
   }
-
   @media screen and (min-width: 640px) {
     width: 200px;
   }
@@ -19,9 +19,11 @@ const StaledLink = styled(Link)`
 
 export const LogoFull = ({ href }) => {
   return (
-    <StaledLink href={href}>
-      <Image alt="Logo B.D.R" src={logo} width={200} height={40} />
-    </StaledLink>
+    <Link href={href}>
+      <Figure>
+        <Image alt="Logo B.D.R" src={logo} width={200} height={40} />
+      </Figure>
+    </Link>
   );
 };
 

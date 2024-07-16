@@ -1,12 +1,8 @@
-import Link from "next/link";
-import styled from "styled-components";
-import Center from "../stylesComponents/Center";
-import { SearchIcon } from "../Icons";
-import { useRouter } from "next/router";
-import { useContext, useState } from "react";
 import SlinderCategories from "../SlinderCategories";
-import { black, error, white } from "@/lib/colors";
-import { DataContext } from "@/context/DataContext";
+import { fetcher } from "@/utils/fetcher";
+import styled from "styled-components";
+import { black } from "@/lib/colors";
+import useSWR from "swr";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -37,11 +33,15 @@ const DivContainert = styled.div`
 `;
 
 const CategoriesComponent = () => {
-  const { categories } = useContext(DataContext);
+  const { data, error, isLoading, isValidating, mutate } = useSWR(
+    `/api/categories`,
+    fetcher
+  );
+
   return (
     <Wrapper>
       <DivContainert>
-        <SlinderCategories categories={categories} />
+        <SlinderCategories categories={data} isLoading={isLoading} />
       </DivContainert>
     </Wrapper>
   );

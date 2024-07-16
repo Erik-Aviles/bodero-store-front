@@ -103,7 +103,7 @@ export default function AboutUsPage() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsUpLoanding(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(timeout);
   }, []);
 

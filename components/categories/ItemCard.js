@@ -9,6 +9,7 @@ import cloudinaryLoader from "../loaderes/cloudinaryLoader";
 import localLoader from "../loaderes/localLoader";
 
 const ItemInformation = styled.li`
+  min-width: 200px;
   height: 200px;
   position: relative;
   background-color: ${white};
@@ -73,38 +74,10 @@ const StaledDiv = styled.div`
   }
 `;
 
-const WrapperButton = styled.div`
-  text-align: end;
-  position: relative;
-  z-index: 1;
-`;
-
 const ItemImage = styled(Image)`
   width: 100%;
   height: 60px;
   object-fit: scale-down;
-`;
-
-const ImagesIContainer = styled.div`
-  width: 80px;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: ${white};
-  color: ${white};
-  font-weight: 700;
-  margin-right: 10px;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
-  @media screen and (max-width: 640px) {
-    float: left;
-    width: 60px;
-    height: 60px;
-  }
-  @media screen and (min-width: 1024px) {
-    float: left;
-  }
 `;
 
 const ItemCard = ({ item: { _id, name, image, description } }) => {
@@ -119,6 +92,7 @@ const ItemCard = ({ item: { _id, name, image, description } }) => {
   const handle = (id) => {
     filterSearchCategory({ router, category: id });
   };
+
   return (
     <ItemInformation key={_id} title={name.toUpperCase()}>
       <div style={{ height: 60 }}>
@@ -146,4 +120,5 @@ const ItemCard = ({ item: { _id, name, image, description } }) => {
     </ItemInformation>
   );
 };
+
 export default ItemCard;

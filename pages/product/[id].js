@@ -20,7 +20,6 @@ import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Layout from "@/components/Layout";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { useContext } from "react";
-import { DataContext } from "@/context/DataContext";
 import {
   AddToCartIcon,
   CardIcon,

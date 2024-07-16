@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { greylight, primary } from "@/lib/colors";
 import { NextArrow, PrevArrow } from "./buttonComponents/Arrows";
+import { greylight, primary } from "@/lib/colors";
+import { useEffect, useState } from "react";
+import { ProductBox } from "./ProductBox";
 import styled from "styled-components";
 import Slider from "react-slick";
-import { ProductBox } from "./ProductBox";
 
 const HorizontalSliderContainer = styled.div`
   width: 100%;
@@ -32,7 +32,7 @@ const Progress = styled.div`
 `;
 
 export default function SlinderHorizontal({ products }) {
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(1);
   const [slideToShow, serSlideToShow] = useState(5);
 
   const setSlides = () => {
@@ -47,11 +47,11 @@ export default function SlinderHorizontal({ products }) {
 
   useEffect(() => {
     setSlides();
-    setProgress(100 / (products.length - slideToShow + 1));
+    setProgress(100 / (products?.length - slideToShow + 1));
     window.addEventListener("resize", () => {
       setSlides();
     });
-  }, [products.length]);
+  }, [products?.length]);
 
   const settings = {
     arrows: true,
@@ -94,7 +94,7 @@ export default function SlinderHorizontal({ products }) {
       },
     ],
     afterChange: (current) => {
-      setProgress((100 / (products.length - slideToShow + 1)) * (current + 1));
+      setProgress((100 / (products?.length - slideToShow + 1)) * (current + 1));
     },
   };
 

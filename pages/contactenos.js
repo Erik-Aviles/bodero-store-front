@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { Loading } from "@/components/Loading";
 import { useContext, useEffect, useState } from "react";
-import { DataContext } from "@/context/DataContext";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -90,7 +89,7 @@ export default function ContactPage() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsUpLoanding(false);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timeout);
   }, []);
