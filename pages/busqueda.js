@@ -1,5 +1,4 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Title from "@/components/stylesComponents/Title";
 import styled, { css } from "styled-components";
 import Layout from "@/components/Layout";
@@ -8,9 +7,15 @@ import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import { grey, secondary } from "@/lib/colors";
 import SearchProducts from "@/components/SearchProducts";
 import { brands } from "@/resource/brandsData";
-import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Pagination from "@/components/Pagination";
+import {
+  refreshProductsFilter,
+  useProductsFilter,
+} from "@/hooks/useProductsFilter";
+import { useRouter } from "next/router";
+import { Loader } from "@/components/Loader";
+import filterSearch from "@/utils/filterSearch";
+import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 
 const ProductsGrid = React.lazy(() => import("@/components/ProductsGrid"));
 
@@ -39,6 +44,20 @@ const Sorted = styled.div`
 const BreadCrumb = styled.span`
   display: inline-flex;
   align-items: center;
+  gap: 5px;
+`;
+const ContentEnd = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 5px;
+  @media screen and (min-width: 640px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    flex-direction: row;
+    gap: 20px;
+  }
 `;
 
 const Text = styled.span`
@@ -57,6 +76,11 @@ const Divider = styled.span`
   color: ${grey};
   padding-left: 0.3rem;
   padding-right: 0.3rem;
+`;
+
+const WithOutContentStyled = styled.div`
+  padding: 10px;
+  height: 250px;
 `;
 
 const FlexStyled = styled.section`
@@ -148,30 +172,41 @@ const SearchPage = () => {
             </BreadCrumb>
           )}
         </FlexStyled>
-        <FlexStyled aria-label="breadcrumb">
-          <Text>
-            Resultados:{" "}
-            <Text $big={1}>
-              {pages > 1 ? "+" : ""}
-              {totalAccumulator}
-            </Text>
-            {" de "}
-            <Text $big={1}>{totalResults}</Text>
-          </Text>
+        <ContentEnd aria-label="breadcrumb">
+          <BreadCrumb>
+            {!search ? (
+              <Text>Resultados de la busqueda</Text>
+            ) : (
+              <>
+                <Text $big={1}>
+                  {pages > 1 ? "+" : ""}
+                  {totalAccumulator}
+                </Text>
+                <Text>{"de"}</Text>
+                <Text $big={1}>{totalResults}</Text>
+              </>
+            )}
+          </BreadCrumb>
           <SearchProducts
             search={search}
             onClear={onClear}
             HandleSearch={HandleSearch}
           />
-        </FlexStyled>
-        <Suspense fallback={<SkeletorProducts />}>
-          <ProductsGrid products={searchResults} />
-        </Suspense>
-        <Pagination
-          totalResults={totalResults}
-          resultsPerPage={resultsPerPage}
-          currentPage={parseInt(pages, 10)}
-        />
+        </ContentEnd>
+        {search ? (
+          <>
+            <Suspense fallback={<SkeletorProducts />}>
+              <ProductsGrid products={searchResults} />
+            </Suspense>
+            <Pagination
+              totalResults={totalResults}
+              resultsPerPage={resultsPerPage}
+              currentPage={parseInt(pages, 10)}
+            />
+          </>
+        ) : (
+          <WithOutContentStyled>SIN BUSQUEDA...</WithOutContentStyled>
+        )}
       </CenterDiv>
     </Layout>
   );
