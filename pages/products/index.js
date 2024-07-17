@@ -13,6 +13,8 @@ import useProducts from "@/hooks/useProducts";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import { useEffect } from "react";
+import Text from "@/components/stylesComponents/HighlightedText";
+import { Loader } from "@/components/Loader";
 
 const CenterDiv = styled.section`
   height: auto;
@@ -24,49 +26,31 @@ const CenterDiv = styled.section`
 `;
 const FlexFooter = styled.div`
   width: 100%;
-  display: flex;
+  display: Flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-`;
-
-const TextFooter = styled.span`
-  color: ${grey};
-  font-size: 0.8rem;
-  padding: 0 10px;
-  @media screen and (min-width: 641px) {
-    padding: 0;
-    font-size: 1rem;
-  }
-  ${(props) =>
-    props.$big &&
-    css`
-      color: ${secondary};
-      font-weight: 500;
-    `};
+  gap: 4px;
+  padding-bottom: ;
 `;
 
 export default function ProductsPage() {
+  const router = useRouter();
+  const { query } = router;
   const {
     data,
     error,
     isLoading,
-    isValidating,
     pages,
     setPages,
-    mutate,
     handleGoBack,
     handlePageChange,
   } = useProducts();
-  const router = useRouter();
-  const { query } = router;
 
   useEffect(() => {
-    if ("page" in query) {
+    if (query.page) {
       const newPage = parseInt(query.page, 10);
       setPages(newPage);
-      filterSearch({ router, page: query.page });
-      mutate();
+      filterSearch({ router, page: newPage });
     }
   }, [query.page]);
 
@@ -110,13 +94,16 @@ export default function ProductsPage() {
                 Siguiente
               </ButtonDisabled>
             </ButtonContainer>
+
             <FlexFooter>
-              <TextFooter>
-                Pagina <TextFooter $big={1}>{pages}</TextFooter> de{" "}
-                <TextFooter $big={1}>{totalPages}, </TextFooter>
-                Total de productos:
-                <TextFooter $big={1}> {data?.totalProducts}</TextFooter>
-              </TextFooter>
+              <Text>Pagina</Text>
+              <Text $big={1}>{isLoading ? <Loader /> : pages}</Text>
+              <Text>de</Text>
+              <Text $big={1}>{isLoading ? <Loader /> : totalPages},</Text>
+              <Text>Total de productos:</Text>
+              <Text $big={1}>
+                {isLoading ? <Loader /> : data?.totalProducts}
+              </Text>
             </FlexFooter>
           </>
         )}

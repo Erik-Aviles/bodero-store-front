@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 const useProducts = () => {
   const router = useRouter();
   const { query } = router;
-  const [pages, setPages] = useState(1);
-  const [products, setProducts] = useState(null);
+  const queryPage = parseInt(query.page, 10);
+  const [pages, setPages] = useState(queryPage || 1);
   const [limit] = useState(20);
 
   const { data, error, isLoading, isValidating, mutate } = useSWR(
@@ -16,9 +16,7 @@ const useProducts = () => {
     fetcher
   );
 
-  useEffect(() => {
-    setProducts(data);
-  }, [data]);
+  console.log(pages);
 
   const handlePageChange = (newPage) => {
     filterSearch({ router, page: newPage });
@@ -39,7 +37,7 @@ const useProducts = () => {
   };
 
   return {
-    data: products,
+    data,
     error,
     isLoading,
     isValidating,
