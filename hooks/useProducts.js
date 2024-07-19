@@ -16,8 +16,6 @@ const useProducts = () => {
     fetcher
   );
 
-  console.log(pages);
-
   const handlePageChange = (newPage) => {
     filterSearch({ router, page: newPage });
     setPages(newPage);

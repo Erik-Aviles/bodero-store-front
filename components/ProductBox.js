@@ -204,7 +204,7 @@ export function ProductBox({ ...product }) {
           <p>{product?.description}</p>
           <Row>
             <ButtonLink
-              href={`/product/${product._id}`}
+              href={`/products/${product._id}`}
               $black={1}
               $outline={1}
               $block={1}

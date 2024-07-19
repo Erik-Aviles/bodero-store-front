@@ -97,7 +97,7 @@ export const AutocompleteItem = ({
             height={70}
           />
         </FigureAutocomplete>
-        <Link href={`/product/${_id}`} onClick={openPanel}>
+        <Link href={`/products/${_id}`} onClick={openPanel}>
           <DivAutocompleteText>
             <h3>{title} </h3>
             <TextComb>

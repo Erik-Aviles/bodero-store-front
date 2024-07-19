@@ -29,5 +29,7 @@ export default async function handle(req, res) {
     } catch (err) {
       return res.status(500).json({ err: err.message });
     }
+  } else {
+    res.status(405).json({ message: "Metodo no  permitido" });
   }
 }

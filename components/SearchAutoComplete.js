@@ -105,8 +105,6 @@ const Text = styled.span`
     props.$big &&
     css`
       color: ${secondary};
-      font-weight: 500;
-      text-transform: uppercase;
     `};
 `;
 
@@ -295,9 +293,13 @@ const SearchAutoComplete = ({ props }) => {
                   </ul>
 
                   <WrapperButtonGoBusqueda>
-                    <ButtonGoBusqueda onClick={handleSearch}>
-                      Ver todo <BsArrowRight />
-                    </ButtonGoBusqueda>
+                    {quantity > 0 ? (
+                      <ButtonGoBusqueda onClick={handleSearch}>
+                        Ver todo <BsArrowRight />
+                      </ButtonGoBusqueda>
+                    ) : (
+                      <Text $big={1}>Intenta con otras palabras</Text>
+                    )}
                   </WrapperButtonGoBusqueda>
                 </WrapperAutocomplete>
               );
