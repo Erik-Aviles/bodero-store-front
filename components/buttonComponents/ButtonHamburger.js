@@ -52,7 +52,9 @@ const ModalFooter = styled.div`
   background-color: #f7fafc;
   padding: 0.4rem 1rem;
 `;
-const SectionButton = styled.section``;
+const SectionButton = styled.section`
+  cursor: pointer;
+`;
 
 const WrapperIcon = styled.i`
   display: block;

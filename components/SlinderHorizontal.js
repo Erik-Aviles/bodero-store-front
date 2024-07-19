@@ -48,6 +48,7 @@ const BreadCrumb = styled.span`
 export default function SlinderHorizontal({ products, isLoading }) {
   const [progress, setProgress] = useState(1);
   const [slideToShow, setSlideToShow] = useState(5);
+  const [slideCounter, setSlideCounter] = useState();
 
   const setSlides = () => {
     if (window.innerWidth <= 1280 && window.innerWidth > 1000) {
@@ -74,6 +75,7 @@ export default function SlinderHorizontal({ products, isLoading }) {
 
   useEffect(() => {
     setProgress(100 / (products?.length - slideToShow + 1));
+    setSlideCounter(slideToShow);
   }, [products?.length, slideToShow]);
 
   const settings = {
@@ -118,6 +120,7 @@ export default function SlinderHorizontal({ products, isLoading }) {
     ],
     afterChange: (current) => {
       setProgress((100 / (products?.length - slideToShow + 1)) * (current + 1));
+      setSlideCounter(slideToShow + current);
     },
   };
 
@@ -125,7 +128,7 @@ export default function SlinderHorizontal({ products, isLoading }) {
     <HorizontalSliderContainer>
       <BreadCrumb>
         <Text>Utimos productos incluidos: </Text>
-        <Text $big>{slideToShow}</Text>
+        <Text $big>{slideCounter}</Text>
         <Text>de</Text>
         <Text $big>{isLoading ? <Loader /> : products.length}</Text>
         <Text>Productos.</Text>
