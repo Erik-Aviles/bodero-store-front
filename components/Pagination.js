@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import { useRouter } from "next/router";
-import { greylight, primary, white } from "@/lib/colors";
+import { greylight, success, white } from "@/lib/colors";
 
 const PaginationContainer = styled.section`
   width: 100%;
   height: auto;
-  padding: 10px 20px 30px;
+  padding: 10px 20px;
   display: flex;
   justify-content: center;
 `;
@@ -24,12 +23,12 @@ const PageButton = styled.button`
   border: 0;
   outline: 1px solid ${greylight};
   border-radius: 3px;
-  background: ${(props) => (props.$active ? "#df5414" : white)};
-  color: ${(props) => (props.$active ? white : "#df5414")};
+  background: ${(props) => (props.$active ? success : white)};
+  color: ${(props) => (props.$active ? white : success)};
   cursor: pointer;
 
   &:hover {
-    background: ${(props) => (props.$active ? primary : "#f0f0f0")};
+    background: ${(props) => (props.$active ? "green" : "#f0f0f0")};
   }
 
   @media (max-width: 600px) {
@@ -38,16 +37,49 @@ const PageButton = styled.button`
   }
 `;
 
-const Pagination = ({ totalResults, resultsPerPage, currentPage }) => {
+const Pagination = ({ currentPage, onPageChange, totalPages, isLoading }) => {
+  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+
+  const handlePageClick = (page) => {
+    if (!isLoading) {
+      onPageChange(page);
+    }
+  };
+
+  return (
+    <PaginationContainer>
+      <PaginationWrapper>
+        {pages.map((page) => (
+          <PageButton
+            key={page}
+            onClick={() => handlePageClick(page)}
+            $active={page === currentPage}
+            disabled={isLoading}
+          >
+            {page}
+          </PageButton>
+        ))}
+      </PaginationWrapper>
+    </PaginationContainer>
+  );
+};
+
+export default Pagination;
+
+/* const Pagination = ({ totalResults, resultsPerPage, currentPage }) => {
   const router = useRouter();
   const totalPages = Math.ceil(totalResults / resultsPerPage);
 
   const handlePageClick = (page) => {
     const query = { ...router.query, page };
-    router.push({
-      pathname: router.pathname,
-      query,
-    });
+    router.push(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   return (
@@ -70,4 +102,4 @@ const Pagination = ({ totalResults, resultsPerPage, currentPage }) => {
   );
 };
 
-export default Pagination;
+export default Pagination; */

@@ -1,18 +1,16 @@
-import styled from "styled-components";
+import backgroundBrand from "../public/images/brands/background.jpg";
+import { BackgroundColor, black } from "@/lib/colors";
+import { brands } from "@/resource/brandsData";
 import Center from "./stylesComponents/Center";
 import Title from "./stylesComponents/Title";
-import { BackgroundColor, black } from "@/lib/colors";
+import styled from "styled-components";
 import Image from "next/image";
-import backgroundBrand from "../public/images/brands/background.jpg";
-import { brands } from "@/resource/brandsData";
-import { useEffect, useState } from "react";
-import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.section`
   position: relative;
   h2 {
-    padding-top: 20px;
+    padding-top: 40px;
     position: relative;
   }
   @media screen and (min-width: 640px) {

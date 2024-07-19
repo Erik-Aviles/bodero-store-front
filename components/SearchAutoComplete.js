@@ -1,21 +1,20 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 import { createAutocomplete } from "@algolia/autocomplete-core";
+import { AutocompleteItem } from "./AutocompleteItem";
+import filterSearch from "@/utils/filterSearch";
 import styled, { css } from "styled-components";
+import { BsArrowRight } from "react-icons/bs";
+import { useRouter } from "next/router";
+import { SearchIcon } from "./Icons";
 import {
-  black,
   grey,
   greylight,
   primary,
   secondary,
   success,
-  warning,
   white,
 } from "@/lib/colors";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { SearchIcon } from "./Icons";
-import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
-import { BsArrowRight } from "react-icons/bs";
 
 const WrapperProductFilter = styled.div`
   width: 100%;
@@ -33,19 +32,7 @@ const Customform = styled.form`
   border-radius: 0.25rem;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
 `;
-const WrapperSearchAutocomplete = styled.div`
-  width: 100%;
-  overflow: auto;
-  margin-top: 10px;
-  z-index: 1;
-  max-height: 380px;
-  position: absolute;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 0.2px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-`;
+
 const WrapperInputAutocomplete = styled.div`
   position: relative;
   display: flex;
@@ -75,6 +62,20 @@ const WrapperInputAutocomplete = styled.div`
     }
   }
 `;
+
+const WrapperSearchAutocomplete = styled.div`
+  width: 100%;
+  overflow: auto;
+  margin-top: 10px;
+  z-index: 1;
+  max-height: 380px;
+  position: absolute;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 0.2px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+`;
 const InputAutocomplete = styled.input`
   width: 100%;
   font-size: 0.8rem;
@@ -87,59 +88,8 @@ const InputAutocomplete = styled.input`
   overflow: visible;
 `;
 
-const DivAutocomplete = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 0.4rem;
-  padding: 0.25rem 0.4rem;
-  &:hover {
-    background-color: #ebe8e8;
-  }
-  &:active {
-    background-color: #ebe8e8;
-  }
-  &:focus {
-    background-color: #ebe8e8;
-  }
-`;
-const DivAutocompleteText = styled.div`
-  white-space: normal;
-  h3 {
-    color: ${black};
-    margin: 0;
-    font-size: 0.7rem;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-  p {
-    text-transform: capitalize;
-    margin: 0;
-    font-size: 0.6rem;
-    color: ${grey};
-  }
-`;
-const FigureAutocomplete = styled.figure`
-  margin: 0;
-  img {
-    width: 3rem;
-    height: 3rem;
-    object-fit: contain;
-  }
-`;
-
-const SpanItemsAutocomplete = styled.span`
-  word-break: break-all;
-  font-size: 0.7rem;
-  ${(props) =>
-    props.$codes &&
-    css`
-      color: ${success};
-    `};
-  ${(props) =>
-    props.$comp &&
-    css`
-      color: #365c9b;
-    `};
+const WrapperAutocomplete = styled.section`
+  position: relative;
 `;
 
 const BreadCrumb = styled.span`
@@ -147,19 +97,7 @@ const BreadCrumb = styled.span`
   display: inline-flex;
   align-items: center;
 `;
-const TextComb = styled.span`
-  display: flex;
-  align-items: end;
-  gap: 10px;
-  font-size: 0.6rem;
-  color: ${grey};
-  small {
-    font-size: 0.65rem;
-    color: ${warning};
-    font-weight: 500;
-    text-transform: capitalize;
-  }
-`;
+
 const Text = styled.span`
   font-size: 0.8rem;
   color: ${grey};
@@ -167,13 +105,9 @@ const Text = styled.span`
     props.$big &&
     css`
       color: ${secondary};
-      font-weight: 500;
-      text-transform: uppercase;
     `};
 `;
-const WrapperAutocomplete = styled.section`
-  position: relative;
-`;
+
 const WrapperButtonGoBusqueda = styled.div`
   position: sticky;
   bottom: 10px;
@@ -198,52 +132,15 @@ const ButtonGoBusqueda = styled.button`
   }
 `;
 
-const AutocompleteItem = ({
-  _id,
-  title,
-  images,
-  compatibility,
-  quantity,
-  brand,
-  openPanel,
-}) => {
-  return (
-    <li>
-      <DivAutocomplete>
-        <FigureAutocomplete>
-          <img src={images?.[0] ? images?.[0] : "/logo.jpg"} alt={title} />
-        </FigureAutocomplete>
-        <Link href={`/product/${_id}`} onClick={openPanel}>
-          <DivAutocompleteText>
-            <h3>{title} </h3>
-            <TextComb>
-              {"Marca: "}
-              <small> {brand}</small>
-              {"Cant: "}
-              <small>{quantity}</small>
-            </TextComb>
-            {compatibility?.map((ctd, index) => (
-              <p key={index}>
-                {ctd.title} {": "}
-                <SpanItemsAutocomplete $comp={1}>
-                  {ctd.model}
-                </SpanItemsAutocomplete>
-              </p>
-            ))}
-          </DivAutocompleteText>
-        </Link>
-      </DivAutocomplete>
-    </li>
-  );
-};
-
 const SearchAutoComplete = ({ props }) => {
   const router = useRouter();
   const path = router.pathname;
   const formRef = useRef(null);
   const inputRef = useRef(null);
   const panelRef = useRef(null);
-
+  const pageSize = 10;
+  const minLength = 3;
+  const [pag, setPag] = useState(1);
   const [autocompleteState, setAutocompleteState] = useState({
     collections: [],
     isOpen: false,
@@ -265,29 +162,39 @@ const SearchAutoComplete = ({ props }) => {
   }, [autocompleteState.isOpen]);
 
   const openPanel = () => {
-    setAutocompleteState(!autocompleteState.isOpen);
+    setAutocompleteState((prev) => ({
+      ...prev,
+      isOpen: !prev.isOpen,
+    }));
   };
 
   const autocomplete = useMemo(
     () =>
       createAutocomplete({
+        id: "autocomplete-search",
         enterKeyHint: "search",
-        autoFocus: path !== "/busqueda" ? true : false,
+        autoFocus: path === "/busqueda" ? false : true,
         placeholder: "Búsqueda de productos...",
-        onStateChange: ({ state }) => setAutocompleteState(state),
+        onStateChange: ({ state }) => {
+          setAutocompleteState((prev) => ({
+            ...prev,
+            collections: state.collections,
+            isOpen: state.isOpen,
+          }));
+        },
         getSources: () => [
           {
             sourceId: "search-api",
             getItems: async ({ query }) => {
               if (!!query) {
-                const abortController = new AbortController();
-                const signal = abortController.signal;
-
                 try {
-                  const data = await fetchProductsFilter(query, 3, signal);
-                  const fewProducts = data.slice(0, 8);
-                  const products = { fewProducts, data };
-                  return products;
+                  const data = await fetchProductsFilter(
+                    query,
+                    minLength,
+                    pag,
+                    pageSize
+                  );
+                  return data;
                 } catch (error) {
                   if (error.name !== "Error de cancelación") {
                     console.error(
@@ -311,15 +218,35 @@ const SearchAutoComplete = ({ props }) => {
   const formProps = autocomplete.getFormProps({
     inputElement: inputRef.current,
   });
+
   const inputProps = autocomplete.getInputProps({
     inputElement: inputRef.current,
+    onBlur: () => {
+      setTimeout(() => {
+        if (document.activeElement !== inputRef.current) {
+          setAutocompleteState((prev) => ({
+            ...prev,
+            isOpen: false,
+          }));
+        }
+      }, 0);
+    },
   });
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (inputRef?.current?.value) {
-      setAutocompleteState(!autocompleteState.isOpen);
-      router.push(`/busqueda?q=${inputRef?.current?.value}`);
+    const queryItems = inputRef?.current?.value;
+    if (queryItems) {
+      setAutocompleteState((prev) => ({
+        ...prev,
+        isOpen: false,
+      }));
+      filterSearch({
+        router,
+        pathname: "/busqueda",
+        q: queryItems.toLowerCase(),
+        page: 1,
+      });
     } else {
       router.push("/busqueda");
     }
@@ -339,20 +266,21 @@ const SearchAutoComplete = ({ props }) => {
             ref={panelRef}
             {...autocomplete.getPanelProps()}
           >
-            {autocompleteState.collections.map((colecction, index) => {
+            {autocompleteState.collections.flatMap((colecction, index) => {
               const { items } = colecction;
-              const quantityTotal = items[0].data.length;
-              const fewProducts = items[0].fewProducts;
-              const quantity = fewProducts.length;
+              const quantity = items?.[0].totalProducts;
+              const fewProducts = items?.[0].products;
 
               return (
                 <WrapperAutocomplete key={`section-${index}`}>
                   <ul {...autocomplete.getListProps()}>
                     <BreadCrumb>
                       <Text>
-                        {quantityTotal < 3
+                        {minLength < 3
                           ? "Buscando..."
-                          : `Resultados:  ${quantity} de ${quantityTotal}`}
+                          : `Resultados:  ${
+                              quantity < pageSize ? quantity : pageSize
+                            } de ${quantity}`}
                       </Text>
                     </BreadCrumb>
                     {fewProducts?.map((item) => (
@@ -363,13 +291,16 @@ const SearchAutoComplete = ({ props }) => {
                       />
                     ))}
                   </ul>
-                  {quantityTotal > 8 && (
-                    <WrapperButtonGoBusqueda>
+
+                  <WrapperButtonGoBusqueda>
+                    {quantity > 0 ? (
                       <ButtonGoBusqueda onClick={handleSearch}>
                         Ver todo <BsArrowRight />
                       </ButtonGoBusqueda>
-                    </WrapperButtonGoBusqueda>
-                  )}
+                    ) : (
+                      <Text $big={1}>Intenta con otras palabras</Text>
+                    )}
+                  </WrapperButtonGoBusqueda>
                 </WrapperAutocomplete>
               );
             })}

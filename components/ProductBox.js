@@ -1,15 +1,15 @@
-import styled, { css } from "styled-components";
 import { black, error, grey, success, white, white2 } from "@/lib/colors";
-import ButtonLink from "./buttonComponents/ButtonLink";
 import { AddToCartIcon, RemoveFromCartIcon } from "./Icons";
-import logo from "../public/logo.jpg";
+import { useContext, useEffect, useState } from "react";
+import ProductDetailsModal from "./ProductDetailsModal";
+import ButtonLink from "./buttonComponents/ButtonLink";
+import { CartContext } from "@/context/CartContext";
 import awsS3Loader from "./loaderes/awsS3Loader";
 import localLoader from "./loaderes/localLoader";
-import { useContext, useEffect, useState } from "react";
-import { CartContext } from "@/context/CartContext";
-import Image from "next/image";
-import ProductDetailsModal from "./ProductDetailsModal";
+import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
+import logo from "../public/logo.jpg";
+import Image from "next/image";
 
 const ProductWrapper = styled.div`
   width: 9rem;
@@ -148,7 +148,7 @@ export function ProductBox({ ...product }) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [showProductDetailsModal]);
+  }, [showProductDetailsModal, path]);
 
   const toggleProductDetailsModal = () => {
     setShowProductDetailsModal(!showProductDetailsModal);
@@ -204,7 +204,7 @@ export function ProductBox({ ...product }) {
           <p>{product?.description}</p>
           <Row>
             <ButtonLink
-              href={`/product/${product._id}`}
+              href={`/products/${product._id}`}
               $black={1}
               $outline={1}
               $block={1}

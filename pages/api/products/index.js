@@ -8,8 +8,8 @@ export default async function handle(req, res) {
 
   if (method === "GET") {
     try {
-      const page = query.page * 1 || 1;
-      const limit = query.limit * 1 || 20;
+      const page = parseInt(query.page) || 1;
+      const limit = parseInt(query.limit) || 20;
       const skip = (page - 1) * limit;
       const products = await Product.find({}, null, {
         sort: { _id: -1 },
@@ -19,12 +19,17 @@ export default async function handle(req, res) {
         .select(
           "title salePrice brand code codeWeb codeEnterprise images compatibility quantity"
         );
+      const totalProducts = await Product.countDocuments();
 
-      return res
-        .status(200)
-        .json({ status: "success", result: products.length, products });
+      return res.status(200).json({
+        result: products.length,
+        totalProducts,
+        products,
+      });
     } catch (err) {
       return res.status(500).json({ err: err.message });
     }
+  } else {
+    res.status(405).json({ message: "Metodo no  permitido" });
   }
 }

@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   overflow: hidden;
   position: relative;
   @media screen and (max-width: 768px) {
-    height: auto;
+    height: 88.55px;
   }
 `;
 

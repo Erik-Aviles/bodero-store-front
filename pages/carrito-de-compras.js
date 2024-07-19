@@ -148,7 +148,7 @@ export default function CartPage() {
 
       const timeout = setTimeout(() => {
         router.push("/");
-      }, 2000);
+      }, 1000);
       return () => clearTimeout(timeout);
     } catch (error) {
       showNotification({

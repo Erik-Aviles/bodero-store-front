@@ -21,18 +21,23 @@ const WhiteBox = styled.div`
 `;
 
 const BigImageWrapper = styled.div`
+  min-width: 250px;
+  min-height: 250px;
   padding: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: ${white};
   border: 1px solid ${greylight};
   border-radius: 5px;
+  @media screen and (min-width: 480px) {
+    min-width: 328.4px;
+    min-height: 328.4px;
+  }
 `;
 
 const BigImage = styled(Image)`
   max-width: 100%;
-  height: auto;
-  padding: 5px;
 `;
 
 const ImageButtons = styled.div`
@@ -50,6 +55,8 @@ const ImageButton = styled.div`
   align-items: center;
   width: 70px;
   height: 70px;
+  padding: 5px;
+  background-color: ${white};
   outline: 1px solid ${greylight};
   cursor: pointer;
   border-radius: 5px;
@@ -61,55 +68,52 @@ const ImageButton = styled.div`
       `}
 `;
 
-const SmallImage = styled.img`
+const SmallImage = styled(Image)`
   max-width: 100%;
-  height: auto;
-  padding: 5px;
-  background-color: ${white};
-  border-radius: 5px;
 `;
 
-export default function ProductImages({ images, name }) {
+export default function ProductImages({ images, name, isLoading }) {
   const [activeImage, setActiveImage] = useState(images?.[0]);
 
-  const [isUpLoanding, setIsUpLoanding] = useState(true);
-
   useEffect(() => {
-    setActiveImage(images.length > 0 ? images?.[0] : logo);
+    setActiveImage(images?.length > 0 ? images?.[0] : logo);
   }, [images]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsUpLoanding(false);
-    }, 2000);
-    return () => clearTimeout(timeout);
-  }, []);
 
   return (
     <WhiteBox>
       <BigImageWrapper>
-        <BigImage
-          loader={activeImage === logo ? localLoader : awsS3Loader}
-          src={activeImage}
-          alt={name}
-          width={300}
-          height={300}
-        />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <BigImage
+            loader={activeImage === logo ? localLoader : awsS3Loader}
+            src={activeImage}
+            alt={name}
+            width={300}
+            height={300}
+          />
+        )}
       </BigImageWrapper>
       <ImageButtons>
-        {isUpLoanding
-          ? images.map((image) => (
+        {isLoading
+          ? images?.map((image) => (
               <ImageButton key={image}>
                 <Spinner />
               </ImageButton>
             ))
-          : images.map((image) => (
+          : images?.map((image) => (
               <ImageButton
                 key={image}
                 $actived={image === activeImage}
                 onClick={() => setActiveImage(image)}
               >
-                <SmallImage src={image} alt={name} width={70} height={70} />
+                <SmallImage
+                  loader={image && awsS3Loader}
+                  src={image}
+                  alt={name}
+                  width={70}
+                  height={70}
+                />
               </ImageButton>
             ))}
       </ImageButtons>

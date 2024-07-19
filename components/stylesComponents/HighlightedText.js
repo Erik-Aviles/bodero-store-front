@@ -22,6 +22,9 @@ const Text = styled.span`
       font-size: 1rem;
       padding: 10px 15px;
     `};
+  @media screen and (min-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
 
 export default Text;

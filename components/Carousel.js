@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
+import { dataCarousel } from "@/resource/carouselData";
 
 const SliderContainer = styled.div`
   position: relative;
@@ -48,16 +49,17 @@ const Img = styled(Image)`
   object-fit: contain;
 `;
 
-const Carousel = ({ data }) => {
+const Carousel = () => {
   const [index, setIndex] = useState(0);
+  const dataCarouselLengthRef = useRef(dataCarousel.length);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % data.length);
+      setIndex((prevIndex) => (prevIndex + 1) % dataCarouselLengthRef.current);
     }, 4000);
 
     return () => clearInterval(intervalId);
-  }, [data.length]);
+  }, []);
 
   const goToSlide = (slideIndex) => {
     setIndex(slideIndex);
@@ -67,7 +69,7 @@ const Carousel = ({ data }) => {
     <SliderContainer>
       <ContainerImages>
         <List style={{ transform: `translateX(-${index * 100}%)` }}>
-          {data.map((item, index) => (
+          {dataCarousel.map((item, index) => (
             <li key={item.id}>
               {index === 0 ? (
                 <Img
@@ -90,7 +92,7 @@ const Carousel = ({ data }) => {
         </List>
       </ContainerImages>
       <DotsContainer>
-        {data.map((_, idx) =>
+        {dataCarousel.map((_, idx) =>
           idx === index ? (
             <DotContainerItem
               key={idx}

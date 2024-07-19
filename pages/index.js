@@ -1,30 +1,33 @@
-import { Loading } from "@/components/Loading";
+import CategoriesInStar from "@/components/categories/CategoriesInStar";
 import NewProducts from "@/components/NewProducts";
-import { mongooseConnect } from "@/lib/mongoose";
+import { Loading } from "@/components/Loading";
 import Carousel from "@/components/Carousel";
-import { Product } from "@/models/Product";
+import { fetcher } from "@/utils/fetcher";
 import Brands from "@/components/Brands";
 import Layout from "@/components/Layout";
-import { useEffect, useState } from "react";
-import { dataCarousel } from "@/resource/carouselData";
 import styled from "styled-components";
-import CategoriesInStar from "@/components/categories/CategoriesInStar";
+import { useState } from "react";
+import useSWR from "swr";
 
 const BackgroundColor = styled.div`
   background-color: #f7f7f7;
 `;
 
-export default function HomePage({ newProducts }) {
-  const [isUpLoanding, setIsUpLoanding] = useState(true);
+export default function HomePage() {
+  const [limit] = useState(10);
+  const {
+    data: pro,
+    isLoading: isLoadingProducts,
+    mutate: mutateProducts,
+  } = useSWR(`/api/products?limit=${limit}`, fetcher);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsUpLoanding(false);
-    }, 2000);
-    return () => clearTimeout(timeout);
-  }, []);
+  const {
+    data: cat,
+    isLoading: isLoadingCategories,
+    mutate: mutateCategories,
+  } = useSWR(`/api/categories/pagination?limit=${limit}`, fetcher);
 
-  if (isUpLoanding) {
+  if (isLoadingProducts && isLoadingCategories) {
     return <Loading />;
   }
 
@@ -34,27 +37,11 @@ export default function HomePage({ newProducts }) {
       description="Tienda de repuestos y accesorios originales de moto en Quevedo"
     >
       <BackgroundColor>
-        <Carousel data={dataCarousel} />
-        <CategoriesInStar />
-        <NewProducts products={newProducts} />
+        <Carousel />
+        <CategoriesInStar categories={cat} isLoading={isLoadingCategories} />
+        <NewProducts products={pro?.products} isLoading={isLoadingProducts} />
         <Brands />
       </BackgroundColor>
     </Layout>
   );
-}
-
-export async function getServerSideProps() {
-  await mongooseConnect();
-  const newProducts = await Product.find({}, null, {
-    sort: { _id: -1 },
-    limit: 10,
-  }).select(
-    "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
-  );
-
-  return {
-    props: {
-      newProducts: JSON.parse(JSON.stringify(newProducts)),
-    },
-  };
 }

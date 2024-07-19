@@ -1,7 +1,11 @@
 export function removeAccents(text) {
-  const withoutAccents = text.normalize("NFD").replace(/[\u0300-\u036f]/gi, "");
-  return withoutAccents.replace(/[-\/.]/g, "");
+  const withoutAccents = text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f^]/gi, "")
+    .replace(/[\,%+\:;*]/g, "");
+  return withoutAccents;
 }
+
 export function removePluralEnding(word) {
   if (word.endsWith("es")) {
     return word.slice(0, -2); // Elimina "es" al final de la palabra

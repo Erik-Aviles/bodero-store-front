@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
-import { black, primary, white } from "@/lib/colors";
+import { black, primary } from "@/lib/colors";
 import {
   NextArrowCategory,
   PrevArrowCategory,
 } from "./buttonComponents/ArrowCat";
 import { useRouter } from "next/router";
+import { Loader } from "./Loader";
 
 const CategoryBox = styled.div`
   height: auto;
@@ -24,7 +25,7 @@ const CategoryBox = styled.div`
   }
 `;
 
-const SlinderCategories = ({ categories }) => {
+const SlinderCategories = ({ categories, isLoading }) => {
   const [category, setCategory] = useState("");
 
   const router = useRouter();
@@ -51,17 +52,21 @@ const SlinderCategories = ({ categories }) => {
 
   return (
     <Slider {...settings}>
-      {categories?.length > 0 &&
-        categories.map((item) => (
-          <CategoryBox
-            key={item._id}
-            title={item.name}
-            value={category}
-            onClick={() => handle(item._id)}
-          >
-            <p>{item.name.toUpperCase()}</p>
-          </CategoryBox>
-        ))}
+      {categories?.categories &&
+        categories.categories.map((item) =>
+          isLoading ? (
+            <Loader key={item._id} />
+          ) : (
+            <CategoryBox
+              key={item._id}
+              title={item.name}
+              value={category}
+              onClick={() => handle(item._id)}
+            >
+              <p>{item.name.toUpperCase()}</p>
+            </CategoryBox>
+          )
+        )}
     </Slider>
   );
 };

@@ -1,15 +1,21 @@
-import Center from "./stylesComponents/Center";
+import styled from "styled-components";
 import SlinderHorizontal from "./SlinderHorizontal";
 import Title from "./stylesComponents/Title";
-import { BackgroundColor } from "@/lib/colors";
 
-export default function NewProducts({ products }) {
+const ContainerSesion = styled.section`
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 0 40px;
+  @media screen and (min-width: 640px) {
+    padding: 20px;
+  }
+`;
+
+export default function NewProducts({ products, isLoading }) {
   return (
-    <Center>
-      <section>
-        <Title>Productos nuevos</Title>
-        <SlinderHorizontal products={products} />
-      </section>
-    </Center>
+    <ContainerSesion>
+      <Title>Productos nuevos</Title>
+      <SlinderHorizontal products={products} isLoading={isLoading} />
+    </ContainerSesion>
   );
 }

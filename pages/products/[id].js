@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
 import { mongooseConnect } from "@/lib/mongoose";
 import {
   black,
@@ -20,14 +19,17 @@ import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Layout from "@/components/Layout";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { useContext } from "react";
-import { DataContext } from "@/context/DataContext";
 import {
   AddToCartIcon,
   CardIcon,
   RemoveFromCartIcon,
 } from "@/components/Icons";
-import Link from "next/link";
 import { CartContext } from "@/context/CartContext";
+import { fetcher } from "@/utils/fetcher";
+import useSWR from "swr";
+import useProduct from "@/hooks/useProduct";
+import { useRouter } from "next/router";
+import Text from "@/components/stylesComponents/HighlightedText";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -147,15 +149,17 @@ const ButtonCard = styled.button`
   }
 `;
 
-export default function ProductPage({ product }) {
+export default function ProductPage() {
   const { addProduct, cartProducts, removeOneProduct } =
     useContext(CartContext);
   const router = useRouter();
+  const { id } = router.query;
+  const { product, isLoading, isError } = useProduct(id);
 
   const checkProductInCart = (product) => {
     return cartProducts.some((item) => item === product);
   };
-  const isProductInCart = checkProductInCart(product._id);
+  const isProductInCart = checkProductInCart(product?._id);
 
   const handleGoBack = (e) => {
     e.preventDefault();
@@ -163,14 +167,24 @@ export default function ProductPage({ product }) {
   };
 
   return (
-    <Layout title={`B.R.D | ${product?.title?.toUpperCase()}`}>
+    <Layout
+      title={
+        isLoading
+          ? "B.R.D | Cargando..."
+          : "B.R.D | " + product?.title?.toUpperCase()
+      }
+    >
       <CenterDiv>
         <FlexStyled>
-          <BackButton onClick={handleGoBack} />
+          <BackButton onClick={handleGoBack} /> <Text>Volver</Text>
         </FlexStyled>
         <ColWrapper>
           <Row>
-            <ProductImages images={product?.images} name={product?.title} />
+            <ProductImages
+              images={product?.images}
+              name={product?.title}
+              isLoading={isLoading}
+            />
           </Row>
           <Row>
             <InfoTitle>
@@ -186,7 +200,7 @@ export default function ProductPage({ product }) {
                 <span style={{ color: success, fontSize: 20 }}>
                   Precio Venta:
                 </span>
-                <Price>${product.salePrice}</Price>
+                <Price>${product?.salePrice}</Price>
               </div>
             </Info>
             <Info>
@@ -232,7 +246,8 @@ export default function ProductPage({ product }) {
     </Layout>
   );
 }
-export async function getServerSideProps(context) {
+
+/* export async function getServerSideProps(context) {
   await mongooseConnect();
   const { id } = context.query;
   const product = await Product.findById(id);
@@ -243,3 +258,4 @@ export async function getServerSideProps(context) {
     },
   };
 }
+ */
