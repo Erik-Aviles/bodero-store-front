@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
-import { fetcher } from "@/utils/fetcher";
-import useSWR from "swr";
 import filterSearch from "@/utils/filterSearch";
+import { fetcher } from "@/utils/fetcher";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import useSWR from "swr";
 
-const useProducts = () => {
+const useProducts = (limit) => {
   const router = useRouter();
   const { query } = router;
   const queryPage = parseInt(query.page, 10);
   const [pages, setPages] = useState(queryPage || 1);
-  const [limit] = useState(20);
 
   const { data, error, isLoading, isValidating, mutate } = useSWR(
     `/api/products?page=${pages}&limit=${limit}`,

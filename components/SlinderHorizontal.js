@@ -46,6 +46,8 @@ const BreadCrumb = styled.span`
 `;
 
 export default function SlinderHorizontal({ products, isLoading }) {
+  const items = products?.products;
+  const itemsSize = products?.result;
   const [progress, setProgress] = useState(1);
   const [slideToShow, setSlideToShow] = useState(5);
   const [slideCounter, setSlideCounter] = useState();
@@ -74,9 +76,9 @@ export default function SlinderHorizontal({ products, isLoading }) {
   }, []);
 
   useEffect(() => {
-    setProgress(100 / (products?.length - slideToShow + 1));
+    setProgress(100 / (itemsSize - slideToShow + 1));
     setSlideCounter(slideToShow);
-  }, [products?.length, slideToShow]);
+  }, [itemsSize, slideToShow]);
 
   const settings = {
     arrows: true,
@@ -119,7 +121,7 @@ export default function SlinderHorizontal({ products, isLoading }) {
       },
     ],
     afterChange: (current) => {
-      setProgress((100 / (products?.length - slideToShow + 1)) * (current + 1));
+      setProgress((100 / (itemsSize - slideToShow + 1)) * (current + 1));
       setSlideCounter(slideToShow + current);
     },
   };
@@ -130,13 +132,13 @@ export default function SlinderHorizontal({ products, isLoading }) {
         <Text>Utimos productos incluidos: </Text>
         <Text $big>{slideCounter}</Text>
         <Text>de</Text>
-        <Text $big>{isLoading ? <Loader /> : products.length}</Text>
+        <Text $big>{isLoading ? <Loader /> : itemsSize}</Text>
         <Text>Productos.</Text>
       </BreadCrumb>{" "}
       <SliderContainer>
         <Slider {...settings}>
-          {products?.length > 0 &&
-            products.map((product) => (
+          {itemsSize > 0 &&
+            items.map((product) => (
               <ProductBox key={product._id} {...product} />
             ))}
         </Slider>

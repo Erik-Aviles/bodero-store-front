@@ -1,0 +1,28 @@
+import filterSearch from "@/utils/filterSearch";
+import { fetcher } from "@/utils/fetcher";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import useSWR from "swr";
+
+export default function useCategories(pageSize) {
+  const router = useRouter();
+  const { query } = router;
+  const queryPage = parseInt(query.page, 10) || 1;
+  const [pageCat, setPageCat] = useState(queryPage);
+
+  const apiUrlCategories = `/api/categories/pagination?limit=${pageSize}&page=${pageCat}`;
+
+  const { data, error, isLoading, isValidating, mutate } = useSWR(
+    apiUrlCategories,
+    fetcher
+  );
+
+  return {
+    categories: data,
+    isLoadingCategories: isLoading,
+    isErrorCategories: error,
+    pageCat,
+    setPageCat,
+    mutateCategories: mutate,
+  };
+}

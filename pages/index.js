@@ -1,13 +1,13 @@
 import CategoriesInStar from "@/components/categories/CategoriesInStar";
 import NewProducts from "@/components/NewProducts";
+import useCategories from "@/hooks/useCategories";
 import { Loading } from "@/components/Loading";
+import useProducts from "@/hooks/useProducts";
 import Carousel from "@/components/Carousel";
-import { fetcher } from "@/utils/fetcher";
 import Brands from "@/components/Brands";
 import Layout from "@/components/Layout";
 import styled from "styled-components";
 import { useState } from "react";
-import useSWR from "swr";
 
 const BackgroundColor = styled.div`
   background-color: #f7f7f7;
@@ -15,17 +15,8 @@ const BackgroundColor = styled.div`
 
 export default function HomePage() {
   const [limit] = useState(10);
-  const {
-    data: pro,
-    isLoading: isLoadingProducts,
-    mutate: mutateProducts,
-  } = useSWR(`/api/products?limit=${limit}`, fetcher);
-
-  const {
-    data: cat,
-    isLoading: isLoadingCategories,
-    mutate: mutateCategories,
-  } = useSWR(`/api/categories/pagination?limit=${limit}`, fetcher);
+  const { data: products, isLoadingProducts } = useProducts(limit);
+  const { categories, isLoadingCategories } = useCategories(limit);
 
   if (isLoadingProducts && isLoadingCategories) {
     return <Loading />;
@@ -38,8 +29,11 @@ export default function HomePage() {
     >
       <BackgroundColor>
         <Carousel />
-        <CategoriesInStar categories={cat} isLoading={isLoadingCategories} />
-        <NewProducts products={pro?.products} isLoading={isLoadingProducts} />
+        <CategoriesInStar
+          categories={categories}
+          isLoading={isLoadingCategories}
+        />
+        <NewProducts products={products} isLoading={isLoadingProducts} />
         <Brands />
       </BackgroundColor>
     </Layout>
