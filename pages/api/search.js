@@ -57,24 +57,43 @@ export default async function handle(req, res) {
 
   if (q) {
     try {
+      const removeSpecialChars = (str) => str.replace(/[\/()\-+. ]/g, "");
+
+      // Convertir el término de búsqueda a minúsculas y eliminar caracteres especiales.
+      const processedSearch = removeSpecialChars(q.toLowerCase());
+
+      // Convertir el término de búsqueda en partes, eliminando acentos y caracteres especiales.
       const searchParts = removeAccents(q.toLowerCase())
         .split(" ")
         .filter((part) => !stopwords.includes(part))
         .map((part) => removePluralEnding(part));
 
+      // Crear la consulta de búsqueda.
       const searchQuery = {
-        $and: searchParts.map((part) => ({
-          $or: [
-            { title: { $regex: part, $options: "i" } },
-            { code: { $regex: part, $options: "i" } },
-            { codeWeb: { $regex: part, $options: "i" } },
-            { codeEnterprise: { $regex: part, $options: "i" } },
-            { brand: { $regex: part, $options: "i" } },
-            { "compatibility.model": { $regex: part, $options: "i" } },
-            { "compatibility.title": { $regex: part, $options: "i" } },
-          ],
-        })),
+        $or: [
+          { title: q },
+          { code: q },
+          { codeWeb: q },
+          { codeEnterprise: q },
+          { brand: q },
+          { "compatibility.model": q },
+          { "compatibility.title": q },
+          {
+            $and: searchParts.map((part) => ({
+              $or: [
+                { title: { $regex: part, $options: "i" } },
+                { code: { $regex: part, $options: "i" } },
+                { codeWeb: { $regex: part, $options: "i" } },
+                { codeEnterprise: { $regex: part, $options: "i" } },
+                { brand: { $regex: part, $options: "i" } },
+                { "compatibility.model": { $regex: part, $options: "i" } },
+                { "compatibility.title": { $regex: part, $options: "i" } },
+              ],
+            })),
+          },
+        ],
       };
+
       const totalProducts = await Product.countDocuments(searchQuery);
 
       const features = new APIfeatures(
