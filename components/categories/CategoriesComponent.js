@@ -6,30 +6,16 @@ import useSWR from "swr";
 
 const Wrapper = styled.div`
   width: 100%;
+  height: 45px;
   display: flex;
   padding: 0 25px;
   background-color: ${black};
-  box-shadow: none;
-  white-space: nowrap;
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
 `;
 
 const DivContainert = styled.div`
   width: 100%;
-  height: auto;
   position: relative;
-
-  @media screen and (min-width: 767px) {
-    font-size: 16px;
-    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
-  }
-  @media screen and (max-width: 640px) {
-    position: fixed;
-    z-index: 1;
-    margin-top: 75.63px;
-  }
 `;
 
 const CategoriesComponent = () => {
