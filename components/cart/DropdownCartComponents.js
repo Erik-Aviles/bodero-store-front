@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import styled, { css } from "styled-components";
-import TableCart from "./TableCart";
 import ButtonLink from "../buttonComponents/ButtonLink";
 import { CartContext } from "@/context/CartContext";
+import styled, { css } from "styled-components";
+import React, { useContext } from "react";
+import TableCart from "./TableCart";
 import { white } from "@/lib/colors";
 
 const Container = styled.div`
@@ -61,7 +61,7 @@ const DropdownCartComponents = () => {
         <WrapperButtonCart>
           <ButtonLink
             onClick={dropdownCart}
-            href={"/busqueda"}
+            href={"/"}
             $black={1}
             $outline={1}
             $block={1}

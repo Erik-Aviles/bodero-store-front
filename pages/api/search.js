@@ -40,7 +40,7 @@ export default async function handle(req, res) {
 
       const features = new APIfeatures(
         Product.find({ category: category }).select(
-          "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
+          "title salePrice offerPrice brand code codeWeb codeEnterprise images compatibility quantity category"
         ),
         req.query
       )
@@ -98,7 +98,7 @@ export default async function handle(req, res) {
 
       const features = new APIfeatures(
         Product.find(searchQuery).select(
-          "title salePrice brand code codeWeb codeEnterprise images compatibility quantity category"
+          "title salePrice offerPrice brand code codeWeb codeEnterprise images compatibility quantity category"
         ),
         req.query
       )

@@ -1,9 +1,10 @@
+import { dataCarousel } from "@/resource/carouselData";
 import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
-import { dataCarousel } from "@/resource/carouselData";
 
 const SliderContainer = styled.div`
+  width: 100%;
   position: relative;
 
   @media screen and (min-width: 780px) {

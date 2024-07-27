@@ -174,7 +174,7 @@ const SearchAutoComplete = ({ props }) => {
         id: "autocomplete-search",
         enterKeyHint: "search",
         autoFocus: path === "/busqueda" ? false : true,
-        placeholder: "Búsqueda de productos...",
+        placeholder: "(CTRL + K) Buscar... ",
         onStateChange: ({ state }) => {
           setAutocompleteState((prev) => ({
             ...prev,
@@ -251,6 +251,24 @@ const SearchAutoComplete = ({ props }) => {
       router.push("/busqueda");
     }
   };
+
+  // Agregar evento de teclado para Ctrl + K
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "k") {
+        event.preventDefault();
+        if (inputRef.current) {
+          inputRef.current.focus(); // Enfocar el input
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <WrapperProductFilter>

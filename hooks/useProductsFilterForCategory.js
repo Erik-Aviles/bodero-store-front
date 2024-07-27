@@ -1,5 +1,5 @@
-import useSWR from "swr";
 import { fetchProductsFilterForCategory } from "@/utils/FetchProductsFilter";
+import useSWR from "swr";
 
 const useProductsFilterForCategory = (category, page = 1, pageSize = 10) => {
   const { data, error, isLoading, isValidating, mutate } = useSWR(

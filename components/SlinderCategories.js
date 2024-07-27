@@ -1,4 +1,4 @@
-import { black, primary } from "@/lib/colors";
+import { primary, white } from "@/lib/colors";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -17,8 +17,11 @@ const CategoryBox = styled.div`
     align-items: center;
     margin: 0;
     padding: 0 10px;
-    font-size: 12px;
-    color: #fff;
+    font-size: 10px;
+    color: ${white};
+    @media screen and (min-width: 769px) {
+      font-size: 12px;
+    }
   }
 `;
 

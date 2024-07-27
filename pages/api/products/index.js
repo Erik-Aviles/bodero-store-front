@@ -17,7 +17,7 @@ export default async function handle(req, res) {
         .skip(skip)
         .limit(limit)
         .select(
-          "title salePrice brand code codeWeb codeEnterprise images compatibility quantity"
+          "title salePrice offerPrice brand code codeWeb codeEnterprise images compatibility quantity"
         );
       const totalProducts = await Product.countDocuments();
 
