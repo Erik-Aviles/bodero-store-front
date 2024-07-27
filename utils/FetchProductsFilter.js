@@ -8,18 +8,11 @@ export async function fetchProductsFilter(
   pageSize = 10
 ) {
   try {
-    if (!search || search.trim() === "" || search.length < minLength) {
+    if (!search || search.length < minLength) {
       return { products: [], totalProducts: 0 };
     }
 
-    const searchParts = removeAccents(search.toLowerCase())
-      .split(" ")
-      .filter((part) => !stopwords.includes(part))
-      .map((part) => removePluralEnding(part));
-
-    const apiUrl = `/api/search?q=${searchParts.join(
-      "+"
-    )}&page=${page}&pageSize=${pageSize}`;
+    const apiUrl = `/api/search?q=${search.toLowerCase()}&page=${page}&pageSize=${pageSize}`;
     const response = await fetch(apiUrl);
 
     if (!response.ok) {

@@ -2,6 +2,7 @@ import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import BackButton from "@/components/buttonComponents/BackButton";
+import Text from "@/components/stylesComponents/HighlightedText";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import Title from "@/components/stylesComponents/Title";
 import ProductsGrid from "@/components/ProductsGrid";
@@ -10,11 +11,10 @@ import styled, { css } from "styled-components";
 import { brands } from "@/resource/brandsData";
 import { grey, secondary } from "@/lib/colors";
 import useProducts from "@/hooks/useProducts";
+import { Loader } from "@/components/Loader";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
-import { useEffect } from "react";
-import Text from "@/components/stylesComponents/HighlightedText";
-import { Loader } from "@/components/Loader";
 
 const CenterDiv = styled.section`
   height: auto;
@@ -36,6 +36,7 @@ const FlexFooter = styled.div`
 export default function ProductsPage() {
   const router = useRouter();
   const { query } = router;
+  const [limit] = useState(20);
   const {
     data,
     error,
@@ -44,7 +45,7 @@ export default function ProductsPage() {
     setPages,
     handleGoBack,
     handlePageChange,
-  } = useProducts();
+  } = useProducts(limit);
 
   useEffect(() => {
     if (query.page) {
@@ -54,7 +55,7 @@ export default function ProductsPage() {
     }
   }, [query.page]);
 
-  const totalPages = data ? Math.ceil(data?.totalProducts / 20) : 1;
+  const totalPages = data ? Math.ceil(data?.totalProducts / limit) : 1;
 
   const hasNextPage = data && data?.result === 20;
 

@@ -1,16 +1,16 @@
 import { NextArrow, PrevArrow } from "./buttonComponents/Arrows";
-import Text from "./stylesComponents/HighlightedText";
-import { greylight, primary } from "@/lib/colors";
+import { grey, greylight, primary, success } from "@/lib/colors";
+import GoButton from "./buttonComponents/GoButton";
+import styled, { css } from "styled-components";
 import { useEffect, useState } from "react";
 import { ProductBox } from "./ProductBox";
-import styled from "styled-components";
 import { Loader } from "./Loader";
 import Slider from "react-slick";
 
 const HorizontalSliderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   width: 100%;
 `;
 
@@ -35,9 +35,10 @@ const Progress = styled.div`
   transition-duration: 150ms;
 `;
 
-const BreadCrumb = styled.span`
+const BreadCrumb = styled.div`
   padding-left: 10px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 4px;
   @media screen and (min-width: 640px) {
@@ -45,7 +46,23 @@ const BreadCrumb = styled.span`
   }
 `;
 
+const Text = styled.span`
+  font-size: 0.8rem;
+  color: ${grey};
+  ${(props) =>
+    props.$success &&
+    css`
+      color: ${success};
+    `};
+
+  @media screen and (min-width: 768px) {
+    font-size: 1.1rem;
+  }
+`;
+
 export default function SlinderHorizontal({ products, isLoading }) {
+  const items = products?.products;
+  const itemsSize = products?.result;
   const [progress, setProgress] = useState(1);
   const [slideToShow, setSlideToShow] = useState(5);
   const [slideCounter, setSlideCounter] = useState();
@@ -74,9 +91,9 @@ export default function SlinderHorizontal({ products, isLoading }) {
   }, []);
 
   useEffect(() => {
-    setProgress(100 / (products?.length - slideToShow + 1));
+    setProgress(100 / (itemsSize - slideToShow + 1));
     setSlideCounter(slideToShow);
-  }, [products?.length, slideToShow]);
+  }, [itemsSize, slideToShow]);
 
   const settings = {
     arrows: true,
@@ -84,42 +101,64 @@ export default function SlinderHorizontal({ products, isLoading }) {
     speed: 500,
     slidesToShow: slideToShow,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    initialSlide: slideToShow,
+    nextArrow: (
+      <NextArrow
+        fill={success}
+        hoverFill="white"
+        hoverBgColor="black"
+        borderColor={success}
+        hoverBorderColor="white"
+      />
+    ),
+    prevArrow: (
+      <PrevArrow
+        fill={success}
+        hoverFill="white"
+        hoverBgColor="black"
+        borderColor={success}
+        hoverBorderColor="white"
+      />
+    ),
     responsive: [
       {
         breakpoint: 1100,
         settings: {
           slideToShow: 5,
+          initialSlide: slideToShow,
         },
       },
       {
         breakpoint: 1000,
         settings: {
           slideToShow: 4,
+          initialSlide: slideToShow,
         },
       },
       {
         breakpoint: 768,
         settings: {
           slideToShow: 3,
+          initialSlide: slideToShow,
         },
       },
       {
         breakpoint: 540,
         settings: {
           slideToShow: 2,
+          initialSlide: slideToShow,
         },
       },
       {
         breakpoint: 280,
         settings: {
           slideToShow: 1,
+          initialSlide: slideToShow,
         },
       },
     ],
     afterChange: (current) => {
-      setProgress((100 / (products?.length - slideToShow + 1)) * (current + 1));
+      setProgress((100 / (itemsSize - slideToShow + 1)) * (current + 1));
       setSlideCounter(slideToShow + current);
     },
   };
@@ -127,16 +166,17 @@ export default function SlinderHorizontal({ products, isLoading }) {
   return (
     <HorizontalSliderContainer>
       <BreadCrumb>
-        <Text>Utimos productos incluidos: </Text>
-        <Text $big>{slideCounter}</Text>
-        <Text>de</Text>
-        <Text $big>{isLoading ? <Loader /> : products.length}</Text>
-        <Text>Productos.</Text>
-      </BreadCrumb>{" "}
+        <Text>
+          Articulo <Text $success={1}>{slideCounter}</Text> de{" "}
+          <Text $success={1}>{isLoading ? <Loader /> : itemsSize}</Text>.
+          Productos nuevos.
+        </Text>
+        <GoButton href="/products" />
+      </BreadCrumb>
       <SliderContainer>
         <Slider {...settings}>
-          {products?.length > 0 &&
-            products.map((product) => (
+          {itemsSize > 0 &&
+            items.map((product) => (
               <ProductBox key={product._id} {...product} />
             ))}
         </Slider>

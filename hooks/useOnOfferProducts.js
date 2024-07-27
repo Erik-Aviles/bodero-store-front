@@ -1,17 +1,17 @@
-import filterSearch from "@/utils/filterSearch";
 import { fetcher } from "@/utils/fetcher";
+import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr";
 
-const useProducts = (limit) => {
+const useOnOfferProducts = (limit) => {
   const router = useRouter();
   const { query } = router;
   const queryPage = parseInt(query.page, 10);
   const [pages, setPages] = useState(queryPage || 1);
 
-  const { data, error, isLoading, isValidating, mutate } = useSWR(
-    `/api/products?page=${pages}&limit=${limit}`,
+  const { data, error, mutate } = useSWR(
+    `/api/products/on-offer?page=${pages}&limit=${limit}`,
     fetcher
   );
 
@@ -32,18 +32,16 @@ const useProducts = (limit) => {
     }
     router.back();
   };
-
   return {
-    data,
-    error,
-    isLoading,
-    isValidating,
+    onOffetProducts: data?.products,
+    totalOnOffetProducts: data?.totalProducts,
+    isLoadingOnOffetProducts: !error && !data,
+    isErrorOnOffetProducts: error,
     pages,
     setPages,
-    mutate,
-    handleGoBack,
     handlePageChange,
+    handleGoBack,
   };
 };
 
-export default useProducts;
+export default useOnOfferProducts;

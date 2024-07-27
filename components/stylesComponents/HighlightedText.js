@@ -1,4 +1,4 @@
-import { grey, secondary } from "@/lib/colors";
+import { grey, secondary, white } from "@/lib/colors";
 import styled, { css } from "styled-components";
 
 const Text = styled.span`
@@ -9,6 +9,13 @@ const Text = styled.span`
     css`
       color: ${secondary};
       font-weight: 500;
+    `};
+  ${(props) =>
+    props.$white &&
+    css`
+      color: ${white};
+      font-weight: 500;
+      font-size: 1.3rem;
     `};
   ${(props) =>
     props.$size === "l" &&

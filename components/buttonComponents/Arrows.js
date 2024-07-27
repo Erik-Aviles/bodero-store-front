@@ -1,70 +1,113 @@
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import styled, { css } from "styled-components";
-import * as React from "react";
-import { black, primary, white } from "@/lib/colors";
+import { LeftArrowIcon, RightArrowIcon } from "../Icons";
+import styled from "styled-components";
 
-const ContainerArrow = styled.div`
+const ContainerArrow = styled.button`
   position: absolute;
-  z-index: 1;
-  top: -55px;
-  ${(props) =>
-    props.$anex &&
-    css`
-      right: 0px;
-    `};
-  ${(props) =>
-    props.$apre &&
-    css`
-      right: 80px;
-    `};
-  @media screen and (max-width: 640px) {
-    top: 345px;
-    ${(props) =>
-      props.$anex &&
-      css`
-        right: 60px;
-      `};
-    ${(props) =>
-      props.$apre &&
-      css`
-        left: 8px;
-      `};
-  }
-`;
-const ArrowBox = styled.div`
-  background-color: ${black};
-  color: ${white};
-  font-size: large;
-  height: 50px;
-  width: 50px;
+  bottom: -40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${({ borderColor }) => borderColor || "transparent"};
+  background-color: ${({ bgColor }) => bgColor || "transparent"};
   border-radius: 50%;
-  display: grid;
-  place-items: center;
+  z-index: 2;
   cursor: pointer;
-  &:hover {
-    color: ${primary};
+
+  svg {
+    fill: ${({ fill }) => fill || "currentColor"};
+    width: 20px;
+    height: 20px;
   }
-  @media screen and (max-width: 640px) {
-    position: absolute;
+  &:hover,
+  &:focus {
+    background-color: ${({ hoverBgColor }) => hoverBgColor || "transparent"};
+    border-color: ${({ hoverBorderColor }) =>
+      hoverBorderColor || "transparent"};
+    svg {
+      fill: ${({ hoverFill }) => hoverFill || "currentColor"};
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  &.prev {
+    left: 8px;
+  }
+
+  &.next {
+    right: 8px;
+  }
+
+  @media screen and (min-width: 640px) {
+    top: 50%;
+    transform: translateY(-50%);
+    &:hover,
+    &:focus {
+      background-color: ${({ hoverBgColor }) => hoverBgColor || "black"};
+      border-color: ${({ hoverBorderColor }) => hoverBorderColor || "white"};
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+    &.prev {
+      left: 0;
+    }
+
+    &.next {
+      right: 0;
+    }
   }
 `;
 
-export const NextArrow = ({ onClick }) => {
+export const PrevArrow = ({
+  fill,
+  hoverFill,
+  bgColor,
+  hoverBgColor,
+  borderColor,
+  hoverBorderColor,
+  onClick,
+}) => {
   return (
-    <ContainerArrow $anex={1} onClick={onClick}>
-      <ArrowBox>
-        <BsChevronRight />
-      </ArrowBox>
+    <ContainerArrow
+      className="prev"
+      onClick={onClick}
+      fill={fill}
+      hoverFill={hoverFill}
+      bgColor={bgColor}
+      hoverBgColor={hoverBgColor}
+      borderColor={borderColor}
+      hoverBorderColor={hoverBorderColor}
+    >
+      <LeftArrowIcon />
     </ContainerArrow>
   );
 };
 
-export const PrevArrow = ({ onClick }) => {
+export const NextArrow = ({
+  fill,
+  hoverFill,
+  bgColor,
+  hoverBgColor,
+  borderColor,
+  hoverBorderColor,
+  onClick,
+}) => {
   return (
-    <ContainerArrow $apre={1} onClick={onClick}>
-      <ArrowBox>
-        <BsChevronLeft />
-      </ArrowBox>
+    <ContainerArrow
+      className="next"
+      onClick={onClick}
+      fill={fill}
+      hoverFill={hoverFill}
+      bgColor={bgColor}
+      hoverBgColor={hoverBgColor}
+      borderColor={borderColor}
+      hoverBorderColor={hoverBorderColor}
+    >
+      <RightArrowIcon />
     </ContainerArrow>
   );
 };
