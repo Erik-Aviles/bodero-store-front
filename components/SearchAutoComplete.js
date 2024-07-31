@@ -286,7 +286,7 @@ const SearchAutoComplete = ({ props, allProducts }) => {
             {autocompleteState.collections.flatMap((colecction, index) => {
               const { items } = colecction;
               const quantity = items?.length;
-
+              const first10Items = items.slice(0, 10);
               return (
                 <WrapperAutocomplete key={`section-${index}`}>
                   <ul {...autocomplete.getListProps()}>
@@ -299,7 +299,7 @@ const SearchAutoComplete = ({ props, allProducts }) => {
                             } de ${quantity}`}
                       </Text>
                     </BreadCrumb>
-                    {items?.map((item) => (
+                    {first10Items?.map((item) => (
                       <AutocompleteItem
                         key={item._id}
                         {...item}
