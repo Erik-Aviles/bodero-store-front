@@ -1,9 +1,11 @@
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import BackButton from "@/components/buttonComponents/BackButton";
-import useProductsFilter from "@/hooks/useProductsFilter";
+import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
+import NotificationContext from "@/context/NotificationContext";
 import SearchProducts from "@/components/SearchProducts";
 import Title from "@/components/stylesComponents/Title";
 import ProductSearch from "@/components/ProductSearch";
-import React, { useEffect, useState } from "react";
+import useProductsAll from "@/hooks/useProductsAll";
 import Pagination from "@/components/Pagination";
 import { brands } from "@/resource/brandsData";
 import filterSearch from "@/utils/filterSearch";
@@ -38,7 +40,7 @@ const Descriptionresults = styled.div`
 `;
 
 const GroupedItems = styled.div`
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 5px;
 `;
@@ -53,6 +55,13 @@ const Text = styled.span`
       color: ${secondary};
       font-weight: 500;
     `};
+`;
+const WrapperProductFilter = styled.div`
+  flex-basis: 70%;
+  @media screen and (min-width: 768px) {
+    padding: 0;
+    flex-basis: 50%;
+  }
 `;
 
 const TextMsg = styled.p`
@@ -79,11 +88,19 @@ const ResultsSession = styled.section`
 `;
 
 const SearchPage = () => {
+  const { showNotification } = useContext(NotificationContext);
+  const pageSize = 20;
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const [allProducts, setAllProducts] = useState([]);
   const [pag, setPag] = useState(1);
-  const pageSize = 20;
   const minLength = 3;
+
+  const { products, isError, isLoading, mutate } = useProductsAll();
+
+  useEffect(() => {
+    setAllProducts(products);
+  }, [products]);
 
   useEffect(() => {
     const query = router.query.q;
@@ -93,15 +110,33 @@ const SearchPage = () => {
     }
   }, [router.query.q, router.query.page]);
 
-  const { products, isLoading, isError, isValidating, totalProducts } =
-    useProductsFilter(search, minLength, pag, pageSize);
+  const filteredAndPaginatedProducts = useMemo(() => {
+    return fetchProductsFilter(allProducts, search, minLength, pag, pageSize);
+  }, [allProducts, search, minLength, pag, pageSize]);
+
+  const pages = Math.ceil(filteredAndPaginatedProducts.length / pageSize);
+
+  const items = useMemo(() => {
+    const start = (pag - 1) * pageSize;
+    const end = start + pageSize;
+
+    return filteredAndPaginatedProducts.slice(start, end);
+  }, [pag, filteredAndPaginatedProducts, pageSize]);
 
   const handleSearch = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const searchQuery = formData.get("search");
-    setSearch(searchQuery.toLowerCase());
-    filterSearch({ router, q: searchQuery.toLowerCase(), page: 1 });
+    if (search) {
+      const formData = new FormData(event.target);
+      const searchQuery = formData.get("search");
+      setSearch(searchQuery.toLowerCase());
+      filterSearch({ router, q: searchQuery.toLowerCase(), page: 1 });
+    } else {
+      showNotification({
+        open: true,
+        msj: "Debe de escribir al menos 3 caracteres",
+        status: "error",
+      });
+    }
   };
 
   const handlePageChange = (pagNum) => {
@@ -112,11 +147,6 @@ const SearchPage = () => {
   const handleGoBack = (e) => {
     e.preventDefault();
     router.back();
-  };
-
-  const onClear = () => {
-    setSearch("");
-    filterSearch({ router, q: "", page: "" });
   };
 
   const brandNames = brands.map((brand) => brand.name);
@@ -149,35 +179,37 @@ const SearchPage = () => {
               <Text>Resultados de la búsqueda</Text>
             ) : (
               <Text>
-                Encontrado (<Text $highlighted={1}>{totalProducts}</Text>)
-                Productos.
+                Encontrado (
+                <Text $highlighted={1}>
+                  {filteredAndPaginatedProducts.length}
+                </Text>
+                ) Productos.
               </Text>
             )}
-
-            <SearchProducts
-              name="search"
-              value={search}
-              onClick={onClear}
-              onSubmit={handleSearch}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <WrapperProductFilter>
+              <SearchProducts
+                name="search"
+                search={search}
+                onSubmit={handleSearch}
+                setSearch={setSearch}
+              />
+            </WrapperProductFilter>
           </Descriptionresults>
         </Wrapper>
 
         <ResultsSession>
-          {products && (
+          {items && (
             <>
               <ProductSearch
-                products={products}
+                products={items}
                 isLoading={isLoading}
-                isValidating={isValidating}
                 isError={isError}
               />
               <Pagination
                 currentPage={pag}
                 onPageChange={handlePageChange}
-                totalPages={Math.ceil(totalProducts / pageSize)}
-                isLoading={isLoading || isValidating}
+                totalPages={pages}
+                isLoading={isLoading}
               />
             </>
           )}

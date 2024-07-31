@@ -108,13 +108,21 @@ export default function CategoriesPage() {
   } = useProductsFilterForCategory(category, pages, pageSize);
 
   useEffect(() => {
-    const resultadoFiltrado = categories?.categories?.find(
-      (cat) => cat._id === queryCategory
-    );
-    setNameCategory(resultadoFiltrado?.name);
-    setPages(queryPage);
-    setCategory(queryCategory);
-  }, [categories, queryCategory, queryPage]);
+    if (categories?.categories && router.query.category) {
+      // Encuentra la categoría que coincide con el queryCategory
+      const resultadoFiltrado = categories.categories.find(
+        (cat) => cat._id === router.query.category
+      );
+
+      setNameCategory(resultadoFiltrado?.name || "");
+      setPages(queryPage);
+      setCategory(router.query.category);
+    } else {
+      setNameCategory("");
+      setPages(queryPage);
+      setCategory(queryCategory);
+    }
+  }, [categories, router.query.category, router.query.page]);
 
   const handlePageChange = (newPage, setPage, mutate) => {
     setPage(newPage);

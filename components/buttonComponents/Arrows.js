@@ -9,8 +9,8 @@ const ContainerArrow = styled.button`
   justify-content: center;
   width: 40px;
   height: 40px;
-  border: 1px solid ${({ borderColor }) => borderColor || "transparent"};
-  background-color: ${({ bgColor }) => bgColor || "transparent"};
+  border: 1px solid ${({ $borderColor }) => $borderColor || "transparent"};
+  background-color: ${({ $bgColor }) => $bgColor || "transparent"};
   border-radius: 50%;
   z-index: 2;
   cursor: pointer;
@@ -22,11 +22,11 @@ const ContainerArrow = styled.button`
   }
   &:hover,
   &:focus {
-    background-color: ${({ hoverBgColor }) => hoverBgColor || "transparent"};
-    border-color: ${({ hoverBorderColor }) =>
-      hoverBorderColor || "transparent"};
+    background-color: ${({ $hoverBgColor }) => $hoverBgColor || "transparent"};
+    border-color: ${({ $hoverBorderColor }) =>
+      $hoverBorderColor || "transparent"};
     svg {
-      fill: ${({ hoverFill }) => hoverFill || "currentColor"};
+      fill: ${({ $hoverFill }) => $hoverFill || "currentColor"};
       width: 15px;
       height: 15px;
     }
@@ -45,8 +45,8 @@ const ContainerArrow = styled.button`
     transform: translateY(-50%);
     &:hover,
     &:focus {
-      background-color: ${({ hoverBgColor }) => hoverBgColor || "black"};
-      border-color: ${({ hoverBorderColor }) => hoverBorderColor || "white"};
+      background-color: ${({ $hoverBgColor }) => $hoverBgColor || "black"};
+      border-color: ${({ $hoverBorderColor }) => $hoverBorderColor || "white"};
       svg {
         width: 15px;
         height: 15px;
@@ -76,11 +76,11 @@ export const PrevArrow = ({
       className="prev"
       onClick={onClick}
       fill={fill}
-      hoverFill={hoverFill}
-      bgColor={bgColor}
-      hoverBgColor={hoverBgColor}
-      borderColor={borderColor}
-      hoverBorderColor={hoverBorderColor}
+      $hoverFill={hoverFill}
+      $bgColor={bgColor}
+      $hoverBgColor={hoverBgColor}
+      $borderColor={borderColor}
+      $hoverBorderColor={hoverBorderColor}
     >
       <LeftArrowIcon />
     </ContainerArrow>
@@ -101,11 +101,11 @@ export const NextArrow = ({
       className="next"
       onClick={onClick}
       fill={fill}
-      hoverFill={hoverFill}
-      bgColor={bgColor}
-      hoverBgColor={hoverBgColor}
-      borderColor={borderColor}
-      hoverBorderColor={hoverBorderColor}
+      $hoverFill={hoverFill}
+      $bgColor={bgColor}
+      $hoverBgColor={hoverBgColor}
+      $borderColor={borderColor}
+      $hoverBorderColor={hoverBorderColor}
     >
       <RightArrowIcon />
     </ContainerArrow>

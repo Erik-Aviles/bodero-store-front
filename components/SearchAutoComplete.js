@@ -132,7 +132,7 @@ const ButtonGoBusqueda = styled.button`
   }
 `;
 
-const SearchAutoComplete = ({ props }) => {
+const SearchAutoComplete = ({ props, allProducts }) => {
   const router = useRouter();
   const path = router.pathname;
   const formRef = useRef(null);
@@ -176,25 +176,24 @@ const SearchAutoComplete = ({ props }) => {
         autoFocus: path === "/busqueda" ? false : true,
         placeholder: "(CTRL + K) Buscar... ",
         onStateChange: ({ state }) => {
-          setAutocompleteState((prev) => ({
-            ...prev,
+          setAutocompleteState({
             collections: state.collections,
             isOpen: state.isOpen,
-          }));
+          });
         },
         getSources: () => [
           {
-            sourceId: "search-api",
+            sourceId: "allProducts",
             getItems: async ({ query }) => {
               if (!!query) {
                 try {
-                  const data = await fetchProductsFilter(
+                  const resultData = await fetchProductsFilter(
+                    allProducts,
                     query,
-                    minLength,
-                    pag,
-                    pageSize
+                    minLength
                   );
-                  return data;
+
+                  return resultData;
                 } catch (error) {
                   if (error.name !== "Error de cancelación") {
                     console.error(
@@ -212,7 +211,7 @@ const SearchAutoComplete = ({ props }) => {
         ],
         ...props,
       }),
-    [props]
+    [props, allProducts]
   );
 
   const formProps = autocomplete.getFormProps({
@@ -286,8 +285,7 @@ const SearchAutoComplete = ({ props }) => {
           >
             {autocompleteState.collections.flatMap((colecction, index) => {
               const { items } = colecction;
-              const quantity = items?.[0].totalProducts;
-              const fewProducts = items?.[0].products;
+              const quantity = items?.length;
 
               return (
                 <WrapperAutocomplete key={`section-${index}`}>
@@ -301,7 +299,7 @@ const SearchAutoComplete = ({ props }) => {
                             } de ${quantity}`}
                       </Text>
                     </BreadCrumb>
-                    {fewProducts?.map((item) => (
+                    {items?.map((item) => (
                       <AutocompleteItem
                         key={item._id}
                         {...item}

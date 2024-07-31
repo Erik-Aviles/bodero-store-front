@@ -1,16 +1,15 @@
-import { black, grey, greylight, primary, white } from "@/lib/colors";
-import DropdownCartComponents from "./cart/DropdownCartComponents";
 import ToogleNavBar from "./buttonComponents/ButtonHamburger";
 import { BsCardList, BsViewStacked } from "react-icons/bs";
 import SearchAutoComplete from "./SearchAutoComplete";
+import { black, primary, white } from "@/lib/colors";
 import InformationHeader from "./InformationHeader";
-import { CartContext } from "@/context/CartContext";
-import styled, { css } from "styled-components";
+import useProductsAll from "@/hooks/useProductsAll";
 import CartComponent from "./cart/CartComponent";
-import { useContext, useState } from "react";
+import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
 import { SlUser } from "react-icons/sl";
 import { WhatsappIcon } from "./Icons";
+import { useState } from "react";
 import { LogoFull } from "./Logo";
 import Link from "next/link";
 
@@ -141,7 +140,6 @@ const StylesWrapperWhatsApp = styled.div`
       display: block;
       margin: 0;
       font-size: 1.6rem;
-      ${"" /* display: none; */}
     }
   }
 `;
@@ -162,8 +160,9 @@ const TextSpan = styled.p`
   }
 `;
 
-export default function Header({ showAuthModal, toggleAuthModal }) {
-  const { dropdownCart } = useContext(CartContext);
+export default function Header({ toggleAuthModal }) {
+  const { products, isError, isLoading, mutate } = useProductsAll();
+
   const router = useRouter();
   const path = router.pathname;
   const [showModal, setShowModal] = useState(false);
@@ -183,7 +182,7 @@ export default function Header({ showAuthModal, toggleAuthModal }) {
             </SectionRigthNav>
           </DisplayNoneCpmponente>
           <ToogleNavBar showModal={showModal} toggleModal={toggleModal} />
-          <SearchAutoComplete />
+          <SearchAutoComplete allProducts={products} />
           <DisplayNoneCpmponente>
             <SectionRigthNav>
               <StylesWrapperWhatsApp $anim={1}>
