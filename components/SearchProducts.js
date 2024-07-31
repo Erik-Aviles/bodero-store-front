@@ -1,14 +1,9 @@
+import React, { useCallback } from "react";
 import { error, greylight, primary } from "@/lib/colors";
 import { AllDeleteIcon, SearchIcon } from "./Icons";
+import filterSearch from "@/utils/filterSearch";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import React, { useRef } from "react";
-
-const WrapperProductFilter = styled.div`
-  @media screen and (min-width: 768px) {
-    padding: 0;
-  }
-`;
 
 const FilterGroup = styled.div`
   position: relative;
@@ -56,9 +51,6 @@ const InputSearch = styled.input`
   border: none;
   color: #495057;
   overflow: visible;
-  @media screen and (min-width: 640px) {
-    width: 400px;
-  }
 `;
 
 const ContainerClear = styled.div`
@@ -96,35 +88,42 @@ const ButtonSearch = styled.button`
   }
 `;
 
-const SearchProducts = ({ name, value, onClick, onSubmit, onChange }) => {
+const SearchProducts = ({ name, search, onSubmit, setSearch }) => {
+  const router = useRouter();
+
+  const handleChangeInput = useCallback((event) => {
+    const value = event.target.value.toLowerCase();
+    setSearch(value);
+    filterSearch({ router, q: value, page: 1 });
+  }, []);
+
+  const handleClear = useCallback(() => {
+    setSearch("");
+    filterSearch({ router, q: "", page: "" });
+  }, []);
+
   return (
-    <WrapperProductFilter>
-      <FilterGroup>
-        <Customform>
-          <WrapperInputAutocomplete onSubmit={onSubmit}>
-            <InputSearch
-              name={name}
-              type="text"
-              value={value}
-              onChange={onChange}
-              placeholder="Buscar producto..."
-            />
-            <ContainerClear>
-              <ButtonClear
-                type="button"
-                onClick={onClick}
-                disabled={value?.length === 0}
-              >
-                <AllDeleteIcon />
-              </ButtonClear>
-            </ContainerClear>
-            <ButtonSearch type="submit">
-              <SearchIcon />
-            </ButtonSearch>
-          </WrapperInputAutocomplete>
-        </Customform>
-      </FilterGroup>
-    </WrapperProductFilter>
+    <FilterGroup>
+      <Customform>
+        <WrapperInputAutocomplete onSubmit={onSubmit}>
+          <InputSearch
+            name={name}
+            type="text"
+            value={search}
+            onChange={handleChangeInput}
+            placeholder="Buscar producto..."
+          />
+          <ContainerClear>
+            <ButtonClear type="button" onClick={handleClear} disabled={!search}>
+              <AllDeleteIcon />
+            </ButtonClear>
+          </ContainerClear>
+          <ButtonSearch type="submit">
+            <SearchIcon />
+          </ButtonSearch>
+        </WrapperInputAutocomplete>
+      </Customform>
+    </FilterGroup>
   );
 };
 export default SearchProducts;

@@ -26,7 +26,7 @@ export default function HomePage() {
   const { onOffetProducts, totalOnOffetProducts, isLoadingOnOffetProducts } =
     useOnOfferProducts(limit);
 
-  if (isLoadingProducts && isLoadingCategories && isLoadingOnOffetProducts) {
+  if (isLoadingProducts || isLoadingCategories || isLoadingOnOffetProducts) {
     return <Loading />;
   }
 

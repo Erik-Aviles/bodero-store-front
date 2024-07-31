@@ -1,30 +1,48 @@
 import { stopwords } from "@/resource/stopwordsData";
 import { removeAccents, removePluralEnding } from "./normalize";
 
-export async function fetchProductsFilter(
-  search,
-  minLength,
-  page = 1,
-  pageSize = 10
-) {
+export function fetchProductsFilter(products, search, minLength) {
   try {
-    if (!search || search.length < minLength) {
-      return { products: [], totalProducts: 0 };
+    if (!search || search.trim() === "" || search.length < minLength) {
+      return [];
     }
 
-    const apiUrl = `/api/search?q=${search.toLowerCase()}&page=${page}&pageSize=${pageSize}`;
-    const response = await fetch(apiUrl);
+    const searchParts = removeAccents(search.toLowerCase())
+      .split(" ")
+      .filter((part) => !stopwords.includes(part))
+      .map((part) => removePluralEnding(part));
 
-    if (!response.ok) {
-      throw new Error("Error al obtener datos de la API");
-    }
+    const filteredResults = products.filter((item) => {
+      const title = removeAccents(item.title.toLowerCase());
+      const code = removeAccents(item.code.toLowerCase());
+      const codeEnterprise = removeAccents(item.codeEnterprise.toLowerCase());
+      const codeWeb = removeAccents(item.codeWeb.toLowerCase());
+      const brand = removeAccents(item.brand.toLowerCase());
+      const compatibilityModels = (item.compatibility || []).map((compat) =>
+        removeAccents(compat.model.toLowerCase())
+      );
+      const compatibilityTitle = (item.compatibility || []).map((compat) =>
+        removeAccents(compat.title.toLowerCase())
+      );
 
-    const { products, totalProducts } = await response.json();
+      const matchesAllParts = searchParts.every((part) => {
+        return (
+          title.includes(part) ||
+          code.includes(part) ||
+          codeEnterprise.includes(part) ||
+          codeWeb.includes(part) ||
+          brand.includes(part) ||
+          compatibilityModels.some((model) => model.includes(part)) ||
+          compatibilityTitle.some((title) => title.includes(part))
+        );
+      });
+      return matchesAllParts;
+    });
 
-    return { products, totalProducts };
+    return filteredResults;
   } catch (error) {
     console.error("Error en la búsqueda:", error);
-    return { products: [], totalProducts: 0 };
+    return [];
   }
 }
 
@@ -34,7 +52,7 @@ export async function fetchProductsFilterForCategory(
   pageSize = 10
 ) {
   try {
-    const apiUrl = `/api/search?category=${category}&page=${page}&pageSize=${pageSize}`;
+    const apiUrl = `/api/products/for-category?category=${category}&page=${page}&pageSize=${pageSize}`;
 
     const response = await fetch(apiUrl);
 
@@ -72,6 +90,7 @@ export async function fetchProductsFilter(search, minLength) {
     if (!response.ok) {
       throw new Error("Error al obtener datos de la API");
     }
+
 
     const data = await response.json();
 

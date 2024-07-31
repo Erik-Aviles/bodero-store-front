@@ -3,9 +3,8 @@ import React, { Suspense } from "react";
 
 const ProductsGrid = React.lazy(() => import("@/components/ProductsGrid"));
 
-const ProductSearch = ({ products, isLoading, isError }) => {
+const ProductSearch = ({ products, isLoading }) => {
   if (isLoading) return <SkeletorProducts />;
-  if (isError) return <div>Se produjo un error al cargar los productos</div>;
 
   return (
     <Suspense fallback={<div>Cargando...</div>}>

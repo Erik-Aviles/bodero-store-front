@@ -34,7 +34,7 @@ const ProductWrapper = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
   @media screen and (min-width: 360px) {
-    max-width: 11rem;
+    width: 10rem;
   }
 
   @media screen and (min-width: 768px) {
@@ -124,7 +124,7 @@ const ProductInfoBox = styled.div`
 const Title = styled.h5`
   width: 100%;
   height: 40px;
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   line-height: 0.8rem;
   color: cornflowerblue;
   margin: 0;
