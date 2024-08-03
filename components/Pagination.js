@@ -1,5 +1,7 @@
+import React from "react";
 import styled from "styled-components";
-import { greylight, success, white } from "@/lib/colors";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { greylight, primary, white } from "@/lib/colors";
 
 const PaginationContainer = styled.section`
   width: 100%;
@@ -8,33 +10,63 @@ const PaginationContainer = styled.section`
   display: flex;
   justify-content: center;
 `;
+
 const PaginationWrapper = styled.div`
   max-width: 800px;
   position: relative;
   display: flex;
+  gap: 5px;
   padding: 20px 0;
   overflow-x: auto;
   white-space: nowrap;
 `;
 
 const PageButton = styled.button`
-  margin: 0 5px;
-  padding: 10px 20px;
+  width: 36px;
+  height: 36px;
   border: 0;
   outline: 1px solid ${greylight};
+  background: ${(props) => (props.$active ? primary : white)};
+  color: ${(props) => (props.$active ? white : primary)};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 3px;
-  background: ${(props) => (props.$active ? success : white)};
-  color: ${(props) => (props.$active ? white : success)};
-  cursor: pointer;
 
   &:hover {
-    background: ${(props) => (props.$active ? "green" : "#f0f0f0")};
+    background: ${(props) => (props.disabled ? "" : "#f0f0f0")};
   }
+`;
+const NavigationButton = styled.button`
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: ${white};
+  color: ${(props) => (props.disabled ? greylight : primary)};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
 
-  @media (max-width: 600px) {
-    padding: 8px 16px;
-    font-size: 14px;
+  &:hover {
+    background: ${(props) => (props.disabled ? "" : "#f0f0f0")};
   }
+`;
+
+const Dots = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 36px;
+  border: 0;
+  background: ${white};
+  color: ${greylight};
+  cursor: default;
 `;
 
 const Pagination = ({ currentPage, onPageChange, totalPages, isLoading }) => {
@@ -46,60 +78,75 @@ const Pagination = ({ currentPage, onPageChange, totalPages, isLoading }) => {
     }
   };
 
+  const getPageButtons = () => {
+    let buttons = [];
+
+    if (totalPages <= 5) {
+      buttons = pages;
+    } else {
+      if (currentPage <= 4) {
+        buttons = [1, 2, 3, 4, 5, "...", totalPages];
+      } else if (currentPage >= totalPages - 3) {
+        buttons = [
+          1,
+          "...",
+          totalPages - 4,
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        ];
+      } else {
+        buttons = [
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages,
+        ];
+      }
+    }
+
+    return buttons;
+  };
+
+  const pageButtons = getPageButtons();
+
   return (
     <PaginationContainer>
       <PaginationWrapper>
-        {pages.map((page) => (
-          <PageButton
-            key={page}
-            onClick={() => handlePageClick(page)}
-            $active={page === currentPage}
-            disabled={isLoading}
-          >
-            {page}
-          </PageButton>
+        <NavigationButton
+          onClick={() => handlePageClick(currentPage - 1)}
+          disabled={isLoading || currentPage === 1}
+        >
+          <FaChevronLeft />
+        </NavigationButton>
+        {pageButtons.map((page, index) => (
+          <React.Fragment key={index}>
+            {page === "..." ? (
+              <Dots>...</Dots>
+            ) : (
+              <PageButton
+                onClick={() => handlePageClick(page)}
+                $active={page === currentPage}
+                disabled={isLoading}
+              >
+                {page}
+              </PageButton>
+            )}
+          </React.Fragment>
         ))}
+        <NavigationButton
+          onClick={() => handlePageClick(currentPage + 1)}
+          disabled={isLoading || currentPage === totalPages || totalPages === 1}
+        >
+          <FaChevronRight />
+        </NavigationButton>
       </PaginationWrapper>
     </PaginationContainer>
   );
 };
 
 export default Pagination;
-
-/* const Pagination = ({ totalResults, resultsPerPage, currentPage }) => {
-  const router = useRouter();
-  const totalPages = Math.ceil(totalResults / resultsPerPage);
-
-  const handlePageClick = (page) => {
-    const query = { ...router.query, page };
-    router.push(
-      {
-        pathname: router.pathname,
-        query,
-      },
-      undefined,
-      { shallow: true }
-    );
-  };
-
-  return (
-    <PaginationContainer>
-      <PaginationWrapper>
-        {[...Array(totalPages)].map((_, index) => {
-          const page = index + 1;
-          return (
-            <PageButton
-              key={page}
-              $active={page === currentPage}
-              onClick={() => handlePageClick(page)}
-            >
-              {page}
-            </PageButton>
-          );
-        })}
-      </PaginationWrapper>
-    </PaginationContainer>
-  );
-};
-
-export default Pagination; */

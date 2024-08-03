@@ -11,6 +11,7 @@ import { brands } from "@/resource/brandsData";
 import filterSearch from "@/utils/filterSearch";
 import styled, { css } from "styled-components";
 import { grey, secondary } from "@/lib/colors";
+import { useDebounce } from "use-debounce";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 
@@ -31,7 +32,7 @@ const Descriptionresults = styled.div`
   display: Flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+  gap: 5px;
   padding: 10px;
   @media screen and (min-width: 640px) {
     flex-direction: row;
@@ -47,7 +48,7 @@ const GroupedItems = styled.div`
 
 const Text = styled.span`
   font-size: 0.8rem;
-  white-space: nowrap;
+  white-space: break-spaces;
   color: ${grey};
   ${(props) =>
     props.$highlighted &&
@@ -92,6 +93,7 @@ const SearchPage = () => {
   const pageSize = 20;
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
   const [allProducts, setAllProducts] = useState([]);
   const [pag, setPag] = useState(1);
   const minLength = 3;
@@ -111,8 +113,14 @@ const SearchPage = () => {
   }, [router.query.q, router.query.page]);
 
   const filteredAndPaginatedProducts = useMemo(() => {
-    return fetchProductsFilter(allProducts, search, minLength, pag, pageSize);
-  }, [allProducts, search, minLength, pag, pageSize]);
+    return fetchProductsFilter(
+      allProducts,
+      debouncedSearch,
+      minLength,
+      pag,
+      pageSize
+    );
+  }, [allProducts, debouncedSearch, minLength, pag, pageSize]);
 
   const pages = Math.ceil(filteredAndPaginatedProducts.length / pageSize);
 
