@@ -37,6 +37,7 @@ const PageButton = styled.button`
 
   &:hover {
     background: ${(props) => (props.disabled ? "" : "#f0f0f0")};
+    color: ${(props) => (props.disabled ? "" : primary)};
   }
 `;
 const NavigationButton = styled.button`

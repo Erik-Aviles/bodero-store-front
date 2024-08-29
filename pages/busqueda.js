@@ -187,7 +187,7 @@ const SearchPage = () => {
               <Text>Resultados de la búsqueda</Text>
             ) : (
               <Text>
-                Encontrado (
+                Hay (
                 <Text $highlighted={1}>
                   {filteredAndPaginatedProducts.length}
                 </Text>
@@ -206,7 +206,7 @@ const SearchPage = () => {
         </Wrapper>
 
         <ResultsSession>
-          {items && (
+          {items.length > 0 ? (
             <>
               <ProductSearch
                 products={items}
@@ -220,14 +220,13 @@ const SearchPage = () => {
                 isLoading={isLoading}
               />
             </>
-          )}
-          {!search && (
+          ) : (
             <>
               <TextMsg>
-                No se han encontrado coincidencias con tu búsqueda
+                No se han encontrado coincidencias con tu búsqueda.
               </TextMsg>
               <TextMsg $small={1}>
-                Usa otras palabras para describir lo que necesitas
+                Usa otras palabras para describir lo que necesitas.
               </TextMsg>
             </>
           )}
