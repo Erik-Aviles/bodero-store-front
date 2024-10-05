@@ -30,11 +30,15 @@ export default async function handle(req, res) {
         line_items.push({
           quantity,
           info_order: {
-            id: productInfo._id,
-            name: productInfo.title,
-            price: productInfo.salePrice,
-            brand: productInfo.brand,
-            code: productInfo.code,
+            currency: "USD",
+            product_data: {
+              id: productInfo._id,
+              name: productInfo.title,
+              price: productInfo.salePrice,
+              brand: productInfo.brand,
+              code: productInfo.code,
+            },
+            unit_amount: quantity * productInfo.salePrice,
           },
         });
       }
@@ -48,7 +52,7 @@ export default async function handle(req, res) {
         .status(400)
         .json({ message: messages.error.allFieldsAreRequired });
 
-    const orderData = {
+    const orderDoc = await Order.create({
       line_items,
       name,
       email,
@@ -56,11 +60,12 @@ export default async function handle(req, res) {
       city,
       streetAddress,
       country,
-    };
+      paid: false,
+    });
 
     return res
       .status(200)
-      .json({ orderData, message: messages.success.orderSuccess });
+      .json({ orderDoc, message: messages.success.orderSuccess });
   } catch (err) {
     return res
       .status(500)

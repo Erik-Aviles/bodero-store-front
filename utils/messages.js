@@ -1,5 +1,6 @@
 const messages = {
   error: {
+    addInformation: "Llenar formulario con información de envío",
     allFieldsAreRequired: "Todos los campos son requeridos",
     needProps: "Falta algún campo por llenar",
     emailNotValid: "Dirección de correo electrónico no válida.",

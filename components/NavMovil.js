@@ -21,11 +21,11 @@ const StyledHeader = styled.header`
 
 const StyleNav = styled.nav`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   align-items: end;
   border-radius: 15px 15px 0 0;
-  background: ${black};
+  background-color: ${black};
 `;
 
 const StaledLink = styled(Link)`
@@ -121,24 +121,24 @@ export default function NavMovil() {
           </StaledDiv>
           <TextSpan>Productos</TextSpan>
         </StaledLink>
+        <StaledLink href={"/categories"} title={"Ver categorias"}>
+          <StaledDiv $active={path === "/categories" ? 1 : 0}>
+            <BsViewStacked />
+          </StaledDiv>
+          <TextSpan>Categorias</TextSpan>
+        </StaledLink>{" "}
         <ButtonCart title={"Ver mi pedido"}>
           <StaledDiv $active={path === "/carrito-de-compras" ? 1 : 0}>
             <CartComponent />
           </StaledDiv>
           <TextSpan>Carrito</TextSpan>
         </ButtonCart>
-        <StaledLink href={"/categories"} title={"Ver categorias"}>
-          <StaledDiv $active={path === "/categories" ? 1 : 0}>
-            <BsViewStacked />
-          </StaledDiv>
-          <TextSpan>Categorias</TextSpan>
-        </StaledLink>
-        <StaledLink href={"#"} title={"Entrar a mi cuenta"}>
+        {/*  <StaledLink href={"#"} title={"Entrar a mi cuenta"}>
           <StaledDiv $active={path === "#" ? 1 : 0}>
             <SlUser />
           </StaledDiv>
           <TextSpan>Usuario</TextSpan>
-        </StaledLink>
+        </StaledLink> */}
         <StaledLink
           $endBorder={1}
           href={

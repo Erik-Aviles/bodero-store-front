@@ -31,11 +31,11 @@ const WrapperFooterSpan = styled.span`
   align-items: center;
   text-align: center;
   font: small-caption;
+  font-size: 10px;
   img {
     width: 35%;
     height: auto;
   }
-  font-size: 12px;
   @media screen and (min-width: 768px) {
     order: 1;
   }
@@ -86,17 +86,22 @@ export default function Footer() {
             }
             target="_blank"
             rel="noopener noreferrer"
-            title={"Instagram"}
+            title={"Instagram B.R.D"}
           >
-            <Image src={instagram} alt="Instagram" width={25} height={25} />
+            <Image
+              src={instagram}
+              alt="Instagram B.R.D"
+              width={25}
+              height={25}
+            />
           </Link>
           <Link
             href={"https://www.facebook.com/boderoracing?mibextid=LQQJ4d"}
             target="_blank"
             rel="noopener noreferrer"
-            title={"FaceBook"}
+            title={"FaceBook B.R.D"}
           >
-            <Image src={facebook} alt="FaceBook" width={25} height={25} />
+            <Image src={facebook} alt="FaceBook B.R.D" width={25} height={25} />
           </Link>
           <Link
             href={
@@ -104,13 +109,13 @@ export default function Footer() {
             }
             target="_blank"
             rel="noopener noreferrer"
-            title={"TikTok"}
+            title={"TikTok B.R.D"}
           >
-            <Image src={tiktok} alt="TikTok" width={25} height={25} />
+            <Image src={tiktok} alt="TikTok B.R.D" width={25} height={25} />
           </Link>
         </ListSocialMedia>
         <Logo href={"/"}>
-          <Image alt="Logo B.D.R" src={logoLetras} />
+          <Image alt="Logo B.D.R" src={logoLetras} title={"Ir al Inicio"} />
         </Logo>
         <WrapperFooterSpan>
           <Image src={betimes} alt="Logo de Betimes Company" />

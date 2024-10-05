@@ -227,7 +227,7 @@ export default function Header({ toggleAuthModal }) {
                   </StylesWrapper>
                   <TextSpan>Carrito</TextSpan>
                 </ButtonOppenModal>
-                <ButtonOppenModal
+                {/*   <ButtonOppenModal
                   $active={path === "#" ? 1 : 0}
                   onClick={toggleAuthModal}
                   title={"Entrar a mi cuenta"}
@@ -236,7 +236,7 @@ export default function Header({ toggleAuthModal }) {
                     <SlUser />
                   </StylesWrapper>
                   <TextSpan>Mi cuenta</TextSpan>
-                </ButtonOppenModal>
+                </ButtonOppenModal> */}
               </StyleNav>
             </SectionRigthNav>
           </DisplayNoneCpmponente>

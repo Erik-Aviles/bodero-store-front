@@ -61,7 +61,7 @@ const DropdownCartComponents = () => {
         <WrapperButtonCart>
           <ButtonLink
             onClick={dropdownCart}
-            href={"/"}
+            href={"/categories"}
             $black={1}
             $outline={1}
             $block={1}

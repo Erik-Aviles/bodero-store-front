@@ -15,13 +15,15 @@ import { linksUp } from "@/resource/linkRouterData";
 import { LogoFull } from "./Logo";
 
 const Wrapper = styled.div`
-  background: #0e0f14;
+  background-color: ${black};
   width: 100%;
-  height: 41px;
+  height: 39px;
   overflow: hidden;
   position: relative;
   @media screen and (max-width: 768px) {
     height: 88.55px;
+    background-color: transparent;
+    border-bottom: 2px solid ${primary};
   }
 `;
 
@@ -55,6 +57,7 @@ const StaledLink = styled(Link)`
   color: ${white};
   display: block;
   padding: 12px;
+  font-size: 14px;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -119,34 +122,48 @@ const Icons = styled.i`
   line-height: 45px;
 `;
 const TextPresentation = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
   font-size: 0.7rem;
-  font-weight: bold;
   color: #ffff00;
-  div {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 8px 8px 0 0;
-  }
-  p {
-    margin: 0;
-  }
-  span {
-    color: ${white};
-  }
-  a {
-    color: ${warning};
-    text-decoration: underline;
-  }
   figure {
     margin: 0;
-    width: 160px;
-    height: 100%;
   }
+  @media screen and (min-width: 480px) {
+    font-size: 1rem;
+  }
+  @media screen and (min-width: 769px) {
+    display: none;
+  }
+`;
+const AreaText = styled.section`
+  background-color: black;
+  flex-basis: 100%;
+  height: inherit;
+  div {
+    height: 100%;
+    display: flex;
+    gap: 2px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #ffff00;
+    p {
+      margin: 0;
+    }
+    span {
+      color: ${white};
+    }
+    a {
+      color: ${warning};
+      text-decoration: underline;
+    }
+  }
+  ${"" /*  */}
+
   @media screen and (min-width: 480px) {
     font-size: 1rem;
   }
@@ -165,22 +182,24 @@ const InformationHeader = () => {
         <figure>
           <LogoFull href={"/"} />
         </figure>
-        <div>
-          <p>Si no encuentas lo que buscas... </p>
-          <span>Nosotros lo conseguimos!</span>
-          {/* <span>
+        <AreaText>
+          <div>
+            <p>Si no encuentas lo que buscas... </p>
+            <span>Nosotros lo conseguimos!</span>
+            {/* <span>
             Todo lo que necesitas para tu vehículo, sin salir de casa.
           </span> */}
-          <Link
-            href={
-              "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Escríbenos!
-          </Link>
-        </div>
+            <Link
+              href={
+                "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Escríbenos!
+            </Link>
+          </div>
+        </AreaText>
       </TextPresentation>
       <NavHeader>
         <ListInformation>

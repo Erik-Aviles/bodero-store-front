@@ -173,7 +173,6 @@ const SearchAutoComplete = ({ props, allProducts }) => {
       createAutocomplete({
         id: "autocomplete-search",
         enterKeyHint: "search",
-        autoFocus: path === "/busqueda" ? false : true,
         placeholder: "(CTRL + K) Buscar... ",
         onStateChange: ({ state }) => {
           setAutocompleteState({
