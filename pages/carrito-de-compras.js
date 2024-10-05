@@ -2,7 +2,6 @@ import { WhatsappIcon } from "@/components/Icons";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
 import Button from "@/components/buttonComponents/Button";
-import ButtonLink from "@/components/buttonComponents/ButtonLink";
 import TableCart from "@/components/cart/TableCart";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
@@ -10,7 +9,8 @@ import Title from "@/components/stylesComponents/Title";
 import { CartContext } from "@/context/CartContext";
 import NotificationContext from "@/context/NotificationContext";
 import { error, grey, greylight, success, white } from "@/lib/colors";
-
+import { companyInformationData } from "@/resource/CompanyInformationData";
+import { capitalize } from "@/utils/capitalize";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
@@ -124,20 +124,20 @@ export default function CartPage() {
   const [country, setCountry] = useState("");
 
   const { cartProducts, clearCart } = useContext(CartContext);
+  const secondaryPhone = companyInformationData[0].secondaryPhone;
+  const orderData = {
+    name,
+    email,
+    phone,
+    city,
+    streetAddress,
+    country,
+    cartProducts,
+  };
 
-  async function goToPayment() {
-    let data = {
-      name,
-      email,
-      phone,
-      city,
-      streetAddress,
-      country,
-      cartProducts,
-    };
-
+  async function handleShippingOrder() {
     try {
-      const response = await axios.post("/api/checkout", data);
+      const response = await axios.post("/api/order", orderData);
       showNotification({
         open: true,
         msj: response.data.message,
@@ -158,6 +158,61 @@ export default function CartPage() {
       });
     }
   }
+
+  const submitOrder = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/checkout", orderData);
+      const data = response.data;
+      if (response.status === 200) {
+        const whatsappMessage = `Hola, Soy: ${capitalize(orderData.name)}
+  Mi celular: ${orderData.phone}
+  Email: ${orderData.email}
+  Dirección: ${capitalize(orderData.streetAddress)}, ${capitalize(
+          orderData.city
+        )}, ${capitalize(orderData.country)}
+  Me interesa comprar los siguientes productos:
+  ${data.orderData.line_items
+    .map(
+      (item, index) =>
+        `${index + 1}. ${capitalize(item.info_order.name)} (${
+          item.info_order.code
+        }) - Cant: ${item.quantity} - Precio: $${item.info_order.price}`
+    )
+    .join("\n")}.
+  Quedo atento/a`;
+
+        const urlWhatsapp = `https://api.whatsapp.com/send?phone=593${secondaryPhone}&text=${encodeURIComponent(
+          whatsappMessage
+        )}&type=phone_number&app_absent=1`;
+        window.open(urlWhatsapp, "_blank", "noopener noreferrer");
+        showNotification({
+          open: true,
+          msj: data.message,
+          status: "success",
+        });
+
+        clearCart();
+
+        const timeout = setTimeout(() => {
+          router.push("/");
+        }, 1000);
+        return () => clearTimeout(timeout);
+      } else {
+        showNotification({
+          open: true,
+          msj: data.message,
+          status: "error",
+        });
+      }
+    } catch (error) {
+      showNotification({
+        open: true,
+        msj: error.response.data.message,
+        status: "error",
+      });
+    }
+  };
 
   const handleGoBack = (e) => {
     e.preventDefault();
@@ -250,21 +305,21 @@ export default function CartPage() {
                 />
               </InputContainer>
               <WrapperDiv $center>
-                <Button $secondary={1} onClick={goToPayment}>
-                  ENVIAR PEDIDO
+                <Button
+                  $black={1}
+                  title={"Se envia pedido directo para realizar la compra"}
+                  onClick={handleShippingOrder}
+                >
+                  ENVIAR PEDIDO DIRECTO
                 </Button>
-                <ButtonLink
-                  // href={`https://api.whatsapp.com/send/?phone=593962902500&text=Hola, me interesa comprar este producto&type=phone_number&app_absent=1`}
-                  href="#"
-                  // target="_blank"
-                  // rel="noopener noreferrer"
-                  // title={"Realizar pedido por Whatsapp"}
-                  title={"Boton deshabilitado"}
+                <Button
+                  onClick={submitOrder}
+                  title={"Se envía pedido para requerir información"}
                   $secondary={1}
                 >
                   <WhatsappIcon height={25} width={25} />
                   PEDIR POR WHATSAPP
-                </ButtonLink>
+                </Button>
               </WrapperDiv>
             </Box>
           )}
