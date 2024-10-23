@@ -21,12 +21,11 @@ const CenterDiv = styled.section`
 `;
 
 const ColumnsWrapper = styled.div`
-  width: in;
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 769px) {
     grid-template-columns: 1fr 0.7fr;
     gap: 20px;
     margin: 20px 0 40px;

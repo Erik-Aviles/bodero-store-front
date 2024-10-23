@@ -15,11 +15,6 @@ import AddRemoveCart from "./AddRemoveCart";
 const ProductInfoCell = styled.td`
   padding: 10px 0;
   font-weight: 700;
-  ${
-    "" /*  @media screen and (max-width: 390px) {
-    margin: 20px;
-  } */
-  }
 `;
 
 const WrapperDiv = styled.div`

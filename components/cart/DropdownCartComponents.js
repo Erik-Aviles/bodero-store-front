@@ -28,20 +28,22 @@ const DopDownContainer = styled.div`
 const WrapperdDopDown = styled.div`
   position: absolute;
   right: 0;
-  left: 20px;
   top: 20px;
-  max-height: calc(100vh - 60px);
+  max-height: calc(100vh - 120px);
   z-index: 3;
   border-radius: 0.375rem;
   border: 1px solid #e5e7eb;
   background-color: ${white};
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  @media screen and (max-width: 450px) {
+    left: 20px;
+  }
 `;
 
 const WrapperTableCart = styled.div`
   overflow: overlay;
   padding: 1rem 1rem 0;
-  max-height: calc(100vh - 130px);
+  max-height: calc(100vh - 200px);
 `;
 
 const WrapperButtonCart = styled.div`

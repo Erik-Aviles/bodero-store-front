@@ -1,5 +1,5 @@
 import { CartContext } from "@/context/CartContext";
-import { greylight } from "@/lib/colors";
+import { grey, greylight, primary, success, white } from "@/lib/colors";
 import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 
@@ -28,16 +28,23 @@ const WrapperAddRemove = styled.div`
 const ButtonCart = styled.button`
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
-  padding: 4px 7px;
+  padding: 4px 10px;
   cursor: pointer;
+  color: ${white};
+  background-color: ${greylight};
   &:active {
-    background-color: ${greylight};
-  }
-  &:hover {
-    background-color: ${greylight};
+    background-color: ${primary};
   }
   &:disabled {
     cursor: not-allowed;
+    background-color: #f1f0f0;
+    &:hover {
+      background-color: #f1f0f0;
+      color: ${greylight};
+    }
+  }
+  &:hover {
+    background-color: ${primary};
   }
   @media screen and (min-width: 768px) {
     padding: 5px 10px;
