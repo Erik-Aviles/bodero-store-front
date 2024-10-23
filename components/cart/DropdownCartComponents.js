@@ -28,8 +28,10 @@ const DopDownContainer = styled.div`
 const WrapperdDopDown = styled.div`
   position: absolute;
   right: 0;
-  z-index: 3;
+  left: 20px;
   top: 20px;
+  max-height: calc(100vh - 60px);
+  z-index: 3;
   border-radius: 0.375rem;
   border: 1px solid #e5e7eb;
   background-color: ${white};

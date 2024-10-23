@@ -6,15 +6,20 @@ import styled, { css } from "styled-components";
 import { error, grey, greylight, success, white } from "@/lib/colors";
 import Table from "../stylesComponents/Table";
 import axios from "axios";
-import { FlexStyled } from "../stylesComponents/Flex";
 import Text from "../stylesComponents/HighlightedText";
 import Image from "next/image";
 import awsS3Loader from "../loaderes/awsS3Loader";
 import localLoader from "../loaderes/localLoader";
+import AddRemoveCart from "./AddRemoveCart";
 
 const ProductInfoCell = styled.td`
   padding: 10px 0;
   font-weight: 700;
+  ${
+    "" /*  @media screen and (max-width: 390px) {
+    margin: 20px;
+  } */
+  }
 `;
 
 const WrapperDiv = styled.div`
@@ -62,10 +67,6 @@ const PropsSpan = styled.span`
     css`
       color: ${success};
     `};
-`;
-
-const QuantityLabel = styled.span`
-  padding: 0 3px;
 `;
 
 const ButtonCart = styled.button`
@@ -162,15 +163,6 @@ const TableCart = () => {
     }
   }, [cartProducts]);
 
-  function moreOfThisProduct(id) {
-    addProduct(id);
-  }
-  function lessOfThisProduct(id) {
-    removeProduct(id);
-  }
-  function deleteProduct(id) {
-    removeOneProduct(id);
-  }
   let total = 0;
   for (const productId of cartProducts) {
     const salePrice = products.find((p) => p._id === productId)?.salePrice || 0;
@@ -226,29 +218,12 @@ const TableCart = () => {
                   <PropsSpan $two={1}>{product.title.toUpperCase()}</PropsSpan>
                 </ProductInfoCell>
                 <td>
-                  <WrapperDiv>
-                    <ButtonCart
-                      onClick={() => lessOfThisProduct(product._id)}
-                      disabled={
-                        cartProducts.filter((id) => id === product._id)
-                          .length === 1
-                      }
-                    >
-                      -
-                    </ButtonCart>
-                    <QuantityLabel>
-                      {cartProducts.filter((id) => id === product._id).length}
-                    </QuantityLabel>
-                    <ButtonCart
-                      onClick={() => moreOfThisProduct(product._id)}
-                      disabled={
-                        cartProducts.filter((id) => id === product._id)
-                          .length >= product.quantity
-                      }
-                    >
-                      +
-                    </ButtonCart>
-                  </WrapperDiv>
+                  <AddRemoveCart
+                    product={product}
+                    cartProducts={cartProducts}
+                    addProduct={addProduct}
+                    removeProduct={removeProduct}
+                  />
                 </td>
 
                 <td>{formatPrice(product.salePrice)}</td>

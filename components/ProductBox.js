@@ -20,10 +20,11 @@ import {
   white,
   white2,
 } from "@/lib/colors";
+import AddRemoveCart from "./cart/AddRemoveCart";
 
 const ProductWrapper = styled.div`
-  width: 9rem;
-  min-width: 9rem;
+  width: 10rem;
+  min-width: 10rem;
   display: flex;
   flex-direction: column;
   background-color: ${white};
@@ -34,7 +35,7 @@ const ProductWrapper = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
   @media screen and (min-width: 360px) {
-    width: 10rem;
+    width: 11rem;
   }
 
   @media screen and (min-width: 768px) {
@@ -139,7 +140,14 @@ const Row = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 3px 0;
+  ${(props) =>
+    props.$column &&
+    css`
+      gap: 5px;
+      flex-direction: column;
+    `};
 `;
+
 const Price = styled.div`
   font-size: 1rem;
   font-weight: 600;
@@ -192,7 +200,7 @@ export function ProductBox({ ...product }) {
     setShowProductDetailsModal(!showProductDetailsModal);
   };
 
-  const { addProduct, cartProducts, removeOneProduct } =
+  const { addProduct, cartProducts, removeOneProduct, removeProduct } =
     useContext(CartContext);
 
   const checkProductInCart = (product) => {
@@ -256,13 +264,14 @@ export function ProductBox({ ...product }) {
               <SpanCard $success={1}>¡En stock!</SpanCard>
             )}
           </Row>
-          <Row>
-            <ButtonLink
-              href={`/products/${product._id}`}
-              $black={1}
-              $outline={1}
-              $block={1}
-            >
+          <Row $column={1}>
+            <AddRemoveCart
+              product={product}
+              cartProducts={cartProducts}
+              addProduct={addProduct}
+              removeProduct={removeProduct}
+            />
+            <ButtonLink href={`/products/${product._id}`} $black={1} $block={1}>
               VER DETALLES
             </ButtonLink>
           </Row>
