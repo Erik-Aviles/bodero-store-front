@@ -42,7 +42,7 @@ const WrapperInputAutocomplete = styled.form`
 
 const InputSearch = styled.input`
   width: 100%;
-  font-size: 0.8rem;
+  font-size: 1rem;
   padding: 0.375rem 1.75rem 0.375rem 0.75rem;
   border-radius: 0.25rem 0 0 0.25rem;
   font-weight: 400;
