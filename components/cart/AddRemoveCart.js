@@ -1,11 +1,11 @@
-import { CartContext } from "@/context/CartContext";
-import { grey, greylight, primary, success, white } from "@/lib/colors";
-import React, { useContext } from "react";
+import { greylight, primary, white } from "@/lib/colors";
+import React from "react";
 import styled, { css } from "styled-components";
 
 const WrapperAddRemove = styled.div`
-  display: flex;
   width: 100%;
+  max-width: 148.8px;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 1rem;
@@ -19,7 +19,7 @@ const WrapperAddRemove = styled.div`
   ${(props) =>
     props.$column &&
     css`
-      @media screen and (max-width: 370px) {
+      @media screen and (max-width: 400px) {
         flex-direction: column;
       }
     `}
@@ -55,9 +55,12 @@ const QuantityLabel = styled.span`
   padding: 0 3px;
 `;
 
-const AddRemoveCart = ({ product }) => {
-  const { addProduct, removeProduct, cartProducts } = useContext(CartContext);
-
+const AddRemoveCart = ({
+  product,
+  addProduct,
+  removeProduct,
+  cartProducts,
+}) => {
   function moreOfThisProduct(id) {
     addProduct(id);
   }
@@ -69,19 +72,21 @@ const AddRemoveCart = ({ product }) => {
   return (
     <WrapperAddRemove>
       <ButtonCart
-        onClick={() => lessOfThisProduct(product._id)}
-        disabled={cartProducts.filter((id) => id === product._id).length === 0}
+        onClick={() => lessOfThisProduct(product?._id)}
+        disabled={
+          cartProducts?.filter((id) => id === product?._id).length === 0
+        }
       >
         -
       </ButtonCart>
       <QuantityLabel>
-        {cartProducts.filter((id) => id === product._id).length}
+        {cartProducts.filter((id) => id === product?._id).length}
       </QuantityLabel>
       <ButtonCart
-        onClick={() => moreOfThisProduct(product._id)}
+        onClick={() => moreOfThisProduct(product?._id)}
         disabled={
-          cartProducts.filter((id) => id === product._id).length >=
-          product.quantity
+          cartProducts?.filter((id) => id === product?._id).length >=
+          product?.quantity
         }
       >
         +

@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import { mongooseConnect } from "@/lib/mongoose";
 import {
   black,
-  blacklight,
-  error,
   grey,
   greylight,
   primary,
@@ -12,24 +9,18 @@ import {
   white2,
 } from "@/lib/colors";
 import ProductImages from "@/components/ProductImages";
-import { Product } from "@/models/Product";
 import CompatibilityModal from "@/components/CompatibilityModal";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
 import Layout from "@/components/Layout";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import { useContext } from "react";
-import {
-  AddToCartIcon,
-  CardIcon,
-  RemoveFromCartIcon,
-} from "@/components/Icons";
+import { AddToCartIcon, RemoveFromCartIcon } from "@/components/Icons";
 import { CartContext } from "@/context/CartContext";
-import { fetcher } from "@/utils/fetcher";
-import useSWR from "swr";
 import useProduct from "@/hooks/useProduct";
 import { useRouter } from "next/router";
 import Text from "@/components/stylesComponents/HighlightedText";
+import AddRemoveCart from "@/components/cart/AddRemoveCart";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -39,7 +30,6 @@ const ColWrapper = styled.div`
   font-size: 1rem;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
   @media screen and (min-width: 640px) {
     padding: 0 20px;
   }
@@ -47,7 +37,6 @@ const ColWrapper = styled.div`
     max-width: 1000px;
     margin: 0 auto;
     grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
   }
 `;
 
@@ -65,7 +54,7 @@ const Row = styled.div`
   display: flex;
   flex-direction: column;
   aling-items: center;
-  padding: 0 20px;
+  padding: 0 20px 20px;
 `;
 
 const InfoText = styled.p`
@@ -116,18 +105,21 @@ const Price = styled.span`
   font-size: 1rem;
   font-weight: 600;
 `;
-const WrapperButton = styled.section`
+const WrapperButtons = styled.section`
   margin: 20px 0;
   display: flex;
-  gap: 30px;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 8px;
 `;
+
 const ButtonCard = styled.button`
   border: none;
   background-color: ${black};
   color: ${white};
   border-radius: 0.275rem;
-  padding: 0.3rem 1rem;
-  font-size: 0.875rem;
+  padding: 0.45rem;
+  font-size: 0.6rem;
   font-weight: 500;
   cursor: pointer;
   &:hover {
@@ -150,7 +142,7 @@ const ButtonCard = styled.button`
 `;
 
 export default function ProductPage() {
-  const { addProduct, cartProducts, removeOneProduct } =
+  const { addProduct, cartProducts, removeOneProduct, removeProduct } =
     useContext(CartContext);
   const router = useRouter();
   const { id } = router.query;
@@ -220,10 +212,9 @@ export default function ProductPage() {
               </div>
             </Info>
 
-            <WrapperButton>
+            <WrapperButtons>
               <CompatibilityModal product={product} />
               <ButtonCard
-                $black={1}
                 disabled={product?.quantity === 0 ? true : false}
                 style={{
                   backgroundColor: isProductInCart ? success : null,
@@ -239,7 +230,13 @@ export default function ProductPage() {
               >
                 {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}
               </ButtonCard>
-            </WrapperButton>
+              <AddRemoveCart
+                product={product}
+                cartProducts={cartProducts}
+                addProduct={addProduct}
+                removeProduct={removeProduct}
+              />
+            </WrapperButtons>
           </Row>
         </ColWrapper>
       </CenterDiv>

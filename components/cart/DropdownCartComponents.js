@@ -36,7 +36,7 @@ const WrapperdDopDown = styled.div`
   background-color: ${white};
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   @media screen and (max-width: 450px) {
-    left: 20px;
+    left: 10px;
   }
 `;
 
