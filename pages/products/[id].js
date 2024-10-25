@@ -121,11 +121,9 @@ const ButtonCard = styled.button`
   padding: 0.45rem;
   font-size: 0.6rem;
   font-weight: 500;
-  cursor: pointer;
   &:hover {
-    border-color: ${success};
-    background: ${success};
-    color: ${white2};
+    background-color: #5e5b5b;
+    cursor: pointer;
   }
   &:active {
     background-color: ${success};
@@ -136,7 +134,6 @@ const ButtonCard = styled.button`
     }
     &:hover {
       cursor: no-drop;
-      background: #5e5b5b;
     }
   }
 `;
@@ -220,7 +217,7 @@ export default function ProductPage() {
                   backgroundColor: isProductInCart ? success : null,
                 }}
                 title={
-                  isProductInCart ? "Elimina del carrito" : "Agregar carrito"
+                  isProductInCart ? "Elimina del carrito" : "Agregar al carrito"
                 }
                 onClick={() =>
                   isProductInCart

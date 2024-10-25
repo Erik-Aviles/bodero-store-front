@@ -72,7 +72,7 @@ const DiscountRibbon = styled.div`
     color: ${white};
   }
 `;
-const ImgCard = styled.button`
+const ButtonCard = styled.button`
   position: absolute;
   display: flex;
   justify-content: center;
@@ -81,10 +81,10 @@ const ImgCard = styled.button`
   height: 40px;
   right: 0;
   border: none;
-  border-radius: 0 0.25rem 0 1.2rem;
   background-color: ${black};
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   color: ${white2};
+  border-radius: 0 0.25rem 0 1.2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   &:hover {
     background-color: #5e5b5b;
     cursor: pointer;
@@ -222,12 +222,14 @@ export function ProductBox({ ...product }) {
               <span>{`-${Math.round(discountPercentage)}%`}</span>
             </DiscountRibbon>
           )}
-          <ImgCard
+          <ButtonCard
             disabled={product?.quantity === 0 ? true : false}
             style={{
               backgroundColor: isProductInCart ? success : null,
             }}
-            title={isProductInCart ? "Elimina del carrito" : "Agregar carrito"}
+            title={
+              isProductInCart ? "Elimina del carrito" : "Agregar al carrito"
+            }
             onClick={() =>
               isProductInCart
                 ? removeOneProduct(product._id)
@@ -235,7 +237,7 @@ export function ProductBox({ ...product }) {
             }
           >
             {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}
-          </ImgCard>
+          </ButtonCard>
           <ItemImage
             loader={product?.images?.[0] ? awsS3Loader : localLoader}
             src={product?.images?.[0] ? product?.images?.[0] : logo}
