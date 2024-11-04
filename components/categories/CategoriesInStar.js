@@ -135,7 +135,7 @@ export default function CategoriesInStar({ categories, isLoading }) {
             {isLoading ? (
               <SkeletorCategories />
             ) : (
-              categories?.categories.map((item) => (
+              categories?.categories?.map((item) => (
                 <ItemCard key={item._id} item={item} />
               ))
             )}

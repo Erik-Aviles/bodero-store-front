@@ -1,12 +1,12 @@
 import React from "react";
+import cloudinaryLoader from "../loaderes/cloudinaryLoader";
+import localLoader from "../loaderes/localLoader";
 import styled from "styled-components";
 import { black, grey, greylight, white } from "@/lib/colors";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Text from "../stylesComponents/HighlightedText";
 import logo from "../../public/logo.jpg";
-import cloudinaryLoader from "../loaderes/cloudinaryLoader";
-import localLoader from "../loaderes/localLoader";
 
 const ItemInformation = styled.li`
   min-width: 200px;
@@ -93,13 +93,23 @@ const ItemCard = ({ item: { _id, name, image, description } }) => {
     filterSearchCategory({ router, category: id });
   };
 
+  function hasEmptyProperty(obj) {
+    for (let key in obj) {
+      // Verifica si la propiedad está vacía o es nula o indefinida
+      if (obj.link === null || obj.link === undefined || obj.link === "") {
+        return true; // Hay al menos una propiedad vacía
+      }
+    }
+    return false; // Todas las propiedades están llenas
+  }
+
   return (
     <ItemInformation key={_id} title={name.toUpperCase()}>
       <div style={{ height: 60 }}>
         <ItemImage
-          loader={!image || image.length === 0 ? localLoader : cloudinaryLoader}
+          loader={hasEmptyProperty(image) ? localLoader : cloudinaryLoader}
           onClick={() => handle(_id)}
-          src={!image || image.length === 0 ? logo : image[0]}
+          src={hasEmptyProperty(image) ? logo : image?.link}
           alt={name.toUpperCase()}
           title={name.toUpperCase()}
           width={250}

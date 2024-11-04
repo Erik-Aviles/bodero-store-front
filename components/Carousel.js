@@ -1,7 +1,9 @@
-import { dataCarousel } from "@/resource/carouselData";
+import cloudinaryLoader from "./loaderes/cloudinaryLoader";
 import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
+import { useData } from "@/hooks/useData";
+import { capitalize } from "@/utils/capitalize";
 
 const SliderContainer = styled.div`
   width: 100%;
@@ -51,8 +53,11 @@ const Img = styled(Image)`
 `;
 
 const Carousel = () => {
+  const { company } = useData();
+  const { banners } = company || {};
+
   const [index, setIndex] = useState(0);
-  const dataCarouselLengthRef = useRef(dataCarousel.length);
+  const dataCarouselLengthRef = useRef(banners?.length);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -70,22 +75,24 @@ const Carousel = () => {
     <SliderContainer>
       <ContainerImages>
         <List style={{ transform: `translateX(-${index * 100}%)` }}>
-          {dataCarousel.map((item, index) => (
-            <li key={item.id}>
+          {banners?.map((item, index) => (
+            <li key={item?.bannerId}>
               {index === 0 ? (
                 <Img
+                  loader={cloudinaryLoader}
                   width={960}
                   height={314}
-                  alt={`Promo ${item.id}`}
-                  src={item.imgUrl}
+                  alt={`Imagen de ${capitalize(item?.description)}`}
+                  src={item?.image}
                   priority
                 />
               ) : (
                 <Img
+                  loader={cloudinaryLoader}
                   width={960}
                   height={314}
-                  alt={`Promo ${item.id}`}
-                  src={item.imgUrl}
+                  alt={`Imagen de ${capitalize(item?.description)}`}
+                  src={item?.image}
                 />
               )}
             </li>
@@ -93,7 +100,7 @@ const Carousel = () => {
         </List>
       </ContainerImages>
       <DotsContainer>
-        {dataCarousel.map((_, idx) =>
+        {banners?.map((_, idx) =>
           idx === index ? (
             <DotContainerItem
               key={idx}

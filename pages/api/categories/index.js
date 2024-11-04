@@ -1,22 +1,21 @@
 import { mongooseConnect } from "@/lib/mongoose";
-import { Category } from "@/models/Category";
 
 export default async function handle(req, res) {
-  await mongooseConnect();
-  const { method } = req;
+  if (req.method !== "GET") {
+    return res.status(405).json({ message: "Método no permitido" });
+  }
 
-  //Obtener
-  if (method === "GET") {
-    try {
-      const categories = await Category.find({}, null, { sort: { _id: -1 } });
-      const totalCategories = await Category.countDocuments();
-      return res.json({
-        result: categories.length,
-        totalCategories,
-        categories,
-      });
-    } catch (err) {
-      return res.status(500).json({ err: err.message });
-    }
+  try {
+    const db = await mongooseConnect();
+    const collection = db.collection("categories");
+    const categories = await collection.find({}).sort({ _id: -1 }).toArray();
+    const totalCategories = await collection.countDocuments();
+    return res.json({
+      result: categories.length,
+      totalCategories,
+      categories,
+    });
+  } catch (err) {
+    return res.status(500).json({ err: err.message });
   }
 }

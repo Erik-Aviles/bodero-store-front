@@ -1,9 +1,11 @@
+import cloudinaryLoader from "./loaderes/cloudinaryLoader";
+import logoLetras from "../public/logoLetras.jpg";
+import { useData } from "@/hooks/useData";
 import styled from "styled-components";
-import * as React from "react";
+import logo from "../public/logo.jpg";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../public/logo.jpg";
-import logoLetras from "../public/logoLetras.jpg";
+import localLoader from "./loaderes/localLoader";
 
 const Figure = styled.figure`
   width: 150px;
@@ -18,10 +20,19 @@ const Figure = styled.figure`
 `;
 
 export const LogoFull = ({ href }) => {
+  const { company } = useData();
+  const { mainlogo, secondarylogo } = company || {};
+
   return (
     <Link href={href}>
       <Figure>
-        <Image alt="Logo B.D.R" src={logo} width={200} height={40} />
+        <Image
+          loader={mainlogo ? cloudinaryLoader : localLoader}
+          alt="Logo B.D.R"
+          src={mainlogo ? mainlogo : logo}
+          width={200}
+          height={40}
+        />
       </Figure>
     </Link>
   );
@@ -31,7 +42,13 @@ export const LogoLetters = ({ href }) => {
   return (
     <Link href={href}>
       <Figure>
-        <Image alt="Logo B.D.R" src={logoLetras} width={300} height={140} />
+        <Image
+          loader={secondarylogo ? cloudinaryLoader : localLoader}
+          alt="Logo B.D.R"
+          src={secondarylogo ? secondarylogo : logoLetras}
+          width={300}
+          height={140}
+        />
       </Figure>
     </Link>
   );
