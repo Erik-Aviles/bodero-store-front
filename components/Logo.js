@@ -21,7 +21,7 @@ const Figure = styled.figure`
 
 export const LogoFull = ({ href }) => {
   const { company } = useData();
-  const { mainlogo, secondarylogo } = company || {};
+  const { mainlogo } = company || {};
 
   return (
     <Link href={href}>
@@ -39,6 +39,8 @@ export const LogoFull = ({ href }) => {
 };
 
 export const LogoLetters = ({ href }) => {
+  const { company } = useData();
+  const { secondarylogo } = company || {};
   return (
     <Link href={href}>
       <Figure>

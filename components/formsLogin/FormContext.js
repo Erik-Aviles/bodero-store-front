@@ -1,11 +1,14 @@
 import { createContext, useState } from "react";
-import styled from "styled-components";
-import { Input } from "./Input";
-import { Footer } from "./Footer";
+import cloudinaryLoader from "../loaderes/cloudinaryLoader";
+import localLoader from "../loaderes/localLoader";
 import { SubmitButton } from "./SubmitButton";
+import { useData } from "@/hooks/useData";
+import styled from "styled-components";
 import { TextArea } from "./TextArea";
+import { Footer } from "./Footer";
+import { Input } from "./Input";
 import Image from "next/image";
-import logo from "../../public/logoSimbolo.jpg";
+
 const FormWrapper = styled.form`
   padding: 1.3rem;
   border-radius: 10px;
@@ -44,6 +47,9 @@ export function FormContextProvider({
   onSubmit,
   children,
 }) {
+  const { company } = useData();
+  const { mainlogo } = company || {};
+
   const [formValues, setFormValues] = useState({});
 
   const handleSutmit = (e) => {
@@ -56,10 +62,11 @@ export function FormContextProvider({
       <FormWrapper onSubmit={handleSutmit}>
         <Imagen>
           <Image
-            alt="Logo de la empresa con banderitas"
-            src={logo}
+            loader={mainlogo ? cloudinaryLoader : localLoader}
+            src={mainlogo}
             width={673 / 4}
             height={286 / 4}
+            alt="Logo de la empresa con banderitas"
           />
         </Imagen>
         <DespContainer>
