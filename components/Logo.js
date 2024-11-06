@@ -1,11 +1,11 @@
 import cloudinaryLoader from "./loaderes/cloudinaryLoader";
 import logoLetras from "../public/logoLetras.jpg";
+import localLoader from "./loaderes/localLoader";
 import { useData } from "@/hooks/useData";
 import styled from "styled-components";
 import logo from "../public/logo.jpg";
 import Image from "next/image";
 import Link from "next/link";
-import localLoader from "./loaderes/localLoader";
 
 const Figure = styled.figure`
   width: 150px;
@@ -21,7 +21,7 @@ const Figure = styled.figure`
 
 export const LogoFull = ({ href }) => {
   const { company } = useData();
-  const { mainlogo } = company || {};
+  const mainlogo = company?.mainlogo;
 
   return (
     <Link href={href}>
@@ -40,7 +40,8 @@ export const LogoFull = ({ href }) => {
 
 export const LogoLetters = ({ href }) => {
   const { company } = useData();
-  const { secondarylogo } = company || {};
+  const secondarylogo = company?.secondarylogo;
+
   return (
     <Link href={href}>
       <Figure>

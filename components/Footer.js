@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import InformationFooter from "./InformationFooter";
-import { black, grey, white } from "@/lib/colors";
+import { black, grey, primary, white } from "@/lib/colors";
 import logoLetras from "../public/logoLetras.jpg";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import betimes from "../public/images/betimes/betimesCompany.png";
 import instagram from "../public/svg/instagram.svg";
 import facebook from "../public/svg/facebook.svg";
 import tiktok from "../public/svg/tiktok.svg";
+import { useData } from "@/hooks/useData";
 
 const WrapperFooter = styled.footer`
   display: flex;
@@ -56,12 +57,10 @@ const ListSocialMedia = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 10px;
+  font-weight: bold;
+  color: ${black};
 
-  span {
-    color: ${black};
-    font-style: "italic";
-  }
   @media screen and (min-width: 768px) {
     flex-direction: column;
     justify-content: space-between;
@@ -73,46 +72,43 @@ const ListSocialMedia = styled.div`
   }
 `;
 
+const SocialMediaName = styled.i`
+  font-size: 14px;
+  font-weight: normal;
+  color: #6b7280;
+  transition: color 300ms;
+  text-transform: capitalize;
+
+  &:hover {
+    color: ${primary};
+  }
+`;
+
 export default function Footer() {
+  const { company } = useData();
+  const socialMedia = company?.socialMedia;
+
   return (
     <>
       <InformationFooter />
       <WrapperFooter>
         <ListSocialMedia>
           <span>Síganos en:</span>
-          <Link
-            href={
-              "https://www.instagram.com/cesar_bodero?igsh=emZ4Y20yb2RnMjd6"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            title={"Instagram B.R.D"}
-          >
-            <Image
-              src={instagram}
-              alt="Instagram B.R.D"
-              width={25}
-              height={25}
-            />
-          </Link>
-          <Link
-            href={"https://www.facebook.com/boderoracing?mibextid=LQQJ4d"}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={"FaceBook B.R.D"}
-          >
-            <Image src={facebook} alt="FaceBook B.R.D" width={25} height={25} />
-          </Link>
-          <Link
-            href={
-              "https://www.tiktok.com/@boderoracingdevel?_t=8k9dJNXQObF&_r=1"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            title={"TikTok B.R.D"}
-          >
-            <Image src={tiktok} alt="TikTok B.R.D" width={25} height={25} />
-          </Link>
+          {socialMedia?.map(({ title, link, icon }) => (
+            <Link
+              key={title}
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={title}
+            >
+              {icon ? (
+                <Image src={icon} alt={title} width={25} height={25} />
+              ) : (
+                <SocialMediaName>{title}</SocialMediaName>
+              )}
+            </Link>
+          ))}
         </ListSocialMedia>
         <Logo href={"/"}>
           <Image alt="Logo B.D.R" src={logoLetras} title={"Ir al Inicio"} />

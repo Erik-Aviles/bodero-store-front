@@ -1,6 +1,6 @@
-import backgroundBrand from "../public/images/brands/background.jpg";
+import { useData } from "@/hooks/useData";
+import cloudinaryLoader from "./loaderes/cloudinaryLoader";
 import { BackgroundColor, black } from "@/lib/colors";
-import { brands } from "@/resource/brandsData";
 import Center from "./stylesComponents/Center";
 import Title from "./stylesComponents/Title";
 import styled from "styled-components";
@@ -63,30 +63,44 @@ const BrandName = styled.h3`
 `;
 
 export default function Brands() {
+  const { company } = useData();
+  const brands = company?.brands;
+  const backgroundImageBrands = company?.backgroundImageBrands;
+  const backgroundImage = backgroundImageBrands?.image;
+  const backgroundDescription = backgroundImageBrands?.description;
+
   const router = useRouter();
 
   const handleSearch = (name) => {
-    const normalized = name;
-
+    const normalized = name.toLowerCase();
     if (name) {
-      router.push(`/busqueda?q=${name.toLowerCase()}`);
+      router.push(`/busqueda?q=${normalized}`);
     }
   };
 
   return (
     <Wrapper>
       <Image
-        alt="Imagen de fondo De un paisaje"
-        src={backgroundBrand}
+        loader={cloudinaryLoader}
+        alt={backgroundDescription}
+        src={backgroundImage}
         layout="fill"
       />
       <Center>
         <Title>Marcas destacadas</Title>
         <BrandsWrapper>
-          {brands?.map(({ id, name, src }) => (
-            <StyledCard key={id} onClick={() => handleSearch(name)}>
+          {brands?.map(({ brandId, name, image }) => (
+            <StyledCard key={brandId} onClick={() => handleSearch(name)}>
               <BrandName>{name.toUpperCase()}</BrandName>
-              <Image src={src} alt={name} width={50} height={50} />
+              {image ? (
+                <Image
+                  loader={cloudinaryLoader}
+                  src={image}
+                  alt={name}
+                  width={50}
+                  height={50}
+                />
+              ) : null}
             </StyledCard>
           ))}
         </BrandsWrapper>
