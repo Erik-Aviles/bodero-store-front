@@ -1,10 +1,10 @@
 import { WhatsappIcon } from "@/components/Icons";
+import { useData } from "@/hooks/useData";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
 import Button from "@/components/buttonComponents/Button";
 import TableCart from "@/components/cart/TableCart";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import { companyInformationData } from "../resource/companyInformationData";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
 import Title from "@/components/stylesComponents/Title";
 import { CartContext } from "@/context/CartContext";
@@ -113,6 +113,9 @@ const InputContainer = styled.div`
 `;
 
 export default function CartPage() {
+  const { company } = useData();
+  const secondaryPhone = company?.secondaryPhone;
+
   const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
   const [name, setName] = useState("");
@@ -123,7 +126,6 @@ export default function CartPage() {
   const [country, setCountry] = useState("");
 
   const { cartProducts, clearCart } = useContext(CartContext);
-  const secondaryPhone = companyInformationData[0].secondaryPhone;
   const orderData = {
     name,
     email,

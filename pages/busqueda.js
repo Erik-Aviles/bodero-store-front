@@ -7,13 +7,13 @@ import Title from "@/components/stylesComponents/Title";
 import ProductSearch from "@/components/ProductSearch";
 import useProductsAll from "@/hooks/useProductsAll";
 import Pagination from "@/components/Pagination";
-import { brands } from "@/resource/brandsData";
 import filterSearch from "@/utils/filterSearch";
 import styled, { css } from "styled-components";
 import { grey, secondary } from "@/lib/colors";
 import { useDebounce } from "use-debounce";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
+import { useData } from "@/hooks/useData";
 
 const CenterDiv = styled.section`
   margin: 0 auto;
@@ -89,6 +89,9 @@ const ResultsSession = styled.section`
 `;
 
 const SearchPage = () => {
+  const { company } = useData();
+  const brands = company?.brands;
+
   const { showNotification } = useContext(NotificationContext);
   const pageSize = 20;
   const router = useRouter();
@@ -157,7 +160,7 @@ const SearchPage = () => {
     router.back();
   };
 
-  const brandNames = brands.map((brand) => brand.name);
+  const brandNames = brands?.map((brand) => brand.name);
   const brandNamesString = brandNames.join(", ");
 
   return (

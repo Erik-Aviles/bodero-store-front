@@ -6,6 +6,7 @@ import { BsCardList, BsViewStacked } from "react-icons/bs";
 import { SlUser } from "react-icons/sl";
 import CartComponent from "./cart/CartComponent";
 import { useRouter } from "next/router";
+import { useData } from "@/hooks/useData";
 
 const StyledHeader = styled.header`
   position: -webkit-sticky;
@@ -110,7 +111,9 @@ const TextSpan = styled.p`
 
 export default function NavMovil() {
   const router = useRouter();
+  const { company } = useData();
   const path = router.pathname;
+  const mainPhone = company?.mainPhone;
 
   return (
     <StyledHeader>
@@ -141,9 +144,7 @@ export default function NavMovil() {
         </StaledLink> */}
         <StaledLink
           $endBorder={1}
-          href={
-            "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
-          }
+          href={`https://api.whatsapp.com/send/?phone=593${mainPhone}&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1`}
           target="_blank"
           rel="noopener noreferrer"
           title={"Enviar mensaje por Whatsapp"}

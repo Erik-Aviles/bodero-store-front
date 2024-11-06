@@ -8,13 +8,13 @@ import Title from "@/components/stylesComponents/Title";
 import ProductsGrid from "@/components/ProductsGrid";
 import filterSearch from "@/utils/filterSearch";
 import styled, { css } from "styled-components";
-import { brands } from "@/resource/brandsData";
 import { grey, secondary } from "@/lib/colors";
 import useProducts from "@/hooks/useProducts";
 import { Loader } from "@/components/Loader";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
+import { useData } from "@/hooks/useData";
 
 const CenterDiv = styled.section`
   height: auto;
@@ -34,6 +34,9 @@ const FlexFooter = styled.div`
 `;
 
 export default function ProductsPage() {
+  const { company } = useData();
+  const brands = company?.brands;
+
   const router = useRouter();
   const { query } = router;
   const [limit] = useState(20);
@@ -59,7 +62,7 @@ export default function ProductsPage() {
 
   const hasNextPage = data && data?.result === 20;
 
-  const brandNames = brands.map((brand) => brand.name);
+  const brandNames = brands?.map((brand) => brand.name);
   const brandNamesString = brandNames.join(", ");
 
   if (error) return <div>Error: {error.message}</div>;

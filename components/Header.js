@@ -12,6 +12,7 @@ import { WhatsappIcon } from "./Icons";
 import { useState } from "react";
 import { LogoFull } from "./Logo";
 import Link from "next/link";
+import { useData } from "@/hooks/useData";
 
 const DisplayNoneCpmponente = styled.div`
   display: none;
@@ -161,6 +162,8 @@ const TextSpan = styled.p`
 `;
 
 export default function Header({ toggleAuthModal }) {
+  const { company } = useData();
+  const mainPhone = company?.mainPhone;
   const { products, isError, isLoading, mutate } = useProductsAll();
 
   const router = useRouter();
@@ -187,13 +190,11 @@ export default function Header({ toggleAuthModal }) {
             <SectionRigthNav>
               <StylesWrapperWhatsApp $anim={1}>
                 <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
-                <h3>0996501072</h3>
+                <h3>0{mainPhone}</h3>
               </StylesWrapperWhatsApp>
               <StyleNav>
                 <StaledLink
-                  href={
-                    "https://api.whatsapp.com/send/?phone=593996501072&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1"
-                  }
+                  href={`https://api.whatsapp.com/send/?phone=593${mainPhone}&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1`}
                   target="_blank"
                   rel="noopener noreferrer"
                   title={"Enviar mensaje por Whatsapp"}
