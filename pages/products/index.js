@@ -1,4 +1,5 @@
 import { ButtonContainer } from "@/components/buttonComponents/ButtonContainer";
+import { useData } from "@/hooks/useData";
 import ButtonDisabled from "@/components/buttonComponents/ButtonDisabled";
 import SkeletorProducts from "@/components/skeletor/SkeletorProducts";
 import BackButton from "@/components/buttonComponents/BackButton";
@@ -14,7 +15,6 @@ import { Loader } from "@/components/Loader";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
-import { useData } from "@/hooks/useData";
 
 const CenterDiv = styled.section`
   height: auto;
@@ -63,7 +63,7 @@ export default function ProductsPage() {
   const hasNextPage = data && data?.result === 20;
 
   const brandNames = brands?.map((brand) => brand.name);
-  const brandNamesString = brandNames.join(", ");
+  const brandNamesString = brandNames?.join(", ");
 
   if (error) return <div>Error: {error.message}</div>;
 

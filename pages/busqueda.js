@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useData } from "@/hooks/useData";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { fetchProductsFilter } from "@/utils/FetchProductsFilter";
 import NotificationContext from "@/context/NotificationContext";
@@ -13,7 +14,6 @@ import { grey, secondary } from "@/lib/colors";
 import { useDebounce } from "use-debounce";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
-import { useData } from "@/hooks/useData";
 
 const CenterDiv = styled.section`
   margin: 0 auto;
@@ -161,7 +161,7 @@ const SearchPage = () => {
   };
 
   const brandNames = brands?.map((brand) => brand.name);
-  const brandNamesString = brandNames.join(", ");
+  const brandNamesString = brandNames?.join(", ");
 
   return (
     <Layout
