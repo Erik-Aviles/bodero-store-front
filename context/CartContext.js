@@ -8,17 +8,25 @@ export function CartContextProvider({ children }) {
   const [showCart, setSetShowCart] = useState(false);
 
   useEffect(() => {
-    if (showCart) {
-      document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = "17px";
-    } else {
-      document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-    }
+    const handleResize = () => {
+      const isLaptopSize = window.innerWidth >= 992;
 
+      if (isLaptopSize && showCart) {
+        document.body.style.overflow = "hidden";
+        document.body.style.paddingRight = "17px";
+      } else {
+        document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
+      }
+    };
+
+    handleResize(); // Ejecutar al cargar para aplicar si ya está en laptop
+
+    window.addEventListener("resize", handleResize);
     return () => {
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
+      window.removeEventListener("resize", handleResize);
     };
   }, [showCart]);
 

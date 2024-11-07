@@ -2,11 +2,12 @@ import styled, { css } from "styled-components";
 import { black, grey, greylight, primary, success, white } from "@/lib/colors";
 import Link from "next/link";
 import { WhatsappIcon } from "./Icons";
-import { BsCardList, BsViewStacked } from "react-icons/bs";
+import { BsCardList, BsCart2, BsViewStacked } from "react-icons/bs";
 import { SlUser } from "react-icons/sl";
-import CartComponent from "./cart/CartComponent";
 import { useRouter } from "next/router";
 import { useData } from "@/hooks/useData";
+import { useContext } from "react";
+import { CartContext } from "@/context/CartContext";
 
 const StyledHeader = styled.header`
   position: -webkit-sticky;
@@ -59,12 +60,14 @@ const ButtonCart = styled.button`
   background-color: transparent;
   justify-content: end;
   border-right: 0.1px solid ${greylight};
+  cursor: pointer;
   ${(props) =>
     props.$endBorder &&
     css`
       border-right: 0;
     `};
 `;
+
 const StaledDiv = styled.div`
   width: 45px;
   height: 20px;
@@ -109,8 +112,46 @@ const TextSpan = styled.p`
   font-size: 0.6rem;
 `;
 
+const WrapperIcon = styled.div`
+  position: relative;
+  width: 16px;
+  height: 16px;
+  svg {
+    height: 1em;
+    width: 1em;
+  }
+  @media screen and (min-width: 767px) {
+    width: 24px;
+    height: 28px;
+    svg {
+      height: 24px;
+      width: 24px;
+    }
+  }
+`;
+const StyledSpan = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${success};
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  top: 0px;
+  right: -10px;
+  font-size: 0.5rem;
+  color: ${white};
+  @media screen and (min-width: 767px) {
+    width: 20px;
+    height: 20px;
+    right: -10px;
+  }
+`;
+
 export default function NavMovil() {
   const router = useRouter();
+  const { cartProducts, dropdownCart } = useContext(CartContext);
   const { company } = useData();
   const path = router.pathname;
   const mainPhone = company?.mainPhone;
@@ -130,9 +171,14 @@ export default function NavMovil() {
           </StaledDiv>
           <TextSpan>Categorias</TextSpan>
         </StaledLink>{" "}
-        <ButtonCart title={"Ver mi pedido"}>
+        <ButtonCart title={"Ver mi pedido"} onClick={dropdownCart}>
           <StaledDiv $active={path === "/carrito-de-compras" ? 1 : 0}>
-            <CartComponent />
+            <WrapperIcon>
+              {cartProducts?.length > 0 && (
+                <StyledSpan>{cartProducts?.length}</StyledSpan>
+              )}
+              <BsCart2 />
+            </WrapperIcon>
           </StaledDiv>
           <TextSpan>Carrito</TextSpan>
         </ButtonCart>

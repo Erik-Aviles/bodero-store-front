@@ -161,7 +161,7 @@ const TextSpan = styled.p`
   }
 `;
 
-export default function Header({ toggleAuthModal }) {
+export default function Header() {
   const { company } = useData();
   const mainPhone = company?.mainPhone;
   const { products, isError, isLoading, mutate } = useProductsAll();
@@ -188,17 +188,20 @@ export default function Header({ toggleAuthModal }) {
           <SearchAutoComplete allProducts={products} />
           <DisplayNoneCpmponente>
             <SectionRigthNav>
-              <StylesWrapperWhatsApp $anim={1}>
-                <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
-                <h3>0{mainPhone}</h3>
-              </StylesWrapperWhatsApp>
               <StyleNav>
-                <StaledLink
-                  href={`https://api.whatsapp.com/send/?phone=593${mainPhone}&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={"Enviar mensaje por Whatsapp"}
-                ></StaledLink>{" "}
+                {mainPhone && (
+                  <StylesWrapperWhatsApp $anim={1}>
+                    <StaledLink
+                      href={`https://api.whatsapp.com/send/?phone=593${mainPhone}&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={"Enviar mensaje por Whatsapp"}
+                    >
+                      <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
+                    </StaledLink>
+                    <h3>0{mainPhone}</h3>
+                  </StylesWrapperWhatsApp>
+                )}
                 <StaledLink
                   $active={path === "/products" ? 1 : 0}
                   href={"/products"}
