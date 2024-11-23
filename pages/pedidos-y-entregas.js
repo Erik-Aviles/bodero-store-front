@@ -1,17 +1,17 @@
-import styled, { css } from "styled-components";
-import React, { useEffect, useState } from "react";
-import { black, white } from "@/lib/colors";
-import Title from "@/components/stylesComponents/Title";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import { useRouter } from "next/navigation";
-import Layout from "@/components/Layout";
-import BackButton from "@/components/buttonComponents/BackButton";
-import { FlexStyled } from "@/components/stylesComponents/Flex";
-import { Loading } from "@/components/Loading";
+import styled, { css } from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { black, white } from '@/lib/colors'
+import Title from '@/components/stylesComponents/Title'
+import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
+import { useRouter } from 'next/navigation'
+import Layout from '@/components/Layout'
+import BackButton from '@/components/buttonComponents/BackButton'
+import { FlexStyled } from '@/components/stylesComponents/Flex'
+import { Loading } from '@/components/Loading'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
-`;
+`
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   @media screen and (min-width: 768px) {
     padding: 20px 60px 40px;
   }
-`;
+`
 const Box = styled.div`
   max-width: 700px;
   display: flex;
@@ -62,30 +62,34 @@ const Box = styled.div`
   span {
     padding: 7px 0 0 10px;
   }
-`;
+`
 
 export default function DeliveryPage() {
-  const router = useRouter();
-  const [isUpLoanding, setIsUpLoanding] = useState(true);
+  const router = useRouter()
+  const [isUpLoanding, setIsUpLoanding] = useState(true)
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setIsUpLoanding(false);
-    }, 2000);
-    return () => clearTimeout(timeout);
-  }, []);
+      setIsUpLoanding(false)
+    }, 2000)
+    return () => clearTimeout(timeout)
+  }, [])
 
   const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
-  };
+    e.preventDefault()
+    router.back()
+  }
 
   if (isUpLoanding) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
-    <Layout title="B.R.D | Pedidos y Entregas">
+    <Layout
+      title='B.R.D | Pedidos y Entregas'
+      description='En B.R.D, nos complace ofrecerte opciones de pago para que elijas la que mejor se adapte a tus necesidades: Transferencia bancaria, Pago en efectivo...'
+      sity='/pedidos-y-entregas'
+    >
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
@@ -158,5 +162,5 @@ export default function DeliveryPage() {
         </Wrapper>
       </CenterDiv>
     </Layout>
-  );
+  )
 }

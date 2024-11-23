@@ -1,15 +1,15 @@
-import CategoriesInStar from "@/components/categories/CategoriesInStar";
-import ExclusiveProductoffers from "@/components/ExclusiveProductoffers";
-import useOnOfferProducts from "@/hooks/useOnOfferProducts";
-import NewProducts from "@/components/NewProducts";
-import useCategories from "@/hooks/useCategories";
-import { Loading } from "@/components/Loading";
-import useProducts from "@/hooks/useProducts";
-import Carousel from "@/components/Carousel";
-import Brands from "@/components/Brands";
-import Layout from "@/components/Layout";
-import styled from "styled-components";
-import { useState } from "react";
+import CategoriesInStar from '@/components/categories/CategoriesInStar'
+import ExclusiveProductoffers from '@/components/ExclusiveProductoffers'
+import useOnOfferProducts from '@/hooks/useOnOfferProducts'
+import NewProducts from '@/components/NewProducts'
+import useCategories from '@/hooks/useCategories'
+import { Loading } from '@/components/Loading'
+import useProducts from '@/hooks/useProducts'
+import Carousel from '@/components/Carousel'
+import Brands from '@/components/Brands'
+import Layout from '@/components/Layout'
+import styled from 'styled-components'
+import { useState } from 'react'
 
 const BackgroundColor = styled.div`
   width: 100%;
@@ -17,23 +17,24 @@ const BackgroundColor = styled.div`
   flex-direction: column;
   gap: 30px;
   background-color: #f7f7f7;
-`;
+`
 
 export default function HomePage() {
-  const [limit] = useState(10);
-  const { categories, isLoadingCategories } = useCategories(limit);
-  const { data: products, isLoadingProducts } = useProducts(limit);
+  const [limit] = useState(10)
+  const { categories, isLoadingCategories } = useCategories(limit)
+  const { data: products, isLoadingProducts } = useProducts(limit)
   const { onOffetProducts, totalOnOffetProducts, isLoadingOnOffetProducts } =
-    useOnOfferProducts(limit);
+    useOnOfferProducts(limit)
 
   if (isLoadingProducts || isLoadingCategories || isLoadingOnOffetProducts) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
     <Layout
-      title="B.R.D | INICIO"
-      description="Tienda de repuestos y accesorios originales de moto en Quevedo"
+      title='B.R.D | Tienda de repuestos, accesorios y servicios'
+      description='Bodero Racing Development ofrece repuestos y accesorios originales de motos. Ademas de reparación y mantenimiento de motos de alta gama.'
+      sity='/'
     >
       <BackgroundColor>
         <Carousel />
@@ -50,5 +51,5 @@ export default function HomePage() {
         <Brands />
       </BackgroundColor>
     </Layout>
-  );
+  )
 }

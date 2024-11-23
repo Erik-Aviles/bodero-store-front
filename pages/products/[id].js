@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   black,
   grey,
@@ -7,24 +7,24 @@ import {
   success,
   white,
   white2,
-} from "@/lib/colors";
-import ProductImages from "@/components/ProductImages";
-import CompatibilityModal from "@/components/CompatibilityModal";
-import BackButton from "@/components/buttonComponents/BackButton";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import Layout from "@/components/Layout";
-import { FlexStyled } from "@/components/stylesComponents/Flex";
-import { useContext } from "react";
-import { AddToCartIcon, RemoveFromCartIcon } from "@/components/Icons";
-import { CartContext } from "@/context/CartContext";
-import useProduct from "@/hooks/useProduct";
-import { useRouter } from "next/router";
-import Text from "@/components/stylesComponents/HighlightedText";
-import AddRemoveCart from "@/components/cart/AddRemoveCart";
+} from '@/lib/colors'
+import ProductImages from '@/components/ProductImages'
+import CompatibilityModal from '@/components/CompatibilityModal'
+import BackButton from '@/components/buttonComponents/BackButton'
+import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
+import Layout from '@/components/Layout'
+import { FlexStyled } from '@/components/stylesComponents/Flex'
+import { useContext } from 'react'
+import { AddToCartIcon, RemoveFromCartIcon } from '@/components/Icons'
+import { CartContext } from '@/context/CartContext'
+import useProduct from '@/hooks/useProduct'
+import { useRouter } from 'next/router'
+import Text from '@/components/stylesComponents/HighlightedText'
+import AddRemoveCart from '@/components/cart/AddRemoveCart'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
-`;
+`
 
 const ColWrapper = styled.div`
   font-size: 1rem;
@@ -38,7 +38,7 @@ const ColWrapper = styled.div`
     margin: 0 auto;
     grid-template-columns: repeat(2, 1fr);
   }
-`;
+`
 
 const Title = styled.h2`
   font-size: 1rem;
@@ -48,14 +48,14 @@ const Title = styled.h2`
   @media screen and (min-width: 640px) {
     font-size: 1.3rem;
   }
-`;
+`
 
 const Row = styled.div`
   display: flex;
   flex-direction: column;
   aling-items: center;
   padding: 0 20px 20px;
-`;
+`
 
 const InfoText = styled.p`
   margin: 0;
@@ -65,7 +65,7 @@ const InfoText = styled.p`
   border-color: ${greylight};
   color: ${grey};
   line-height: 1rem;
-`;
+`
 const InfoTitle = styled.div`
   display: flex;
   flex-direction: column;
@@ -77,7 +77,7 @@ const InfoTitle = styled.div`
       margin-right: 5px;
     }
   }
-`;
+`
 const Info = styled.div`
   display: flex;
   aling-items: center;
@@ -99,19 +99,19 @@ const Info = styled.div`
   @media screen and (max-width: 780px) {
     flex-direction: column;
   }
-`;
+`
 
 const Price = styled.span`
   font-size: 1rem;
   font-weight: 600;
-`;
+`
 const WrapperButtons = styled.section`
   margin: 20px 0;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   gap: 8px;
-`;
+`
 
 const ButtonCard = styled.button`
   border: none;
@@ -136,32 +136,33 @@ const ButtonCard = styled.button`
       cursor: no-drop;
     }
   }
-`;
+`
 
 export default function ProductPage() {
   const { addProduct, cartProducts, removeOneProduct, removeProduct } =
-    useContext(CartContext);
-  const router = useRouter();
-  const { id } = router.query;
-  const { product, isLoading, isError } = useProduct(id);
+    useContext(CartContext)
+  const router = useRouter()
+  const { id } = router.query
+  const { product, isLoading, isError } = useProduct(id)
 
   const checkProductInCart = (product) => {
-    return cartProducts.some((item) => item === product);
-  };
-  const isProductInCart = checkProductInCart(product?._id);
+    return cartProducts.some((item) => item === product)
+  }
+  const isProductInCart = checkProductInCart(product?._id)
 
   const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
-  };
+    e.preventDefault()
+    router.back()
+  }
 
   return (
     <Layout
       title={
         isLoading
-          ? "B.R.D | Cargando..."
-          : "B.R.D | " + product?.title?.toUpperCase()
+          ? 'B.R.D | Cargando...'
+          : `B.R.D | ${product?.title?.toUpperCase() || 'Producto Sin Título'}`
       }
+      sity={`/products/${product?._id || ''}`}
     >
       <CenterDiv>
         <FlexStyled>
@@ -217,7 +218,7 @@ export default function ProductPage() {
                   backgroundColor: isProductInCart ? success : null,
                 }}
                 title={
-                  isProductInCart ? "Elimina del carrito" : "Agregar al carrito"
+                  isProductInCart ? 'Elimina del carrito' : 'Agregar al carrito'
                 }
                 onClick={() =>
                   isProductInCart
@@ -238,7 +239,7 @@ export default function ProductPage() {
         </ColWrapper>
       </CenterDiv>
     </Layout>
-  );
+  )
 }
 
 /* export async function getServerSideProps(context) {

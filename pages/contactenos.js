@@ -1,20 +1,20 @@
-import styled, { css } from "styled-components";
-import useAuthFetch from "@/hooks/useAuthFetch";
-import useLoading from "@/hooks/useLoading";
-import { black, white } from "@/lib/colors";
-import Title from "@/components/stylesComponents/Title";
-import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import { FormContextProvider } from "@/components/formsLogin/FormContext";
-import Layout from "@/components/Layout";
-import BackButton from "@/components/buttonComponents/BackButton";
-import { useRouter } from "next/navigation";
-import { FlexStyled } from "@/components/stylesComponents/Flex";
-import { Loading } from "@/components/Loading";
-import { useContext, useEffect, useState } from "react";
+import styled, { css } from 'styled-components'
+import useAuthFetch from '@/hooks/useAuthFetch'
+import useLoading from '@/hooks/useLoading'
+import { black, white } from '@/lib/colors'
+import Title from '@/components/stylesComponents/Title'
+import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
+import { FormContextProvider } from '@/components/formsLogin/FormContext'
+import Layout from '@/components/Layout'
+import BackButton from '@/components/buttonComponents/BackButton'
+import { useRouter } from 'next/navigation'
+import { FlexStyled } from '@/components/stylesComponents/Flex'
+import { Loading } from '@/components/Loading'
+import { useContext, useEffect, useState } from 'react'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
-`;
+`
 
 const Wrapper = styled.div`
   display: grid;
@@ -26,7 +26,7 @@ const Wrapper = styled.div`
     justify-content: center;
     padding: 0 60px 60px;
   }
-`;
+`
 const Box = styled.div`
   padding: 30px 0;
   height: fit-content;
@@ -67,54 +67,58 @@ const Box = styled.div`
     justify-content: center;
     padding: 20px;
   }
-`;
+`
 const TextStrong = styled.strong`
   font-size: 1.4rem;
   @media screen and (min-width: 768px) {
     font-size: 2rem;
   }
-`;
+`
 const WrapperInputs = styled.div`
   margin: 10px 0;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-`;
+`
 export default function ContactPage() {
-  const authRouter = useAuthFetch();
-  const router = useRouter();
-  const { isLoading, startLoading, finishtLoading } = useLoading();
-  const [isUpLoanding, setIsUpLoanding] = useState(true);
+  const authRouter = useAuthFetch()
+  const router = useRouter()
+  const { isLoading, startLoading, finishtLoading } = useLoading()
+  const [isUpLoanding, setIsUpLoanding] = useState(true)
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setIsUpLoanding(false);
-    }, 1000);
+      setIsUpLoanding(false)
+    }, 1000)
 
-    return () => clearTimeout(timeout);
-  }, []);
+    return () => clearTimeout(timeout)
+  }, [])
 
   const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
-  };
+    e.preventDefault()
+    router.back()
+  }
 
   if (isUpLoanding) {
-    return <Loading />;
+    return <Loading />
   }
 
   const contactSend = async (formData) => {
-    startLoading();
+    startLoading()
     await authRouter({
-      endpoint: "send",
-      redirectRoute: "/",
+      endpoint: 'send',
+      redirectRoute: '/',
       formData,
-    });
-    finishtLoading();
-  };
+    })
+    finishtLoading()
+  }
 
   return (
-    <Layout title="B.R.D | Contactenos">
+    <Layout
+      title='B.R.D | Contactenos'
+      description='Contáctanos para más información sobre repuestos, accesorios y servicios especializados para motos de baja, media y alta gama. ¡Estamos para ayudarte!'
+      sity='/contactenos'
+    >
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
@@ -154,47 +158,47 @@ export default function ContactPage() {
             </h4>
             <FormContextProvider
               onSubmit={contactSend}
-              description="Ingresa el correo electrónico y teléfono de uso frecuente"
+              description='Ingresa el correo electrónico y teléfono de uso frecuente'
             >
               <WrapperInputs>
                 <FormContextProvider.Input
-                  label="Nombre completo"
-                  name="name"
-                  type="text"
-                  placeholder="Nombre..."
+                  label='Nombre completo'
+                  name='name'
+                  type='text'
+                  placeholder='Nombre...'
                 />
                 <FormContextProvider.Input
-                  label="Correo"
-                  name="email"
-                  type="email"
-                  placeholder="Correo..."
+                  label='Correo'
+                  name='email'
+                  type='email'
+                  placeholder='Correo...'
                 />
                 <FormContextProvider.Input
-                  label="Teléfono"
-                  name="phone"
-                  type="text"
-                  placeholder="Teléfono..."
+                  label='Teléfono'
+                  name='phone'
+                  type='text'
+                  placeholder='Teléfono...'
                 />
                 <FormContextProvider.Input
-                  label="Ciudad"
-                  name="city"
-                  type="text"
-                  placeholder="Ciudad"
+                  label='Ciudad'
+                  name='city'
+                  type='text'
+                  placeholder='Ciudad'
                 />
                 <FormContextProvider.Input
-                  label="País"
-                  name="country"
-                  type="text"
-                  placeholder="País"
+                  label='País'
+                  name='country'
+                  type='text'
+                  placeholder='País'
                 />
                 <FormContextProvider.TextArea
-                  label="Mensaje"
-                  name="message"
-                  placeholder="Escribe tu mensaje aquí"
+                  label='Mensaje'
+                  name='message'
+                  placeholder='Escribe tu mensaje aquí'
                 />
               </WrapperInputs>
               <FormContextProvider.SubmitButton
-                buttonText="ENVIAR"
+                buttonText='ENVIAR'
                 isLoading={isLoading}
               />
             </FormContextProvider>
@@ -202,5 +206,5 @@ export default function ContactPage() {
         </Wrapper>
       </CenterDiv>
     </Layout>
-  );
+  )
 }

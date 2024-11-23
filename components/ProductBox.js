@@ -122,7 +122,7 @@ const ProductInfoBox = styled.div`
   }
 `;
 
-const Title = styled.h5`
+const Title = styled.h3`
   width: 100%;
   height: 40px;
   font-size: 0.72rem;
