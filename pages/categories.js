@@ -243,13 +243,16 @@ export default function CategoriesPage() {
                 isError={isErrorProducts}
                 nameCategory={nameCategory}
               />
+              {products.length > 0 && (
+                <Pagination
+                  currentPage={pages}
+                  onPageChange={handlePageChangePro}
+                  totalPages={Math.ceil(totalProducts / pageSize)}
+                  isLoading={isLoadingProduct || isValidating}
+                />
+              )}
             </Wrapper>
-            <Pagination
-              currentPage={pages}
-              onPageChange={handlePageChangePro}
-              totalPages={Math.ceil(totalProducts / pageSize)}
-              isLoading={isLoadingProduct || isValidating}
-            />
+            {products.length > 0 && renderFooter()}
           </>
         ) : (
           <>
@@ -267,10 +270,12 @@ export default function CategoriesPage() {
                 <Text>Categorías.</Text>
               </BreadCrumb>
             </Sorted>
-            <Wrapper>{renderCategorySection()}</Wrapper>
+            <Wrapper>
+              {renderCategorySection()}
+              {renderFooter()}
+            </Wrapper>
           </>
         )}
-        {renderFooter()}
       </ContentSection>
     </Layout>
   )
