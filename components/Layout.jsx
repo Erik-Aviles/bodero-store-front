@@ -12,7 +12,6 @@ import { useData } from '@/hooks/useData'
 export default function Layout({ children, title, description, sity }) {
   const { company } = useData()
   const mainlogo = company?.mainlogo
-  console.log(company)
 
   const { showCart } = useContext(CartContext)
   const [showAuthModal, setShowAuthModal] = useState(false)
