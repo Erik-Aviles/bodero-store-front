@@ -1,10 +1,10 @@
-import { black, grey, primary, success, warning, white } from "@/lib/colors";
-import React, { useState } from "react";
-import styled, { css } from "styled-components";
-import { AllDeleteIcon, HamburguerIcon } from "../Icons";
-import { linksUp } from "@/resource/linkRouterData";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { black, grey, primary, success, warning, white } from '@/lib/colors'
+import React, { useState } from 'react'
+import styled, { css } from 'styled-components'
+import { AllDeleteIcon, HamburguerIcon } from '../Icons'
+import { linksUp } from '@/resource/linkRouterData'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const StyledDiv = styled.div`
   display: block;
@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
   @media screen and (min-width: 769px) {
     display: none;
   }
-`;
+`
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -20,7 +20,7 @@ const ModalBackground = styled.div`
   z-index: 10;
   background-color: rgba(37, 37, 37, 0.5);
   filter: blur(12px);
-`;
+`
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -30,20 +30,20 @@ const ModalContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 1rem;
-`;
+`
 
 const ModalContent = styled.div`
   overflow: hidden;
   border-radius: 0.2rem;
   background-color: rgb(27 27 27 / 0.8);
   width: 25rem;
-`;
+`
 
 const ModalBody = styled.div`
   position: relative;
   padding: 1rem;
   font-size: 1.2rem;
-`;
+`
 
 const ModalFooter = styled.div`
   display: flex;
@@ -51,34 +51,34 @@ const ModalFooter = styled.div`
   gap: 1rem;
   background-color: #f7fafc;
   padding: 0.4rem 1rem;
-`;
+`
 const SectionButton = styled.section`
   cursor: pointer;
-`;
+`
 
 const WrapperIcon = styled.i`
   display: block;
   color: ${black};
   cursor: pointer;
-`;
+`
 const NavbarToogle = styled.nav`
   margin: 0 auto;
   width: 220px;
   overflow: hidden;
   position: relative;
-`;
+`
 const ListInformation = styled.ul`
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 100%;
-`;
+`
 
 const ItemInformation = styled.li`
   display: table-cell;
   cursor: pointer;
-`;
+`
 
 const StaledLink = styled(Link)`
   color: ${white};
@@ -97,7 +97,7 @@ const StaledLink = styled(Link)`
       left: 0;
     }
   }
-`;
+`
 
 const Spans = styled.span`
   display: block;
@@ -141,16 +141,16 @@ const Spans = styled.span`
     css`
       background: ${warning};
     `};
-`;
+`
 
 const Icons = styled.i`
   display: block;
   line-height: 45px;
-`;
+`
 
 const ToogleNavBar = ({ toggleModal, showModal }) => {
-  const router = useRouter();
-  const pathname = router.pathname;
+  const router = useRouter()
+  const pathname = router.pathname
 
   return (
     <StyledDiv>
@@ -177,7 +177,7 @@ const ToogleNavBar = ({ toggleModal, showModal }) => {
                             key={`id${index}1`}
                             title={link.name}
                           >
-                            <StaledLink href={link.href}>
+                            <StaledLink href={link.href} onClick={toggleModal}>
                               <Spans
                                 $one={index === 0}
                                 $two={index === 1}
@@ -202,7 +202,7 @@ const ToogleNavBar = ({ toggleModal, showModal }) => {
         )}
       </div>
     </StyledDiv>
-  );
-};
+  )
+}
 
-export default ToogleNavBar;
+export default ToogleNavBar

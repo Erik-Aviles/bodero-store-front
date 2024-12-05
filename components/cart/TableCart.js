@@ -6,7 +6,6 @@ import styled, { css } from 'styled-components'
 import { error, grey, greylight, success, white } from '@/lib/colors'
 import Table from '../stylesComponents/Table'
 import axios from 'axios'
-import Text from '../stylesComponents/HighlightedText'
 import Image from 'next/image'
 import awsS3Loader from '../loaderes/awsS3Loader'
 import localLoader from '../loaderes/localLoader'
@@ -16,25 +15,6 @@ const ProductInfoCell = styled.td`
   padding: 10px 0;
   font-weight: 700;
 `
-
-const WrapperDiv = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  ${(props) =>
-    props.$center &&
-    css`
-      justify-content: space-evenly;
-    `}
-  ${(props) =>
-    props.$column &&
-    css`
-      @media screen and (max-width: 370px) {
-        flex-direction: column;
-      }
-    `}
-`
-
 const ProductImageBox = styled.div`
   width: 70px;
   height: 70px;
@@ -112,16 +92,18 @@ const TD = styled.td`
 
 const Message = styled.p`
   font-size: 0.8rem;
-  margin: 0;
   color: ${grey};
-  margin-left: 20px;
+  margin: 40px 0 40px 20px;
 `
-const Flexdiv = styled.div`
+
+const CartHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  h3 {
-    margin: 10px 0;
+  h4 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
   }
   ${(props) =>
     props.$end &&
@@ -136,6 +118,11 @@ const Flexdiv = styled.div`
     `}
 `
 
+const TextSpan = styled.span`
+  font-size: 0.9rem;
+  color: ${grey};
+`
+
 const TableCart = () => {
   const {
     cartProducts,
@@ -143,8 +130,6 @@ const TableCart = () => {
     removeProduct,
     removeOneProduct,
     clearCart,
-    showCart,
-    dropdownCart,
   } = useContext(CartContext)
   const [products, setProducts] = useState([])
 
@@ -166,16 +151,11 @@ const TableCart = () => {
 
   return (
     <>
-      {showCart && (
-        <Flexdiv $end={1}>
-          <AllDeleteIcon onClick={dropdownCart} width={25} height={25} />
-        </Flexdiv>
-      )}
+      <CartHeader>
+        <h4>Tus productos en el carrito </h4>
+        <TextSpan>{cartProducts?.length}, Artículos</TextSpan>
+      </CartHeader>
 
-      <Flexdiv>
-        <h3>Tus productos en el carrito </h3>{' '}
-        <Text>{cartProducts?.length}, Articulos</Text>{' '}
-      </Flexdiv>
       {!cartProducts?.length && (
         <Message>
           El carrito esta vacio. Los productos adicionados se mostrarán aquí.

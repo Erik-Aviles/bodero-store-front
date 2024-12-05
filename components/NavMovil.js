@@ -1,13 +1,14 @@
-import styled, { css } from "styled-components";
-import { black, grey, greylight, primary, success, white } from "@/lib/colors";
-import Link from "next/link";
-import { WhatsappIcon } from "./Icons";
-import { BsCardList, BsCart2, BsViewStacked } from "react-icons/bs";
-import { SlUser } from "react-icons/sl";
-import { useRouter } from "next/router";
-import { useData } from "@/hooks/useData";
-import { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import styled, { css } from 'styled-components'
+import { black, grey, greylight, primary, success, white } from '@/lib/colors'
+import Link from 'next/link'
+import { WhatsappIcon } from './Icons'
+import { BsCardList, BsCart2, BsViewStacked } from 'react-icons/bs'
+import { SlUser } from 'react-icons/sl'
+import { useRouter } from 'next/router'
+import { useData } from '@/hooks/useData'
+import { useContext } from 'react'
+import { CartContext } from '@/context/CartContext'
+import useActions from '@/hooks/useActions'
 
 const StyledHeader = styled.header`
   position: -webkit-sticky;
@@ -19,16 +20,18 @@ const StyledHeader = styled.header`
   @media screen and (min-width: 769px) {
     display: none;
   }
-`;
+`
 
 const StyleNav = styled.nav`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
   justify-items: center;
-  align-items: end;
+  align-items: center;
   border-radius: 15px 15px 0 0;
   background-color: ${black};
-`;
+  overflow-x: hidden;
+  white-space: nowrap;
+`
 
 const StaledLink = styled(Link)`
   width: 100%;
@@ -46,9 +49,9 @@ const StaledLink = styled(Link)`
     css`
       border-right: 0;
     `};
-`;
+`
 
-const ButtonCart = styled.button`
+const ButtonOpenModal = styled.button`
   width: 100%;
   height: 100%;
   padding: 10px 0;
@@ -66,7 +69,7 @@ const ButtonCart = styled.button`
     css`
       border-right: 0;
     `};
-`;
+`
 
 const StaledDiv = styled.div`
   width: 45px;
@@ -84,7 +87,7 @@ const StaledDiv = styled.div`
         color: #f7f7f7;
       }
     `}
-`;
+`
 
 const StylesWrapperWhatsApp = styled.div`
   height: 20px;
@@ -104,13 +107,13 @@ const StylesWrapperWhatsApp = styled.div`
       }
     }
   }
-`;
+`
 
 const TextSpan = styled.p`
   margin: 0;
   color: ${white};
   font-size: 0.6rem;
-`;
+`
 
 const WrapperIcon = styled.div`
   position: relative;
@@ -128,7 +131,7 @@ const WrapperIcon = styled.div`
       width: 24px;
     }
   }
-`;
+`
 const StyledSpan = styled.div`
   position: absolute;
   display: flex;
@@ -147,32 +150,33 @@ const StyledSpan = styled.div`
     height: 20px;
     right: -10px;
   }
-`;
+`
 
 export default function NavMovil() {
-  const router = useRouter();
-  const { cartProducts, dropdownCart } = useContext(CartContext);
-  const { company } = useData();
-  const path = router.pathname;
-  const mainPhone = company?.mainPhone;
+  const router = useRouter()
+  const { toggleAuthModal, toggleModalOpenCart } = useActions()
+  const { cartProducts } = useContext(CartContext)
+  const { company } = useData()
+  const path = router.pathname
+  const mainPhone = company?.mainPhone
 
   return (
     <StyledHeader>
       <StyleNav>
-        <StaledLink href={"/products"} title={"Ver todos los productos"}>
-          <StaledDiv $active={path === "/products" ? 1 : 0}>
+        <StaledLink href={'/products'} title={'Ver todos los productos'}>
+          <StaledDiv $active={path === '/products' ? 1 : 0}>
             <BsCardList />
           </StaledDiv>
           <TextSpan>Productos</TextSpan>
         </StaledLink>
-        <StaledLink href={"/categories"} title={"Ver categorias"}>
-          <StaledDiv $active={path === "/categories" ? 1 : 0}>
+        <StaledLink href={'/categories'} title={'Ver categorias'}>
+          <StaledDiv $active={path === '/categories' ? 1 : 0}>
             <BsViewStacked />
           </StaledDiv>
           <TextSpan>Categorias</TextSpan>
-        </StaledLink>{" "}
-        <ButtonCart title={"Ver mi pedido"} onClick={dropdownCart}>
-          <StaledDiv $active={path === "/carrito-de-compras" ? 1 : 0}>
+        </StaledLink>{' '}
+        <ButtonOpenModal title={'Ver mi pedido'} onClick={toggleModalOpenCart}>
+          <StaledDiv $active={path === '/carrito-de-compras' ? 1 : 0}>
             <WrapperIcon>
               {cartProducts?.length > 0 && (
                 <StyledSpan>{cartProducts?.length}</StyledSpan>
@@ -180,30 +184,30 @@ export default function NavMovil() {
               <BsCart2 />
             </WrapperIcon>
           </StaledDiv>
-          <TextSpan>Carrito</TextSpan>
-        </ButtonCart>
-        {/*  <StaledLink href={"#"} title={"Entrar a mi cuenta"}>
-          <StaledDiv $active={path === "#" ? 1 : 0}>
+          <TextSpan>Mi Carrito</TextSpan>
+        </ButtonOpenModal>
+        <ButtonOpenModal title={'Ver mi cuenta'} onClick={toggleAuthModal}>
+          <StaledDiv $active={path === '/account' ? 1 : 0}>
             <SlUser />
           </StaledDiv>
-          <TextSpan>Usuario</TextSpan>
-        </StaledLink> */}
+          <TextSpan>Mi Cuenta</TextSpan>
+        </ButtonOpenModal>
         <StaledLink
           $endBorder={1}
           href={`https://api.whatsapp.com/send/?phone=593${mainPhone}&text=Hola, me interesa un producto. Necesito más información&type=phone_number&app_absent=1`}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={"Enviar mensaje por Whatsapp"}
+          target='_blank'
+          rel='noopener noreferrer'
+          title={'Enviar mensaje por Whatsapp'}
         >
           <StylesWrapperWhatsApp $anim={1}>
-            <WhatsappIcon title={"Enviar mensaje por Whatsapp"} />
+            <WhatsappIcon title={'Enviar mensaje por Whatsapp'} />
           </StylesWrapperWhatsApp>
 
           <TextSpan>Chat</TextSpan>
         </StaledLink>
       </StyleNav>
     </StyledHeader>
-  );
+  )
 }
 
 {

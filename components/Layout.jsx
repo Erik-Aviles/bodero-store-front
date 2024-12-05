@@ -1,13 +1,8 @@
 import Head from 'next/head'
 import Header from './Header'
 import Footer from './Footer'
-import CategoriesComponent from './categories/CategoriesComponent'
 import NavMovil from './NavMovil'
-import DropdownCartComponents from './cart/DropdownCartComponents'
-import { useContext, useEffect, useState } from 'react'
-import { CartContext } from '@/context/CartContext'
-import AuthModal from './auth/AuthModal'
-import { useData } from '@/hooks/useData'
+import CategoriesComponent from './categories/CategoriesComponent'
 
 export default function Layout({
   children,
@@ -15,22 +10,7 @@ export default function Layout({
   description,
   sity = '',
 }) {
-  const { company } = useData()
   const urlPath = process.env.NEXT_PUBLIC_URL || 'https://boderoracing.com'
-
-  const { showCart } = useContext(CartContext)
-  const [showAuthModal, setShowAuthModal] = useState(false)
-
-  useEffect(() => {
-    document.body.style.overflow = showAuthModal ? 'hidden' : ''
-    document.body.style.paddingRight = showAuthModal ? '17px' : ''
-    return () => {
-      document.body.style.overflow = ''
-      document.body.style.paddingRight = ''
-    }
-  }, [showAuthModal])
-
-  const toggleAuthModal = () => setShowAuthModal((prev) => !prev)
 
   return (
     <div>
@@ -51,12 +31,10 @@ export default function Layout({
         <link rel='canonical' href={`${urlPath}${sity}`} />
       </Head>
 
-      {showAuthModal && <AuthModal toggleAuthModal={toggleAuthModal} />}
-      <Header showAuthModal={showAuthModal} toggleAuthModal={toggleAuthModal} />
+      <Header />
       <CategoriesComponent />
       <main>{children}</main>
       <Footer />
-      {showCart && <DropdownCartComponents />}
       <NavMovil />
     </div>
   )

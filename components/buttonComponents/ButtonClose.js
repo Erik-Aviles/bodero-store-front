@@ -1,14 +1,14 @@
-import styled, { css } from "styled-components";
-import React from "react";
-import { AllDeleteIcon } from "../Icons";
-import { black, primary, white } from "@/lib/colors";
+import styled, { css } from 'styled-components'
+import React from 'react'
+import { AllDeleteIcon } from '../Icons'
+import { black, primary, white } from '@/lib/colors'
 
 const WrapperButtonClose = styled.button`
   position: absolute;
   padding: 0;
   z-index: 4;
-  top: -10px;
-  right: 15px;
+  top: 0px;
+  right: 0;
   width: 25px;
   height: 25px;
   display: flex;
@@ -23,17 +23,14 @@ const WrapperButtonClose = styled.button`
   &:hover {
     background-color: ${primary};
   }
-  @media screen and (min-width: 768px) {
-    right: -10px;
-  }
-`;
+`
 
 const ButtonClose = ({ onClick }) => {
   return (
     <WrapperButtonClose onClick={onClick}>
       <AllDeleteIcon />
     </WrapperButtonClose>
-  );
-};
+  )
+}
 
-export default ButtonClose;
+export default ButtonClose
