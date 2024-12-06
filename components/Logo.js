@@ -52,6 +52,7 @@ export const LogoLetters = ({ href }) => {
       <Figure>
         <Image
           loader={secondarylogo ? cloudinaryLoader : localLoader}
+          priority={true}
           alt='Logo B.D.R'
           src={secondarylogo ? secondarylogo : logoLetras}
           width={300}

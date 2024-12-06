@@ -1,10 +1,10 @@
-import cloudinaryLoader from '@/components/loaderes/cloudinaryLoader'
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import styled from 'styled-components'
-import { white } from '@/lib/colors'
 import Image from 'next/image'
 import Head from 'next/head'
+import cloudinaryLoader from '@/components/loaderes/cloudinaryLoader'
+import styled from 'styled-components'
+import { white } from '@/lib/colors'
 
 const Wrapper = styled.section`
   position: relative;
@@ -37,7 +37,7 @@ const Message = styled.p`
   margin-left: 20px;
 `
 
-export default function PageError() {
+export default function Custom404() {
   const router = useRouter()
 
   useEffect(() => {
