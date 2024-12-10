@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import ButtonClose from '../buttonComponents/ButtonClose'
+import ButtonLink from '../buttonComponents/ButtonLink'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -21,7 +22,7 @@ const ModalContainer = styled.div`
   padding: 20px;
   top: 0;
   right: 0;
-  width: 100%;
+  width: 300px;
   height: 100%;
   background-color: #ffffff;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
@@ -33,22 +34,21 @@ const ModalContainer = styled.div`
     css`
       transform: translateX(0);
     `}
-  @media screen and (min-width: 1000px) {
-    width: 400px;
-  }
 `
 const AuthHeader = styled.header`
   position: relative;
 `
-const WrapperCart = styled.div`
-  position: relative;
-  margin: 20px;
-  padding-buttom: 20px;
-`
+
 const AuthTitle = styled.h4`
   font-size: 1.2em;
   font-weight: bold;
   margin: 0;
+`
+const AuthBody = styled.section`
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `
 
 const AuthModal = ({ isOpen, toggleModal }) => {
@@ -59,7 +59,22 @@ const AuthModal = ({ isOpen, toggleModal }) => {
           <ButtonClose onClick={toggleModal} />
           <AuthTitle>Mi cuenta</AuthTitle>
         </AuthHeader>
-        <p>Contenido de la cuenta en construcción...</p>
+        <AuthBody>
+          <ButtonLink
+            $primary
+            href={'/customer/inicio-sesion'}
+            onClick={toggleModal}
+          >
+            Iniciar Sesión
+          </ButtonLink>
+          <ButtonLink
+            $secondary
+            href={'/customer/registro'}
+            onClick={toggleModal}
+          >
+            Crear una cuenta
+          </ButtonLink>
+        </AuthBody>
       </ModalContainer>
     </Wrapper>
   )
