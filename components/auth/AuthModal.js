@@ -1,7 +1,9 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import ButtonClose from '../buttonComponents/ButtonClose'
-import ButtonLink from '../buttonComponents/ButtonLink'
+import { LoginIcon, UserAddIcon } from '../Icons'
+import Link from 'next/link'
+import { primary } from '@/lib/colors'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -48,7 +50,18 @@ const AuthBody = styled.section`
   padding: 20px 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+`
+const AuthLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+  :hover {
+    color: ${primary};
+  }
 `
 
 const AuthModal = ({ isOpen, toggleModal }) => {
@@ -60,20 +73,14 @@ const AuthModal = ({ isOpen, toggleModal }) => {
           <AuthTitle>Mi cuenta</AuthTitle>
         </AuthHeader>
         <AuthBody>
-          <ButtonLink
-            $primary
-            href={'/customer/inicio-sesion'}
-            onClick={toggleModal}
-          >
-            Iniciar Sesión
-          </ButtonLink>
-          <ButtonLink
-            $secondary
-            href={'/customer/registro'}
-            onClick={toggleModal}
-          >
-            Crear una cuenta
-          </ButtonLink>
+          <AuthLink href={'/customer/inicio-sesion'} onClick={toggleModal}>
+            <LoginIcon />
+            <p>Inicio de sesión</p>
+          </AuthLink>
+          <AuthLink href={'/customer/registro'} onClick={toggleModal}>
+            <UserAddIcon />
+            <p>Crear una cuenta</p>
+          </AuthLink>
         </AuthBody>
       </ModalContainer>
     </Wrapper>

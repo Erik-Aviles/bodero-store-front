@@ -190,8 +190,8 @@ export default function LoginPage() {
                   ¿Olvidó su contraseña?
                 </TextLink>
               </div>
-              <DivButton $primary href={'/'} title='Iniciar Sesión'>
-                INICIAR SESIÓN
+              <DivButton $primary title='Iniciar Sesión'>
+                <Link href={'/customer/mi-cuenta'}>INICIAR SESIÓN</Link>
               </DivButton>
             </form>
           </Box>
