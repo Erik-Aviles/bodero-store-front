@@ -5,16 +5,11 @@ import styled, { css } from 'styled-components'
 import Title from '@/components/stylesComponents/Title'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { es } from 'date-fns/locale/es'
 import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
 import { error, greylight, primary, secondary, white } from '@/lib/colors'
-import Link from 'next/link'
-import {
-  ArrowDownIcon,
-  CalendarIcon,
-  EyeFilledIcon,
-  EyeSlashFilledIcon,
-} from '@/components/Icons'
+import { genersData } from '@/resource/curtomerData'
+import InputGroup from '@/components/Account/forms/InputGroup'
+import DateInputGroup from '@/components/Account/forms/DateInputGroup'
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
@@ -33,7 +28,7 @@ const DivTitle = styled.div`
   }
 `
 
-const ColumnsWrapper = styled.div`
+const ColumnsFormWrapper = styled.form`
   display: grid;
   grid-template-columns: 1fr;
 
@@ -48,7 +43,7 @@ const RequiredText = styled.span`
   color: ${primary};
   font-size: 12px;
 `
-const Box = styled.section`
+const Box = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -66,40 +61,17 @@ const Box = styled.section`
   &:nth-child(2) {
     padding-top: 0;
   }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  legend {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #efedef;
   }
   fieldset {
     border: none;
     margin: 0;
     padding: 0;
-  }
-  legend {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #efedef;
-  }
-  label {
-    font-weight: 400;
-  }
-  select,
-  input {
-    outline: none;
-    background: none;
-    width: 100%;
-    font-size: 14px;
-    border-radius: 5px;
-    height: 35px;
-    padding: 5px 10px 4px;
-    border: 1px solid #ccc;
-    background-clip: padding-box;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    transition: box-shadow 0.3s ease;
-    &:focus {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Sombra un poco más destacada en foco */
-      outline: none;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
   @media screen and (min-width: 768px) {
@@ -114,33 +86,8 @@ const Box = styled.section`
     }
   }
 `
-const InnerBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 100%; /* Ajusta según tus necesidades */
-`
 
-const Select = styled.select`
-  appearance: none;
-  -webkit-appearance: none; /* Para Safari */
-  -moz-appearance: none; /* Para Firefox */
-  padding: 10px 40px 10px 10px !import;
-  color: #333;
-  cursor: pointer;
-
-  /* Asegura que el texto no se superponga con el ícono */
-  &::-ms-expand {
-    display: none; /* Oculta el ícono en IE/Edge */
-  }
-`
-
-const DivButton = styled.div`
+const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,61 +110,56 @@ const DivButton = styled.div`
   }
 `
 
-const StyledDatePicker = styled(DatePicker)`
-  padding: 10px 40px 10px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-`
-
-const iconStyles = css`
-  position: absolute;
-  right: 25px;
-  top: 32px;
-  color: blue;
-`
-
-const ArrowDown = styled(ArrowDownIcon)`
-  width: 15px;
-  height: 15px;
-  pointer-events: none;
-  ${iconStyles}
-`
-
-const Calendar = styled(CalendarIcon)`
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  right: 20px;
-  top: 28px;
-  pointer-events: none;
-`
-const Eye = styled(EyeFilledIcon)`
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  ${iconStyles}
-`
-
-const EyeSlash = styled(EyeSlashFilledIcon)`
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  ${iconStyles}
-`
-
 export default function RegisterPage() {
   const [isUpLoanding, setIsUpLoanding] = useState(true)
-  const [isVisiblepass, setIsVisiblePass] = useState(false)
+  const [isVisiblePass, setIsVisiblePass] = useState(false)
   const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false)
-
-  const toggleVisibilityPass = () => setIsVisiblePass(!isVisiblepass)
-  const toggleVisibilityPassConfirm = () =>
-    setIsVisiblePassConfirm(!isVisiblePassConfirm)
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [formData, setFormData] = useState({
+    name: '',
+    lastname: '',
+    idDocument: '',
+    gender: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    dateOfBirth: selectedDate,
+  })
+
+  const fieldLabels = {
+    name: 'Nombres',
+    lastname: 'Apellidos',
+    dateOfBirth: 'Fecha de nacimiento',
+    email: 'Correo',
+    idDocument: 'Documento de identidad',
+    gender: 'Genero',
+    phone: 'Teléfono',
+    password: 'Contraseña',
+    confirmPassword: 'Confirmar Contraseña',
+  }
+
+  const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev)
+  const toggleVisibilityConfirmPassword = () =>
+    setIsVisiblePassConfirm((prev) => !prev)
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setFormData({
+      ...formData,
+    })
+
+    // Lógica para enviar los datos del formulario
+    console.log('Formulario enviado', formData)
+    alert('Formulario enviado')
+  }
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -237,104 +179,118 @@ export default function RegisterPage() {
           <Title>Crear una nueva cuenta</Title>
           <RequiredText>(*) Datos Obligatorios</RequiredText>
         </DivTitle>
-        <ColumnsWrapper>
+        <ColumnsFormWrapper onSubmit={handleSubmit}>
           <Box>
             <legend>
               <strong>Información Personal</strong>
             </legend>
-            <InnerBox>
-              <Container>
-                <label>
-                  Nombres <RequiredText> *</RequiredText>
-                </label>
-                <input type='text' title='Nombres' required />
-              </Container>
-              <Container>
-                <label>
-                  Apellidos <RequiredText> *</RequiredText>
-                </label>
-                <input type='text' title='Apellidos' required />
-              </Container>
-              <Container>
-                <label>Fecha de nacimiento</label>
-                <StyledDatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  placeholderText='Selecciona una fecha'
-                  dateFormat='dd/MM/yyyy'
-                  closeOnScroll={(e) => e.target === document}
-                  locale={es}
-                />
-                <Calendar />
-              </Container>
-              <Container>
-                <label>
-                  Documento de identidad <RequiredText> *</RequiredText>
-                </label>
-                <input type='text' title='Documento de identidad' required />
-              </Container>
-              <Container>
-                <label>Sexo</label>
-                <Select>
-                  <option value='1'>Masculino</option>
-                  <option value='2'>Femenino</option>
-                  <option value='3'>No especificado</option>
-                </Select>
-                <ArrowDown />
-              </Container>
-            </InnerBox>
+            <fieldset>
+              <InputGroup
+                required
+                label={fieldLabels.name}
+                name='name'
+                value={formData?.name}
+                onChange={handleChange}
+                placeholder='Ingresa tu nombre'
+              />
+
+              <InputGroup
+                required
+                label={fieldLabels.lastname}
+                name='lastname'
+                value={formData?.lastname}
+                onChange={handleChange}
+                placeholder='Ingresa tu apellido'
+              />
+              <DateInputGroup
+                label={fieldLabels.dateOfBirth}
+                name='dateOfBirth'
+                selectedDate={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                placeholder='DD/MM/AAAA'
+              />
+              <InputGroup
+                required
+                label={fieldLabels.idDocument}
+                name='idDocument'
+                value={formData?.idDocument}
+                onChange={handleChange}
+                placeholder='Ingresa tu DI'
+              />
+              <InputGroup
+                type='tel'
+                label={fieldLabels.phone}
+                name='phone'
+                value={formData?.phone}
+                onChange={handleChange}
+                placeholder='Ingresa tu número de contacto'
+              />
+
+              <InputGroup
+                as='select'
+                name='gender'
+                label={fieldLabels.gender}
+                value={formData?.gender}
+                onChange={handleChange}
+                options={genersData.map((gener) => ({
+                  value: gener.value,
+                  name: gener.name,
+                }))}
+              />
+            </fieldset>
           </Box>
           <Box>
             <legend>
               <strong>Información de inicio de sesión</strong>
             </legend>
-            <InnerBox>
-              <Container>
-                <label>
-                  Correo electrónico <RequiredText> *</RequiredText>
-                </label>
-                <input type='email' title='Correo electrónico' required />
-              </Container>
+            <fieldset>
+              <InputGroup
+                required
+                name='email'
+                label={fieldLabels.email}
+                type='email'
+                value={formData?.email}
+                onChange={handleChange}
+                placeholder='Ingresa un correo válido'
+              />
 
-              <Container>
-                <label>
-                  Contraseña <RequiredText> *</RequiredText>
-                </label>
-                <input
-                  type={isVisiblepass ? 'text' : 'password'}
-                  title='Contraseña'
-                  required
-                />
-                {isVisiblepass ? (
-                  <EyeSlash onClick={toggleVisibilityPass} />
-                ) : (
-                  <Eye onClick={toggleVisibilityPass} />
-                )}
-              </Container>
+              <InputGroup
+                required
+                name='password'
+                label={fieldLabels.password}
+                isPassword
+                isVisiblePass={isVisiblePass}
+                type={isVisiblePass ? 'text' : 'password'}
+                value={formData?.password}
+                onChange={handleChange}
+                toggleVisibility={toggleVisibilityPassword}
+                placeholder='Ingresa tu contraseña'
+              />
 
-              <Container>
-                <label>
-                  Confirma Contraseña <RequiredText> *</RequiredText>
-                </label>
-                <input
-                  type={isVisiblePassConfirm ? 'text' : 'password'}
-                  title='Confirma Contraseña'
-                  required
-                />
-
-                {isVisiblePassConfirm ? (
-                  <EyeSlash onClick={toggleVisibilityPassConfirm} />
-                ) : (
-                  <Eye onClick={toggleVisibilityPassConfirm} />
-                )}
-              </Container>
-            </InnerBox>
+              <InputGroup
+                required
+                name='confirmPassword'
+                label={fieldLabels.confirmPassword}
+                isPassword
+                isVisiblePass={isVisiblePassConfirm}
+                type={isVisiblePassConfirm ? 'text' : 'password'}
+                value={formData?.confirmPassword}
+                onChange={handleChange}
+                toggleVisibility={toggleVisibilityConfirmPassword}
+                placeholder='Repetir contraseña'
+              />
+            </fieldset>
           </Box>
           <div></div>
-          <DivButton $primary href={'/registro'} title='Iniciar Sesión'>
+          <Button
+            type='submit'
+            $primary
+            href={'/registro'}
+            title='Iniciar Sesión'
+          >
             ENVIAR
-          </DivButton>
-        </ColumnsWrapper>
+          </Button>
+        </ColumnsFormWrapper>
       </CenterDiv>
     </Layout>
   )

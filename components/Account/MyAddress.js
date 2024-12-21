@@ -2,6 +2,8 @@ import { blue, primary } from '@/lib/colors'
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { Country, State, City } from 'country-state-city'
+import { customerInfo } from '../../resource/curtomerData'
+import InputGroup from './forms/InputGroup'
 
 const Container = styled.div`
   display: flex;
@@ -54,36 +56,6 @@ const AddressBox = styled.div`
   }
 `
 
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  label {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: #9199a0;
-  }
-
-  input,
-  select {
-    outline: none;
-    background: none;
-    width: 100%;
-    font-size: 14px;
-    border-radius: 5px;
-    height: 35px;
-    padding: 5px 10px 4px;
-    border: 1px solid #ccc;
-    background-clip: padding-box;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    transition: box-shadow 0.3s ease;
-    &:focus {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Sombra un poco más destacada en foco */
-      outline: none;
-    }
-  }
-`
-
 const Button = styled.button`
   padding: 10px;
   color: #fff;
@@ -122,37 +94,90 @@ const Button = styled.button`
 
 const MyAddress = () => {
   const initialAddresses = {
-    billingAddress: {
-      fullName: 'John Doe',
-      email: 'johndoe@example.com',
-      country: 'Costa Rica',
-      province: 'San José',
-      canton: 'Central',
-      postal: '120310',
-      address: '123 Main Street',
-      phone: '+123456789',
-    },
-    shippingAddress: {
-      fullName: 'John Doe',
-      email: 'johndoe@example.com',
-      country: 'Costa Rica',
-      province: 'Alajuela',
-      canton: 'Central',
-      postal: '120310',
-      address: '456 Elm Street',
-      phone: '+987654321',
-    },
+    billingAddress: { ...customerInfo.billingAddress },
+    shippingAddress: { ...customerInfo.shippingAddress },
   }
 
   const [addresses, setAddresses] = useState(initialAddresses)
   const [originalAddresses, setOriginalAddresses] = useState(initialAddresses)
 
+  // Estados y ciudades específicos para cada dirección
+  const [states, setStates] = useState({
+    billingAddress: [],
+    shippingAddress: [],
+  })
+  const [cities, setCities] = useState({
+    billingAddress: [],
+    shippingAddress: [],
+  })
+
+  const countries = [{ name: 'Ecuador', isoCode: 'EC' }]
+
+  useEffect(() => {
+    const loadStatesAndCities = () => {
+      const statesData = {}
+      const citiesData = {}
+
+      countries.forEach((country) => {
+        const countryStates = State.getStatesOfCountry(country.isoCode)
+        statesData[country.isoCode] = countryStates
+
+        countryStates.forEach((state) => {
+          citiesData[state.isoCode] = City.getCitiesOfState(
+            country.isoCode,
+            state.isoCode
+          )
+        })
+      })
+
+      setStates(statesData)
+      setCities(citiesData)
+    }
+
+    loadStatesAndCities()
+  }, [])
+
   const handleChange = (e, type) => {
     const { name, value } = e.target
-    setAddresses({
-      ...addresses,
-      [type]: { ...addresses[type], [name]: value },
-    })
+    if (name === 'country') {
+      const selectedCountry = countries.find((c) => c.isoCode === value)
+
+      setAddresses((prev) => ({
+        ...prev,
+        [type]: {
+          ...prev[type],
+          country: selectedCountry,
+          province: '', // Reinicia provincia
+          canton: '', // Reinicia cantón
+        },
+      }))
+    } else if (name === 'province') {
+      const selectedProvince = states[addresses[type].country.isoCode].find(
+        (p) => p.isoCode === value
+      )
+
+      setAddresses((prev) => ({
+        ...prev,
+        [type]: {
+          ...prev[type],
+          province: selectedProvince,
+          canton: '', // Reinicia cantón
+        },
+      }))
+    } else if (name === 'canton') {
+      setAddresses((prev) => ({
+        ...prev,
+        [type]: {
+          ...prev[type],
+          canton: value, // Actualiza solo el cantón
+        },
+      }))
+    } else {
+      setAddresses((prev) => ({
+        ...prev,
+        [type]: { ...prev[type], [name]: value },
+      }))
+    }
   }
 
   const handleSave = (type) => {
@@ -172,6 +197,7 @@ const MyAddress = () => {
       ...prev,
       [type]: originalAddresses[type],
     }))
+    alert('Cambios revertidos a su estado inicial.')
   }
 
   const hasChanges = (type) => {
@@ -182,20 +208,17 @@ const MyAddress = () => {
   }
 
   const fieldLabels = {
-    fullName: 'Nombre Completo',
+    name: 'Nombres',
+    lastname: 'Apellidos',
     email: 'Correo',
-    country: 'País',
+    country: 'Pais',
     province: 'Provincia',
-    canton: 'Cantón',
-    address: 'Dirección',
-    postal: 'Código Postal',
+    canton: 'Canton',
+    postal: 'Codigo postal',
+    address: 'Direccion',
+    idDocument: 'Documento de identidad',
     phone: 'Teléfono',
   }
-
-  const countries = Country.getAllCountries()
-  const getStates = (countryCode) => State.getStatesOfCountry(countryCode)
-  const getCities = (stateCode, countryCode) =>
-    City.getCitiesOfState(stateCode, countryCode)
 
   return (
     <Container>
@@ -208,64 +231,67 @@ const MyAddress = () => {
                 ? 'Dirección de Facturación '
                 : 'Dirección de Envío '}
             </h4>
-            {Object.keys(addresses[type]).map((field) => (
-              <InputGroup key={field}>
-                <label htmlFor={`${type}-${field}`}>{fieldLabels[field]}</label>
-                {field === 'country' ? (
-                  <select
-                    id={`${type}-${field}`}
+            {Object.keys(addresses[type]).map((field) => {
+              if (field === 'country') {
+                return (
+                  <InputGroup
+                    key={field}
+                    as='select'
+                    label={fieldLabels[field]}
                     name={field}
-                    value={addresses[type][field]}
+                    value={addresses[type]?.country?.isoCode || ''}
                     onChange={(e) => handleChange(e, type)}
-                  >
-                    <option value=''>Seleccione un país</option>
-                    {countries.map((country) => (
-                      <option key={country.isoCode} value={country.isoCode}>
-                        {country.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : field === 'province' ? (
-                  <select
-                    id={`${type}-${field}`}
-                    name={field}
-                    value={addresses[type][field]}
-                    onChange={(e) => handleChange(e, type)}
-                  >
-                    <option value=''>Seleccione una provincia</option>
-                    {getStates(addresses[type].country).map((state) => (
-                      <option key={state.isoCode} value={state.isoCode}>
-                        {state.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : field === 'canton' ? (
-                  <select
-                    id={`${type}-${field}`}
-                    name={field}
-                    value={addresses[type][field]}
-                    onChange={(e) => handleChange(e, type)}
-                  >
-                    <option value=''>Seleccione un cantón</option>
-                    {getCities(
-                      addresses[type].province,
-                      addresses[type].country
-                    ).map((city) => (
-                      <option key={city.name} value={city.name}>
-                        {city.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    id={`${type}-${field}`}
-                    name={field}
-                    value={addresses[type][field]}
-                    onChange={(e) => handleChange(e, type)}
+                    options={countries.map((c) => ({
+                      name: c.name,
+                      value: c.isoCode,
+                    }))}
                   />
-                )}
-              </InputGroup>
-            ))}
+                )
+              }
+              if (field === 'province') {
+                const countryCode = addresses[type]?.country?.isoCode
+                return (
+                  <InputGroup
+                    key={field}
+                    as='select'
+                    label={fieldLabels[field]}
+                    name={field}
+                    value={addresses[type].province?.isoCode || ''}
+                    onChange={(e) => handleChange(e, type)}
+                    options={states[countryCode]?.map((s) => ({
+                      name: s.name,
+                      value: s.isoCode,
+                    }))}
+                  />
+                )
+              }
+              if (field === 'canton') {
+                const provinceCode = addresses[type]?.province?.isoCode
+                return (
+                  <InputGroup
+                    key={field}
+                    as='select'
+                    label={fieldLabels[field]}
+                    name={field}
+                    value={addresses[type]?.canton || ''}
+                    onChange={(e) => handleChange(e, type)}
+                    options={cities[provinceCode]?.map((c) => ({
+                      name: c.name,
+                      value: c.name,
+                    }))}
+                  />
+                )
+              }
+              return (
+                <InputGroup
+                  key={field}
+                  name={field}
+                  label={fieldLabels[field]}
+                  value={addresses[type][field]}
+                  onChange={(e) => handleChange(e, type)}
+                />
+              )
+            })}
             <div className='botton-box'>
               <Button
                 title={`Cancelar ${

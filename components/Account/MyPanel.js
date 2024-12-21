@@ -1,23 +1,20 @@
 import { blue } from '@/lib/colors'
 import { customerInfo, recentOrders } from '@/resource/curtomerData'
+import Link from 'next/link'
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
+import { EdithIcon } from '../Icons'
 
 const Section = css`
   line-height: 1.6;
   width: 100%;
-
-  h3 {
-    color: ${blue};
-    font-weight: 500;
-  }
 `
 
 const Container = styled.div`
   font-size: 0.9rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 30px;
   width: 100%;
   h2 {
     color: ${blue};
@@ -27,6 +24,14 @@ const Container = styled.div`
 
 const InfoSection = styled.div`
   ${Section}
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    color: ${blue};
+    h3 {
+      margin: 0;
+    }
+  }
   .addresses-container {
     display: flex;
     flex-direction: row;
@@ -88,6 +93,14 @@ const InfoSection = styled.div`
 
 const TableSection = styled.div`
   ${Section}
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    color: ${blue};
+    h3 {
+      margin: 0;
+    }
+  }
   .table-container {
     overflow-x: auto;
     margin-top: 10px;
@@ -131,7 +144,15 @@ const MyPanel = () => {
     <Container>
       <h2>Bienvenido a tu cuenta</h2>
       <InfoSection>
-        <h3>Mis Datos</h3>
+        <div className='header-section'>
+          <h3> Mis Datos </h3>
+          <Link
+            href='/customer/mi-cuenta?section=perfil'
+            title='Editar mis datos'
+          >
+            <EdithIcon size={22} />
+          </Link>
+        </div>
         <div className='addresses-container'>
           <div className='addresses-box'>
             <div>
@@ -170,7 +191,15 @@ const MyPanel = () => {
       </InfoSection>
 
       <TableSection>
-        <h3>Mis Pedidos Recientes</h3>
+        <div className='header-section'>
+          <h3>Mis Pedidos Recientes</h3>
+          <Link
+            href='/customer/mi-cuenta?section=pedidos'
+            title='Ir a mis pedidos'
+          >
+            Ver todos
+          </Link>
+        </div>
         <div className='table-container'>
           <table>
             <thead>
@@ -200,7 +229,15 @@ const MyPanel = () => {
       </TableSection>
 
       <InfoSection>
-        <h3>Mis Direcciones</h3>
+        <div className='header-section'>
+          <h3>Mis Direcciones</h3>
+          <Link
+            href='/customer/mi-cuenta?section=direcciones'
+            title='Editar mis direcciones'
+          >
+            <EdithIcon size={22} />
+          </Link>
+        </div>
         <div className='addresses-container'>
           <div className='addresses-box'>
             <h4>Dirección de Facturación </h4>
@@ -223,7 +260,7 @@ const MyPanel = () => {
             <div>
               <p>
                 <span>Provincia:</span>
-                {customerInfo?.billingAddress?.province || '--'}
+                {customerInfo?.billingAddress?.province?.name || '--'}
               </p>
             </div>
             <div>
@@ -232,16 +269,11 @@ const MyPanel = () => {
                 {customerInfo?.billingAddress?.canton || '--'}
               </p>
             </div>
-            <div>
-              <p>
-                <span>Distrito:</span>
-                {customerInfo?.billingAddress?.district || '--'}
-              </p>
-            </div>
+
             <div>
               <p>
                 <span>País:</span>
-                {customerInfo?.billingAddress?.country || '--'}
+                {customerInfo?.billingAddress?.country?.name || '--'}
               </p>
             </div>
             <div>
@@ -272,7 +304,7 @@ const MyPanel = () => {
             <div>
               <p>
                 <span>Provincia:</span>
-                {customerInfo?.shippingAddress?.province || '--'}
+                {customerInfo?.shippingAddress?.province.name || '--'}
               </p>
             </div>
             <div>
@@ -281,16 +313,11 @@ const MyPanel = () => {
                 {customerInfo?.shippingAddress?.canton || '--'}
               </p>
             </div>
-            <div>
-              <p>
-                <span>Distrito:</span>
-                {customerInfo?.shippingAddress?.district || '--'}
-              </p>
-            </div>
+
             <div>
               <p>
                 <span>País:</span>
-                {customerInfo?.shippingAddress?.country || '--'}
+                {customerInfo?.shippingAddress?.country?.name || '--'}
               </p>
             </div>
             <div>

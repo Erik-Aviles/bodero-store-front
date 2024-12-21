@@ -1,7 +1,9 @@
 import { blue, primary } from '@/lib/colors'
-import { customerInfo } from '@/resource/curtomerData'
-import React, { useState } from 'react'
+import { customerInfo, genersData } from '@/resource/curtomerData'
+import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
+import InputGroup from './forms/InputGroup'
+import DateInputGroup from './forms/DateInputGroup'
 
 const Container = styled.div`
   display: flex;
@@ -57,40 +59,13 @@ const Container = styled.div`
   }
 `
 
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  label {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: #9199a0;
-  }
-  input {
-    outline: none;
-    background: none;
-    width: 100%;
-    font-size: 14px;
-    border-radius: 5px;
-    height: 35px;
-    padding: 5px 10px 4px;
-    border: 1px solid #ccc;
-    background-clip: padding-box;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    transition: box-shadow 0.3s ease;
-    &:focus {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Sombra un poco más destacada en foco */
-      outline: none;
-    }
-  }
-`
-
 const Button = styled.button`
-  padding: 10px 15px;
+  padding: 10px;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+
   ${(props) =>
     props.$canceled &&
     css`
@@ -98,6 +73,10 @@ const Button = styled.button`
       transition: background-color 0.3s ease;
       &:hover {
         background-color: rgba(247, 3, 1, 0.6);
+      }
+      &:disabled {
+        background-color: rgba(247, 3, 1, 0.4);
+        cursor: not-allowed;
       }
     `};
   ${(props) =>
@@ -109,11 +88,24 @@ const Button = styled.button`
       &:hover {
         background-color: rgba(0, 91, 181, 0.8);
       }
+      &:disabled {
+        background-color: rgba(0, 91, 181, 0.5);
+        cursor: not-allowed;
+      }
     `};
 `
 
 const MyDatas = () => {
-  const [customerData, setCustomerData] = useState({
+  const fieldLabels = {
+    name: 'Nombres',
+    lastname: 'Apellidos',
+    email: 'Correo',
+    idDocument: 'Documento de identidad',
+    phone: 'Teléfono',
+    dateOfBirth: 'Fecha de nacimiento',
+    gender: 'Genero',
+  }
+  const initialData = {
     name: customerInfo?.name || '--',
     lastname: customerInfo?.lastname || '--',
     email: customerInfo?.email || '--',
@@ -121,17 +113,32 @@ const MyDatas = () => {
     phone: customerInfo?.phone || '--',
     dateOfBirth: customerInfo?.dateOfBirth || '--',
     gender: customerInfo?.gender || '--',
-  })
+  }
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
+  const [customerData, setCustomerData] = useState(initialData)
+  const [originalCustomerData, setOriginalCustomerData] = useState(initialData)
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setCustomerData({ ...customerData, [name]: value })
+    setCustomerData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
-  const handleSave = () => {
-    // Simulate API call
-    console.log('Data saved:', customerData)
-    alert('Datos guardados correctamente.')
+  const handleCustomerSave = () => {
+    alert('Datos del cliente guardados correctamente.')
+    setOriginalCustomerData(customerData)
+  }
+
+  const handleCustomerCancel = () => {
+    setCustomerData(originalCustomerData)
+    alert('Cambios revertidos a su estado inicial.')
+  }
+
+  const hasCustomerChanges = () => {
+    return JSON.stringify(customerData) !== JSON.stringify(originalCustomerData)
   }
 
   return (
@@ -140,85 +147,84 @@ const MyDatas = () => {
       <form>
         <div className={'profile-body'}>
           <fieldset className='profile-box'>
-            <InputGroup>
-              <label htmlFor='name'>Nombres</label>
-              <input
-                type='text'
-                id='name'
-                name='name'
-                value={customerData?.name}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor='lastname'>Apellidos</label>
-              <input
-                type='text'
-                id='lastname'
-                name='lastname'
-                value={customerData.lastname}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor='email'>Correo Electrónico</label>
-              <input
-                type='email'
-                id='email'
-                name='email'
-                value={customerData.email}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor='idDocument'>Documento de Identidad</label>
-              <input
-                type='text'
-                id='idDocument'
-                name='idDocument'
-                value={customerData?.idDocument}
-                onChange={handleChange}
-              />
-            </InputGroup>
+            <InputGroup
+              required
+              label={fieldLabels.name}
+              name='name'
+              value={customerData?.name}
+              onChange={handleChange}
+              placeholder='Ingresa tu nombre'
+            />
+
+            <InputGroup
+              required
+              label={fieldLabels.lastname}
+              name='lastname'
+              value={customerData?.lastname}
+              onChange={handleChange}
+            />
+            <InputGroup
+              required
+              type='email'
+              name='email'
+              label={fieldLabels.email}
+              value={customerData.email}
+              onChange={handleChange}
+            />
+            <InputGroup
+              required
+              name='idDocument'
+              label={fieldLabels.idDocument}
+              value={customerData?.idDocument}
+              onChange={handleChange}
+            />
           </fieldset>
           <fieldset className='profile-box'>
-            <InputGroup>
-              <label htmlFor='phone'>Teléfono</label>
-              <input
-                type='tel'
-                id='phone'
-                name='phone'
-                value={customerData.phone}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor='dateOfBirth'>Fecha de nacimiento</label>
-              <input
-                type='date'
-                id='dateOfBirth'
-                name='dateOfBirth'
-                value={customerData?.dateOfBirth}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor='gender'>Genero</label>
-              <input
-                type='text'
-                id='gender'
-                name='gender'
-                value={customerData?.gender}
-                onChange={handleChange}
-              />
-            </InputGroup>
+            <InputGroup
+              type='tel'
+              name='phone'
+              label={fieldLabels.phone}
+              value={customerData.phone}
+              onChange={handleChange}
+            />
+
+            <DateInputGroup
+              label={fieldLabels.dateOfBirth}
+              name='dateOfBirth'
+              selectedDate={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              placeholder='DD/MM/AAAA'
+            />
+            <InputGroup
+              as='select'
+              name='gender'
+              label={fieldLabels.gender}
+              value={customerData?.gender}
+              onChange={handleChange}
+              options={genersData.map((gener) => ({
+                value: gener.name,
+                name: gener.name,
+              }))}
+            />
           </fieldset>
         </div>
         <div className='botton-box'>
-          <Button $canceled onClick={handleSave} type='button'>
+          <Button
+            type='button'
+            title='Cancelar Cambios'
+            onClick={handleCustomerCancel}
+            disabled={!hasCustomerChanges()}
+            $canceled
+          >
             Cancelar
           </Button>
-          <Button $save onClick={handleSave} type='button'>
+          <Button
+            type='button'
+            title='Gurdar Cambios'
+            onClick={handleCustomerSave}
+            disabled={!hasCustomerChanges()}
+            $save
+          >
             Guardar
           </Button>
         </div>

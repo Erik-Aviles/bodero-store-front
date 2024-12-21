@@ -6,6 +6,7 @@ import Title from '@/components/stylesComponents/Title'
 import 'react-datepicker/dist/react-datepicker.css'
 import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
 import { error, greylight, primary, white } from '@/lib/colors'
+import InputGroup from '@/components/Account/forms/InputGroup'
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
@@ -54,26 +55,6 @@ const Box = styled.section`
     border-bottom: 1px solid #efedef;
     padding-bottom: 10px;
   }
-  label {
-    font-weight: 400;
-  }
-  input {
-    outline: none;
-    background: none;
-    width: 100%;
-    font-size: 14px;
-    border-radius: 5px;
-    height: 35px;
-    padding: 5px 10px 4px;
-    border: 1px solid #ccc;
-    background-clip: padding-box;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    transition: box-shadow 0.3s ease;
-    &:focus {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Sombra un poco más destacada en foco */
-      outline: none;
-    }
-  }
 
   @media screen and (min-width: 768px) {
     padding: 10px 40px;
@@ -94,7 +75,7 @@ const Container = styled.div`
   width: 100%; /* Ajusta según tus necesidades */
 `
 
-const DivButton = styled.div`
+const DivButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -119,6 +100,32 @@ const DivButton = styled.div`
 
 export default function RecoverPasswordPage() {
   const [isUpLoanding, setIsUpLoanding] = useState(true)
+  const [formData, setFormData] = useState({
+    email: '',
+  })
+
+  const fieldLabels = {
+    email: 'Correo electrónico registrado',
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setFormData({
+      ...formData,
+    })
+
+    // Lógica para enviar los datos del formulario
+    console.log('Formulario enviado', formData)
+    alert('Formulario enviado')
+  }
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -146,14 +153,19 @@ export default function RecoverPasswordPage() {
             Por favor ingrese su dirección de correo electrónico. Recibirá un
             enlace para restablecer su contraseña.
           </p>
-          <InnerBox>
+          <InnerBox onSubmit={handleSubmit}>
             <Container>
-              <label>
-                Correo electrónico <RequiredText> *</RequiredText>
-              </label>
-              <input type='email' title='Correo electrónico' required />
+              <InputGroup
+                required
+                name='email'
+                label={fieldLabels.email}
+                type='email'
+                value={formData?.email}
+                onChange={handleChange}
+                placeholder='Ingresa tu correo'
+              />
             </Container>
-            <DivButton href={'/registro'} title='Recuperar Contraseña'>
+            <DivButton type='submit' title='Recuperar Contraseña'>
               ENVIAR
             </DivButton>
           </InnerBox>

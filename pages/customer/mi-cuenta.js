@@ -8,6 +8,7 @@ import MyOrders from '@/components/Account/MyOrders'
 import MyAddress from '@/components/Account/MyAddress'
 import MyPanel from '@/components/Account/MyPanel'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -59,6 +60,14 @@ const AsideItem = styled.li`
     &:hover {
       color: ${primary};
     }
+
+    /* Estilo dinámico si está seleccionado */
+    ${({ $isSelected }) =>
+      $isSelected &&
+      `
+        color: ${primary};
+        font-weight: bold;
+      `}
   }
 `
 
@@ -77,20 +86,22 @@ const MainContent = styled.main`
 `
 
 const AccountPage = () => {
-  const [selectedOption, setSelectedOption] = useState('myPanel')
+  const router = useRouter()
+  const { section } = router.query
+
+  const isActive = (querySection) =>
+    (!section && querySection === 'general') || section === querySection
 
   const renderContent = () => {
-    switch (selectedOption) {
-      case 'myPanel':
-        return <MyPanel />
-      case 'myDatas':
+    switch (section) {
+      case 'perfil':
         return <MyDatas />
-      case 'myOrders':
+      case 'pedidos':
         return <MyOrders />
-      case 'myAddress':
+      case 'direcciones':
         return <MyAddress />
       default:
-        return null
+        return <MyPanel />
     }
   }
 
@@ -99,23 +110,27 @@ const AccountPage = () => {
       <CenterDiv>
         <AsideBar>
           <AsideList>
-            <AsideItem>
-              <a onClick={() => setSelectedOption('myPanel')}>General</a>
-            </AsideItem>
-            <AsideItem>
-              <a onClick={() => setSelectedOption('myDatas')}>Mis Datos</a>
-            </AsideItem>
-            <AsideItem>
-              <a onClick={() => setSelectedOption('myOrders')}>Mis Pedidos</a>
-            </AsideItem>
-            <AsideItem>
-              <a onClick={() => setSelectedOption('myAddress')}>
-                Mis Direcciones
-              </a>
-            </AsideItem>
-            <AsideItem>
-              <Link href={'/'}>Salir</Link>
-            </AsideItem>
+            <AsideList>
+              <AsideItem $isSelected={isActive('general')}>
+                <Link href='/customer/mi-cuenta'>General</Link>
+              </AsideItem>
+              <AsideItem $isSelected={isActive('perfil')}>
+                <Link href='/customer/mi-cuenta?section=perfil'>Mis Datos</Link>
+              </AsideItem>
+              <AsideItem $isSelected={isActive('pedidos')}>
+                <Link href='/customer/mi-cuenta?section=pedidos'>
+                  Mis Pedidos
+                </Link>
+              </AsideItem>
+              <AsideItem $isSelected={isActive('direcciones')}>
+                <Link href='/customer/mi-cuenta?section=direcciones'>
+                  Mis Direcciones
+                </Link>
+              </AsideItem>
+              <AsideItem>
+                <Link href='/'>Salir</Link>
+              </AsideItem>
+            </AsideList>
           </AsideList>
         </AsideBar>
         <MainContent>{renderContent()}</MainContent>

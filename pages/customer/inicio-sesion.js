@@ -6,6 +6,7 @@ import Title from '@/components/stylesComponents/Title'
 import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
 import { error, greylight, primary, secondary, white } from '@/lib/colors'
 import Link from 'next/link'
+import InputGroup from '@/components/Account/forms/InputGroup'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -15,6 +16,12 @@ const DivTitle = styled.div`
   margin-bottom: 10px;
   padding: 0 20px 20px;
   border-bottom: 1px solid ${greylight};
+
+  span {
+    color: ${primary};
+    font-size: 12px;
+  }
+
   @media screen and (min-width: 768px) {
     padding: 0;
   }
@@ -34,10 +41,7 @@ const ColumnsWrapper = styled.div`
     margin: 0 120px;
   }
 `
-const RequiredText = styled.span`
-  color: ${primary};
-  font-size: 12px;
-`
+
 const Box = styled.section`
   display: flex;
   flex-direction: column;
@@ -64,26 +68,6 @@ const Box = styled.section`
     margin: 0;
     padding: 0;
   }
-  label {
-    font-weight: 400;
-  }
-  input {
-    outline: none;
-    background: none;
-    width: 100%;
-    font-size: 14px;
-    border-radius: 5px;
-    height: 35px;
-    padding: 5px 10px 4px;
-    border: 1px solid #ccc;
-    background-clip: padding-box;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    transition: box-shadow 0.3s ease;
-    &:focus {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Sombra un poco más destacada en foco */
-      outline: none;
-    }
-  }
 
   @media screen and (min-width: 768px) {
     border-bottom: none;
@@ -97,7 +81,7 @@ const Box = styled.section`
     }
   }
 `
-const DivButton = styled.div`
+const DivButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,6 +130,37 @@ const TextLink = styled(Link)`
 
 export default function LoginPage() {
   const [isUpLoanding, setIsUpLoanding] = useState(true)
+  const [isVisiblePass, setIsVisiblePass] = useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const fieldLabels = {
+    email: 'Correo electrónico',
+    password: 'Contraseña',
+  }
+
+  const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setFormData({
+      ...formData,
+    })
+
+    // Lógica para enviar los datos del formulario
+    console.log('Formulario enviado', formData)
+    alert('Formulario enviado')
+  }
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -163,24 +178,37 @@ export default function LoginPage() {
       <CenterDiv>
         <DivTitle>
           <Title>Iniciar sesión o crear una cuenta</Title>
-          <RequiredText>(*) Datos Obligatorios</RequiredText>
+          <span>(*) Datos Obligatorios</span>
         </DivTitle>
         <ColumnsWrapper>
           <Box>
             <strong>¿Estás registrado?</strong>
             <p>Por favor completa tus datos para iniciar sesión.</p>
-            <form>
+            <form onSubmit={handleSubmit}>
               <fieldset>
-                <label>
-                  Correo electrónico <RequiredText> *</RequiredText>
-                </label>
-                <input type='email' title='Correo electrónico' required />
+                <InputGroup
+                  required
+                  name='email'
+                  label={fieldLabels.email}
+                  type='email'
+                  value={formData?.email}
+                  onChange={handleChange}
+                  placeholder='Ingresa tu correo'
+                />
               </fieldset>
               <fieldset>
-                <label>
-                  Contraseña <RequiredText> *</RequiredText>
-                </label>
-                <input type='password' title='Contraseña' required />
+                <InputGroup
+                  required
+                  name='password'
+                  label={fieldLabels.password}
+                  isPassword
+                  isVisiblePass={isVisiblePass}
+                  type={isVisiblePass ? 'text' : 'password'}
+                  value={formData?.password}
+                  onChange={handleChange}
+                  toggleVisibility={toggleVisibilityPassword}
+                  placeholder='Ingresa tu contraseña'
+                />
               </fieldset>
               <div>
                 <TextLink
@@ -190,8 +218,8 @@ export default function LoginPage() {
                   ¿Olvidó su contraseña?
                 </TextLink>
               </div>
-              <DivButton $primary title='Iniciar Sesión'>
-                <Link href={'/customer/mi-cuenta'}>INICIAR SESIÓN</Link>
+              <DivButton $primary title='Iniciar Sesión' type='submit'>
+                INICIAR SESIÓN
               </DivButton>
             </form>
           </Box>
