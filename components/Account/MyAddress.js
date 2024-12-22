@@ -1,9 +1,9 @@
 import { blue, primary } from '@/lib/colors'
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { Country, State, City } from 'country-state-city'
-import { customerInfo } from '../../resource/curtomerData'
+import { countries, customerInfo } from '../../resource/curtomerData'
 import InputGroup from './forms/InputGroup'
+import { loadStatesAndCities } from '@/utils/loadStatesAndCities'
 
 const Container = styled.div`
   display: flex;
@@ -111,30 +111,10 @@ const MyAddress = () => {
     shippingAddress: [],
   })
 
-  const countries = [{ name: 'Ecuador', isoCode: 'EC' }]
-
   useEffect(() => {
-    const loadStatesAndCities = () => {
-      const statesData = {}
-      const citiesData = {}
-
-      countries.forEach((country) => {
-        const countryStates = State.getStatesOfCountry(country.isoCode)
-        statesData[country.isoCode] = countryStates
-
-        countryStates.forEach((state) => {
-          citiesData[state.isoCode] = City.getCitiesOfState(
-            country.isoCode,
-            state.isoCode
-          )
-        })
-      })
-
-      setStates(statesData)
-      setCities(citiesData)
-    }
-
-    loadStatesAndCities()
+    const { statesData, citiesData } = loadStatesAndCities(countries)
+    setStates(statesData)
+    setCities(citiesData)
   }, [])
 
   const handleChange = (e, type) => {

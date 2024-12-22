@@ -10,18 +10,18 @@ export const customerInfo = {
     name: 'Juan ',
     lastname: 'Pérez',
     idDocument: '00000',
-    email: '',
+    email: 'eri@gmail.com',
     country: { name: 'Ecuador', isoCode: 'EC' },
     province: { name: 'Los Ríos', isoCode: 'R' },
     canton: 'Quevedo',
-    address: '',
+    address: 'Calle Verdadera 456',
     phone: '+34 600 123 456',
   },
   shippingAddress: {
     name: 'Juan ',
     lastname: 'Pérez',
     idDocument: '000',
-    email: '',
+    email: 'eri@gmail.com',
     country: { name: 'Ecuador', isoCode: 'EC' },
     province: { name: 'Los Ríos', isoCode: 'R' },
     canton: 'Quevedo',
@@ -29,6 +29,7 @@ export const customerInfo = {
     phone: '+34 600 123 456',
   },
 }
+export const countries = [{ name: 'Ecuador', isoCode: 'EC' }]
 
 export const recentOrders = [
   {
