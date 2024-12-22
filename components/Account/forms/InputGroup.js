@@ -14,6 +14,7 @@ const InputGroupWrapper = styled.div`
   flex-direction: column;
   position: relative;
   width: 100%;
+  gap: 5px;
 
   label {
     font-size: 0.75rem;

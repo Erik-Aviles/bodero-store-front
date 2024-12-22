@@ -9,6 +9,7 @@ import MyAddress from '@/components/Account/MyAddress'
 import MyPanel from '@/components/Account/MyPanel'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Authentication from '@/components/Account/Authentication'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -21,6 +22,7 @@ const CenterDiv = styled.section`
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 10px;
+    padding: 40px 0;
   }
 `
 
@@ -30,20 +32,22 @@ const AsideBar = styled.aside`
   border: 1px solid #e9ecef;
   border-radius: 8px;
   padding: 20px;
-
+  color: ${white2};
   @media (max-width: 768px) {
     width: 100%;
+    background-color: inherit;
+    color: ${black};
   }
 `
 
 const AsideList = styled.ul`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   list-style: none;
   padding: 0;
   margin: 0;
-  @media (max-width: 768px) {
-    justify-content: space-between;
+  @media (min-width: 768px) {
+    flex-direction: column;
   }
 `
 
@@ -53,7 +57,6 @@ const AsideItem = styled.li`
   a {
     cursor: pointer;
     text-decoration: none;
-    color: ${white2};
     font-weight: 500;
     transition: color 0.3s;
 
@@ -76,12 +79,13 @@ const MainContent = styled.main`
   background-color: #ffffff;
   border: 1px solid #e9ecef;
   border-radius: 8px;
-  padding: 20px;
+  padding: 15px;
   width: 100%;
   min-height: 400px;
 
   @media (max-width: 768px) {
-    padding: 15px;
+    padding: 20px;
+    min-height: fit-content;
   }
 `
 
@@ -100,6 +104,8 @@ const AccountPage = () => {
         return <MyOrders />
       case 'direcciones':
         return <MyAddress />
+      case 'cambiar-contrasena':
+        return <Authentication />
       default:
         return <MyPanel />
     }
@@ -115,16 +121,19 @@ const AccountPage = () => {
                 <Link href='/customer/mi-cuenta'>General</Link>
               </AsideItem>
               <AsideItem $isSelected={isActive('perfil')}>
-                <Link href='/customer/mi-cuenta?section=perfil'>Mis Datos</Link>
+                <Link href='/customer/mi-cuenta?section=perfil'>Perfil</Link>
               </AsideItem>
               <AsideItem $isSelected={isActive('pedidos')}>
-                <Link href='/customer/mi-cuenta?section=pedidos'>
-                  Mis Pedidos
-                </Link>
+                <Link href='/customer/mi-cuenta?section=pedidos'>Pedidos</Link>
               </AsideItem>
               <AsideItem $isSelected={isActive('direcciones')}>
                 <Link href='/customer/mi-cuenta?section=direcciones'>
-                  Mis Direcciones
+                  Direcciones
+                </Link>
+              </AsideItem>
+              <AsideItem $isSelected={isActive('cambiar-contrasena')}>
+                <Link href='/customer/mi-cuenta?section=cambiar-contrasena'>
+                  Autenticación
                 </Link>
               </AsideItem>
               <AsideItem>
