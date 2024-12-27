@@ -7,6 +7,7 @@ import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
 import { error, greylight, primary, secondary, white } from '@/lib/colors'
 import Link from 'next/link'
 import InputGroup from '@/components/Account/forms/InputGroup'
+import { useRouter } from 'next/router'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -129,6 +130,7 @@ const TextLink = styled(Link)`
 `
 
 export default function LoginPage() {
+  const router = useRouter()
   const [isUpLoanding, setIsUpLoanding] = useState(true)
   const [isVisiblePass, setIsVisiblePass] = useState(false)
   const [formData, setFormData] = useState({
@@ -160,6 +162,7 @@ export default function LoginPage() {
     // Lógica para enviar los datos del formulario
     console.log('Formulario enviado', formData)
     alert('Formulario enviado')
+    router.push('/customer/mi-cuenta/general')
   }
 
   useEffect(() => {

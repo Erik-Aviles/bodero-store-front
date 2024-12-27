@@ -10,6 +10,7 @@ import { error, greylight, primary, secondary, white } from '@/lib/colors'
 import { genersData } from '@/resource/curtomerData'
 import InputGroup from '@/components/Account/forms/InputGroup'
 import DateInputGroup from '@/components/Account/forms/DateInputGroup'
+import { useRouter } from 'next/router'
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
@@ -111,6 +112,7 @@ const Button = styled.button`
 `
 
 export default function RegisterPage() {
+  const router = useRouter()
   const [isUpLoanding, setIsUpLoanding] = useState(true)
   const [isVisiblePass, setIsVisiblePass] = useState(false)
   const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false)
@@ -159,6 +161,7 @@ export default function RegisterPage() {
     // Lógica para enviar los datos del formulario
     console.log('Formulario enviado', formData)
     alert('Formulario enviado')
+    router.push('/customer/mi-cuenta?section=perfil')
   }
 
   useEffect(() => {

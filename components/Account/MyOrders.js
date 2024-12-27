@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { blue } from '@/lib/colors'
-import { recentOrders } from '@/resource/curtomerData'
+import { customerInfo, recentOrders } from '@/resource/curtomerData'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const Container = styled.div`
   font-size: 0.9rem;
@@ -73,7 +75,7 @@ const MyOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {recentOrders?.map((order) => (
+              {customerInfo?.orders?.map((order) => (
                 <tr key={order.id}>
                   <td>{order.orderNumber || '--'}</td>
                   <td>{order.date || '--'}</td>
@@ -81,7 +83,11 @@ const MyOrders = () => {
                   <td>{order.total || '--'}</td>
                   <td>{order.status || '--'}</td>
                   <td>
-                    <button>Ver</button>
+                    <Link
+                      href={`/customer/mi-cuenta/pedido?id=${order?.orderNumber}`}
+                    >
+                      Ver
+                    </Link>
                   </td>
                 </tr>
               ))}

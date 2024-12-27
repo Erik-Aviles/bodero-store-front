@@ -138,7 +138,7 @@ const TableSection = styled.div`
 `
 
 const MyPanel = () => {
-  const recentOrder = recentOrders.slice(-1)[0]
+  const recentOrder = customerInfo.orders.slice(-1)[0]
 
   return (
     <Container>
@@ -146,10 +146,7 @@ const MyPanel = () => {
       <InfoSection>
         <div className='header-section'>
           <h3> Mis Datos </h3>
-          <Link
-            href='/customer/mi-cuenta?section=perfil'
-            title='Editar mis datos'
-          >
+          <Link href='/customer/mi-cuenta/perfil' title='Editar mis datos'>
             <EdithIcon size={22} />
           </Link>
         </div>
@@ -160,7 +157,7 @@ const MyPanel = () => {
                 <span>Nombres:</span> {customerInfo?.name || '--'}
               </p>
               <p>
-                <span>Alpllidos:</span> {customerInfo?.lastname || '--'}
+                <span>Apellidos:</span> {customerInfo?.lastname || '--'}
               </p>
             </div>
             <div>
@@ -193,10 +190,7 @@ const MyPanel = () => {
       <TableSection>
         <div className='header-section'>
           <h3>Mis Pedidos Recientes</h3>
-          <Link
-            href='/customer/mi-cuenta?section=pedidos'
-            title='Ir a mis pedidos'
-          >
+          <Link href='/customer/mi-cuenta/pedidos' title='Ir a mis pedidos'>
             Ver todos
           </Link>
         </div>
@@ -214,13 +208,17 @@ const MyPanel = () => {
             </thead>
             <tbody>
               <tr>
-                <td>{recentOrder.orderNumber || '--'}</td>
-                <td>{recentOrder.date || '--'}</td>
-                <td>{recentOrder.address || '--'}</td>
-                <td>{recentOrder.total || '--'}</td>
-                <td>{recentOrder.status || '--'}</td>
+                <td>{recentOrder?.orderNumber || '--'}</td>
+                <td>{recentOrder?.date || '--'}</td>
+                <td>{recentOrder?.address || '--'}</td>
+                <td>{recentOrder?.total || '--'}</td>
+                <td>{recentOrder?.status || '--'}</td>
                 <td>
-                  <button>Ver</button>
+                  <Link
+                    href={`/customer/mi-cuenta/pedido?id=${recentOrder?.orderNumber}`}
+                  >
+                    Ver
+                  </Link>
                 </td>
               </tr>
             </tbody>
@@ -232,7 +230,7 @@ const MyPanel = () => {
         <div className='header-section'>
           <h3>Mis Direcciones</h3>
           <Link
-            href='/customer/mi-cuenta?section=direcciones'
+            href='/customer/mi-cuenta/direcciones'
             title='Editar mis direcciones'
           >
             <EdithIcon size={22} />

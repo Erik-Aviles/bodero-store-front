@@ -14,8 +14,8 @@ const DateInputWrapper = styled.div`
   flex-direction: column;
   position: relative;
   width: 100%;
+  gap: 5px;
   z-index: 9;
-
   label {
     font-size: 0.75rem;
     font-weight: 400;

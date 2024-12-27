@@ -1,15 +1,25 @@
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Layout from '@/components/Layout'
 import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
 import { black, blue, primary, white2 } from '@/lib/colors'
-import React, { useState } from 'react'
-import styled from 'styled-components'
 import MyDatas from '@/components/Account/MyDatas'
 import MyOrders from '@/components/Account/MyOrders'
 import MyAddress from '@/components/Account/MyAddress'
 import MyPanel from '@/components/Account/MyPanel'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import Authentication from '@/components/Account/Authentication'
+import {
+  AddressIcon,
+  AuthIcon,
+  GeneralIcon,
+  LogoutIcon,
+  ProfileEditIcon,
+  ShowAllOrdersIcon,
+} from '@/components/Icons'
+import { customerInfo } from '@/resource/curtomerData'
+import Order from '@/components/Account/Order'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -22,7 +32,7 @@ const CenterDiv = styled.section`
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 10px;
-    padding: 40px 0;
+    padding: 40px 5px;
   }
 `
 
@@ -42,26 +52,29 @@ const AsideBar = styled.aside`
 
 const AsideList = styled.ul`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   list-style: none;
   padding: 0;
   margin: 0;
   @media (min-width: 768px) {
     flex-direction: column;
+    align-items: inherit;
+    gap: 20px;
   }
 `
 
 const AsideItem = styled.li`
-  margin-bottom: 15px;
-
   a {
     cursor: pointer;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
+    display: flex;
 
     &:hover {
       color: ${primary};
+      font-weight: bold;
     }
 
     /* Estilo dinámico si está seleccionado */
@@ -71,6 +84,24 @@ const AsideItem = styled.li`
         color: ${primary};
         font-weight: bold;
       `}
+
+    span {
+      display: inline;
+    }
+    svg {
+      display: none;
+    }
+
+    /* Mostrar el svg solo en dispositivos móviles */
+    @media (max-width: 900px) {
+      span {
+        display: none;
+      }
+
+      svg {
+        display: inline;
+      }
+    }
   }
 `
 
@@ -91,12 +122,16 @@ const MainContent = styled.main`
 
 const AccountPage = () => {
   const router = useRouter()
-  const { section } = router.query
+  const { section, pedido } = router.query
 
   const isActive = (querySection) =>
     (!section && querySection === 'general') || section === querySection
 
   const renderContent = () => {
+    if (section === 'pedidos' && pedido) {
+      return <Order />
+    }
+
     switch (section) {
       case 'perfil':
         return <MyDatas />
@@ -116,30 +151,42 @@ const AccountPage = () => {
       <CenterDiv>
         <AsideBar>
           <AsideList>
-            <AsideList>
-              <AsideItem $isSelected={isActive('general')}>
-                <Link href='/customer/mi-cuenta'>General</Link>
-              </AsideItem>
-              <AsideItem $isSelected={isActive('perfil')}>
-                <Link href='/customer/mi-cuenta?section=perfil'>Perfil</Link>
-              </AsideItem>
-              <AsideItem $isSelected={isActive('pedidos')}>
-                <Link href='/customer/mi-cuenta?section=pedidos'>Pedidos</Link>
-              </AsideItem>
-              <AsideItem $isSelected={isActive('direcciones')}>
-                <Link href='/customer/mi-cuenta?section=direcciones'>
-                  Direcciones
-                </Link>
-              </AsideItem>
-              <AsideItem $isSelected={isActive('cambiar-contrasena')}>
-                <Link href='/customer/mi-cuenta?section=cambiar-contrasena'>
-                  Autenticación
-                </Link>
-              </AsideItem>
-              <AsideItem>
-                <Link href='/'>Salir</Link>
-              </AsideItem>
-            </AsideList>
+            <AsideItem $isSelected={isActive('general')}>
+              <Link href='/customer/mi-cuenta/general'>
+                <span>General</span>
+                <GeneralIcon />
+              </Link>
+            </AsideItem>
+            <AsideItem $isSelected={isActive('perfil')}>
+              <Link href='/customer/mi-cuenta/perfil'>
+                <span>Perfil</span>
+                <ProfileEditIcon />
+              </Link>
+            </AsideItem>
+            <AsideItem $isSelected={isActive('pedidos') || isActive('pedido')}>
+              <Link href='/customer/mi-cuenta/pedidos'>
+                <span>Pedidos</span>
+                <ShowAllOrdersIcon size={32} />
+              </Link>
+            </AsideItem>
+            <AsideItem $isSelected={isActive('direcciones')}>
+              <Link href='/customer/mi-cuenta/direcciones'>
+                <span>Direcciones</span>
+                <AddressIcon />
+              </Link>
+            </AsideItem>
+            <AsideItem $isSelected={isActive('cambiar-contrasena')}>
+              <Link href='/customer/mi-cuenta/cambiar-contrasena'>
+                <span> Autenticación</span>
+                <AuthIcon />
+              </Link>
+            </AsideItem>
+            <AsideItem>
+              <Link href='/'>
+                <span> Salir</span>
+                <LogoutIcon />
+              </Link>
+            </AsideItem>
           </AsideList>
         </AsideBar>
         <MainContent>{renderContent()}</MainContent>
