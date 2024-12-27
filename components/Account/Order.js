@@ -18,6 +18,9 @@ const Container = styled.div`
     h2 {
       color: ${blue};
       margin: 0;
+      @media (max-width: 768px) {
+        font-size: 1rem;
+      }
     }
   }
 `
