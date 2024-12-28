@@ -44,7 +44,6 @@ export const Wrapper = styled.section`
   flex-wrap: wrap;
   padding: 10px 0;
   display: flex;
-  align-items: center;
   justify-content: center;
   gap: 20px;
   @media (min-width: 768px) {
