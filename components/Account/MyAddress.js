@@ -1,96 +1,18 @@
-import { blue, primary } from '@/lib/colors'
 import React, { useEffect, useState } from 'react'
-import styled, { css } from 'styled-components'
 import { countries, customerInfo } from '../../resource/curtomerData'
 import InputGroup from './forms/InputGroup'
 import { loadStatesAndCities } from '@/utils/loadStatesAndCities'
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  h2 {
-    color: ${blue};
-    margin: 0;
-    font-weight: 400;
-  }
-`
-
-const AddressContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  gap: 15px;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-  }
-`
-
-const AddressBox = styled.div`
-  border: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  max-width: 400px;
-  min-width: 200px;
-  border: 1px solid #e9ecef;
-  padding: 15px;
-  border-radius: 8px;
-  background-color: #f8f9fa;
-  h4 {
-    margin: 10px 0;
-    font-weight: 300;
-    color: ${blue};
-    border-bottom: 2px solid #ccc; /* Línea divisoria */
-    padding-bottom: 8px;
-  }
-  .botton-box {
-    display: flex;
-    justify-content: space-evenly;
-    gap: 10px;
-  }
-`
-
-const Button = styled.button`
-  padding: 10px;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  ${(props) =>
-    props.$canceled &&
-    css`
-      background-color: ${primary};
-      transition: background-color 0.3s ease;
-      &:hover {
-        background-color: rgba(247, 3, 1, 0.6);
-      }
-      &:disabled {
-        background-color: rgba(247, 3, 1, 0.4);
-        cursor: not-allowed;
-      }
-    `};
-  ${(props) =>
-    props.$save &&
-    css`
-      background-color: ${blue};
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: rgba(0, 91, 181, 0.8);
-      }
-      &:disabled {
-        background-color: rgba(0, 91, 181, 0.5);
-        cursor: not-allowed;
-      }
-    `};
-`
+import BackButton from '../buttonComponents/BackButton'
+import { handleGoBack } from '@/utils/handleGoBack'
+import {
+  Button,
+  Container,
+  SectionTitle,
+  TitleH2,
+  Wrapper,
+  WrapperButton,
+  Form,
+} from '../stylesComponents/ComponentAccount'
 
 const MyAddress = () => {
   const initialAddresses = {
@@ -127,8 +49,8 @@ const MyAddress = () => {
         [type]: {
           ...prev[type],
           country: selectedCountry,
-          province: '', // Reinicia provincia
-          canton: '', // Reinicia cantón
+          province: '',
+          canton: '',
         },
       }))
     } else if (name === 'province') {
@@ -141,7 +63,7 @@ const MyAddress = () => {
         [type]: {
           ...prev[type],
           province: selectedProvince,
-          canton: '', // Reinicia cantón
+          canton: '',
         },
       }))
     } else if (name === 'canton') {
@@ -149,7 +71,7 @@ const MyAddress = () => {
         ...prev,
         [type]: {
           ...prev[type],
-          canton: value, // Actualiza solo el cantón
+          canton: value,
         },
       }))
     } else {
@@ -202,15 +124,19 @@ const MyAddress = () => {
 
   return (
     <Container>
-      <h2>Editar Mis Direcciones</h2>
-      <AddressContainer>
+      <header>
+        <BackButton onClick={handleGoBack} />
+        <TitleH2>Editar Mis Direcciones</TitleH2>
+      </header>
+
+      <Wrapper>
         {['billingAddress', 'shippingAddress'].map((type) => (
-          <AddressBox key={type}>
-            <h4>
+          <Form>
+            <SectionTitle>
               {type === 'billingAddress'
                 ? 'Dirección de Facturación '
                 : 'Dirección de Envío '}
-            </h4>
+            </SectionTitle>
             {Object.keys(addresses[type]).map((field) => {
               if (field === 'country') {
                 return (
@@ -272,7 +198,7 @@ const MyAddress = () => {
                 />
               )
             })}
-            <div className='botton-box'>
+            <WrapperButton>
               <Button
                 title={`Cancelar ${
                   type === 'billingAddress' ? 'Facturación' : 'Envío'
@@ -293,10 +219,10 @@ const MyAddress = () => {
               >
                 Guardar
               </Button>
-            </div>
-          </AddressBox>
+            </WrapperButton>
+          </Form>
         ))}
-      </AddressContainer>
+      </Wrapper>
     </Container>
   )
 }

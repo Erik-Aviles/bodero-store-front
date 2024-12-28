@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Layout from '@/components/Layout'
 import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import { black, blue, primary, white2 } from '@/lib/colors'
+import { black, blacklight, blue, primary, white, white2 } from '@/lib/colors'
 import MyDatas from '@/components/Account/MyDatas'
 import MyOrders from '@/components/Account/MyOrders'
 import MyAddress from '@/components/Account/MyAddress'
@@ -37,16 +37,49 @@ const CenterDiv = styled.section`
 `
 
 const AsideBar = styled.aside`
-  width: 250px;
-  background-color: ${black};
+  width: 100%;
   border: 1px solid #e9ecef;
   border-radius: 8px;
-  padding: 20px;
-  color: ${white2};
-  @media (max-width: 768px) {
+  padding: 10px 20px;
+  background-color: inherit;
+  color: ${black};
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  div {
     width: 100%;
-    background-color: inherit;
-    color: ${black};
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #e9ecef;
+  }
+  div h4 {
+    color: ${blacklight};
+    margin: 5px 0;
+    font-weight: 100;
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  @media (min-width: 768px) {
+    color: ${white2};
+    background-color: ${black};
+    width: 250px;
+    padding: 20px;
+    div {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 0;
+
+      overflow: hidden;
+    }
+    div h4 {
+      display: inline-block;
+      transform: scaleX(1.5);
+      transform-origin: left;
+      color: #e9ecef;
+      padding-bottom: 10px;
+    }
   }
 `
 
@@ -55,12 +88,12 @@ const AsideList = styled.ul`
   align-items: center;
   justify-content: space-between;
   list-style: none;
-  padding: 0;
   margin: 0;
   @media (min-width: 768px) {
     flex-direction: column;
     align-items: inherit;
     gap: 20px;
+    padding: 20px 0 0;
   }
 `
 
@@ -93,7 +126,7 @@ const AsideItem = styled.li`
     }
 
     /* Mostrar el svg solo en dispositivos móviles */
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
       span {
         display: none;
       }
@@ -150,6 +183,10 @@ const AccountPage = () => {
     <Layout title='B.R.D | Mi Cuenta'>
       <CenterDiv>
         <AsideBar>
+          <div>
+            <span>Hola,</span>
+            <h4> {customerInfo?.name}!</h4>
+          </div>
           <AsideList>
             <AsideItem $isSelected={isActive('general')}>
               <Link href='/customer/mi-cuenta/general'>
