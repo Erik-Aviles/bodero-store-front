@@ -131,7 +131,7 @@ const MyAddress = () => {
 
       <Wrapper>
         {['billingAddress', 'shippingAddress'].map((type) => (
-          <Form>
+          <Form key={type}>
             <SectionTitle>
               {type === 'billingAddress'
                 ? 'Dirección de Facturación '
