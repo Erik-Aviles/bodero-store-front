@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import Layout from '@/components/Layout'
-import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import { black, blacklight, blue, primary, white, white2 } from '@/lib/colors'
-import MyDatas from '@/components/Account/MyDatas'
-import MyOrders from '@/components/Account/MyOrders'
-import MyAddress from '@/components/Account/MyAddress'
-import MyPanel from '@/components/Account/MyPanel'
-import Authentication from '@/components/Account/Authentication'
+import { memo } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import Layout from "@/components/Layout";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { black, blacklight, blue, primary, white, white2 } from "@/lib/colors";
+import MyDatas from "@/components/Account/MyDatas";
+import MyOrders from "@/components/Account/MyOrders";
+import MyAddress from "@/components/Account/MyAddress";
+import MyPanel from "@/components/Account/MyPanel";
+import Authentication from "@/components/Account/Authentication";
 import {
   AddressIcon,
   AuthIcon,
@@ -17,9 +17,9 @@ import {
   LogoutIcon,
   ProfileEditIcon,
   ShowAllOrdersIcon,
-} from '@/components/Icons'
-import { customerInfo } from '@/resource/curtomerData'
-import Order from '@/components/Account/Order'
+} from "@/components/Icons";
+import Order from "@/components/Account/Order";
+import { useCustomer } from "@/context/CustomerProvider";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -34,7 +34,7 @@ const CenterDiv = styled.section`
     gap: 10px;
     padding: 40px 5px;
   }
-`
+`;
 
 const AsideBar = styled.aside`
   width: 100%;
@@ -81,7 +81,7 @@ const AsideBar = styled.aside`
       padding-bottom: 10px;
     }
   }
-`
+`;
 
 const AsideList = styled.ul`
   display: flex;
@@ -95,7 +95,7 @@ const AsideList = styled.ul`
     gap: 20px;
     padding: 20px 0 0;
   }
-`
+`;
 
 const AsideItem = styled.li`
   a {
@@ -136,7 +136,7 @@ const AsideItem = styled.li`
       }
     }
   }
-`
+`;
 
 const MainContent = styled.main`
   flex-grow: 1;
@@ -151,75 +151,80 @@ const MainContent = styled.main`
     padding: 20px;
     min-height: fit-content;
   }
-`
+`;
 
-const AccountPage = () => {
-  const router = useRouter()
-  const { section, pedido } = router.query
+// eslint-disable-next-line react/display-name
+const AccountPage = memo(() => {
+  const router = useRouter();
+  const { section, pedido } = router.query;
+  const { customer, isLoading, error } = useCustomer()
 
   const isActive = (querySection) =>
-    (!section && querySection === 'general') || section === querySection
+    (!section && querySection === "general") || section === querySection;
 
   const renderContent = () => {
-    if (section === 'pedidos' && pedido) {
-      return <Order />
+    if (section === "pedidos" && pedido) {
+      return <Order />;
     }
 
     switch (section) {
-      case 'perfil':
-        return <MyDatas />
-      case 'pedidos':
-        return <MyOrders />
-      case 'direcciones':
-        return <MyAddress />
-      case 'cambiar-contrasena':
-        return <Authentication />
+      case "perfil":
+        return <MyDatas />;
+      case "pedidos":
+        return <MyOrders />;
+      case "direcciones":
+        return <MyAddress />;
+      case "cambiar-contrasena":
+        return <Authentication />;
       default:
-        return <MyPanel />
+        return <MyPanel />;
     }
-  }
+  };
+
+  if (isLoading) return <p>Cargando...</p>
+  if (error) return <p>Error al cargar los datos del cliente.</p>
 
   return (
-    <Layout title='B.R.D | Mi Cuenta'>
+    <Layout title="B.R.D | Mi Cuenta">
       <CenterDiv>
         <AsideBar>
           <div>
             <span>Hola,</span>
-            <h4> {customerInfo?.name}!</h4>
+            <h4> {customer?.name || 'Usuario'}!</h4>
           </div>
           <AsideList>
-            <AsideItem $isSelected={isActive('general')}>
-              <Link href='/customer/mi-cuenta/general'>
+            <AsideItem $isSelected={isActive("general")}>
+              <Link href="/customer/mi-cuenta/general">
                 <span>General</span>
                 <GeneralIcon />
               </Link>
             </AsideItem>
-            <AsideItem $isSelected={isActive('perfil')}>
-              <Link href='/customer/mi-cuenta/perfil'>
+            <AsideItem $isSelected={isActive("perfil")}>
+              <Link href="/customer/mi-cuenta/perfil">
                 <span>Perfil</span>
                 <ProfileEditIcon />
               </Link>
             </AsideItem>
-            <AsideItem $isSelected={isActive('pedidos') || isActive('pedido')}>
-              <Link href='/customer/mi-cuenta/pedidos'>
+            <AsideItem $isSelected={isActive("pedidos") || isActive("pedido")}>
+              <Link href="/customer/mi-cuenta/pedidos">
                 <span>Pedidos</span>
                 <ShowAllOrdersIcon size={32} />
               </Link>
             </AsideItem>
-            <AsideItem $isSelected={isActive('direcciones')}>
-              <Link href='/customer/mi-cuenta/direcciones'>
+            <AsideItem $isSelected={isActive("direcciones")}>
+              <Link href="/customer/mi-cuenta/direcciones">
                 <span>Direcciones</span>
                 <AddressIcon />
               </Link>
             </AsideItem>
-            <AsideItem $isSelected={isActive('cambiar-contrasena')}>
-              <Link href='/customer/mi-cuenta/cambiar-contrasena'>
+            <AsideItem $isSelected={isActive("cambiar-contrasena")}>
+              <Link href="/customer/mi-cuenta/cambiar-contrasena">
                 <span> Autenticación</span>
                 <AuthIcon />
               </Link>
             </AsideItem>
             <AsideItem>
-              <Link href='/'>
+              <Link href="/">
                 <span> Salir</span>
                 <LogoutIcon />
               </Link>
@@ -229,7 +234,7 @@ const AccountPage = () => {
         <MainContent>{renderContent()}</MainContent>
       </CenterDiv>
     </Layout>
-  )
-}
+  );
+});
 
-export default AccountPage
+export default AccountPage;

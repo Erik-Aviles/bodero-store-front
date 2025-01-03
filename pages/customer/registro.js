@@ -3,10 +3,9 @@ import Layout from '@/components/Layout'
 import { Loading } from '@/components/Loading'
 import styled, { css } from 'styled-components'
 import Title from '@/components/stylesComponents/Title'
-import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import { error, greylight, primary, secondary, white } from '@/lib/colors'
+import { greylight, primary, white } from '@/lib/colors'
 import { genersData } from '@/resource/curtomerData'
 import InputGroup from '@/components/Account/forms/InputGroup'
 import DateInputGroup from '@/components/Account/forms/DateInputGroup'
@@ -161,13 +160,13 @@ export default function RegisterPage() {
     // Lógica para enviar los datos del formulario
     console.log('Formulario enviado', formData)
     alert('Formulario enviado')
-    router.push('/customer/mi-cuenta?section=perfil')
+    router.push('/customer/mi-cuenta/general')
   }
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsUpLoanding(false)
-    }, 2000)
+    }, 1000)
     return () => clearTimeout(timeout)
   }, [])
 
@@ -288,7 +287,6 @@ export default function RegisterPage() {
           <Button
             type='submit'
             $primary
-            href={'/registro'}
             title='Iniciar Sesión'
           >
             ENVIAR

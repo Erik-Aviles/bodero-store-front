@@ -37,6 +37,7 @@ export const LogoFull = ({ href }) => {
           src={mainlogo ? mainlogo : logo}
           width={200}
           height={110}
+          priority={true}
         />
       </Figure>
     </Link>

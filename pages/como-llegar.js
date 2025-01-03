@@ -8,8 +8,8 @@ import { black, white } from '@/lib/colors'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Layout from '@/components/Layout'
-import { useRouter } from 'next/router'
 import Map from '@/components/Map'
+import { useHandleGoBack } from '@/hooks/useHandleGoBack'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -54,7 +54,7 @@ const MapWrapper = styled.div`
 `
 
 export default function AddressPage() {
-  const router = useRouter()
+  const handleGoBack = useHandleGoBack()
   const [isUpLoanding, setIsUpLoanding] = useState(true)
 
   useEffect(() => {
@@ -63,11 +63,6 @@ export default function AddressPage() {
     }, 1000)
     return () => clearTimeout(timeout)
   }, [])
-
-  const handleGoBack = (e) => {
-    e.preventDefault()
-    router.back()
-  }
 
   if (isUpLoanding) {
     return <Loading />

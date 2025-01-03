@@ -18,6 +18,7 @@ import { capitalize } from '@/utils/capitalize'
 import InputGroup from '@/components/Account/forms/InputGroup'
 import { countries, customerInfo } from '@/resource/curtomerData'
 import { loadStatesAndCities } from '@/utils/loadStatesAndCities'
+import { useHandleGoBack } from '@/hooks/useHandleGoBack'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -92,6 +93,7 @@ const Box = styled.div`
 `
 
 export default function CartPage() {
+  const handleGoBack = useHandleGoBack()
   const { company } = useData()
   const secondaryPhone = company?.secondaryPhone
 
@@ -245,11 +247,6 @@ export default function CartPage() {
         status: 'error',
       })
     }
-  }
-
-  const handleGoBack = (e) => {
-    e.preventDefault()
-    router.back()
   }
 
   return (

@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { blue } from '@/lib/colors'
 import { EdithIcon } from '../Icons'
-import { customerInfo } from '@/resource/curtomerData'
 import {
   ComponenteLink,
   Container,
@@ -16,7 +15,8 @@ import {
   TD,
 } from '../stylesComponents/ComponentAccount'
 import BackButton from '../buttonComponents/BackButton'
-import { handleGoBack } from '@/utils/handleGoBack'
+import { useCustomer } from '@/context/CustomerProvider'
+import { useHandleGoBack } from '@/hooks/useHandleGoBack'
 
 const InfoSection = styled.section`
   line-height: 1.6;
@@ -35,12 +35,17 @@ const InfoSection = styled.section`
 `
 
 const MyPanel = () => {
-  const recentOrder = customerInfo.orders.slice(-1)[0]
+  const handleGoBack = useHandleGoBack()
+   const { customer, isLoading, error } = useCustomer()
+  const recentOrder = customer.orders.slice(-1)[0]
+
+  console.log(customer)
 
   const subtotal = recentOrder.line_items.reduce(
     (acc, item) => acc + item.quantity * item.info_order.product_data.price,
     0
   )
+
   const iva = (subtotal * 0.15).toFixed(2)
   const total = (subtotal + parseFloat(iva)).toFixed(2)
 
@@ -64,30 +69,30 @@ const MyPanel = () => {
           <Article>
             <p>
               <span>Nombres</span>
-              {customerInfo?.name || '--'}
+              {customer?.name || '--'}
             </p>
             <p>
               <span>Apellidos</span>
-              {customerInfo?.lastname || '--'}
+              {customer?.lastname || '--'}
             </p>
             <p>
-              <span>Email:</span> {customerInfo?.email || '--'}
+              <span>Email:</span> {customer?.email || '--'}
             </p>
             <p>
-              <span>Teléfono:</span> {customerInfo?.phone || '--'}
+              <span>Teléfono:</span> {customer?.phone || '--'}
             </p>
 
             <p>
               <span>Documento de identidad:</span>
-              {customerInfo?.idDocument || '--'}
+              {customer?.idDocument || '--'}
             </p>
             <p>
               <span>Fecha de nacimiento:</span>
-              {customerInfo?.dateOfBirth || '--'}
+              {customer?.dateOfBirth || '--'}
             </p>
 
             <p>
-              <span>Genero:</span> {customerInfo?.gender || '--'}
+              <span>Genero:</span> {customer?.gender || '--'}
             </p>
           </Article>
         </Wrapper>
@@ -125,7 +130,7 @@ const MyPanel = () => {
                 </TD>
                 <td>{total || '--'}</td>
                 <td>
-                  <StatusText status={recentOrder?.status}>
+                  <StatusText $status={recentOrder?.status}>
                     {recentOrder?.status || '--'}
                   </StatusText>
                 </td>
@@ -157,61 +162,61 @@ const MyPanel = () => {
             <SectionTitle>Dirección de Facturación </SectionTitle>
             <p>
               <span>Nombres</span>
-              {`${customerInfo?.billingAddress?.name} ${customerInfo?.billingAddress?.lastname}` ||
+              {`${customer?.billingAddress?.name} ${customer?.billingAddress?.lastname}` ||
                 '--'}
             </p>
 
             <p>
               <span>Dirección</span>
-              {customerInfo?.billingAddress?.address || '--'}
+              {customer?.billingAddress?.address || '--'}
             </p>
 
             <p>
               <span>Provincia:</span>
-              {customerInfo?.billingAddress?.province?.name || '--'}
+              {customer?.billingAddress?.province?.name || '--'}
             </p>
 
             <p>
               <span>Cantón:</span>
-              {customerInfo?.billingAddress?.canton || '--'}
+              {customer?.billingAddress?.canton || '--'}
             </p>
 
             <p>
               <span>País:</span>
-              {customerInfo?.billingAddress?.country?.name || '--'}
+              {customer?.billingAddress?.country?.name || '--'}
             </p>
 
             <p>
               <span>Teléfono:</span>
-              {customerInfo?.billingAddress?.phone || '--'}
+              {customer?.billingAddress?.phone || '--'}
             </p>
           </Article>
           <Article>
             <SectionTitle>Dirección de Envío </SectionTitle>
             <p>
               <span>Nombres</span>
-              {`${customerInfo?.shippingAddress?.name} ${customerInfo?.shippingAddress?.lastname}` ||
+              {`${customer?.shippingAddress?.name} ${customer?.shippingAddress?.lastname}` ||
                 '--'}
             </p>
             <p>
               <span>Dirección</span>
-              {customerInfo?.shippingAddress?.address || '--'}
+              {customer?.shippingAddress?.address || '--'}
             </p>
             <p>
               <span>Provincia:</span>
-              {customerInfo?.shippingAddress?.province.name || '--'}
+              {customer?.shippingAddress?.province.name || '--'}
             </p>
             <p>
               <span>Cantón:</span>
-              {customerInfo?.shippingAddress?.canton || '--'}
+              {customer?.shippingAddress?.canton || '--'}
             </p>
             <p>
               <span>País:</span>
-              {customerInfo?.shippingAddress?.country?.name || '--'}
+              {customer?.shippingAddress?.country?.name || '--'}
             </p>
             <p>
               <span>Teléfono:</span>
-              {customerInfo?.shippingAddress?.phone || '--'}
+              {customer?.shippingAddress?.phone || '--'}
             </p>
           </Article>
         </Wrapper>

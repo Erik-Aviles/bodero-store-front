@@ -1,6 +1,5 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import 'react-datepicker/dist/react-datepicker.css'
 import { blue, primary } from '@/lib/colors'
 import {
   ArrowDownIcon,
@@ -62,16 +61,16 @@ const iconStyles = css`
   cursor: pointer;
   width: 20px;
   height: 18px;
-  top: 28px;
+  top: 32px;
 `
 
 const ArrowDown = styled(ArrowDownIcon)`
   position: absolute;
-  right: 10px;
+  right: 12px;
   color: ${blue};
   cursor: pointer;
   pointer-events: none;
-  top: 28px;
+  top: 33px;
 `
 
 const Eye = styled(EyeFilledIcon)`

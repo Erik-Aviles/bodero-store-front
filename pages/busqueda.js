@@ -14,6 +14,7 @@ import { grey, secondary } from '@/lib/colors'
 import { useDebounce } from 'use-debounce'
 import Layout from '@/components/Layout'
 import { useRouter } from 'next/router'
+import { useHandleGoBack } from '@/hooks/useHandleGoBack'
 
 const CenterDiv = styled.section`
   margin: 0 auto;
@@ -89,6 +90,7 @@ const ResultsSession = styled.section`
 `
 
 const SearchPage = () => {
+  const handleGoBack = useHandleGoBack()
   const { company } = useData()
   const brands = company?.brands
 
@@ -153,11 +155,6 @@ const SearchPage = () => {
   const handlePageChange = (pagNum) => {
     setPag(pagNum)
     filterSearch({ router, q: search, page: pagNum })
-  }
-
-  const handleGoBack = (e) => {
-    e.preventDefault()
-    router.back()
   }
 
   const brandNames = brands?.map((brand) => brand.name)

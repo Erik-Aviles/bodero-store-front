@@ -72,12 +72,12 @@ export const Article = styled.article`
 `
 export const StatusText = styled.strong`
   color: ${(props) => {
-    switch (props.status) {
+    switch (props.$status) {
       case 'Entregado':
         return 'green'
       case 'Enviado':
         return 'blue'
-      case 'Preparado':
+      case 'Preparando':
         return 'orange'
       case 'Cancelado':
         return 'red'

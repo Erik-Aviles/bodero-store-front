@@ -54,7 +54,7 @@ const Select = styled.select`
 // Estilizado del ícono de calendario
 const Calendar = styled(CalendarIcon)`
   position: absolute;
-  top: 22px;
+  top: 26px;
   right: 5px;
   pointer-events: none; /* Evita interacción con el ícono */
   color: #007bff; /* Color principal del ícono */

@@ -1,7 +1,6 @@
-import { customerInfo, genersData } from '@/resource/curtomerData'
+import { genersData } from '@/resource/curtomerData'
 import React, { useState } from 'react'
 import InputGroup from './forms/InputGroup'
-import DateInputGroup from './forms/DateInputGroup'
 import {
   Button,
   Container,
@@ -11,28 +10,34 @@ import {
   WrapperButton,
 } from '../stylesComponents/ComponentAccount'
 import BackButton from '../buttonComponents/BackButton'
-import { handleGoBack } from '@/utils/handleGoBack'
+import DateInputGroup from './forms/DateInputGroup'
+import { useCustomer } from '@/context/CustomerProvider'
+import { useHandleGoBack } from '@/hooks/useHandleGoBack'
 
 const MyDatas = () => {
-  const fieldLabels = {
-    name: 'Nombres',
-    lastname: 'Apellidos',
-    email: 'Correo',
-    idDocument: 'Documento de identidad',
-    phone: 'Teléfono',
-    dateOfBirth: 'Fecha de nacimiento',
-    gender: 'Genero',
-  }
-  const initialData = {
-    name: customerInfo?.name || '--',
-    lastname: customerInfo?.lastname || '--',
-    email: customerInfo?.email || '--',
-    idDocument: customerInfo?.idDocument || '--',
-    phone: customerInfo?.phone || '--',
-    dateOfBirth: customerInfo?.dateOfBirth || '--',
-    gender: customerInfo?.gender || '--',
-  }
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const handleGoBack = useHandleGoBack()
+     const { customer, isLoading, error } = useCustomer()
+     
+     const fieldLabels = {
+       name: 'Nombres',
+       lastname: 'Apellidos',
+       email: 'Correo',
+       idDocument: 'Documento de identidad',
+       phone: 'Teléfono',
+       dateOfBirth: 'Fecha de nacimiento',
+       gender: 'Genero',
+      }
+      const initialData = {
+        name: customer?.name || '--',
+        lastname: customer?.lastname || '--',
+        email: customer?.email || '--',
+        idDocument: customer?.idDocument || '--',
+        phone: customer?.phone || '--',
+        dateOfBirth: customer?.dateOfBirth || '--',
+        gender: customer?.gender || '--',
+      }
+      const [selectedDate, setSelectedDate] = useState(new Date())
+      console.log(selectedDate)
 
   const [customerData, setCustomerData] = useState(initialData)
   const [originalCustomerData, setOriginalCustomerData] = useState(initialData)
