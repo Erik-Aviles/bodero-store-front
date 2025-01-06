@@ -12,12 +12,14 @@ import {
   WrapperButton,
   Form,
 } from "../stylesComponents/ComponentAccount";
-import { useCustomer } from "@/context/CustomerProvider";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
+import { useSession } from "next-auth/react";
 
 const MyAddress = () => {
-  const handleGoBack = useHandleGoBack()
-  const { customer, isLoading, error } = useCustomer();
+  const handleGoBack = useHandleGoBack();
+  const { data: session, status, update } = useSession();
+  console.log("session", session?.user);
+  const customer = session?.user;
 
   const initialAddresses = {
     billingAddress: { ...customer.billingAddress },
@@ -130,105 +132,117 @@ const MyAddress = () => {
     <Container>
       <header>
         <BackButton onClick={handleGoBack} />
-        <TitleH2>Editar Mis Direcciones</TitleH2>
+        <TitleH2>
+          {!addresses.billingAddress &&
+            !addresses.shippingAddress &&
+            "Mis Direcciones"}
+        </TitleH2>
       </header>
 
       <Wrapper>
-        {["billingAddress", "shippingAddress"].map((type) => (
-          <Form key={type}>
-            <SectionTitle>
-              {type === "billingAddress"
-                ? "Dirección de Facturación "
-                : "Dirección de Envío "}
-            </SectionTitle>
-            {Object.keys(addresses[type]).map((field) => {
-              if (field === "country") {
+        {(addresses?.billingAddress && addresses?.shippingAddress) ? (
+          <p>No tienes dirección</p>
+        ) : (
+          ["billingAddress", "shippingAddress"].map((type) => (
+            <Form key={type}>
+              <SectionTitle>
+                {type === "billingAddress"
+                  ? "Dirección de Facturación "
+                  : "Dirección de Envío "}
+              </SectionTitle>
+              {Object.keys(addresses[type]).map((field) => {
+                if (field === "country") {
+                  return (
+                    <InputGroup
+                      key={field}
+                      as="select"
+                      label={fieldLabels[field]}
+                      name={field}
+                      value={addresses[type]?.country?.isoCode || ""}
+                      onChange={(e) => handleChange(e, type)}
+                      options={countries.map((c) => ({
+                        name: c.name,
+                        value: c.isoCode,
+                      }))}
+                    />
+                  );
+                }
+                if (field === "province") {
+                  const countryCode = addresses[type]?.country?.isoCode;
+                  return (
+                    <InputGroup
+                      key={field}
+                      as="select"
+                      label={fieldLabels[field]}
+                      name={field}
+                      value={addresses[type].province?.isoCode || ""}
+                      onChange={(e) => handleChange(e, type)}
+                      options={states[countryCode]?.map((s) => ({
+                        name: s.name,
+                        value: s.isoCode,
+                      }))}
+                    />
+                  );
+                }
+                if (field === "canton") {
+                  const provinceCode = addresses[type]?.province?.isoCode;
+                  return (
+                    <InputGroup
+                      key={field}
+                      as="select"
+                      label={fieldLabels[field]}
+                      name={field}
+                      value={addresses[type]?.canton || ""}
+                      onChange={(e) => handleChange(e, type)}
+                      options={cities[provinceCode]?.map((c) => ({
+                        name: c.name,
+                        value: c.name,
+                      }))}
+                    />
+                  );
+                }
+                if (field === "_id") {
+                  return null;
+                }
                 return (
                   <InputGroup
                     key={field}
-                    as="select"
-                    label={fieldLabels[field]}
                     name={field}
-                    value={addresses[type]?.country?.isoCode || ""}
+                    label={fieldLabels[field]}
+                    value={addresses[type][field]}
                     onChange={(e) => handleChange(e, type)}
-                    options={countries.map((c) => ({
-                      name: c.name,
-                      value: c.isoCode,
-                    }))}
                   />
                 );
-              }
-              if (field === "province") {
-                const countryCode = addresses[type]?.country?.isoCode;
-                return (
-                  <InputGroup
-                    key={field}
-                    as="select"
-                    label={fieldLabels[field]}
-                    name={field}
-                    value={addresses[type].province?.isoCode || ""}
-                    onChange={(e) => handleChange(e, type)}
-                    options={states[countryCode]?.map((s) => ({
-                      name: s.name,
-                      value: s.isoCode,
-                    }))}
-                  />
-                );
-              }
-              if (field === "canton") {
-                const provinceCode = addresses[type]?.province?.isoCode;
-                return (
-                  <InputGroup
-                    key={field}
-                    as="select"
-                    label={fieldLabels[field]}
-                    name={field}
-                    value={addresses[type]?.canton || ""}
-                    onChange={(e) => handleChange(e, type)}
-                    options={cities[provinceCode]?.map((c) => ({
-                      name: c.name,
-                      value: c.name,
-                    }))}
-                  />
-                );
-              }
-              if (field === "_id") {
-                return null;
-              }
-              return (
-                <InputGroup
-                  key={field}
-                  name={field}
-                  label={fieldLabels[field]}
-                  value={addresses[type][field]}
-                  onChange={(e) => handleChange(e, type)}
-                />
-              );
-            })}
-            <WrapperButton>
-              <Button
-                title={`Cancelar ${
-                  type === "billingAddress" ? "Facturación" : "Envío"
-                }`}
-                $canceled
-                disabled={!hasChanges(type)}
-                onClick={() => handleCancel(type)}
-              >
-                Cancelar
-              </Button>
-              <Button
-                title={`Guardar ${
-                  type === "billingAddress" ? "Facturación" : "Envío"
-                }`}
-                $save
-                disabled={!hasChanges(type)}
-                onClick={() => handleSave(type)}
-              >
-                Guardar
-              </Button>
-            </WrapperButton>
-          </Form>
-        ))}
+              })}
+              {!addresses?.[type] && (
+                <WrapperButton>
+                  <>
+                    <Button
+                      title={`Cancelar ${
+                        type === "billingAddress" ? "Facturación" : "Envío"
+                      }`}
+                      $canceled
+                      disabled={!hasChanges(type)}
+                      onClick={() => handleCancel(type)}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button
+                      title={`Guardar ${
+                        type === "billingAddress" ? "Facturación" : "Envío"
+                      }`}
+                      $save
+                      disabled={!hasChanges(type)}
+                      onClick={() => handleSave(type)}
+                    >
+                      Guardar
+                    </Button>
+                  </>
+                </WrapperButton>
+              )}
+            </Form>
+          ))
+        )}
       </Wrapper>
     </Container>
   );

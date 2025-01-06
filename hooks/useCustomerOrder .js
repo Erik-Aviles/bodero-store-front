@@ -1,8 +1,10 @@
-import { useCustomer } from '@/context/CustomerProvider'
+import { useSession } from 'next-auth/react'
 import { useMemo } from 'react'
 
 export const useCustomerOrder = (orderNumber) => {
-  const { customer, isLoading, error } = useCustomer()
+    const { data: session, status, update } = useSession();
+    console.log("session", session?.user);
+    const customer = session?.user;
 
   // Filtrar el pedido específico por orderNumber
   const order = useMemo(() => {

@@ -10,12 +10,14 @@ import {
   Form,
 } from "../stylesComponents/ComponentAccount";
 import BackButton from "../buttonComponents/BackButton";
-import { useCustomer } from "@/context/CustomerProvider";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
+import { useSession } from "next-auth/react";
 
 const Authentication = () => {
   const handleGoBack = useHandleGoBack()
-  const { customer, isLoading, error } = useCustomer();
+  const { data: session, status, update } = useSession();
+  console.log("session", session?.user);
+  const customer = session?.user;
   console.log(customer);
   
   const fieldLabels = {

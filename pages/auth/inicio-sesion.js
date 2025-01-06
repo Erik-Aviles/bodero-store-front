@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react'
-import Layout from '@/components/Layout'
-import { Loading } from '@/components/Loading'
-import styled, { css } from 'styled-components'
-import Title from '@/components/stylesComponents/Title'
-import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import { error, greylight, primary, secondary, white } from '@/lib/colors'
-import Link from 'next/link'
-import InputGroup from '@/components/Account/forms/InputGroup'
-import { useRouter } from 'next/router'
+import { useContext, useState } from "react";
+import Layout from "@/components/Layout";
+import styled, { css } from "styled-components";
+import Title from "@/components/stylesComponents/Title";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { greylight, primary, secondary, white } from "@/lib/colors";
+import Link from "next/link";
+import InputGroup from "@/components/Account/forms/InputGroup";
+import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
+import NotificationContext from "@/context/NotificationContext";
+import { capitalize } from "@/utils/capitalize";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
-`
+`;
 
 const DivTitle = styled.div`
   margin-bottom: 10px;
@@ -29,7 +31,7 @@ const DivTitle = styled.div`
   @media screen and (min-width: 1024px) {
     text-align: center;
   }
-`
+`;
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -41,7 +43,7 @@ const ColumnsWrapper = styled.div`
   @media screen and (min-width: 1024px) {
     margin: 0 120px;
   }
-`
+`;
 
 const Box = styled.section`
   display: flex;
@@ -81,7 +83,7 @@ const Box = styled.section`
       padding-top: 10px;
     }
   }
-`
+`;
 const DivButton = styled.button`
   display: flex;
   align-items: center;
@@ -118,7 +120,7 @@ const DivButton = styled.button`
         color: ${secondary};
       }
     `};
-`
+`;
 const TextLink = styled(Link)`
   width: fit-content;
   font-size: 0.8rem;
@@ -127,57 +129,71 @@ const TextLink = styled(Link)`
   &:hover {
     text-decoration-line: underline;
   }
-`
+`;
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [isUpLoanding, setIsUpLoanding] = useState(true)
-  const [isVisiblePass, setIsVisiblePass] = useState(false)
+  const { showNotification } = useContext(NotificationContext);
+  const { data: session, status, update } = useSession();
+  const customer = session?.user?.name;
+
+  const router = useRouter();
+  const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  })
+    email: "",
+    password: "",
+  });
 
   const fieldLabels = {
-    email: 'Correo electrónico',
-    password: 'Contraseña',
-  }
+    email: "Correo electrónico",
+    password: "Contraseña",
+  };
 
-  const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev)
+  const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
-    })
-  }
+    });
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setFormData({
-      ...formData,
-    })
-
-    // Lógica para enviar los datos del formulario
-    console.log('Formulario enviado', formData)
-    alert('Formulario enviado')
-    router.push('/customer/mi-cuenta/general')
-  }
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsUpLoanding(false)
-    }, 1000)
-    return () => clearTimeout(timeout)
-  }, [])
-
-  if (isUpLoanding) {
-    return <Loading />
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await signIn("credentials", {
+        email: formData?.email,
+        password: formData?.password,
+        redirect: false,
+      });
+      console.log("res", res);
+      showNotification({
+        open: true,
+        msj: `Bienvenid@ a tu cuenta`,
+        status: "success",
+      });
+      if (res?.error) {
+        return showNotification({
+          open: true,
+          msj: res?.error,
+          status: "error",
+        });
+      }
+      if (res?.ok) {
+        return router.push("/customer/mi-cuenta/general");
+      }
+    } catch (error) {
+      showNotification({
+        open: true,
+        msj: error?.response?.data?.message,
+        status: "error",
+      });
+      console.error("Error al registrar:", error);
+    }
+  };
 
   return (
-    <Layout title='B.R.D | Iniciar Sesión'>
+    <Layout title="B.R.D | Iniciar Sesión">
       <CenterDiv>
         <DivTitle>
           <Title>Iniciar sesión o crear una cuenta</Title>
@@ -191,37 +207,37 @@ export default function LoginPage() {
               <fieldset>
                 <InputGroup
                   required
-                  name='email'
+                  name="email"
                   label={fieldLabels.email}
-                  type='email'
+                  type="email"
                   value={formData?.email}
                   onChange={handleChange}
-                  placeholder='Ingresa tu correo'
+                  placeholder="Ingresa tu correo"
                 />
               </fieldset>
               <fieldset>
                 <InputGroup
                   required
-                  name='password'
+                  name="password"
                   label={fieldLabels.password}
                   isPassword
                   isVisiblePass={isVisiblePass}
-                  type={isVisiblePass ? 'text' : 'password'}
+                  type={isVisiblePass ? "text" : "password"}
                   value={formData?.password}
                   onChange={handleChange}
                   toggleVisibility={toggleVisibilityPassword}
-                  placeholder='Ingresa tu contraseña'
+                  placeholder="Ingresa tu contraseña"
                 />
               </fieldset>
               <div>
                 <TextLink
-                  href={'/customer/recuperar-contrasena'}
-                  title='¿Olvidó su contraseña?'
+                  href={"/auth/recuperar-contrasena"}
+                  title="¿Olvidó su contraseña?"
                 >
                   ¿Olvidó su contraseña?
                 </TextLink>
               </div>
-              <DivButton $primary title='Iniciar Sesión' type='submit'>
+              <DivButton $primary title="Iniciar Sesión" type="submit">
                 INICIAR SESIÓN
               </DivButton>
             </form>
@@ -232,12 +248,12 @@ export default function LoginPage() {
               Al crear una cuenta en nuestra tienda, podrás ver e informarte
               sobre los pedidos de tu cuenta y su estado.
             </p>
-            <DivButton $secondary title='Crear Contraseña'>
-              <Link href={'/customer/registro'}>CREAR UNA CUENTA</Link>
+            <DivButton $secondary title="Crear una cuenta">
+              <Link href={"/auth/registro"}>CREAR UNA CUENTA</Link>
             </DivButton>
           </Box>
         </ColumnsWrapper>
       </CenterDiv>
     </Layout>
-  )
+  );
 }

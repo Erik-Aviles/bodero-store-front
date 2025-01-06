@@ -1,20 +1,23 @@
-import { useEffect, useState } from 'react'
-import Layout from '@/components/Layout'
-import { Loading } from '@/components/Loading'
-import styled, { css } from 'styled-components'
-import Title from '@/components/stylesComponents/Title'
-import 'react-datepicker/dist/react-datepicker.css'
-import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import { greylight, primary, white } from '@/lib/colors'
-import { genersData } from '@/resource/curtomerData'
-import InputGroup from '@/components/Account/forms/InputGroup'
-import DateInputGroup from '@/components/Account/forms/DateInputGroup'
-import { useRouter } from 'next/router'
+import { useContext, useEffect, useState } from "react";
+import Layout from "@/components/Layout";
+import { Loading } from "@/components/Loading";
+import styled, { css } from "styled-components";
+import Title from "@/components/stylesComponents/Title";
+import "react-datepicker/dist/react-datepicker.css";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { greylight, primary, white } from "@/lib/colors";
+import { genersData } from "@/resource/curtomerData";
+import InputGroup from "@/components/Account/forms/InputGroup";
+import DateInputGroup from "@/components/Account/forms/DateInputGroup";
+import { useRouter } from "next/router";
+import axios, { AxiosError } from "axios";
+import NotificationContext from "@/context/NotificationContext";
+import { signIn } from "next-auth/react";
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
   ${CenterSecction}
-`
+`;
 
 const DivTitle = styled.div`
   margin-bottom: 10px;
@@ -26,7 +29,7 @@ const DivTitle = styled.div`
   @media screen and (min-width: 1024px) {
     text-align: center;
   }
-`
+`;
 
 const ColumnsFormWrapper = styled.form`
   display: grid;
@@ -38,11 +41,11 @@ const ColumnsFormWrapper = styled.form`
   @media screen and (min-width: 1024px) {
     margin: 0 120px;
   }
-`
+`;
 const RequiredText = styled.span`
   color: ${primary};
   font-size: 12px;
-`
+`;
 const Box = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,7 +88,7 @@ const Box = styled.div`
       padding-top: 10px;
     }
   }
-`
+`;
 
 const Button = styled.button`
   display: flex;
@@ -108,74 +111,87 @@ const Button = styled.button`
     color: ${primary};
     border: 1px solid ${primary};
   }
-`
+`;
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const [isUpLoanding, setIsUpLoanding] = useState(true)
-  const [isVisiblePass, setIsVisiblePass] = useState(false)
-  const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const { showNotification } = useContext(NotificationContext);
+  const [error, setError] = useState(null);
+  const router = useRouter();
+  const [isVisiblePass, setIsVisiblePass] = useState(false);
+  const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false);
+  const [selectedDate, setSelectedDate] = useState();
   const [formData, setFormData] = useState({
-    name: '',
-    lastname: '',
-    idDocument: '',
-    gender: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    dateOfBirth: selectedDate,
-  })
+    name: "",
+    lastname: "",
+    idDocument: "",
+    gender: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const fieldLabels = {
-    name: 'Nombres',
-    lastname: 'Apellidos',
-    dateOfBirth: 'Fecha de nacimiento',
-    email: 'Correo',
-    idDocument: 'Documento de identidad',
-    gender: 'Genero',
-    phone: 'Teléfono',
-    password: 'Contraseña',
-    confirmPassword: 'Confirmar Contraseña',
-  }
+    name: "Nombres",
+    lastname: "Apellidos",
+    dateOfBirth: "Fecha de nacimiento",
+    email: "Correo",
+    idDocument: "Documento de identidad",
+    gender: "Genero",
+    phone: "Teléfono",
+    password: "Contraseña",
+    confirmPassword: "Confirmar Contraseña",
+  };
 
-  const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev)
+  const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev);
   const toggleVisibilityConfirmPassword = () =>
-    setIsVisiblePassConfirm((prev) => !prev)
+    setIsVisiblePassConfirm((prev) => !prev);
+
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
-    })
-  }
+    });
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setFormData({
-      ...formData,
-    })
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formattedDate = selectedDate?.toISOString().split("T")[0];
+      console.log(formattedDate);
+      const signupResponse = await axios.post("/api/auth/register", {
+        ...formData,
+        dateOfBirth: formattedDate,
+      });
 
-    // Lógica para enviar los datos del formulario
-    console.log('Formulario enviado', formData)
-    alert('Formulario enviado')
-    router.push('/customer/mi-cuenta/general')
-  }
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsUpLoanding(false)
-    }, 1000)
-    return () => clearTimeout(timeout)
-  }, [])
-
-  if (isUpLoanding) {
-    return <Loading />
-  }
+      if (signupResponse.status === 201) {
+        const res = await signIn("credentials", {
+          email: signupResponse.data?.customer?.email,
+          password: formData.password,
+          redirect: false,
+        });
+        showNotification({
+          open: true,
+          msj: signupResponse.data.message,
+          status: "success",
+        });
+        if (res?.ok) {
+          router.push("/customer/mi-cuenta/general");
+        }
+      }
+    } catch (error) {
+      showNotification({
+        open: true,
+        msj: error?.response?.data?.message,
+        status: "error",
+      });
+      console.error("Error al registrar:", error);
+    }
+  };
 
   return (
-    <Layout title='B.R.D | Nueva Cuenta'>
+    <Layout title="B.R.D | Nueva Cuenta">
       <CenterDiv>
         <DivTitle>
           <Title>Crear una nueva cuenta</Title>
@@ -190,47 +206,47 @@ export default function RegisterPage() {
               <InputGroup
                 required
                 label={fieldLabels.name}
-                name='name'
+                name="name"
                 value={formData?.name}
                 onChange={handleChange}
-                placeholder='Ingresa tu nombre'
+                placeholder="Ingresa tu nombre"
               />
 
               <InputGroup
                 required
                 label={fieldLabels.lastname}
-                name='lastname'
+                name="lastname"
                 value={formData?.lastname}
                 onChange={handleChange}
-                placeholder='Ingresa tu apellido'
+                placeholder="Ingresa tu apellido"
               />
               <DateInputGroup
                 label={fieldLabels.dateOfBirth}
-                name='dateOfBirth'
+                name="dateOfBirth"
                 selectedDate={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
-                placeholder='DD/MM/AAAA'
+                placeholder="DD/MM/AAAA"
               />
               <InputGroup
                 required
                 label={fieldLabels.idDocument}
-                name='idDocument'
+                name="idDocument"
                 value={formData?.idDocument}
                 onChange={handleChange}
-                placeholder='Ingresa tu DI'
+                placeholder="Ingresa tu DI"
               />
               <InputGroup
-                type='tel'
+                type="tel"
                 label={fieldLabels.phone}
-                name='phone'
+                name="phone"
                 value={formData?.phone}
                 onChange={handleChange}
-                placeholder='Ingresa tu número de contacto'
+                placeholder="Ingresa tu número de contacto"
               />
 
               <InputGroup
-                as='select'
-                name='gender'
+                as="select"
+                name="gender"
                 label={fieldLabels.gender}
                 value={formData?.gender}
                 onChange={handleChange}
@@ -248,51 +264,47 @@ export default function RegisterPage() {
             <fieldset>
               <InputGroup
                 required
-                name='email'
+                name="email"
                 label={fieldLabels.email}
-                type='email'
+                type="email"
                 value={formData?.email}
                 onChange={handleChange}
-                placeholder='Ingresa un correo válido'
+                placeholder="Ingresa un correo válido"
               />
 
               <InputGroup
                 required
-                name='password'
+                name="password"
                 label={fieldLabels.password}
                 isPassword
                 isVisiblePass={isVisiblePass}
-                type={isVisiblePass ? 'text' : 'password'}
+                type={isVisiblePass ? "text" : "password"}
                 value={formData?.password}
                 onChange={handleChange}
                 toggleVisibility={toggleVisibilityPassword}
-                placeholder='Ingresa tu contraseña'
+                placeholder="*******"
               />
 
               <InputGroup
                 required
-                name='confirmPassword'
+                name="confirmPassword"
                 label={fieldLabels.confirmPassword}
                 isPassword
                 isVisiblePass={isVisiblePassConfirm}
-                type={isVisiblePassConfirm ? 'text' : 'password'}
+                type={isVisiblePassConfirm ? "text" : "password"}
                 value={formData?.confirmPassword}
                 onChange={handleChange}
                 toggleVisibility={toggleVisibilityConfirmPassword}
-                placeholder='Repetir contraseña'
+                placeholder="Repetir contraseña"
               />
             </fieldset>
           </Box>
           <div></div>
-          <Button
-            type='submit'
-            $primary
-            title='Iniciar Sesión'
-          >
+          <Button type="submit" $primary title="Iniciar Sesión">
             ENVIAR
           </Button>
         </ColumnsFormWrapper>
       </CenterDiv>
     </Layout>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   ComponenteLink,
   Container,
@@ -7,21 +7,24 @@ import {
   TD,
   Table,
   TitleH2,
-} from '../stylesComponents/ComponentAccount'
-import BackButton from '../buttonComponents/BackButton'
-import { handleGoBack } from '@/hooks/useHandleGoBack'
-import { useCustomer } from '@/context/CustomerProvider'
+} from "../stylesComponents/ComponentAccount";
+import BackButton from "../buttonComponents/BackButton";
+import { handleGoBack } from "@/hooks/useHandleGoBack";
+import { useSession } from "next-auth/react";
 
 const MyOrders = () => {
-  const { customer, isLoading, error } = useCustomer()
+  const { data: session, status, update } = useSession();
+  console.log("session", session?.user);
+  const customer = session?.user;
+  console.log("customer", customer?.orders.length);
 
   const subtotal = customer?.orders?.line_items?.reduce(
     (acc, item) => acc + item.quantity * item.info_order.product_data.price,
     0
-  )
-  const iva = (subtotal * 0.15).toFixed(2)
-  const total = (subtotal + parseFloat(iva)).toFixed(2)
-  
+  );
+  const iva = (subtotal * 0.15).toFixed(2);
+  const total = (subtotal + parseFloat(iva)).toFixed(2);
+
   return (
     <Container>
       <header>
@@ -41,36 +44,38 @@ const MyOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {customer?.orders?.map((order) => (
-              <tr key={order._id}>
-                <td>{order.orderNumber || '--'}</td>
-                <td>{order.createdAt || '--'}</td>
-                <TD>
-                  {`${order.streetAddress}, ${order.city}, ${order.province}, ${order.country}.` ||
-                    '--'}
-                </TD>
-                <td>{total || '--'}</td>
-                <td>
-                  {(
-                    <StatusText $status={order?.status}>
-                      {order?.status || '--'}
-                    </StatusText>
-                  ) || '--'}
-                </td>
-                <td>
-                  <ComponenteLink
-                    href={`/customer/mi-cuenta/pedidos?pedido=${order?.orderNumber}`}
-                  >
-                    Ver
-                  </ComponenteLink>
-                </td>
-              </tr>
-            ))}
+            {customer?.orders?.length !== 0 && (
+              customer?.orders?.map((order) => (
+                <tr key={order._id}>
+                  <td>{order.orderNumber || "--"}</td>
+                  <td>{order.createdAt || "--"}</td>
+                  <TD>
+                    {`${order.streetAddress}, ${order.city}, ${order.province}, ${order.country}.` ||
+                      "--"}
+                  </TD>
+                  <td>{total || "--"}</td>
+                  <td>
+                    {(
+                      <StatusText $status={order?.status}>
+                        {order?.status || "--"}
+                      </StatusText>
+                    ) || "--"}
+                  </td>
+                  <td>
+                    <ComponenteLink
+                      href={`/customer/mi-cuenta/pedidos?pedido=${order?.orderNumber}`}
+                    >
+                      Ver
+                    </ComponenteLink>
+                  </td>
+                </tr>
+              ))
+            ) }
           </tbody>
         </Table>
       </ScrollContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default MyOrders
+export default MyOrders;

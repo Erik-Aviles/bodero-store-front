@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import { blue } from '@/lib/colors'
-import { EdithIcon } from '../Icons'
+import React from "react";
+import styled from "styled-components";
+import { blue } from "@/lib/colors";
+import { AddIcon, EdithIcon } from "../Icons";
 import {
   ComponenteLink,
   Container,
@@ -13,10 +13,10 @@ import {
   Table,
   ScrollContainer,
   TD,
-} from '../stylesComponents/ComponentAccount'
-import BackButton from '../buttonComponents/BackButton'
-import { useCustomer } from '@/context/CustomerProvider'
-import { useHandleGoBack } from '@/hooks/useHandleGoBack'
+} from "../stylesComponents/ComponentAccount";
+import BackButton from "../buttonComponents/BackButton";
+import { useHandleGoBack } from "@/hooks/useHandleGoBack";
+import { useSession } from "next-auth/react";
 
 const InfoSection = styled.section`
   line-height: 1.6;
@@ -32,22 +32,24 @@ const InfoSection = styled.section`
   @media (max-width: 768px) {
     flex-direction: column;
   }
-`
+`;
 
 const MyPanel = () => {
-  const handleGoBack = useHandleGoBack()
-   const { customer, isLoading, error } = useCustomer()
-  const recentOrder = customer.orders.slice(-1)[0]
-
+  const handleGoBack = useHandleGoBack();
+  const { data: session, status, update } = useSession();
+  console.log("session", session?.user);
+  const customer = session?.user;
   console.log(customer)
 
-  const subtotal = recentOrder.line_items.reduce(
+  const recentOrder = customer?.orders?.slice(-1)[0];
+
+  const subtotal = recentOrder?.line_items.reduce(
     (acc, item) => acc + item.quantity * item.info_order.product_data.price,
     0
-  )
+  );
 
-  const iva = (subtotal * 0.15).toFixed(2)
-  const total = (subtotal + parseFloat(iva)).toFixed(2)
+  const iva = (subtotal * 0.15).toFixed(2);
+  const total = (subtotal + parseFloat(iva)).toFixed(2);
 
   return (
     <Container>
@@ -56,11 +58,11 @@ const MyPanel = () => {
         <TitleH2>Bienvenido a tu cuenta</TitleH2>
       </header>
       <InfoSection>
-        <div className='header-section'>
+        <div className="header-section">
           <SectionTitle> Mis Datos </SectionTitle>
           <ComponenteLink
-            href='/customer/mi-cuenta/perfil'
-            title='Editar mis datos'
+            href="/customer/mi-cuenta/perfil"
+            title="Editar mis datos"
           >
             <EdithIcon size={22} />
           </ComponenteLink>
@@ -69,44 +71,46 @@ const MyPanel = () => {
           <Article>
             <p>
               <span>Nombres</span>
-              {customer?.name || '--'}
+              {customer?.name || "--"}
             </p>
             <p>
               <span>Apellidos</span>
-              {customer?.lastname || '--'}
+              {customer?.lastname || "--"}
             </p>
             <p>
-              <span>Email:</span> {customer?.email || '--'}
+              <span>Email:</span> {customer?.email || "--"}
             </p>
             <p>
-              <span>Teléfono:</span> {customer?.phone || '--'}
+              <span>Teléfono:</span> {customer?.phone || "--"}
             </p>
 
             <p>
               <span>Documento de identidad:</span>
-              {customer?.idDocument || '--'}
+              {customer?.idDocument || "--"}
             </p>
             <p>
               <span>Fecha de nacimiento:</span>
-              {customer?.dateOfBirth || '--'}
+              {customer?.dateOfBirth || "--"}
             </p>
 
             <p>
-              <span>Genero:</span> {customer?.gender || '--'}
+              <span>Genero:</span> {customer?.gender || "--"}
             </p>
           </Article>
         </Wrapper>
       </InfoSection>
 
       <InfoSection>
-        <div className='header-section'>
+        <div className="header-section">
           <SectionTitle>Mis Pedidos Recientes</SectionTitle>
-          <ComponenteLink
-            href='/customer/mi-cuenta/pedidos'
-            title='Ir a mis pedidos'
-          >
-            Ver todos
-          </ComponenteLink>
+          {customer?.orders?.length !== 0 && (
+            <ComponenteLink
+              href="/customer/mi-cuenta/pedidos"
+              title="Ir a mis pedidos"
+            >
+              Ver todos
+            </ComponenteLink>
+          )}
         </div>
         <ScrollContainer>
           <Table>
@@ -121,108 +125,163 @@ const MyPanel = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{recentOrder?.orderNumber || '--'}</td>
-                <td>{recentOrder?.createdAt || '--'}</td>
-                <TD>
-                  {`${recentOrder.streetAddress}, ${recentOrder.city}, ${recentOrder.province}, ${recentOrder.country}.` ||
-                    '--'}
-                </TD>
-                <td>{total || '--'}</td>
-                <td>
-                  <StatusText $status={recentOrder?.status}>
-                    {recentOrder?.status || '--'}
-                  </StatusText>
-                </td>
-                <td>
-                  <ComponenteLink
-                    href={`/customer/mi-cuenta/pedidos?pedido=${recentOrder?.orderNumber}`}
-                  >
-                    Ver
-                  </ComponenteLink>
-                </td>
-              </tr>
+              {customer?.orders?.length !== 0 && (
+                <tr>
+                  <td>{recentOrder?.orderNumber || "--"}</td>
+                  <td>{recentOrder?.createdAt || "--"}</td>
+                  <TD>
+                    {recentOrder
+                      ? `${recentOrder?.streetAddress}, ${recentOrder?.city}, ${recentOrder?.province}, ${recentOrder?.country}.`
+                      : "--"}
+                  </TD>
+                  <td>{!total || "--"}</td>
+                  <td>
+                    <StatusText $status={recentOrder?.status}>
+                      {recentOrder?.status || "--"}
+                    </StatusText>
+                  </td>
+                  <td>
+                    {recentOrder && (
+                      <ComponenteLink
+                        href={`/customer/mi-cuenta/pedidos?pedido=${recentOrder?.orderNumber}`}
+                      >
+                        Ver
+                      </ComponenteLink>
+                    )}
+                  </td>
+                </tr>
+              )}
             </tbody>
           </Table>
         </ScrollContainer>
       </InfoSection>
 
       <InfoSection>
-        <div className='header-section'>
+        <div className="header-section">
           <SectionTitle>Mis Direcciones</SectionTitle>
-          <ComponenteLink
-            href='/customer/mi-cuenta/direcciones'
-            title='Editar mis direcciones'
-          >
-            <EdithIcon size={22} />
-          </ComponenteLink>
+          {!customer?.billingAddress ||
+            (!customer?.shippingAddress && (
+              <ComponenteLink
+                href="/customer/mi-cuenta/direcciones"
+                title="Editar mis direcciones"
+              >
+                <EdithIcon size={22} />
+              </ComponenteLink>
+            ))}
         </div>
         <Wrapper>
           <Article>
-            <SectionTitle>Dirección de Facturación </SectionTitle>
-            <p>
-              <span>Nombres</span>
-              {`${customer?.billingAddress?.name} ${customer?.billingAddress?.lastname}` ||
-                '--'}
-            </p>
+            <SectionTitle>
+              Dirección de Facturación{" "}
+              {!customer?.billingAddress ? (
+                <ComponenteLink
+                  href="/customer/mi-cuenta/direcciones"
+                  title="Agregar dirección de facturación"
+                >
+                  <AddIcon size={22} />
+                </ComponenteLink>
+              ) : (
+                <ComponenteLink
+                  href="/customer/mi-cuenta/perfil"
+                  title="Editar mis datos"
+                >
+                  <EdithIcon size={22} />
+                </ComponenteLink>
+              )}
+            </SectionTitle>
 
-            <p>
-              <span>Dirección</span>
-              {customer?.billingAddress?.address || '--'}
-            </p>
+            {customer?.billingAddress && (
+              <>
+                <p>
+                  <span>Nombres</span>
+                  {customer?.billingAddress?.name ||
+                  customer?.billingAddress?.lastname
+                    ? `${customer?.billingAddress?.name} ${customer?.billingAddress?.lastname}`
+                    : "--"}
+                </p>
 
-            <p>
-              <span>Provincia:</span>
-              {customer?.billingAddress?.province?.name || '--'}
-            </p>
+                <p>
+                  <span>Dirección</span>
+                  {customer?.billingAddress?.address || "--"}
+                </p>
 
-            <p>
-              <span>Cantón:</span>
-              {customer?.billingAddress?.canton || '--'}
-            </p>
+                <p>
+                  <span>Provincia:</span>
+                  {customer?.billingAddress?.province?.name || "--"}
+                </p>
 
-            <p>
-              <span>País:</span>
-              {customer?.billingAddress?.country?.name || '--'}
-            </p>
+                <p>
+                  <span>Cantón:</span>
+                  {customer?.billingAddress?.canton || "--"}
+                </p>
 
-            <p>
-              <span>Teléfono:</span>
-              {customer?.billingAddress?.phone || '--'}
-            </p>
+                <p>
+                  <span>País:</span>
+                  {customer?.billingAddress?.country?.name || "--"}
+                </p>
+
+                <p>
+                  <span>Teléfono:</span>
+                  {customer?.billingAddress?.phone || "--"}
+                </p>
+              </>
+            )}
           </Article>
           <Article>
-            <SectionTitle>Dirección de Envío </SectionTitle>
-            <p>
-              <span>Nombres</span>
-              {`${customer?.shippingAddress?.name} ${customer?.shippingAddress?.lastname}` ||
-                '--'}
-            </p>
-            <p>
-              <span>Dirección</span>
-              {customer?.shippingAddress?.address || '--'}
-            </p>
-            <p>
-              <span>Provincia:</span>
-              {customer?.shippingAddress?.province.name || '--'}
-            </p>
-            <p>
-              <span>Cantón:</span>
-              {customer?.shippingAddress?.canton || '--'}
-            </p>
-            <p>
-              <span>País:</span>
-              {customer?.shippingAddress?.country?.name || '--'}
-            </p>
-            <p>
-              <span>Teléfono:</span>
-              {customer?.shippingAddress?.phone || '--'}
-            </p>
+            <SectionTitle>
+              Dirección de Envío{" "}
+              {!customer?.shippingAddress ? (
+                <ComponenteLink
+                  href="/customer/mi-cuenta/direcciones"
+                  title="Agregar dirección de envío"
+                >
+                  <AddIcon size={22} />
+                </ComponenteLink>
+              ) : (
+                <ComponenteLink
+                  href="/customer/mi-cuenta/perfil"
+                  title="Editar mis datos"
+                >
+                  <EdithIcon size={22} />
+                </ComponenteLink>
+              )}
+            </SectionTitle>
+            {customer?.shippingAddress && (
+              <>
+                <p>
+                  <span>Nombres</span>
+                  {customer?.shippingAddress?.name ||
+                  customer?.shippingAddress?.lastname
+                    ? `${customer?.shippingAddress?.name} ${customer?.shippingAddress?.lastname}`
+                    : "--"}
+                </p>
+                <p>
+                  <span>Dirección</span>
+                  {customer?.shippingAddress?.address || "--"}
+                </p>
+                <p>
+                  <span>Provincia:</span>
+                  {customer?.shippingAddress?.province?.name || "--"}
+                </p>
+                <p>
+                  <span>Cantón:</span>
+                  {customer?.shippingAddress?.canton || "--"}
+                </p>
+                <p>
+                  <span>País:</span>
+                  {customer?.shippingAddress?.country?.name || "--"}
+                </p>
+                <p>
+                  <span>Teléfono:</span>
+                  {customer?.shippingAddress?.phone || "--"}
+                </p>
+              </>
+            )}
           </Article>
         </Wrapper>
       </InfoSection>
     </Container>
-  )
-}
+  );
+};
 
-export default MyPanel
+export default MyPanel;

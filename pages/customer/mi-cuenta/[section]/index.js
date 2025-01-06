@@ -1,25 +1,19 @@
-import { memo } from "react";
+import { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import { black, blacklight, blue, primary, white, white2 } from "@/lib/colors";
+import { black, blacklight, primary, white2 } from "@/lib/colors";
 import MyDatas from "@/components/Account/MyDatas";
 import MyOrders from "@/components/Account/MyOrders";
 import MyAddress from "@/components/Account/MyAddress";
 import MyPanel from "@/components/Account/MyPanel";
 import Authentication from "@/components/Account/Authentication";
-import {
-  AddressIcon,
-  AuthIcon,
-  GeneralIcon,
-  LogoutIcon,
-  ProfileEditIcon,
-  ShowAllOrdersIcon,
-} from "@/components/Icons";
 import Order from "@/components/Account/Order";
-import { useCustomer } from "@/context/CustomerProvider";
+import { useSession } from "next-auth/react";
+import useActions from "@/hooks/useActions";
+import { menuItems } from "@/resource/linkRouterAccount";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -98,25 +92,18 @@ const AsideList = styled.ul`
 `;
 
 const AsideItem = styled.li`
-  a {
+  a,
+  button {
     cursor: pointer;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: ${({ $isSelected }) => ($isSelected ? "bold" : "500")};
+    color: ${({ $isSelected }) => ($isSelected ? primary : "inherit")};
     transition: color 0.3s;
     display: flex;
 
     &:hover {
       color: ${primary};
-      font-weight: bold;
     }
-
-    /* Estilo dinámico si está seleccionado */
-    ${({ $isSelected }) =>
-      $isSelected &&
-      `
-        color: ${primary};
-        font-weight: bold;
-      `}
 
     span {
       display: inline;
@@ -136,6 +123,10 @@ const AsideItem = styled.li`
       }
     }
   }
+  button {
+    border: none;
+    background-color: transparent;
+  }
 `;
 
 const MainContent = styled.main`
@@ -153,16 +144,38 @@ const MainContent = styled.main`
   }
 `;
 
-// eslint-disable-next-line react/display-name
-const AccountPage = memo(() => {
+const AccountPage = () => {
   const router = useRouter();
   const { section, pedido } = router.query;
-  const { customer, isLoading, error } = useCustomer()
+  const { data: session, status, update } = useSession();
+  const { cerrar } = useActions();
+  console.log("session", session?.user);
+  const customer = session?.user;
 
-  const isActive = (querySection) =>
-    (!section && querySection === "general") || section === querySection;
+  const isActive = useCallback(
+    (querySection) =>
+      (!section && querySection === "general") || section === querySection,
+    [section]
+  );
 
-  const renderContent = () => {
+  const renderMenuItems = () =>
+    menuItems.map(({ label, href, icon, section: itemSection }) => (
+      <AsideItem key={href} $isSelected={isActive(itemSection)}>
+        {label === "Salir" ? (
+          <button onClick={cerrar}>
+            <span>{label}</span>
+            {icon}
+          </button>
+        ) : (
+          <Link href={href}>
+            <span>{label}</span>
+            {icon}
+          </Link>
+        )}
+      </AsideItem>
+    ));
+
+  const content = useMemo(() => {
     if (section === "pedidos" && pedido) {
       return <Order />;
     }
@@ -179,10 +192,7 @@ const AccountPage = memo(() => {
       default:
         return <MyPanel />;
     }
-  };
-
-  if (isLoading) return <p>Cargando...</p>
-  if (error) return <p>Error al cargar los datos del cliente.</p>
+  }, [section, pedido]);
 
   return (
     <Layout title="B.R.D | Mi Cuenta">
@@ -190,51 +200,14 @@ const AccountPage = memo(() => {
         <AsideBar>
           <div>
             <span>Hola,</span>
-            <h4> {customer?.name || 'Usuario'}!</h4>
+            <h4> {customer?.name || "Usuario"}!</h4>
           </div>
-          <AsideList>
-            <AsideItem $isSelected={isActive("general")}>
-              <Link href="/customer/mi-cuenta/general">
-                <span>General</span>
-                <GeneralIcon />
-              </Link>
-            </AsideItem>
-            <AsideItem $isSelected={isActive("perfil")}>
-              <Link href="/customer/mi-cuenta/perfil">
-                <span>Perfil</span>
-                <ProfileEditIcon />
-              </Link>
-            </AsideItem>
-            <AsideItem $isSelected={isActive("pedidos") || isActive("pedido")}>
-              <Link href="/customer/mi-cuenta/pedidos">
-                <span>Pedidos</span>
-                <ShowAllOrdersIcon size={32} />
-              </Link>
-            </AsideItem>
-            <AsideItem $isSelected={isActive("direcciones")}>
-              <Link href="/customer/mi-cuenta/direcciones">
-                <span>Direcciones</span>
-                <AddressIcon />
-              </Link>
-            </AsideItem>
-            <AsideItem $isSelected={isActive("cambiar-contrasena")}>
-              <Link href="/customer/mi-cuenta/cambiar-contrasena">
-                <span> Autenticación</span>
-                <AuthIcon />
-              </Link>
-            </AsideItem>
-            <AsideItem>
-              <Link href="/">
-                <span> Salir</span>
-                <LogoutIcon />
-              </Link>
-            </AsideItem>
-          </AsideList>
+          <AsideList>{renderMenuItems()}</AsideList>
         </AsideBar>
-        <MainContent>{renderContent()}</MainContent>
+        <MainContent>{content}</MainContent>
       </CenterDiv>
     </Layout>
   );
-});
+};
 
 export default AccountPage;

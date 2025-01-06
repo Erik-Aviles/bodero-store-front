@@ -1,7 +1,6 @@
 import { useState, useEffect, createContext } from 'react'
 // import { generarId } from "@/helpers";
-import axios from 'axios'
-// import { signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 // import Swal from "sweetalert2";
 
 export const ActionsContext = createContext()
@@ -44,6 +43,9 @@ export const ActionsProvider = ({ children }) => {
     setNavbar(!navbar)
     localStorage.setItem('navbar', !navbar)
   }
+  const cerrar = () => {
+    signOut({ callbackUrl: "/" });
+  };
 
   return (
     <ActionsContext.Provider
@@ -54,6 +56,7 @@ export const ActionsProvider = ({ children }) => {
         toggleAuthModal,
         toggleModalOpenMenu,
         toggleModalOpenCart,
+        cerrar,
       }}
     >
       {children}

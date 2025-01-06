@@ -13,10 +13,10 @@ import {
   Wrapper,
   TD,
 } from "../stylesComponents/ComponentAccount";
-import { useCustomerOrder } from "@/hooks/useCustomerOrder ";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
+import { useCustomerOrder } from "@/hooks/useCustomerOrder ";
 
-const OrderPage = memo(function OrderPage() {
+const Order = memo(function Order() {
   const router = useRouter();
   const handleGoBack = useHandleGoBack()
   const { pedido } = router.query;
@@ -124,6 +124,6 @@ const OrderPage = memo(function OrderPage() {
   );
 });
 
-OrderPage.displayName = "OrderPage";
+Order.displayName = "Order";
 
-export default OrderPage;
+export default Order;
