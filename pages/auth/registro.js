@@ -115,7 +115,6 @@ const Button = styled.button`
 
 export default function RegisterPage() {
   const { showNotification } = useContext(NotificationContext);
-  const [error, setError] = useState(null);
   const router = useRouter();
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false);

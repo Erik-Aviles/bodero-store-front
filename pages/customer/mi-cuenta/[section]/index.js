@@ -147,7 +147,7 @@ const MainContent = styled.main`
 const AccountPage = () => {
   const router = useRouter();
   const { section, pedido } = router.query;
-  const { data: session, status, update } = useSession();
+  const { data: session } = useSession();
   const { cerrar } = useActions();
   console.log("session", session?.user);
   const customer = session?.user;

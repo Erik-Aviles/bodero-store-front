@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { countries, customerInfo } from "../../resource/curtomerData";
 import InputGroup from "./forms/InputGroup";
 import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
@@ -14,20 +14,29 @@ import {
 } from "../stylesComponents/ComponentAccount";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 import { useSession } from "next-auth/react";
+import NotificationContext from "@/context/NotificationContext";
+import axios from "axios";
 
 const MyAddress = () => {
+  const { showNotification } = useContext(NotificationContext);
   const handleGoBack = useHandleGoBack();
   const { data: session, status, update } = useSession();
   console.log("session", session?.user);
+
   const customer = session?.user;
+  const billingAddress = session?.user?.billingAddress;
+  const shippingAddress = session?.user?.shippingAddress;
+  console.log("shippingAddress", shippingAddress);
+  console.log("billingAddress", billingAddress);
 
   const initialAddresses = {
-    billingAddress: { ...customer.billingAddress },
-    shippingAddress: { ...customer.shippingAddress },
+    billingAddress: billingAddress || {},
+    shippingAddress: shippingAddress || {},
   };
 
   const [addresses, setAddresses] = useState(initialAddresses);
   const [originalAddresses, setOriginalAddresses] = useState(initialAddresses);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Estados y ciudades específicos para cada dirección
   const [states, setStates] = useState({
@@ -88,16 +97,102 @@ const MyAddress = () => {
     }
   };
 
-  const handleSave = (type) => {
-    alert(
-      `Dirección de ${
-        type === "billingAddress" ? "Facturación" : "Envío"
-      } guardada correctamente.`
-    );
-    setOriginalAddresses((prev) => ({
-      ...prev,
-      [type]: addresses[type],
-    }));
+  const handleModifyAddress = async (e, type) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      const address = addresses[type];
+      console.log("Direccion modificada", address);
+
+      // Enviar solicitud PUT
+      const response = await axios.put("/api/customers/address", {
+        type,
+        address,
+      });
+      console.log("respuesta PUT", response);
+
+      if (response.status === 200) {
+        const updatedUser = {
+          ...customer,
+          [`${type}`]: address,
+        };
+        await update({ user: updatedUser });
+
+        showNotification({
+          open: true,
+          msj: response.data.message,
+          status: "success",
+        });
+
+        setOriginalAddresses((prev) => ({
+          ...prev,
+          [type]: addresses[type],
+        }));
+      } else {
+        showNotification({
+          open: true,
+          msj: response.error || "No se pudieron actualizar los datos.",
+          status: "success",
+        });
+      }
+    } catch (error) {
+      showNotification({
+        open: true,
+        msj:
+          error.response?.data?.message ||
+          "No se pudieron actualizar los datos.",
+        status: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCreateAddress = async (e, type) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      const address = addresses[type];
+
+      // Enviar solicitud POST
+      const response = await axios.post("/api/customers/address", {
+        type,
+        address,
+      });
+
+      if (response.status === 201) {
+        const updatedUser = {
+          ...customer,
+          [`${type}`]: address,
+        };
+        await update({ user: updatedUser });
+
+        showNotification({
+          open: true,
+          msj: response.data.message,
+          status: "success",
+        });
+
+        setOriginalAddresses((prev) => ({
+          ...prev,
+          [type]: addresses[type],
+        }));
+      } else {
+        showNotification({
+          open: true,
+          msj: response.error || "No se pudo crear la dirección.",
+          status: "error",
+        });
+      }
+    } catch (error) {
+      showNotification({
+        open: true,
+        msj: error.response?.data?.message || "No se pudo crear la dirección.",
+        status: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCancel = (type) => {
@@ -105,7 +200,11 @@ const MyAddress = () => {
       ...prev,
       [type]: originalAddresses[type],
     }));
-    alert("Cambios revertidos a su estado inicial.");
+    showNotification({
+      open: true,
+      msj: "Cambios revertidos a su estado inicial.",
+      status: "success",
+    });
   };
 
   const hasChanges = (type) => {
@@ -122,7 +221,7 @@ const MyAddress = () => {
     country: "Pais",
     province: "Provincia",
     canton: "Canton",
-    address: "Direccion",
+    streetAddress: "Direccion",
     postal: "Codigo postal",
     idDocument: "Documento de identidad",
     phone: "Teléfono",
@@ -132,117 +231,136 @@ const MyAddress = () => {
     <Container>
       <header>
         <BackButton onClick={handleGoBack} />
-        <TitleH2>
-          {!addresses.billingAddress &&
-            !addresses.shippingAddress &&
-            "Mis Direcciones"}
-        </TitleH2>
+        <TitleH2>Mis Direcciones</TitleH2>
       </header>
 
       <Wrapper>
-        {(addresses?.billingAddress && addresses?.shippingAddress) ? (
-          <p>No tienes dirección</p>
-        ) : (
-          ["billingAddress", "shippingAddress"].map((type) => (
-            <Form key={type}>
-              <SectionTitle>
-                {type === "billingAddress"
-                  ? "Dirección de Facturación "
-                  : "Dirección de Envío "}
-              </SectionTitle>
-              {Object.keys(addresses[type]).map((field) => {
-                if (field === "country") {
+        {["billingAddress", "shippingAddress"].map((type) => {
+          const title = type === "billingAddress" ? "Facturación" : "Envío";
+          const isExisting = Object.keys(originalAddresses[type]).length > 0;
+          return (
+            <div key={type}>
+              <p>Formulario de Dirección de {title}</p>
+
+              <Form>
+                <SectionTitle>{`Dirección de ${title}`}</SectionTitle>
+
+                {Object.keys(fieldLabels).map((field) => {
+                  const value = addresses[type][field];
+
+                  if (field === "_id") return null;
+
+                  if (field === "country") {
+                    return (
+                      <InputGroup
+                        required
+                        key={field}
+                        as="select"
+                        label={fieldLabels[field]}
+                        name={field}
+                        value={value?.isoCode || ""}
+                        onChange={(e) => handleChange(e, type)}
+                        options={countries.map((c) => ({
+                          name: c.name,
+                          value: c.isoCode,
+                        }))}
+                      />
+                    );
+                  }
+                  if (field === "province") {
+                    const countryCode = addresses[type]?.country?.isoCode;
+                    return (
+                      <InputGroup
+                        required
+                        key={field}
+                        as="select"
+                        label={fieldLabels[field]}
+                        name={field}
+                        value={value?.isoCode || ""}
+                        onChange={(e) => handleChange(e, type)}
+                        options={states[countryCode]?.map((s) => ({
+                          name: s.name,
+                          value: s.isoCode,
+                        }))}
+                      />
+                    );
+                  }
+                  if (field === "canton") {
+                    const provinceCode = addresses[type]?.province?.isoCode;
+                    return (
+                      <InputGroup
+                        required
+                        key={field}
+                        as="select"
+                        label={fieldLabels[field]}
+                        name={field}
+                        value={value || ""}
+                        onChange={(e) => handleChange(e, type)}
+                        options={cities[provinceCode]?.map((c) => ({
+                          name: c.name,
+                          value: c.name,
+                        }))}
+                      />
+                    );
+                  }
+
                   return (
                     <InputGroup
+                      required
                       key={field}
-                      as="select"
-                      label={fieldLabels[field]}
                       name={field}
-                      value={addresses[type]?.country?.isoCode || ""}
+                      label={fieldLabels[field]}
+                      value={value || ""}
                       onChange={(e) => handleChange(e, type)}
-                      options={countries.map((c) => ({
-                        name: c.name,
-                        value: c.isoCode,
-                      }))}
                     />
                   );
-                }
-                if (field === "province") {
-                  const countryCode = addresses[type]?.country?.isoCode;
-                  return (
-                    <InputGroup
-                      key={field}
-                      as="select"
-                      label={fieldLabels[field]}
-                      name={field}
-                      value={addresses[type].province?.isoCode || ""}
-                      onChange={(e) => handleChange(e, type)}
-                      options={states[countryCode]?.map((s) => ({
-                        name: s.name,
-                        value: s.isoCode,
-                      }))}
-                    />
-                  );
-                }
-                if (field === "canton") {
-                  const provinceCode = addresses[type]?.province?.isoCode;
-                  return (
-                    <InputGroup
-                      key={field}
-                      as="select"
-                      label={fieldLabels[field]}
-                      name={field}
-                      value={addresses[type]?.canton || ""}
-                      onChange={(e) => handleChange(e, type)}
-                      options={cities[provinceCode]?.map((c) => ({
-                        name: c.name,
-                        value: c.name,
-                      }))}
-                    />
-                  );
-                }
-                if (field === "_id") {
-                  return null;
-                }
-                return (
-                  <InputGroup
-                    key={field}
-                    name={field}
-                    label={fieldLabels[field]}
-                    value={addresses[type][field]}
-                    onChange={(e) => handleChange(e, type)}
-                  />
-                );
-              })}
-              {!addresses?.[type] && (
+                })}
+
                 <WrapperButton>
-                  <>
-                    <Button
-                      title={`Cancelar ${
-                        type === "billingAddress" ? "Facturación" : "Envío"
-                      }`}
-                      $canceled
-                      disabled={!hasChanges(type)}
-                      onClick={() => handleCancel(type)}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button
-                      title={`Guardar ${
-                        type === "billingAddress" ? "Facturación" : "Envío"
-                      }`}
-                      $save
-                      disabled={!hasChanges(type)}
-                      onClick={() => handleSave(type)}
-                    >
-                      Guardar
-                    </Button>
-                  </>
+                  {isExisting ? (
+                    <>
+                      <Button
+                        type="button"
+                        $canceled
+                        disabled={!hasChanges(type)}
+                        onClick={() => handleCancel(type)}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        type="submit"
+                        $save
+                        disabled={!hasChanges(type)}
+                        onClick={(e) => handleModifyAddress(e, type)}
+                      >
+                        {isLoading ? "Guardando..." : "Guardar"}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        type="button"
+                        $canceled
+                        disabled={!hasChanges(type)}
+                        onClick={() => handleCancel(type)}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        type="submit"
+                        $save
+                        disabled={!hasChanges(type)}
+                        onClick={(e) => handleCreateAddress(e, type)}
+                      >
+                        {isLoading ? "Creando..." : "Crear"}
+                      </Button>
+                    </>
+                  )}
                 </WrapperButton>
-              )}
-            </Form>
-          ))
-        )}
+              </Form>
+            </div>
+          );
+        })}
       </Wrapper>
     </Container>
   );

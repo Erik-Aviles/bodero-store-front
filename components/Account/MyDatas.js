@@ -1,5 +1,5 @@
 import { genersData } from "@/resource/curtomerData";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import InputGroup from "./forms/InputGroup";
 import {
   Button,
@@ -12,9 +12,12 @@ import {
 import BackButton from "../buttonComponents/BackButton";
 import DateInputGroup from "./forms/DateInputGroup";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
+import NotificationContext from "@/context/NotificationContext";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const MyDatas = () => {
+  const { showNotification } = useContext(NotificationContext);
   const handleGoBack = useHandleGoBack();
   const { data: session, status, update } = useSession();
   console.log("session", session?.user);
@@ -39,9 +42,9 @@ const MyDatas = () => {
     gender: customer?.gender || "--",
   };
   const [selectedDate, setSelectedDate] = useState(initialData?.dateOfBirth);
-
   const [customerData, setCustomerData] = useState(initialData);
   const [originalCustomerData, setOriginalCustomerData] = useState(initialData);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,14 +54,55 @@ const MyDatas = () => {
     }));
   };
 
-  const handleCustomerSave = () => {
-    alert("Datos del cliente guardados correctamente.");
-    setOriginalCustomerData(customerData);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const updatedData = { ...customerData, dateOfBirth: selectedDate };
+
+      // Enviar datos al servidor
+      const response = await axios.put("/api/customers/update", updatedData);
+
+      console.log("respuesta", response);
+
+      if (response.status === 200) {
+        // Actualizar la sesión del usuario
+        await update({
+          ...session,
+          user: { ...session.user, ...updatedData },
+        });
+
+        showNotification({
+          open: true,
+          msj: response.data.message,
+          status: "success",
+        });
+
+        // Guardar el estado original actualizado
+        setOriginalCustomerData(updatedData);
+      } else {
+        showNotification({
+          open: true,
+          msj: response.error || "No se pudieron actualizar los datos.",
+          status: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error al actualizar los datos:", error);
+      alert("Ocurrió un error. Inténtalo de nuevo.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCustomerCancel = () => {
     setCustomerData(originalCustomerData);
-    alert("Cambios revertidos a su estado inicial.");
+    showNotification({
+      open: true,
+      msj: "Cambios revertidos a su estado inicial.",
+      status: "success",
+    });
   };
 
   const hasCustomerChanges = () => {
@@ -71,10 +115,10 @@ const MyDatas = () => {
     <Container>
       <header>
         <BackButton onClick={handleGoBack} />
-        <TitleH2>Editar Mis Datos</TitleH2>
+        <TitleH2>Información personal</TitleH2>
       </header>
       <Wrapper>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <InputGroup
             required
             label={fieldLabels.name}
@@ -144,13 +188,12 @@ const MyDatas = () => {
               Cancelar
             </Button>
             <Button
-              type="button"
-              title="Gurdar Cambios"
-              onClick={handleCustomerSave}
+              type="submit"
+              title="Guardar Cambios"
               disabled={!hasCustomerChanges()}
               $save
             >
-              Guardar
+              {isLoading ? "Guardando..." : "Guardar"}
             </Button>
           </WrapperButton>
         </Form>

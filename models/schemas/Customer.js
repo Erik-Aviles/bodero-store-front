@@ -1,6 +1,4 @@
 import { Schema, model, models } from "mongoose";
-import addressSchema from "./addressSchema";
-import orderSchema from "./orderSchema";
 
 const customerSchema = new Schema(
   {
@@ -12,9 +10,9 @@ const customerSchema = new Schema(
     phone: { type: String },
     password: { type: String, required: true, select: false },
     dateOfBirth: { type: Date },
-    billingAddress: addressSchema,
-    shippingAddress: addressSchema,
-    orders: [orderSchema],
+    billingAddress: Object,
+    shippingAddress: Object,
+    orders: Array,
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true, versionKey: false }

@@ -123,10 +123,9 @@ const Authtem = styled.li`
 
 const AuthModal = ({ isOpen, toggleModal }) => {
   const router = useRouter();
-  const { section, pedido } = router.query;
+  const { section } = router.query;
   const { data: session, status, update } = useSession();
   const { cerrar } = useActions();
-  console.log("session", session?.user.image);
   const customer = session?.user;
 
   const isActive = useCallback(

@@ -7,7 +7,6 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Método no permitido" });
   }
-
   
   try {
     const {
@@ -75,9 +74,6 @@ export default async function handler(req, res) {
       phone,
       password: hashedPassword,
       dateOfBirth,
-      billingAddress: {},
-      shippingAddress: {},
-      orders: [],
     });
 
     // Responder con éxito

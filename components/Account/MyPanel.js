@@ -13,6 +13,7 @@ import {
   Table,
   ScrollContainer,
   TD,
+  ContentEmpty,
 } from "../stylesComponents/ComponentAccount";
 import BackButton from "../buttonComponents/BackButton";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
@@ -33,13 +34,20 @@ const InfoSection = styled.section`
     flex-direction: column;
   }
 `;
+const FlexHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  color: ${blue};
+`;
 
 const MyPanel = () => {
   const handleGoBack = useHandleGoBack();
   const { data: session, status, update } = useSession();
   console.log("session", session?.user);
   const customer = session?.user;
-  console.log(customer)
+  console.log(customer);
 
   const recentOrder = customer?.orders?.slice(-1)[0];
 
@@ -58,60 +66,61 @@ const MyPanel = () => {
         <TitleH2>Bienvenido a tu cuenta</TitleH2>
       </header>
       <InfoSection>
-        <div className="header-section">
+        <FlexHeader>
           <SectionTitle> Mis Datos </SectionTitle>
           <ComponenteLink
             href="/customer/mi-cuenta/perfil"
-            title="Editar mis datos"
+            title="Editar mi información"
           >
             <EdithIcon size={22} />
           </ComponenteLink>
-        </div>
+        </FlexHeader>
         <Wrapper>
-          <Article>
-            <p>
-              <span>Nombres</span>
-              {customer?.name || "--"}
-            </p>
-            <p>
-              <span>Apellidos</span>
-              {customer?.lastname || "--"}
-            </p>
-            <p>
-              <span>Email:</span> {customer?.email || "--"}
-            </p>
-            <p>
-              <span>Teléfono:</span> {customer?.phone || "--"}
-            </p>
+          {customer && (
+            <Article>
+              <p>
+                <span>Nombres</span>
+                {customer?.name || "--"}
+              </p>
+              <p>
+                <span>Apellidos</span>
+                {customer?.lastname || "--"}
+              </p>
+              <p>
+                <span>Email:</span> {customer?.email || "--"}
+              </p>
+              <p>
+                <span>Teléfono:</span> {customer?.phone || "--"}
+              </p>
 
-            <p>
-              <span>Documento de identidad:</span>
-              {customer?.idDocument || "--"}
-            </p>
-            <p>
-              <span>Fecha de nacimiento:</span>
-              {customer?.dateOfBirth || "--"}
-            </p>
+              <p>
+                <span>Documento de identidad:</span>
+                {customer?.idDocument || "--"}
+              </p>
+              <p>
+                <span>Fecha de nacimiento:</span>
+                {customer?.dateOfBirth || "--"}
+              </p>
 
-            <p>
-              <span>Genero:</span> {customer?.gender || "--"}
-            </p>
-          </Article>
+              <p>
+                <span>Genero:</span> {customer?.gender || "--"}
+              </p>
+            </Article>
+          )}
         </Wrapper>
       </InfoSection>
 
       <InfoSection>
-        <div className="header-section">
+        <FlexHeader>
           <SectionTitle>Mis Pedidos Recientes</SectionTitle>
-          {customer?.orders?.length !== 0 && (
-            <ComponenteLink
-              href="/customer/mi-cuenta/pedidos"
-              title="Ir a mis pedidos"
-            >
-              Ver todos
-            </ComponenteLink>
-          )}
-        </div>
+
+          <ComponenteLink
+            href="/customer/mi-cuenta/pedidos"
+            title="Ir a mis pedidos"
+          >
+            Ver todos
+          </ComponenteLink>
+        </FlexHeader>
         <ScrollContainer>
           <Table>
             <thead>
@@ -153,26 +162,28 @@ const MyPanel = () => {
               )}
             </tbody>
           </Table>
+          {!customer?.orders?.length && (
+            <ContentEmpty>
+              <p>No tienes pedidos</p>
+            </ContentEmpty>
+          )}
         </ScrollContainer>
       </InfoSection>
 
       <InfoSection>
         <div className="header-section">
           <SectionTitle>Mis Direcciones</SectionTitle>
-          {!customer?.billingAddress ||
-            (!customer?.shippingAddress && (
-              <ComponenteLink
-                href="/customer/mi-cuenta/direcciones"
-                title="Editar mis direcciones"
-              >
-                <EdithIcon size={22} />
-              </ComponenteLink>
-            ))}
+          <ComponenteLink
+            href="/customer/mi-cuenta/direcciones"
+            title="Editar mis direcciones"
+          >
+            Ver todos
+          </ComponenteLink>
         </div>
         <Wrapper>
           <Article>
-            <SectionTitle>
-              Dirección de Facturación{" "}
+            <FlexHeader>
+              <SectionTitle>Dirección de Facturación </SectionTitle>
               {!customer?.billingAddress ? (
                 <ComponenteLink
                   href="/customer/mi-cuenta/direcciones"
@@ -182,15 +193,14 @@ const MyPanel = () => {
                 </ComponenteLink>
               ) : (
                 <ComponenteLink
-                  href="/customer/mi-cuenta/perfil"
-                  title="Editar mis datos"
+                  href="/customer/mi-cuenta/direcciones"
+                  title="Editar mi dirección de facturación"
                 >
                   <EdithIcon size={22} />
                 </ComponenteLink>
               )}
-            </SectionTitle>
-
-            {customer?.billingAddress && (
+            </FlexHeader>
+            {customer?.billingAddress ? (
               <>
                 <p>
                   <span>Nombres</span>
@@ -202,7 +212,7 @@ const MyPanel = () => {
 
                 <p>
                   <span>Dirección</span>
-                  {customer?.billingAddress?.address || "--"}
+                  {customer?.billingAddress?.streetAddress || "--"}
                 </p>
 
                 <p>
@@ -219,17 +229,25 @@ const MyPanel = () => {
                   <span>País:</span>
                   {customer?.billingAddress?.country?.name || "--"}
                 </p>
+                <p>
+                  <span>Postal:</span>
+                  {customer?.billingAddress?.postal || "--"}
+                </p>
 
                 <p>
                   <span>Teléfono:</span>
                   {customer?.billingAddress?.phone || "--"}
                 </p>
               </>
+            ) : (
+              <ContentEmpty>
+                <p>No tienes dirección de facturación guardado</p>
+              </ContentEmpty>
             )}
           </Article>
           <Article>
-            <SectionTitle>
-              Dirección de Envío{" "}
+            <FlexHeader>
+              <SectionTitle>Dirección de Envío </SectionTitle>
               {!customer?.shippingAddress ? (
                 <ComponenteLink
                   href="/customer/mi-cuenta/direcciones"
@@ -240,13 +258,13 @@ const MyPanel = () => {
               ) : (
                 <ComponenteLink
                   href="/customer/mi-cuenta/perfil"
-                  title="Editar mis datos"
+                  title="Editar mi dirección de envío"
                 >
                   <EdithIcon size={22} />
                 </ComponenteLink>
               )}
-            </SectionTitle>
-            {customer?.shippingAddress && (
+            </FlexHeader>
+            {customer?.shippingAddress ? (
               <>
                 <p>
                   <span>Nombres</span>
@@ -257,7 +275,7 @@ const MyPanel = () => {
                 </p>
                 <p>
                   <span>Dirección</span>
-                  {customer?.shippingAddress?.address || "--"}
+                  {customer?.shippingAddress?.streetAddress || "--"}
                 </p>
                 <p>
                   <span>Provincia:</span>
@@ -272,10 +290,18 @@ const MyPanel = () => {
                   {customer?.shippingAddress?.country?.name || "--"}
                 </p>
                 <p>
+                  <span>Postal:</span>
+                  {customer?.shippingAddress?.postal || "--"}
+                </p>
+                <p>
                   <span>Teléfono:</span>
                   {customer?.shippingAddress?.phone || "--"}
                 </p>
               </>
+            ) : (
+              <ContentEmpty>
+                <p>No tienes dirección de envio guardado</p>
+              </ContentEmpty>
             )}
           </Article>
         </Wrapper>

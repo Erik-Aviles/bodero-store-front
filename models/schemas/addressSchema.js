@@ -15,6 +15,7 @@ const addressSchema = new mongoose.Schema({
   },
   canton: String,
   streetAddress: String,
+  postal: String,
   phone: String,
 });
 

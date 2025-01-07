@@ -93,6 +93,13 @@ export const ScrollContainer = styled.div`
   border: 1px solid #e9ecef;
   border-top: none;
 `
+export const ContentEmpty = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize
+`
 export const Table = styled.table`
   width: 100%;
   font-size: 0.8rem;

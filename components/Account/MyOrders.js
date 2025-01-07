@@ -2,6 +2,7 @@ import React from "react";
 import {
   ComponenteLink,
   Container,
+  ContentEmpty,
   ScrollContainer,
   StatusText,
   TD,
@@ -16,7 +17,7 @@ const MyOrders = () => {
   const { data: session, status, update } = useSession();
   console.log("session", session?.user);
   const customer = session?.user;
-  console.log("customer", customer?.orders.length);
+  console.log("customer", customer?.orders?.length);
 
   const subtotal = customer?.orders?.line_items?.reduce(
     (acc, item) => acc + item.quantity * item.info_order.product_data.price,
@@ -44,35 +45,37 @@ const MyOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {customer?.orders?.length !== 0 && (
-              customer?.orders?.map((order) => (
-                <tr key={order._id}>
-                  <td>{order.orderNumber || "--"}</td>
-                  <td>{order.createdAt || "--"}</td>
-                  <TD>
-                    {`${order.streetAddress}, ${order.city}, ${order.province}, ${order.country}.` ||
-                      "--"}
-                  </TD>
-                  <td>{total || "--"}</td>
-                  <td>
-                    {(
-                      <StatusText $status={order?.status}>
-                        {order?.status || "--"}
-                      </StatusText>
-                    ) || "--"}
-                  </td>
-                  <td>
-                    <ComponenteLink
-                      href={`/customer/mi-cuenta/pedidos?pedido=${order?.orderNumber}`}
-                    >
-                      Ver
-                    </ComponenteLink>
-                  </td>
-                </tr>
-              ))
-            ) }
+            {customer?.orders?.map((order) => (
+              <tr key={order._id}>
+                <td>{order.orderNumber || ""}</td>
+                <td>{order.createdAt || ""}</td>
+                <TD>
+                  {`${order.streetAddress}, ${order.city}, ${order.province}, ${order.country}.` ||
+                    ""}
+                </TD>
+                <td>{total || ""}</td>
+                <td>
+                  {(
+                    <StatusText $status={order?.status}>
+                      {order?.status || ""}
+                    </StatusText>
+                  ) || ""}
+                </td>
+                <td>
+                  <ComponenteLink
+                    href={`/customer/mi-cuenta/pedidos?pedido=${order?.orderNumber}`}
+                  >
+                    Ver
+                  </ComponenteLink>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
+
+        <ContentEmpty>
+          <p>No tienes pedidos</p>
+        </ContentEmpty>
       </ScrollContainer>
     </Container>
   );
