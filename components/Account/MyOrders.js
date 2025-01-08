@@ -6,25 +6,20 @@ import {
   ScrollContainer,
   StatusText,
   TD,
+  TDnowrap,
   Table,
   TitleH2,
 } from "../stylesComponents/ComponentAccount";
 import BackButton from "../buttonComponents/BackButton";
 import { handleGoBack } from "@/hooks/useHandleGoBack";
-import { useSession } from "next-auth/react";
+import { formatDateToEcuador } from "@/utils/formats/formatDateToEcuador";
+import formatPrice from "@/utils/formats/formatPrice";
+import { useCustomerAllOrders } from "@/hooks/useCustomerAllOrders";
+import { calcularQuantity, calcularTotal } from "@/utils/generators/calculateTotals";
+
 
 const MyOrders = () => {
-  const { data: session, status, update } = useSession();
-  console.log("session", session?.user);
-  const customer = session?.user;
-  console.log("customer", customer?.orders?.length);
-
-  const subtotal = customer?.orders?.line_items?.reduce(
-    (acc, item) => acc + item.quantity * item.info_order.product_data.price,
-    0
-  );
-  const iva = (subtotal * 0.15).toFixed(2);
-  const total = (subtotal + parseFloat(iva)).toFixed(2);
+  const { orders } = useCustomerAllOrders();
 
   return (
     <Container>
@@ -39,21 +34,23 @@ const MyOrders = () => {
               <th>N° Pedido</th>
               <th>Fecha de pedido</th>
               <th>Dirección de envío </th>
-              <th>Total</th>
+              <th>Pago total</th>
+              <th>Cant. Productos</th>
               <th>Estado</th>
               <th>Acción</th>
             </tr>
           </thead>
           <tbody>
-            {customer?.orders?.map((order) => (
+            {orders?.map((order) => (
               <tr key={order._id}>
-                <td>{order.orderNumber || ""}</td>
-                <td>{order.createdAt || ""}</td>
-                <TD>
+                <TDnowrap>{order?.orderNumber || ""}</TDnowrap>
+                <td>{formatDateToEcuador(order.createdAt) || ""}</td>
+                <TDnowrap>
                   {`${order.streetAddress}, ${order.city}, ${order.province}, ${order.country}.` ||
                     ""}
-                </TD>
-                <td>{total || ""}</td>
+                </TDnowrap>
+                <td>{ formatPrice(calcularTotal(order?.line_items)) || ""}</td>
+                <td>{calcularQuantity(order?.line_items)  || ""}</td>
                 <td>
                   {(
                     <StatusText $status={order?.status}>
@@ -73,9 +70,11 @@ const MyOrders = () => {
           </tbody>
         </Table>
 
-        <ContentEmpty>
-          <p>No tienes pedidos</p>
-        </ContentEmpty>
+        {!orders && (
+          <ContentEmpty>
+            <p>No tienes pedidos</p>
+          </ContentEmpty>
+        )}
       </ScrollContainer>
     </Container>
   );

@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { es } from 'date-fns/locale/es'
 import { getYear, getMonth, format, setMonth } from 'date-fns'
 import { CalendarIcon } from '@/components/Icons' // Importa tu ícono de calendario
-import { capitalize } from '@/utils/capitalize'
+import { capitalize } from '@/utils/formats/capitalize'
 
 // Estilizado del contenedor principal
 

@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import isValidEmail from "@/utils/isValidEmail";
+import isValidEmail from "@/utils/formats/isValidEmail";
 import { Customer } from "@/models/schemas/Customer";
 import { mongooseConnect } from "@/lib/mongoose";
 
@@ -83,8 +83,6 @@ export default async function handler(req, res) {
       name: newCustomer.name,
       email: newCustomer.email,
     };
-
-    console.log("Registro exitoso", customer);
 
     return res.status(201).json({
       message: "Registro exitoso",

@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
       // Obtener la sesión del usuario autenticado
       const session = await getServerSession(req, res, authOptions);
-      
+
       if (!session) {
         return res.status(401).json({ error: "No autorizado" });
       }
@@ -27,12 +27,12 @@ export default async function handler(req, res) {
         {
           $set: {
             idDocument,
-            name,
-            lastname,
+            name: name.toLowerCase(),
+            lastname: lastname.toLowerCase(),
             email,
             phone,
             dateOfBirth,
-            gender,
+            gender: gender.toLowerCase(),
           },
         },
         { new: true } // Devuelve el documento actualizado
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
         }
         updatedCustomer.email = email;
       }
-      
+
       // Responder con los datos actualizados
       return res.status(200).json({
         success: true,

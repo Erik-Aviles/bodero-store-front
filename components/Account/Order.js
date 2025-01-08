@@ -1,7 +1,6 @@
-import React, { memo } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 import BackButton from "../buttonComponents/BackButton";
-import { capitalize } from "@/utils/capitalize";
+import { capitalize } from "@/utils/formats/capitalize";
 import {
   Container,
   Article,
@@ -14,13 +13,16 @@ import {
   TD,
 } from "../stylesComponents/ComponentAccount";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
-import { useCustomerOrder } from "@/hooks/useCustomerOrder ";
+import useCustomerOrder from "@/hooks/useCustomerOrder ";
+import { formatDateToEcuador } from "@/utils/formats/formatDateToEcuador";
+import { calcularTotal } from "@/utils/generators/calculateTotals";
+import formatPrice from "@/utils/formats/formatPrice";
 
-const Order = memo(function Order() {
-  const router = useRouter();
-  const handleGoBack = useHandleGoBack()
-  const { pedido } = router.query;
-  const { order, isLoading, error } = useCustomerOrder(pedido)
+const Order = ({ pedido }) => {
+  const handleGoBack = useHandleGoBack();
+  console.log("pedido", pedido);
+  const order = useCustomerOrder(pedido);
+  console.log("order", order);
 
   if (!order) {
     return (
@@ -31,13 +33,11 @@ const Order = memo(function Order() {
       </Container>
     );
   }
+  const total = calcularTotal(order.line_items);
 
-  const subtotal = order?.line_items.reduce(
-    (acc, item) => acc + item.quantity * item.info_order.product_data.price,
-    0
-  );
-  const iva = (subtotal * 0.15).toFixed(2);
-  const total = (subtotal + parseFloat(iva)).toFixed(2);
+  const iva = total * 0.15;
+  // Calcular el restante
+  const subtotal = total - iva;
 
   return (
     <Container>
@@ -49,7 +49,8 @@ const Order = memo(function Order() {
         <Article>
           <SectionTitle>Datos generales</SectionTitle>
           <p>
-            <span>Fecha del pedido:</span> {order?.createdAt}
+            <span>Fecha del pedido:</span>{" "}
+            {formatDateToEcuador(order?.createdAt)}
           </p>
           <p>
             <span>Recibe:</span> {capitalize(order?.name)}{" "}
@@ -60,21 +61,23 @@ const Order = memo(function Order() {
             {`${order?.streetAddress}, ${order?.city}, ${order?.province}, ${order?.country}.`}
           </p>
           <p>
-            <span>Estado:</span>{" "}
+            <span>Estado:</span>
             <StatusText $status={order?.status}>{order?.status}</StatusText>
           </p>
         </Article>
         <Article>
           <SectionTitle>Metodos de pago</SectionTitle>
           <p>
-            <span>Targeta de credito:</span> {order?.paymentMethod?.cardNumber} {order?.paymentMethod?.cardIcon}
+            <span>Targeta de credito:</span> {order?.paymentMethod?.cardNumber}
+            {order?.paymentMethod?.cardIcon}
           </p>
           <p>
             <span>Diferido:</span>
             12 meses
           </p>
           <p>
-            <span>Autorización:</span> {order?.paymentMethod?.authorizationNumber}
+            <span>Autorización:</span>
+            {order?.paymentMethod?.authorizationNumber}
           </p>
           <p>
             <span>Adquiridor:</span> {order?.paymentMethod?.acquirerName}
@@ -83,13 +86,15 @@ const Order = memo(function Order() {
         <Article>
           <SectionTitle>Resumen</SectionTitle>
           <p>
-            <span>Subtotal:</span> ${subtotal.toFixed(2)}
+            <span>Subtotal:</span>
+            {formatPrice(subtotal)}
           </p>
           <p>
-            <span>Impuestos (15%):</span> ${iva}
+            <span>Impuestos (15%):</span> {formatPrice(iva)}
           </p>
           <p>
-            <span>Total a pagar:</span> ${total}
+            <span>Total a pagar:</span>
+            {formatPrice(total)}
           </p>
         </Article>
       </Wrapper>
@@ -107,23 +112,22 @@ const Order = memo(function Order() {
             </tr>
           </thead>
           <tbody>
-            {order?.line_items.map((item, index) => (
-              <tr key={index}>
-                <td>{item.info_order.product_data.code}</td>
-                <TD>{item.info_order.product_data.name}</TD>
-                <td>{item.info_order.product_data.brand}</td>
-                <td>{item.quantity}</td>
-                <td>{item.info_order.product_data.price.toFixed(2)} </td>
-                <td>{item.info_order.unit_amount.toFixed(2)} </td>
-              </tr>
-            ))}
+            {order?.line_items &&
+              order.line_items.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.info_order.product_data.code}</td>
+                  <TD>{item.info_order.product_data.name}</TD>
+                  <td>{item.info_order.product_data.brand}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.info_order.product_data.price.toFixed(2)}</td>
+                  <td>{item.info_order.unit_amount.toFixed(2)}</td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </ScrollContainer>
     </Container>
   );
-});
-
-Order.displayName = "Order";
+};
 
 export default Order;

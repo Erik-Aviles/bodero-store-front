@@ -1,5 +1,5 @@
 import { EmailTemplate } from "@/components/EmailTemplate";
-import isValidEmail from "@/utils/isValidEmail";
+import isValidEmail from "@/utils/formats/isValidEmail";
 import messages from "@/utils/messages";
 import { Resend } from "resend";
 

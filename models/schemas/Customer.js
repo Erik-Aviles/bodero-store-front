@@ -12,7 +12,7 @@ const customerSchema = new Schema(
     dateOfBirth: { type: Date },
     billingAddress: Object,
     shippingAddress: Object,
-    orders: Array,
+    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }], 
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true, versionKey: false }

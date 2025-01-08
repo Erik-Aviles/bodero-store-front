@@ -6,7 +6,7 @@ import {
   EyeFilledIcon,
   EyeSlashFilledIcon,
 } from '@/components/Icons'
-import { capitalize } from '@/utils/capitalize'
+import { capitalize } from '@/utils/formats/capitalize'
 
 const InputGroupWrapper = styled.div`
   display: flex;

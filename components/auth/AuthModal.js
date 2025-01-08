@@ -16,7 +16,7 @@ import localLoader from "../loaderes/localLoader";
 const styledLink = css`
   color: "inherit";
   transition: color 0.3s;
-  font-size: 1rem;
+  font-size: 0.8rem;
   cursor: pointer;
   text-decoration: none;
   display: flex;
@@ -83,7 +83,7 @@ const InfoUser = styled.div`
   }
   span {
     margin: 0;
-    font-size: 0.8em;
+    font-size: 0.7em;
     letter-spacing: 5px;
   }
   img {
@@ -179,7 +179,7 @@ const AuthModal = ({ isOpen, toggleModal }) => {
               {renderMenuItems()}
               <button onClick={cerrar}>
                 <LogoutIcon />
-                <p>Cerrar este perfil</p>
+                <p>Cerrar mi perfil</p>
               </button>
             </>
           ) : (

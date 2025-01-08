@@ -10,10 +10,10 @@ import MyOrders from "@/components/Account/MyOrders";
 import MyAddress from "@/components/Account/MyAddress";
 import MyPanel from "@/components/Account/MyPanel";
 import Authentication from "@/components/Account/Authentication";
-import Order from "@/components/Account/Order";
 import { useSession } from "next-auth/react";
 import useActions from "@/hooks/useActions";
 import { menuItems } from "@/resource/linkRouterAccount";
+import Order from "@/components/Account/Order";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -177,7 +177,7 @@ const AccountPage = () => {
 
   const content = useMemo(() => {
     if (section === "pedidos" && pedido) {
-      return <Order />;
+      return <Order pedido={pedido} />;
     }
 
     switch (section) {

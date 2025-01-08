@@ -14,6 +14,15 @@ export default async function handler(req, res) {
   }
 
   const { user } = session;
+  
+    // Función para convertir campos específicos a minúsculas
+    const normalizeFields = (address) => {
+      if (address.name) address.name = address.name.toLowerCase();
+      if (address.lastname) address.lastname = address.lastname.toLowerCase();
+      if (address.email) address.email = address.email.toLowerCase();
+      if (address.streetAddress) address.streetAddress = address.streetAddress.toLowerCase();
+    };
+
 
   try {
     if (req.method === "POST") {
@@ -47,6 +56,8 @@ export default async function handler(req, res) {
         });
       }
       await mongooseConnect();
+
+      normalizeFields(address);
 
       // Añadir la dirección en la base de datos
       const updatedUser = await Customer.findByIdAndUpdate(
@@ -93,6 +104,8 @@ export default async function handler(req, res) {
           message: `Faltan campos obligatorios: ${missingFields.join(", ")}`,
         });
       }
+
+      normalizeFields(address);
 
       // Actualizar dirección en la base de datos
       const updatedUser = await Customer.findByIdAndUpdate(

@@ -5,7 +5,7 @@ import ButtonLink from "./buttonComponents/ButtonLink";
 import { CartContext } from "@/context/CartContext";
 import awsS3Loader from "./loaderes/awsS3Loader";
 import localLoader from "./loaderes/localLoader";
-import { capitalize } from "@/utils/capitalize";
+import { capitalize } from "@/utils/formats/capitalize";
 import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
 import logo from "../public/logo.jpg";

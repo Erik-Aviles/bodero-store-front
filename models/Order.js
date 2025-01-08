@@ -1,7 +1,13 @@
-import { Schema, model, models } from 'mongoose'
+import { Schema, model, models } from "mongoose";
 
 const OrderSchema = new Schema(
   {
+    orderNumber: { type: String, unique: true },
+    customerId: {
+      type: Schema.Types.ObjectId,
+      ref: "Customer",
+      required: true,
+    },
     line_items: Object,
     name: { type: String, required: true },
     lastname: { type: String, required: true },
@@ -12,12 +18,14 @@ const OrderSchema = new Schema(
     province: { type: String, required: true },
     city: { type: String, required: true },
     streetAddress: String,
-    paid: Boolean,
+    postal: { type: String },
+    paid: { type: Boolean, default: false },
+    status: { type: String, default: "pending" },
   },
   {
     timestamps: true,
     versionKey: false,
   }
-)
+);
 
-export const Order = models?.Order || model('Order', OrderSchema)
+export const Order = models?.Order || model("Order", OrderSchema);

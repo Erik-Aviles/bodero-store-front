@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import Layout from "@/components/Layout";
-import { Loading } from "@/components/Loading";
 import styled, { css } from "styled-components";
 import Title from "@/components/stylesComponents/Title";
 import "react-datepicker/dist/react-datepicker.css";
@@ -10,9 +9,9 @@ import { genersData } from "@/resource/curtomerData";
 import InputGroup from "@/components/Account/forms/InputGroup";
 import DateInputGroup from "@/components/Account/forms/DateInputGroup";
 import { useRouter } from "next/router";
-import axios, { AxiosError } from "axios";
-import NotificationContext from "@/context/NotificationContext";
+import axios from "axios";
 import { signIn } from "next-auth/react";
+import Swal from "sweetalert2";
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
@@ -114,7 +113,6 @@ const Button = styled.button`
 `;
 
 export default function RegisterPage() {
-  const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false);
@@ -170,22 +168,34 @@ export default function RegisterPage() {
           password: formData.password,
           redirect: false,
         });
-        showNotification({
-          open: true,
-          msj: signupResponse.data.message,
-          status: "success",
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "center",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
         });
+        Toast.fire({
+          icon: "success",
+          title: signupResponse?.data?.message,
+        });
+
         if (res?.ok) {
           router.push("/customer/mi-cuenta/general");
         }
       }
     } catch (error) {
-      showNotification({
-        open: true,
-        msj: error?.response?.data?.message,
-        status: "error",
-      });
       console.error("Error al registrar:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.response?.data?.message || "Algo salió mal!",
+      });
+      return;
     }
   };
 
@@ -250,7 +260,7 @@ export default function RegisterPage() {
                 value={formData?.gender}
                 onChange={handleChange}
                 options={genersData.map((gener) => ({
-                  value: gener.value,
+                  value: gener.name,
                   name: gener.name,
                 }))}
               />

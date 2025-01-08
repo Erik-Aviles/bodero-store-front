@@ -1,28 +1,29 @@
-import { useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import axios from 'axios'
-import styled, { css } from 'styled-components'
-import { WhatsappIcon } from '@/components/Icons'
-import { useData } from '@/hooks/useData'
-import Layout from '@/components/Layout'
-import BackButton from '@/components/buttonComponents/BackButton'
-import Button from '@/components/buttonComponents/Button'
-import TableCart from '@/components/cart/TableCart'
-import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import { FlexStyled } from '@/components/stylesComponents/Flex'
-import Title from '@/components/stylesComponents/Title'
-import { CartContext } from '@/context/CartContext'
-import NotificationContext from '@/context/NotificationContext'
-import { error, grey, greylight, success, white } from '@/lib/colors'
-import { capitalize } from '@/utils/capitalize'
-import InputGroup from '@/components/Account/forms/InputGroup'
-import { countries, customerInfo } from '@/resource/curtomerData'
-import { loadStatesAndCities } from '@/utils/loadStatesAndCities'
-import { useHandleGoBack } from '@/hooks/useHandleGoBack'
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import styled, { css } from "styled-components";
+import { WhatsappIcon } from "@/components/Icons";
+import { useData } from "@/hooks/useData";
+import Layout from "@/components/Layout";
+import BackButton from "@/components/buttonComponents/BackButton";
+import Button from "@/components/buttonComponents/Button";
+import TableCart from "@/components/cart/TableCart";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { FlexStyled } from "@/components/stylesComponents/Flex";
+import Title from "@/components/stylesComponents/Title";
+import { CartContext } from "@/context/CartContext";
+import NotificationContext from "@/context/NotificationContext";
+import { error, grey, greylight, success, white } from "@/lib/colors";
+import { capitalize } from "@/utils/formats/capitalize";
+import InputGroup from "@/components/Account/forms/InputGroup";
+import { countries, customerInfo } from "@/resource/curtomerData";
+import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
+import { useHandleGoBack } from "@/hooks/useHandleGoBack";
+import { handleCreateOrder } from "@/utils/handlers/order";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
-`
+`;
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -34,7 +35,7 @@ const ColumnsWrapper = styled.div`
     gap: 20px;
     margin: 20px 0 40px;
   }
-`
+`;
 
 const WrapperDiv = styled.fieldset`
   border: none;
@@ -48,14 +49,14 @@ const WrapperDiv = styled.fieldset`
     flex-direction: column;
     gap: 10px;
   }
-`
+`;
 const WrapperButton = styled.section`
   display: flex;
   justify-content: end;
   gap: 10px;
   padding: 20px 0;
   justify-content: center;
-`
+`;
 
 const Box = styled.div`
   display: flex;
@@ -90,115 +91,99 @@ const Box = styled.div`
     @media screen and (min-width: 768px) {
     padding: 20px;
   }
-`
+`;
 
 export default function CartPage() {
-  const handleGoBack = useHandleGoBack()
-  const { company } = useData()
-  const secondaryPhone = company?.secondaryPhone
+  const handleGoBack = useHandleGoBack();
+  const { company } = useData();
+  const secondaryPhone = company?.secondaryPhone;
 
-  const { showNotification } = useContext(NotificationContext)
-  const router = useRouter()
-  const { cartProducts, clearCart } = useContext(CartContext)
+  const { showNotification } = useContext(NotificationContext);
+  const router = useRouter();
+  const { cartProducts, clearCart } = useContext(CartContext);
 
-  const [name, setName] = useState(customerInfo.billingAddress.name || '')
+  const [name, setName] = useState(customerInfo.billingAddress.name || "");
   const [lastname, setLastName] = useState(
-    customerInfo.billingAddress.lastname || ''
-  )
-  const [email, setEmail] = useState(customerInfo.billingAddress.email || '')
+    customerInfo.billingAddress.lastname || ""
+  );
+  const [email, setEmail] = useState(customerInfo.billingAddress.email || "");
   const [idDocument, setIdDocument] = useState(
-    customerInfo.billingAddress.idDocument || ''
-  )
-  const [phone, setPhone] = useState(customerInfo.billingAddress.phone || '')
+    customerInfo.billingAddress.idDocument || ""
+  );
+  const [phone, setPhone] = useState(customerInfo.billingAddress.phone || "");
   const [country, setCountry] = useState(
-    customerInfo.billingAddress.country.isoCode || ''
-  )
+    customerInfo.billingAddress.country.isoCode || ""
+  );
   const [province, setProvince] = useState(
-    customerInfo.billingAddress.province.isoCode || ''
-  )
-  const [city, setCity] = useState(customerInfo.billingAddress.canton || '')
+    customerInfo.billingAddress.province.isoCode || ""
+  );
+  const [city, setCity] = useState(customerInfo.billingAddress.canton || "");
 
-  const [states, setStates] = useState({})
-  const [cities, setCities] = useState({})
+  const [states, setStates] = useState({});
+  const [cities, setCities] = useState({});
 
   const [streetAddress, setStreetAddress] = useState(
-    customerInfo.billingAddress.address || ''
-  )
+    customerInfo.billingAddress.address || ""
+  );
+  const [postal, setPostal] = useState(
+    customerInfo.billingAddress.postal || ""
+  );
 
   const fieldLabels = {
-    name: 'Nombres',
-    lastname: 'Apellidos',
-    email: 'Correo',
-    country: 'Pais',
-    province: 'Provincia',
-    canton: 'Canton',
-    postal: 'Codigo postal',
-    address: 'Direccion',
-    idDocument: 'Documento de identidad',
-    phone: 'Teléfono',
-  }
+    name: "Nombres",
+    lastname: "Apellidos",
+    email: "Correo",
+    country: "Pais",
+    province: "Provincia",
+    canton: "Canton",
+    postal: "Codigo postal",
+    address: "Direccion",
+    idDocument: "Documento de identidad",
+    phone: "Teléfono",
+  };
 
   useEffect(() => {
-    const { statesData, citiesData } = loadStatesAndCities(countries)
-    setStates(statesData)
-    setCities(citiesData)
-  }, [])
+    const { statesData, citiesData } = loadStatesAndCities(countries);
+    setStates(statesData);
+    setCities(citiesData);
+  }, []);
 
-  const orderData = {
-    name,
-    lastname,
-    email,
-    idDocument,
-    phone,
-    country,
-    province,
-    city,
-    streetAddress,
-    cartProducts,
-  }
   const handleAddressChange = (e) => {
-    const { name, value } = e.target
-    if (name === 'country') {
-      setCountry(value)
-      setProvince('') / setCity('')
-    } else if (name === 'province') {
-      setProvince(value)
-      setCity('')
-    } else if (name === 'canton') {
-      setCity(value)
+    const { name, value } = e.target;
+    if (name === "country") {
+      setCountry(value);
+      setProvince("") / setCity("");
+    } else if (name === "province") {
+      setProvince(value);
+      setCity("");
+    } else if (name === "canton") {
+      setCity(value);
     }
-  }
+  };
 
   async function handleShippingOrder() {
-    try {
-      const response = await axios.post('/api/order', orderData)
-      showNotification({
-        open: true,
-        msj: response.data.message,
-        status: 'success',
-      })
-
-      clearCart()
-
-      const timeout = setTimeout(() => {
-        router.push('/')
-      }, 1000)
-      return () => clearTimeout(timeout)
-    } catch (error) {
-      showNotification({
-        open: true,
-        msj: error.response.data.message,
-        status: 'error',
-      })
-    }
-    console.log('Mi informacion de envio:', orderData)
+    handleCreateOrder({
+      name,
+      lastname,
+      email,
+      idDocument,
+      phone,
+      country,
+      province,
+      city,
+      streetAddress,
+      postal,
+      cartProducts,
+      clearCart,
+    });
   }
 
-  const submitOrder = async (e) => {
-    e.preventDefault()
+  //Funcion para envio de pedido por whatsapp
+  const submitOrderWhatsapp = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post('/api/checkout', orderData)
-      const data = response.data
+      const response = await axios.post("/api/checkout", orderData);
+      const data = response.data;
       if (response.status === 200) {
         const whatsappMessage = `Hola, Soy: ${capitalize(orderData.name)}
   Mi celular: ${orderData.phone}
@@ -214,43 +199,43 @@ export default function CartPage() {
           item.info_order.code
         }) - Cant: ${item.quantity} - Precio: $${item.info_order.price}`
     )
-    .join('\n')}.
-  Quedo atento/a`
+    .join("\n")}.
+  Quedo atento/a`;
 
         const urlWhatsapp = `https://api.whatsapp.com/send?phone=593${secondaryPhone}&text=${encodeURIComponent(
           whatsappMessage
-        )}&type=phone_number&app_absent=1`
-        window.open(urlWhatsapp, '_blank', 'noopener noreferrer')
+        )}&type=phone_number&app_absent=1`;
+        window.open(urlWhatsapp, "_blank", "noopener noreferrer");
         showNotification({
           open: true,
           msj: data.message,
-          status: 'success',
-        })
+          status: "success",
+        });
 
-        clearCart()
+        clearCart();
 
         const timeout = setTimeout(() => {
-          router.push('/')
-        }, 1000)
-        return () => clearTimeout(timeout)
+          router.push("/");
+        }, 1000);
+        return () => clearTimeout(timeout);
       } else {
         showNotification({
           open: true,
           msj: data.message,
-          status: 'error',
-        })
+          status: "error",
+        });
       }
     } catch (error) {
       showNotification({
         open: true,
         msj: error.response.data.message,
-        status: 'error',
-      })
+        status: "error",
+      });
     }
-  }
+  };
 
   return (
-    <Layout title='B.R.D | Mi carrito'>
+    <Layout title="B.R.D | Mi carrito">
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
@@ -263,38 +248,51 @@ export default function CartPage() {
           {!!cartProducts?.length && (
             <Box $white={1}>
               <h3>Información de envío </h3>
+              <p>
+                Lea detenidamente si los campos con la información guardada son
+                los correctos, caso contrario puede ser editado.{" "}
+              </p>
               <WrapperDiv>
                 <InputGroup
                   required
                   label={fieldLabels.name}
-                  name='name'
+                  name="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder='Ingresa tu nombre'
+                  placeholder="Ingresa tu nombre"
                 />
 
                 <InputGroup
                   required
                   label={fieldLabels.lastname}
-                  name='lastname'
+                  name="lastname"
                   value={lastname}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder='Ingresa tu apellido'
+                  placeholder="Ingresa tu apellido"
                 />
               </WrapperDiv>
+              <WrapperDiv>
               <InputGroup
                 required
-                type='email'
-                name='email'
+                type="email"
+                name="email"
                 label={fieldLabels.email}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              <InputGroup
+                type="text"
+                name="postal"
+                label={fieldLabels.postal}
+                value={postal}
+                onChange={(e) => setPostal(e.target.value)}
+              />
+              </WrapperDiv>
 
               <WrapperDiv>
                 <InputGroup
                   required
-                  name='idDocument'
+                  name="idDocument"
                   label={fieldLabels.idDocument}
                   value={idDocument}
                   onChange={(e) => setIdDocument(e.target.value)}
@@ -302,8 +300,8 @@ export default function CartPage() {
 
                 <InputGroup
                   required
-                  type='tel'
-                  name='phone'
+                  type="tel"
+                  name="phone"
                   label={fieldLabels.phone}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -312,8 +310,8 @@ export default function CartPage() {
               <WrapperDiv $column>
                 <InputGroup
                   required
-                  as='select'
-                  name='country'
+                  as="select"
+                  name="country"
                   label={fieldLabels.country}
                   value={country}
                   onChange={handleAddressChange}
@@ -324,8 +322,8 @@ export default function CartPage() {
                 />
                 <InputGroup
                   required
-                  as='select'
-                  name='province'
+                  as="select"
+                  name="province"
                   label={fieldLabels.province}
                   value={province}
                   onChange={handleAddressChange}
@@ -338,8 +336,8 @@ export default function CartPage() {
                 />
                 <InputGroup
                   required
-                  as='select'
-                  name='canton'
+                  as="select"
+                  name="canton"
                   label={fieldLabels.canton}
                   value={city}
                   onChange={handleAddressChange}
@@ -353,24 +351,24 @@ export default function CartPage() {
               </WrapperDiv>
               <InputGroup
                 required
-                name='streetAddress'
+                name="streetAddress"
                 label={fieldLabels.address}
                 value={streetAddress}
                 onChange={(e) => setStreetAddress(e.target.value)}
-                placeholder='Escribe una dirección'
+                placeholder="Escribe una dirección"
               />
 
               <WrapperButton>
                 <Button
                   $black={1}
-                  title={'Se envia pedido directo para realizar la compra'}
+                  title={"Se envia pedido directo para realizar la compra"}
                   onClick={handleShippingOrder}
                 >
                   ENVIAR PEDIDO DIRECTO
                 </Button>
                 <Button
-                  onClick={submitOrder}
-                  title={'Se envía pedido para requerir información'}
+                  onClick={submitOrderWhatsapp}
+                  title={"Se envía pedido para requerir información"}
                   $secondary={1}
                 >
                   <WhatsappIcon height={25} width={25} />
@@ -382,5 +380,5 @@ export default function CartPage() {
         </ColumnsWrapper>
       </CenterDiv>
     </Layout>
-  )
+  );
 }

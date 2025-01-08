@@ -14,10 +14,17 @@ import {
   ScrollContainer,
   TD,
   ContentEmpty,
+  TDnowrap,
 } from "../stylesComponents/ComponentAccount";
 import BackButton from "../buttonComponents/BackButton";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 import { useSession } from "next-auth/react";
+import { capitalize } from "@/utils/formats/capitalize";
+import { formatDateToEcuador } from "@/utils/formats/formatDateToEcuador";
+import { capitalizeWords } from "@/utils/formats/capitalizeWords";
+import { useCustomerAllOrders } from "@/hooks/useCustomerAllOrders";
+import { calcularTotal } from "@/utils/generators/calculateTotals";
+import formatPrice from "@/utils/formats/formatPrice";
 
 const InfoSection = styled.section`
   line-height: 1.6;
@@ -44,20 +51,11 @@ const FlexHeader = styled.div`
 
 const MyPanel = () => {
   const handleGoBack = useHandleGoBack();
+  const { orders } = useCustomerAllOrders();
   const { data: session, status, update } = useSession();
-  console.log("session", session?.user);
   const customer = session?.user;
-  console.log(customer);
 
-  const recentOrder = customer?.orders?.slice(-1)[0];
-
-  const subtotal = recentOrder?.line_items.reduce(
-    (acc, item) => acc + item.quantity * item.info_order.product_data.price,
-    0
-  );
-
-  const iva = (subtotal * 0.15).toFixed(2);
-  const total = (subtotal + parseFloat(iva)).toFixed(2);
+  const recentOrder = orders?.slice(-1)[0];
 
   return (
     <Container>
@@ -80,11 +78,11 @@ const MyPanel = () => {
             <Article>
               <p>
                 <span>Nombres</span>
-                {customer?.name || "--"}
+                {capitalizeWords(customer?.name) || "--"}
               </p>
               <p>
                 <span>Apellidos</span>
-                {customer?.lastname || "--"}
+                {capitalizeWords(customer?.lastname) || "--"}
               </p>
               <p>
                 <span>Email:</span> {customer?.email || "--"}
@@ -99,11 +97,13 @@ const MyPanel = () => {
               </p>
               <p>
                 <span>Fecha de nacimiento:</span>
-                {customer?.dateOfBirth || "--"}
+                {customer?.dateOfBirth
+                  ? formatDateToEcuador(customer?.dateOfBirth)
+                  : "--"}
               </p>
 
               <p>
-                <span>Genero:</span> {customer?.gender || "--"}
+                <span>Genero:</span> {capitalizeWords(customer?.gender) || "--"}
               </p>
             </Article>
           )}
@@ -134,16 +134,18 @@ const MyPanel = () => {
               </tr>
             </thead>
             <tbody>
-              {customer?.orders?.length !== 0 && (
+              {orders?.length !== 0 && (
                 <tr>
-                  <td>{recentOrder?.orderNumber || "--"}</td>
-                  <td>{recentOrder?.createdAt || "--"}</td>
-                  <TD>
+                  <TDnowrap>{recentOrder?.orderNumber || "--"}</TDnowrap>
+                  <td>{formatDateToEcuador(recentOrder?.createdAt) || "--"}</td>
+                  <TDnowrap>
                     {recentOrder
                       ? `${recentOrder?.streetAddress}, ${recentOrder?.city}, ${recentOrder?.province}, ${recentOrder?.country}.`
                       : "--"}
-                  </TD>
-                  <td>{!total || "--"}</td>
+                  </TDnowrap>
+                  <td>
+                    {formatPrice(calcularTotal(recentOrder?.line_items)) || ""}
+                  </td>
                   <td>
                     <StatusText $status={recentOrder?.status}>
                       {recentOrder?.status || "--"}
@@ -162,7 +164,7 @@ const MyPanel = () => {
               )}
             </tbody>
           </Table>
-          {!customer?.orders?.length && (
+          {!orders?.length && (
             <ContentEmpty>
               <p>No tienes pedidos</p>
             </ContentEmpty>
@@ -206,13 +208,16 @@ const MyPanel = () => {
                   <span>Nombres</span>
                   {customer?.billingAddress?.name ||
                   customer?.billingAddress?.lastname
-                    ? `${customer?.billingAddress?.name} ${customer?.billingAddress?.lastname}`
+                    ? `${capitalizeWords(
+                        customer?.billingAddress?.name
+                      )} ${capitalizeWords(customer?.billingAddress?.lastname)}`
                     : "--"}
                 </p>
 
                 <p>
                   <span>Dirección</span>
-                  {customer?.billingAddress?.streetAddress || "--"}
+                  {capitalizeWords(customer?.billingAddress?.streetAddress) ||
+                    "--"}
                 </p>
 
                 <p>
@@ -270,12 +275,14 @@ const MyPanel = () => {
                   <span>Nombres</span>
                   {customer?.shippingAddress?.name ||
                   customer?.shippingAddress?.lastname
-                    ? `${customer?.shippingAddress?.name} ${customer?.shippingAddress?.lastname}`
+                    ? `${capitalize(
+                        customer?.shippingAddress?.name
+                      )} ${capitalize(customer?.shippingAddress?.lastname)}`
                     : "--"}
                 </p>
                 <p>
                   <span>Dirección</span>
-                  {customer?.shippingAddress?.streetAddress || "--"}
+                  {capitalize(customer?.shippingAddress?.streetAddress) || "--"}
                 </p>
                 <p>
                   <span>Provincia:</span>

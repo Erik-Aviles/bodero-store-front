@@ -155,7 +155,7 @@ const MyDatas = () => {
             type="tel"
             name="phone"
             label={fieldLabels.phone}
-            value={customerData.phone}
+            value={customerData?.phone}
             onChange={handleChange}
           />
 

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Layout from "@/components/Layout";
 import styled, { css } from "styled-components";
 import Title from "@/components/stylesComponents/Title";
@@ -7,9 +7,8 @@ import { greylight, primary, secondary, white } from "@/lib/colors";
 import Link from "next/link";
 import InputGroup from "@/components/Account/forms/InputGroup";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
-import NotificationContext from "@/context/NotificationContext";
-import { capitalize } from "@/utils/capitalize";
+import { signIn } from "next-auth/react";
+import Swal from "sweetalert2";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -132,10 +131,6 @@ const TextLink = styled(Link)`
 `;
 
 export default function LoginPage() {
-  const { showNotification } = useContext(NotificationContext);
-  const { data: session, status, update } = useSession();
-  const customer = session?.user?.name;
-
   const router = useRouter();
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [formData, setFormData] = useState({
@@ -167,28 +162,42 @@ export default function LoginPage() {
         redirect: false,
       });
       console.log("res", res);
-      showNotification({
-        open: true,
-        msj: `Bienvenid@ a tu cuenta`,
-        status: "success",
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
       });
+      Toast.fire({
+        icon: "success",
+        title: "Bienvenid@ a tu cuenta",
+      });
+
       if (res?.error) {
-        return showNotification({
-          open: true,
-          msj: res?.error,
-          status: "error",
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: res?.error || "Algo salió mal!",
         });
+        return;
       }
       if (res?.ok) {
         return router.push("/customer/mi-cuenta/general");
       }
     } catch (error) {
-      showNotification({
-        open: true,
-        msj: error?.response?.data?.message,
-        status: "error",
-      });
       console.error("Error al registrar:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.response?.data?.message || "Algo salió mal!",
+      });
+      return;
     }
   };
 

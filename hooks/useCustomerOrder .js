@@ -1,16 +1,18 @@
-import { useSession } from 'next-auth/react'
-import { useMemo } from 'react'
+import { useMemo } from "react";
+import { useCustomerAllOrders } from "./useCustomerAllOrders";
 
-export const useCustomerOrder = (orderNumber) => {
-    const { data: session, status, update } = useSession();
-    console.log("session", session?.user);
-    const customer = session?.user;
+export default function useCustomerOrder(orderNumber) {
+  const { orders } = useCustomerAllOrders();
+  const shouldFetch = !!orderNumber;
 
-  // Filtrar el pedido específico por orderNumber
+  console.log("orders", orders);
+  console.log("orderNumber", shouldFetch);
+
+  // Use useMemo to memoize the filtered order for performance
   const order = useMemo(() => {
-    if (!customer?.orders || !orderNumber) return null
-    return customer.orders.find((order) => order.orderNumber === orderNumber)
-  }, [customer?.orders, orderNumber])
+    if (!orders || !Array.isArray(orders)) return null;
+    return orders.find((order) => order.orderNumber === orderNumber) || null;
+  }, [orders, orderNumber]);
 
-  return { order, isLoading, error }
+  return  order ;
 }

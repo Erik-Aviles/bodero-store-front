@@ -1,6 +1,6 @@
-import { blue, primary, white } from '@/lib/colors'
-import Link from 'next/link'
-import styled, { css } from 'styled-components'
+import { blue, primary, white } from "@/lib/colors";
+import Link from "next/link";
+import styled, { css } from "styled-components";
 
 const Content = css`
   flex: 1 1 calc(33.333% - 16px);
@@ -12,7 +12,7 @@ const Content = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
-`
+`;
 export const Container = styled.div`
   font-size: 0.8rem;
   display: flex;
@@ -23,7 +23,7 @@ export const Container = styled.div`
     align-items: center;
     gap: 10px;
   }
-`
+`;
 export const TitleH2 = styled.h2`
   color: ${blue};
   margin: 0;
@@ -31,14 +31,14 @@ export const TitleH2 = styled.h2`
   @media (max-width: 768px) {
     font-size: 1rem;
   }
-`
+`;
 export const SectionTitle = styled.h3`
   width: 100%;
   font-weight: 500;
   margin: 10px 0;
   color: ${blue};
   border-bottom: 1px solid #e9ecef;
-`
+`;
 
 export const Wrapper = styled.section`
   flex-wrap: wrap;
@@ -52,10 +52,10 @@ export const Wrapper = styled.section`
     padding-left: 3px;
     padding-right: 3px;
   }
-`
+`;
 export const Form = styled.form`
   ${Content}
-`
+`;
 export const Article = styled.article`
   ${Content}
   p {
@@ -69,37 +69,39 @@ export const Article = styled.article`
     font-weight: 400;
     color: #9199a0;
   }
-`
+`;
 export const StatusText = styled.strong`
   color: ${(props) => {
     switch (props.$status) {
-      case 'Entregado':
-        return 'green'
-      case 'Enviado':
-        return 'blue'
-      case 'Preparando':
-        return 'orange'
-      case 'Cancelado':
-        return 'red'
+      case "delivered":
+        return "green";
+      case "shipped":
+        return "purple";
+      case "processing":
+        return "blue";
+      case "pending":
+        return "orange";
+      case "canceled":
+        return "red";
       default:
-        return null
+        return null;
     }
   }};
   font-weight: bold;
-`
+`;
 
 export const ScrollContainer = styled.div`
   overflow-x: auto;
   border: 1px solid #e9ecef;
   border-top: none;
-`
+`;
 export const ContentEmpty = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-transform: capitalize
-`
+  text-transform: capitalize;
+`;
 export const Table = styled.table`
   width: 100%;
   font-size: 0.8rem;
@@ -128,21 +130,27 @@ export const Table = styled.table`
   tbody tr:nth-child(even) {
     background-color: #f8f9fa;
   }
-`
+`;
 export const TD = styled.td`
   min-width: 265px;
-`
+`;
+
+export const TDnowrap = styled.td`
+   white-space: nowrap;
+   overflow: hidden, 
+   textOverflow: ellipsis 
+`;
 export const ComponenteLink = styled(Link)`
   white-space: nowrap;
   font-size: 0.8rem;
-`
+`;
 
 export const WrapperButton = styled.div`
   display: flex;
   justify-content: space-evenly;
   gap: 10px;
   padding: 20px 0;
-`
+`;
 export const Button = styled.button`
   padding: 10px;
   color: ${white};
@@ -177,4 +185,4 @@ export const Button = styled.button`
         cursor: not-allowed;
       }
     `};
-`
+`;

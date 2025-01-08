@@ -1,5 +1,5 @@
 import { stopwords } from "@/resource/stopwordsData";
-import { removeAccents, removePluralEnding } from "./normalize";
+import { removeAccents, removePluralEnding } from "./formats/normalize";
 
 export function fetchProductsFilter(products, search, minLength) {
   try {

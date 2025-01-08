@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AllDeleteIcon, DeleteIcon } from '../Icons'
-import formatPrice from '@/utils/formatPrice'
+import formatPrice from '@/utils/formats/formatPrice'
 import { CartContext } from '@/context/CartContext'
 import styled, { css } from 'styled-components'
 import { error, grey, greylight, success, white } from '@/lib/colors'
