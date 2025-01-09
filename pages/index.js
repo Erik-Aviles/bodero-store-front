@@ -34,7 +34,7 @@ export default function HomePage() {
     <Layout
       title='B.R.D | Tienda de repuestos, accesorios y servicios'
       description='Bodero Racing Development ofrece repuestos y accesorios originales de motos. Ademas de reparación y mantenimiento de motos de alta gama.'
-      sity='/'
+      sity={'/'}
     >
       <BackgroundColor>
         <Carousel />

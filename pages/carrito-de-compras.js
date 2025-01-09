@@ -1,3 +1,7 @@
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import styled, { css } from "styled-components";
 import { WhatsappIcon } from "@/components/Icons";
 import { useData } from "@/hooks/useData";
 import Layout from "@/components/Layout";
@@ -10,11 +14,13 @@ import Title from "@/components/stylesComponents/Title";
 import { CartContext } from "@/context/CartContext";
 import NotificationContext from "@/context/NotificationContext";
 import { error, grey, greylight, success, white } from "@/lib/colors";
-import { capitalize } from "@/utils/capitalize";
-import axios from "axios";
-import { useRouter } from "next/router";
-import { useContext, useState } from "react";
-import styled, { css } from "styled-components";
+import { capitalize } from "@/utils/formats/capitalize";
+import InputGroup from "@/components/Account/forms/InputGroup";
+import { countries } from "@/resource/curtomerData";
+import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
+import { useHandleGoBack } from "@/hooks/useHandleGoBack";
+import { handleCreateOrder } from "@/utils/handlers/order";
+import useAddress from "@/hooks/useAddress";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -32,25 +38,31 @@ const ColumnsWrapper = styled.div`
   }
 `;
 
-const WrapperDiv = styled.div`
+const WrapperDiv = styled.fieldset`
+  border: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   gap: 5px;
-  ${(props) =>
-    props.$center &&
-    css`
-      justify-content: space-evenly;
-    `}
-  ${(props) =>
-    props.$column &&
-    css`
-      @media screen and (max-width: 370px) {
-        flex-direction: column;
-      }
-    `}
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+`;
+const WrapperButton = styled.section`
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  padding: 20px 0;
+  justify-content: center;
 `;
 
 const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   height: fit-content;
   background-color: ${white};
   border-radius: 10px;
@@ -82,85 +94,94 @@ const Box = styled.div`
   }
 `;
 
-const InputContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0 0 10px;
-  label {
-    font-size: 12px;
-    font-weight: 400;
-    color: ${grey};
-  }
-  input {
-    display: block;
-    color: ${grey};
-    padding: 0.5rem 1rem;
-    border: 0.5px solid #878787;
-    font-size: 0.7rem;
-    border-radius: 6px;
-    transition-duration: 0.3s;
-    outline: 0.5px solid transparent;
-    &:focus {
-      outline: 1px solid ${error};
-    }
-    &::placeholder {
-      color: ${greylight};
-      font-style: italic;
-    }
-  }
-`;
-
 export default function CartPage() {
+  const {billingAddress} = useAddress()
+  const handleGoBack = useHandleGoBack();
   const { company } = useData();
   const secondaryPhone = company?.secondaryPhone;
 
   const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
-  const [streetAddress, setStreetAddress] = useState("");
-  const [country, setCountry] = useState("");
-
   const { cartProducts, clearCart } = useContext(CartContext);
-  const orderData = {
-    name,
-    email,
-    phone,
-    city,
-    streetAddress,
-    country,
-    cartProducts,
+
+  const [name, setName] = useState(billingAddress?.name || "");
+  const [lastname, setLastName] = useState(
+    billingAddress?.lastname || ""
+  );
+  const [email, setEmail] = useState(billingAddress?.email || "");
+  const [idDocument, setIdDocument] = useState(
+    billingAddress?.idDocument || ""
+  );
+  const [phone, setPhone] = useState(billingAddress?.phone || "");
+  const [country, setCountry] = useState(
+    billingAddress?.country?.isoCode || ""
+  );
+  const [province, setProvince] = useState(
+    billingAddress?.province?.isoCode || ""
+  );
+  const [city, setCity] = useState(billingAddress?.canton || "");
+
+  const [states, setStates] = useState({});
+  const [cities, setCities] = useState({});
+
+  const [streetAddress, setStreetAddress] = useState(
+    billingAddress?.streetAddress || ""
+  );
+  const [postal, setPostal] = useState(
+    billingAddress?.postal || ""
+  );
+
+  const fieldLabels = {
+    name: "Nombres",
+    lastname: "Apellidos",
+    email: "Correo",
+    country: "Pais",
+    province: "Provincia",
+    canton: "Canton",
+    postal: "Codigo postal",
+    address: "Direccion",
+    idDocument: "Documento de identidad",
+    phone: "Teléfono",
+  };
+
+  useEffect(() => {
+    const { statesData, citiesData } = loadStatesAndCities(countries);
+    setStates(statesData);
+    setCities(citiesData);
+  }, []);
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "country") {
+      setCountry(value);
+      setProvince("") / setCity("");
+    } else if (name === "province") {
+      setProvince(value);
+      setCity("");
+    } else if (name === "canton") {
+      setCity(value);
+    }
   };
 
   async function handleShippingOrder() {
-    try {
-      const response = await axios.post("/api/order", orderData);
-      showNotification({
-        open: true,
-        msj: response.data.message,
-        status: "success",
-      });
-
-      clearCart();
-
-      const timeout = setTimeout(() => {
-        router.push("/");
-      }, 1000);
-      return () => clearTimeout(timeout);
-    } catch (error) {
-      showNotification({
-        open: true,
-        msj: error.response.data.message,
-        status: "error",
-      });
-    }
+    handleCreateOrder({
+      name,
+      lastname,
+      email,
+      idDocument,
+      phone,
+      country,
+      province,
+      city,
+      streetAddress,
+      postal,
+      cartProducts,
+      clearCart,
+    });
   }
 
-  const submitOrder = async (e) => {
+  //Funcion para envio de pedido por whatsapp
+  const submitOrderWhatsapp = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("/api/checkout", orderData);
@@ -215,11 +236,6 @@ export default function CartPage() {
     }
   };
 
-  const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
-  };
-
   return (
     <Layout title="B.R.D | Mi carrito">
       <CenterDiv>
@@ -234,78 +250,117 @@ export default function CartPage() {
           {!!cartProducts?.length && (
             <Box $white={1}>
               <h3>Información de envío </h3>
-              <InputContainer>
-                <label htmlFor="name">Nombre y Apellido</label>
-                <input
-                  type="text"
-                  placeholder="Nombre.."
-                  id="name"
+              <p>
+                Lea detenidamente si los campos con la información guardada son
+                los correctos, caso contrario puede ser editado.{" "}
+              </p>
+              <WrapperDiv>
+                <InputGroup
+                  required
+                  label={fieldLabels.name}
                   name="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  placeholder="Ingresa tu nombre"
                 />
-              </InputContainer>
-              <WrapperDiv $column>
-                <InputContainer>
-                  <label htmlFor="email">Correo</label>
-                  <input
-                    type="text"
-                    placeholder="Correo..."
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </InputContainer>
 
-                <InputContainer>
-                  <label htmlFor="phone">Teléfono</label>
-                  <input
-                    type="text"
-                    placeholder="Teléfono..."
-                    id="phone"
-                    name="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </InputContainer>
+                <InputGroup
+                  required
+                  label={fieldLabels.lastname}
+                  name="lastname"
+                  value={lastname}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Ingresa tu apellido"
+                />
+              </WrapperDiv>
+              <WrapperDiv>
+              <InputGroup
+                required
+                type="email"
+                name="email"
+                label={fieldLabels.email}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <InputGroup
+                type="text"
+                name="postal"
+                label={fieldLabels.postal}
+                value={postal}
+                onChange={(e) => setPostal(e.target.value)}
+              />
+              </WrapperDiv>
+
+              <WrapperDiv>
+                <InputGroup
+                  required
+                  name="idDocument"
+                  label={fieldLabels.idDocument}
+                  value={idDocument}
+                  onChange={(e) => setIdDocument(e.target.value)}
+                />
+
+                <InputGroup
+                  required
+                  type="tel"
+                  name="phone"
+                  label={fieldLabels.phone}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
               </WrapperDiv>
               <WrapperDiv $column>
-                <InputContainer>
-                  <label htmlFor="city">Ciudad</label>
-                  <input
-                    type="text"
-                    placeholder="Ciudad..."
-                    id="city"
-                    name="city"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                  />
-                </InputContainer>{" "}
-                <InputContainer>
-                  <label htmlFor="country">País</label>
-                  <input
-                    type="text"
-                    placeholder="País..."
-                    id="country"
-                    name="country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                  />
-                </InputContainer>
-              </WrapperDiv>{" "}
-              <InputContainer>
-                <label htmlFor="streetAddress">Dirección</label>
-                <input
-                  type="text"
-                  placeholder="Dirección..."
-                  id="streetAddress"
-                  name="streetAddress"
-                  value={streetAddress}
-                  onChange={(e) => setStreetAddress(e.target.value)}
+                <InputGroup
+                  required
+                  as="select"
+                  name="country"
+                  label={fieldLabels.country}
+                  value={country}
+                  onChange={handleAddressChange}
+                  options={countries.map((c) => ({
+                    name: c.name,
+                    value: c.isoCode,
+                  }))}
                 />
-              </InputContainer>
-              <WrapperDiv $center>
+                <InputGroup
+                  required
+                  as="select"
+                  name="province"
+                  label={fieldLabels.province}
+                  value={province}
+                  onChange={handleAddressChange}
+                  options={
+                    states[country]?.map((state) => ({
+                      name: state.name,
+                      value: state.isoCode,
+                    })) || []
+                  }
+                />
+                <InputGroup
+                  required
+                  as="select"
+                  name="canton"
+                  label={fieldLabels.canton}
+                  value={city}
+                  onChange={handleAddressChange}
+                  options={
+                    cities[province]?.map((city) => ({
+                      name: city.name,
+                      value: city.name,
+                    })) || []
+                  }
+                />
+              </WrapperDiv>
+              <InputGroup
+                required
+                name="streetAddress"
+                label={fieldLabels.address}
+                value={streetAddress}
+                onChange={(e) => setStreetAddress(e.target.value)}
+                placeholder="Escribe una dirección"
+              />
+
+              <WrapperButton>
                 <Button
                   $black={1}
                   title={"Se envia pedido directo para realizar la compra"}
@@ -314,14 +369,14 @@ export default function CartPage() {
                   ENVIAR PEDIDO DIRECTO
                 </Button>
                 <Button
-                  onClick={submitOrder}
+                  onClick={submitOrderWhatsapp}
                   title={"Se envía pedido para requerir información"}
                   $secondary={1}
                 >
                   <WhatsappIcon height={25} width={25} />
                   PEDIR POR WHATSAPP
                 </Button>
-              </WrapperDiv>
+              </WrapperButton>
             </Box>
           )}
         </ColumnsWrapper>

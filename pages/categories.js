@@ -97,7 +97,12 @@ export default function CategoriesPage() {
     mutate: mutateCategories,
   } = useSWR(apiUrlCategories, fetcher)
 
+  const apiUrlCategoriesPagination = `/api/categories/pagination?page=${pageCat}`
+
+  const { data: pagination } = useSWR(apiUrlCategoriesPagination, fetcher)
+
   const allCategories = categories?.categories
+  const allCategoriesPagination = pagination?.categories
 
   const categoryNames = useMemo(
     () =>
@@ -158,7 +163,7 @@ export default function CategoriesPage() {
     return (
       <>
         <ListCategory>
-          {allCategories?.map((item) => (
+          {allCategoriesPagination?.map((item) => (
             <ItemCard key={item._id} item={item} />
           ))}
         </ListCategory>
@@ -177,7 +182,7 @@ export default function CategoriesPage() {
             onClick={() =>
               handlePageChange(pageCat + 1, setPageCat, mutateCategories)
             }
-            disabled={categories?.result !== pageSize}
+            disabled={pagination?.result !== pageSize}
           >
             Siguiente
           </ButtonDisabled>
@@ -238,13 +243,16 @@ export default function CategoriesPage() {
                 isError={isErrorProducts}
                 nameCategory={nameCategory}
               />
+              {products.length > 0 && (
+                <Pagination
+                  currentPage={pages}
+                  onPageChange={handlePageChangePro}
+                  totalPages={Math.ceil(totalProducts / pageSize)}
+                  isLoading={isLoadingProduct || isValidating}
+                />
+              )}
             </Wrapper>
-            <Pagination
-              currentPage={pages}
-              onPageChange={handlePageChangePro}
-              totalPages={Math.ceil(totalProducts / pageSize)}
-              isLoading={isLoadingProduct || isValidating}
-            />
+            {products.length > 0 && renderFooter()}
           </>
         ) : (
           <>
@@ -262,10 +270,12 @@ export default function CategoriesPage() {
                 <Text>Categorías.</Text>
               </BreadCrumb>
             </Sorted>
-            <Wrapper>{renderCategorySection()}</Wrapper>
+            <Wrapper>
+              {renderCategorySection()}
+              {renderFooter()}
+            </Wrapper>
           </>
         )}
-        {renderFooter()}
       </ContentSection>
     </Layout>
   )

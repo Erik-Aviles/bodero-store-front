@@ -8,12 +8,12 @@ import vertical2 from "@/public/images/about-us/vertical2.jpg";
 import vertical4 from "@/public/images/about-us/vertical4.jpg";
 import Title from "@/components/stylesComponents/Title";
 import Layout from "@/components/Layout";
-import { useRouter } from "next/navigation";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
-import { black, grey, greylight } from "@/lib/colors";
+import { black} from "@/lib/colors";
 import { useEffect, useState } from "react";
 import { Loading } from "@/components/Loading";
+import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -97,7 +97,8 @@ const SectionText = styled.section`
 `;
 
 export default function AboutUsPage() {
-  const router = useRouter();
+  const handleGoBack = useHandleGoBack()
+
   const [isUpLoanding, setIsUpLoanding] = useState(true);
 
   useEffect(() => {
@@ -106,11 +107,6 @@ export default function AboutUsPage() {
     }, 1000);
     return () => clearTimeout(timeout);
   }, []);
-
-  const handleGoBack = (e) => {
-    e.preventDefault();
-    router.back();
-  };
 
   if (isUpLoanding) {
     return <Loading />;

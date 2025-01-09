@@ -21,6 +21,7 @@ import useProduct from '@/hooks/useProduct'
 import { useRouter } from 'next/router'
 import Text from '@/components/stylesComponents/HighlightedText'
 import AddRemoveCart from '@/components/cart/AddRemoveCart'
+import { useHandleGoBack } from '@/hooks/useHandleGoBack'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -139,6 +140,7 @@ const ButtonCard = styled.button`
 `
 
 export default function ProductPage() {
+  const handleGoBack = useHandleGoBack()
   const { addProduct, cartProducts, removeOneProduct, removeProduct } =
     useContext(CartContext)
   const router = useRouter()
@@ -149,11 +151,6 @@ export default function ProductPage() {
     return cartProducts.some((item) => item === product)
   }
   const isProductInCart = checkProductInCart(product?._id)
-
-  const handleGoBack = (e) => {
-    e.preventDefault()
-    router.back()
-  }
 
   return (
     <Layout

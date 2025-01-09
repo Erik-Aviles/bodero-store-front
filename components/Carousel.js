@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
 import { useData } from "@/hooks/useData";
-import { capitalize } from "@/utils/capitalize";
+import { capitalize } from "@/utils/formats/capitalize";
 
 const SliderContainer = styled.div`
   width: 100%;

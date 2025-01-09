@@ -7,10 +7,10 @@ import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
 import { FormContextProvider } from '@/components/formsLogin/FormContext'
 import Layout from '@/components/Layout'
 import BackButton from '@/components/buttonComponents/BackButton'
-import { useRouter } from 'next/navigation'
 import { FlexStyled } from '@/components/stylesComponents/Flex'
 import { Loading } from '@/components/Loading'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useHandleGoBack } from '@/hooks/useHandleGoBack'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -81,8 +81,8 @@ const WrapperInputs = styled.div`
   gap: 1rem;
 `
 export default function ContactPage() {
+  const handleGoBack = useHandleGoBack()
   const authRouter = useAuthFetch()
-  const router = useRouter()
   const { isLoading, startLoading, finishtLoading } = useLoading()
   const [isUpLoanding, setIsUpLoanding] = useState(true)
 
@@ -93,11 +93,6 @@ export default function ContactPage() {
 
     return () => clearTimeout(timeout)
   }, [])
-
-  const handleGoBack = (e) => {
-    e.preventDefault()
-    router.back()
-  }
 
   if (isUpLoanding) {
     return <Loading />

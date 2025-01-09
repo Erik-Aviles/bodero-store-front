@@ -1,14 +1,14 @@
-import styled from "styled-components";
-import InformationFooter from "./InformationFooter";
-import { black, grey, primary, white } from "@/lib/colors";
-import logoLetras from "../public/logoLetras.jpg";
-import Link from "next/link";
-import Image from "next/image";
-import betimes from "../public/images/betimes/betimesCompany.png";
-import instagram from "../public/svg/instagram.svg";
-import facebook from "../public/svg/facebook.svg";
-import tiktok from "../public/svg/tiktok.svg";
-import { useData } from "@/hooks/useData";
+import styled from 'styled-components'
+import InformationFooter from './InformationFooter'
+import { black, grey, primary, white } from '@/lib/colors'
+import logoLetras from '../public/logoLetras.jpg'
+import Link from 'next/link'
+import Image from 'next/image'
+import betimes from '../public/images/betimes/betimesCompany.png'
+import instagram from '../public/svg/instagram.svg'
+import facebook from '../public/svg/facebook.svg'
+import tiktok from '../public/svg/tiktok.svg'
+import { useData } from '@/hooks/useData'
 
 const WrapperFooter = styled.footer`
   display: flex;
@@ -25,22 +25,23 @@ const WrapperFooter = styled.footer`
     flex-direction: row;
     justify-content: space-around;
   }
-`;
+`
 const WrapperFooterSpan = styled.span`
   display: flex;
+  flex-basis: min-content;
   flex-direction: column;
   align-items: center;
   text-align: center;
   font: small-caption;
   font-size: 10px;
   img {
-    width: 35%;
+    width: 100px;
     height: auto;
   }
   @media screen and (min-width: 768px) {
     order: 1;
   }
-`;
+`
 const Logo = styled(Link)`
   width: 280px;
   img {
@@ -51,7 +52,7 @@ const Logo = styled(Link)`
     order: 2;
     width: 300px;
   }
-`;
+`
 
 const ListSocialMedia = styled.div`
   display: flex;
@@ -70,7 +71,7 @@ const ListSocialMedia = styled.div`
       align-self: end;
     }
   }
-`;
+`
 
 const SocialMediaName = styled.i`
   font-size: 14px;
@@ -82,11 +83,11 @@ const SocialMediaName = styled.i`
   &:hover {
     color: ${primary};
   }
-`;
+`
 
 export default function Footer() {
-  const { company } = useData();
-  const socialMedia = company?.socialMedia;
+  const { company } = useData()
+  const socialMedia = company?.socialMedia
 
   return (
     <>
@@ -98,8 +99,8 @@ export default function Footer() {
             <Link
               key={title}
               href={link}
-              target="_blank"
-              rel="noopener noreferrer"
+              target='_blank'
+              rel='noopener noreferrer'
               title={title}
             >
               {icon ? (
@@ -110,14 +111,14 @@ export default function Footer() {
             </Link>
           ))}
         </ListSocialMedia>
-        <Logo href={"/"}>
-          <Image alt="Logo B.D.R" src={logoLetras} title={"Ir al Inicio"} />
+        <Logo href={'/'}>
+          <Image alt='Logo B.D.R' src={logoLetras} title={'Ir al Inicio'} />
         </Logo>
         <WrapperFooterSpan>
-          <Image src={betimes} alt="Logo de Betimes Company" />
+          <Image src={betimes} alt='Logo de Betimes Company' />
           Diseño y Desarrollo Web - © 2024
         </WrapperFooterSpan>
       </WrapperFooter>
     </>
-  );
+  )
 }

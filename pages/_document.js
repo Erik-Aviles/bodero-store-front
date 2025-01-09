@@ -32,7 +32,10 @@ export default class MyDocument extends Document {
     return (
       <Html lang='es'>
         <Head>
-          <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap' />
+          <link
+            href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'
+            rel='stylesheet'
+          />
           <link
             rel='icon'
             type='image/png'
@@ -50,7 +53,6 @@ export default class MyDocument extends Document {
             sizes='180x180'
             href='/icons/apple-touch-icon.png'
           />
-
           <link
             rel='stylesheet'
             type='text/css'
@@ -62,22 +64,25 @@ export default class MyDocument extends Document {
             href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css'
           />
           <link rel='manifest' href='/site.webmanifest' />
-          <script type='application/ld+json'>
-            {JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Organization',
-              name: 'Bodero Racing Development',
-              url: 'https://boderoracing.com',
-              logo: 'https://boderoracing.com/logo.jpg',
-              description:
-                'Venta de repuestos y accesorios de motos. Servicio técnico en reparación y mantenimiento de motos.',
-              contactPoint: {
-                '@type': 'ContactPoint',
-                telephone: '+593-99-650-1072',
-                contactType: 'customer service',
-              },
-            })}
-          </script>
+          <script
+            type='application/ld+json'
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Organization',
+                name: 'Bodero Racing Development',
+                url: 'https://boderoracing.com',
+                logo: 'https://boderoracing.com/logo.jpg',
+                description:
+                  'Venta de repuestos y accesorios de motos. Servicio técnico en reparación y mantenimiento de motos.',
+                contactPoint: {
+                  '@type': 'ContactPoint',
+                  telephone: '+593-99-650-1072',
+                  contactType: 'customer service',
+                },
+              }),
+            }}
+          />
         </Head>
         <body>
           <Main />

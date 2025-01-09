@@ -1,9 +1,14 @@
+import Head from "next/head";
 import GlobalStyle from "@/components/globalstyles";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { CartContextProvider } from "@/context/CartContext";
-import Head from "next/head";
+import { ActionsProvider } from "@/context/actionsProvider";
+import AuthProvider from "@/providers/Provider";
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: {  session, ...pageProps },
+}) {
   return (
     <>
       <Head>
@@ -14,11 +19,15 @@ export default function App({ Component, pageProps }) {
         />
       </Head>
       <GlobalStyle />
-      <NotificationProvider>
-        <CartContextProvider>
-          <Component {...pageProps} />
-        </CartContextProvider>
-      </NotificationProvider>
+      <AuthProvider session={session}>
+        <NotificationProvider>
+          <ActionsProvider>
+            <CartContextProvider>
+              <Component {...pageProps} />
+            </CartContextProvider>
+          </ActionsProvider>
+        </NotificationProvider>
+        </AuthProvider>
     </>
   );
 }

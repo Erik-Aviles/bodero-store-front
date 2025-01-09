@@ -6,9 +6,9 @@ import {
   error,
   grey,
   greylight,
-} from "@/lib/colors";
-import React from "react";
-import styled, { css } from "styled-components";
+} from '@/lib/colors'
+import React from 'react'
+import styled, { css } from 'styled-components'
 
 export const ButtonStyle = css`
   height: 30px;
@@ -22,7 +22,7 @@ export const ButtonStyle = css`
   gap: 5px;
   text-decoration: none;
   font-size: 0.6rem;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
   svg: {
     height: 16px;
@@ -80,9 +80,9 @@ export const ButtonStyle = css`
       color: ${white};
       border: 1px solid ${primary};
       &:hover {
-        background-color: ${white};
-        color: ${black};
-        border: 1px solid ${black};
+        background-color: transparent;
+        color: ${primary};
+        border: 1px solid ${primary};
       }
     `};
   ${(props) =>
@@ -105,6 +105,10 @@ export const ButtonStyle = css`
       background-color: ${secondary};
       color: ${white};
       border: 1px solid ${secondary};
+      &:hover {
+        background-color: transparent;
+        color: ${secondary};
+      }
     `};
   ${(props) =>
     props.$secondary &&
@@ -147,25 +151,25 @@ export const ButtonStyle = css`
     `};
 
   ${(props) =>
-    props.$size === "l" &&
+    props.$size === 'l' &&
     css`
       font-size: 1.2rem;
       padding: 10px 15px;
     `};
   ${(props) =>
-    props.$size === "m" &&
+    props.$size === 'm' &&
     css`
       font-size: 1rem;
       padding: 10px 15px;
     `};
-`;
+`
 
 const StyleButton = styled.button`
   ${ButtonStyle}
-`;
+`
 
 const Button = ({ children, ...rest }) => {
-  return <StyleButton {...rest}>{children}</StyleButton>;
-};
+  return <StyleButton {...rest}>{children}</StyleButton>
+}
 
-export default Button;
+export default Button

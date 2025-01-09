@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { black, white } from '@/lib/colors'
 import Title from '@/components/stylesComponents/Title'
 import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import { useRouter } from 'next/navigation'
 import Layout from '@/components/Layout'
 import BackButton from '@/components/buttonComponents/BackButton'
 import { FlexStyled } from '@/components/stylesComponents/Flex'
 import { Loading } from '@/components/Loading'
+import { useHandleGoBack } from '@/hooks/useHandleGoBack'
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -65,7 +65,7 @@ const Box = styled.div`
 `
 
 export default function DeliveryPage() {
-  const router = useRouter()
+  const handleGoBack = useHandleGoBack()
   const [isUpLoanding, setIsUpLoanding] = useState(true)
 
   useEffect(() => {
@@ -75,10 +75,6 @@ export default function DeliveryPage() {
     return () => clearTimeout(timeout)
   }, [])
 
-  const handleGoBack = (e) => {
-    e.preventDefault()
-    router.back()
-  }
 
   if (isUpLoanding) {
     return <Loading />
