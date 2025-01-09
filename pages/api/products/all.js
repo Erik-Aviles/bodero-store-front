@@ -25,7 +25,6 @@ export default async function handle(req, res) {
 if (q) {
   try {
     const query = q.trim();
-    console.log(query);
 
     // Crear el filtro de búsqueda de texto
     const searchQuery = { $text: { $search: query } };

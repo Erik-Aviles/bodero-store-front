@@ -20,7 +20,6 @@ const MyDatas = () => {
   const { showNotification } = useContext(NotificationContext);
   const handleGoBack = useHandleGoBack();
   const { data: session, status, update } = useSession();
-  console.log("session", session?.user);
   const customer = session?.user;
 
   const fieldLabels = {
@@ -63,8 +62,6 @@ const MyDatas = () => {
 
       // Enviar datos al servidor
       const response = await axios.put("/api/customers/update", updatedData);
-
-      console.log("respuesta", response);
 
       if (response.status === 200) {
         // Actualizar la sesión del usuario

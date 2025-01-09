@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import styled, { css } from "styled-components";
 import Title from "@/components/stylesComponents/Title";
@@ -10,8 +10,9 @@ import InputGroup from "@/components/Account/forms/InputGroup";
 import DateInputGroup from "@/components/Account/forms/DateInputGroup";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
+import { Loading } from "@/components/Loading";
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
@@ -113,6 +114,7 @@ const Button = styled.button`
 `;
 
 export default function RegisterPage() {
+  const { status } = useSession();
   const router = useRouter();
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false);
@@ -140,6 +142,12 @@ export default function RegisterPage() {
     confirmPassword: "Confirmar Contraseña",
   };
 
+    useEffect(() => {
+      if (status === "authenticated") {
+        router.push("/customer/mi-cuenta/general");
+      }
+    }, [status, router]);
+
   const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev);
   const toggleVisibilityConfirmPassword = () =>
     setIsVisiblePassConfirm((prev) => !prev);
@@ -156,7 +164,6 @@ export default function RegisterPage() {
     e.preventDefault();
     try {
       const formattedDate = selectedDate?.toISOString().split("T")[0];
-      console.log(formattedDate);
       const signupResponse = await axios.post("/api/auth/register", {
         ...formData,
         dateOfBirth: formattedDate,
@@ -199,9 +206,13 @@ export default function RegisterPage() {
     }
   };
 
+    if(status === "loading") {
+      return <Loading />
+    }
+
   return (
     <Layout title="B.R.D | Nueva Cuenta">
-      <CenterDiv>
+      {status !== "authenticated" && <CenterDiv>
         <DivTitle>
           <Title>Crear una nueva cuenta</Title>
           <RequiredText>(*) Datos Obligatorios</RequiredText>
@@ -313,7 +324,7 @@ export default function RegisterPage() {
             ENVIAR
           </Button>
         </ColumnsFormWrapper>
-      </CenterDiv>
+      </CenterDiv>}
     </Layout>
   );
 }

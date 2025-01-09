@@ -13,21 +13,14 @@ import {
   Form,
 } from "../stylesComponents/ComponentAccount";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
-import { useSession } from "next-auth/react";
 import NotificationContext from "@/context/NotificationContext";
 import axios from "axios";
+import useAddress from "@/hooks/useAddress";
 
 const MyAddress = () => {
   const { showNotification } = useContext(NotificationContext);
   const handleGoBack = useHandleGoBack();
-  const { data: session, status, update } = useSession();
-  console.log("session", session?.user);
-
-  const customer = session?.user;
-  const billingAddress = session?.user?.billingAddress;
-  const shippingAddress = session?.user?.shippingAddress;
-  console.log("shippingAddress", shippingAddress);
-  console.log("billingAddress", billingAddress);
+  const { billingAddress, shippingAddress } = useAddress()
 
   const initialAddresses = {
     billingAddress: billingAddress || {},
@@ -102,22 +95,15 @@ const MyAddress = () => {
     try {
       setIsLoading(true);
       const address = addresses[type];
-      console.log("Direccion modificada", address);
 
       // Enviar solicitud PUT
       const response = await axios.put("/api/customers/address", {
         type,
         address,
       });
-      console.log("respuesta PUT", response);
 
       if (response.status === 200) {
-        const updatedUser = {
-          ...customer,
-          [`${type}`]: address,
-        };
-        await update({ user: updatedUser });
-
+     
         showNotification({
           open: true,
           msj: response.data.message,

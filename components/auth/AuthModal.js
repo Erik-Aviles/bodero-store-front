@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import styled, { css } from "styled-components";
 import ButtonClose from "../buttonComponents/ButtonClose";
-import { LoginIcon, LogoutIcon, UserAddIcon } from "../Icons";
+import { LoginIcon, LogoutIcon, RecoveryIcon, UserAddIcon } from "../Icons";
 import Link from "next/link";
 import avatarLocal from "../../public/images/avatarUser.png";
 import { primary } from "@/lib/colors";
@@ -194,6 +194,12 @@ const AuthModal = ({ isOpen, toggleModal }) => {
                 <Link href={"/auth/registro"} onClick={toggleModal}>
                   <UserAddIcon />
                   <p>Crear una cuenta</p>
+                </Link>
+              </Authtem>
+              <Authtem>
+                <Link href={"/auth/recuperar-contrasena"} onClick={toggleModal}>
+                  <RecoveryIcon />
+                  <p>Recuperar Contraseña</p>
                 </Link>
               </Authtem>
             </>

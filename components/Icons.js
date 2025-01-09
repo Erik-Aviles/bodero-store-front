@@ -1,5 +1,46 @@
 import * as React from "react";
 
+export const RecoveryIcon = ({ size, height, width, ...props }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size || "1em"}
+    height={size || "1em"}
+    fill="none"
+    viewBox="0 0 48 48"
+    {...props}
+  >
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4}
+      d="M44 24V9H4v30h20"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4}
+      d="m4 9 20 15L44 9"
+    />
+    <path
+      fill="transparent"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4}
+      d="M31 33h12v8H31z"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4}
+      d="M40 33v-3a3 3 0 1 0-6 0v3"
+    />
+  </svg>
+);
+
 export const AddIcon = ({ size, height, width, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

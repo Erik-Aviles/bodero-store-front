@@ -16,10 +16,11 @@ import NotificationContext from "@/context/NotificationContext";
 import { error, grey, greylight, success, white } from "@/lib/colors";
 import { capitalize } from "@/utils/formats/capitalize";
 import InputGroup from "@/components/Account/forms/InputGroup";
-import { countries, customerInfo } from "@/resource/curtomerData";
+import { countries } from "@/resource/curtomerData";
 import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 import { handleCreateOrder } from "@/utils/handlers/order";
+import useAddress from "@/hooks/useAddress";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -94,6 +95,7 @@ const Box = styled.div`
 `;
 
 export default function CartPage() {
+  const {billingAddress} = useAddress()
   const handleGoBack = useHandleGoBack();
   const { company } = useData();
   const secondaryPhone = company?.secondaryPhone;
@@ -102,31 +104,31 @@ export default function CartPage() {
   const router = useRouter();
   const { cartProducts, clearCart } = useContext(CartContext);
 
-  const [name, setName] = useState(customerInfo.billingAddress.name || "");
+  const [name, setName] = useState(billingAddress?.name || "");
   const [lastname, setLastName] = useState(
-    customerInfo.billingAddress.lastname || ""
+    billingAddress?.lastname || ""
   );
-  const [email, setEmail] = useState(customerInfo.billingAddress.email || "");
+  const [email, setEmail] = useState(billingAddress?.email || "");
   const [idDocument, setIdDocument] = useState(
-    customerInfo.billingAddress.idDocument || ""
+    billingAddress?.idDocument || ""
   );
-  const [phone, setPhone] = useState(customerInfo.billingAddress.phone || "");
+  const [phone, setPhone] = useState(billingAddress?.phone || "");
   const [country, setCountry] = useState(
-    customerInfo.billingAddress.country.isoCode || ""
+    billingAddress?.country.isoCode || ""
   );
   const [province, setProvince] = useState(
-    customerInfo.billingAddress.province.isoCode || ""
+    billingAddress?.province.isoCode || ""
   );
-  const [city, setCity] = useState(customerInfo.billingAddress.canton || "");
+  const [city, setCity] = useState(billingAddress?.canton || "");
 
   const [states, setStates] = useState({});
   const [cities, setCities] = useState({});
 
   const [streetAddress, setStreetAddress] = useState(
-    customerInfo.billingAddress.address || ""
+    billingAddress?.streetAddress || ""
   );
   const [postal, setPostal] = useState(
-    customerInfo.billingAddress.postal || ""
+    billingAddress?.postal || ""
   );
 
   const fieldLabels = {

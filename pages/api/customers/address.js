@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { Customer } from "@/models/schemas/Customer";
+import { authOptions } from "../auth/[...nextauth]";
 import { mongooseConnect } from "@/lib/mongoose";
+import { Customer } from "@/models/schemas/Customer";
 
 // Controlador para gestionar direcciones
 export default async function handler(req, res) {
@@ -14,17 +14,38 @@ export default async function handler(req, res) {
   }
 
   const { user } = session;
-  
-    // Función para convertir campos específicos a minúsculas
-    const normalizeFields = (address) => {
-      if (address.name) address.name = address.name.toLowerCase();
-      if (address.lastname) address.lastname = address.lastname.toLowerCase();
-      if (address.email) address.email = address.email.toLowerCase();
-      if (address.streetAddress) address.streetAddress = address.streetAddress.toLowerCase();
-    };
 
+  // Función para convertir campos específicos a minúsculas
+  const normalizeFields = (address) => {
+    if (address.name) address.name = address.name.toLowerCase();
+    if (address.lastname) address.lastname = address.lastname.toLowerCase();
+    if (address.email) address.email = address.email.toLowerCase();
+    if (address.streetAddress)
+      address.streetAddress = address.streetAddress.toLowerCase();
+  };
 
   try {
+    if (req.method === "GET") {
+      try {
+        await mongooseConnect(); // Conectar a la base de datos
+
+        // Buscar el usuario en la base de datos
+        const data = await Customer.findById(user._id).select(
+          "billingAddress shippingAddress"
+        );
+
+        if (!data) {
+          return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+   
+        // Responder con ambas direcciones
+        return res.status(200).json(data);
+      } catch (error) {
+        console.error("Error al obtener las direcciones:", error);
+        return res.status(500).json({ message: "Error interno del servidor" });
+      }
+    }
+
     if (req.method === "POST") {
       // Crear nuevas direcciones para el usuario
       const { type, address } = req.body;
@@ -122,29 +143,6 @@ export default async function handler(req, res) {
       });
     }
 
-    if (req.method === "DELETE") {
-      // Eliminar direcciones del usuario
-      const { type } = req.query;
-    
-      if (!["billingAddress", "shippingAddress"].includes(type)) {
-        return res.status(400).json({ message: "Tipo de dirección no válido" });
-      }
-    
-      const updatedUser = await Customer.findByIdAndUpdate(
-        user._id,
-        { [type]: {} }, // Vaciar el campo sin eliminarlo
-        { new: true }
-      );
-    
-      return res.status(200).json({
-        message: `Dirección de ${
-          type === "billingAddress" ? "facturación" : "envío"
-        } eliminada`,
-        [type]: updatedUser[type],
-      });
-    }
-    
-
     // Método no permitido
     res.setHeader("Allow", ["POST", "PUT"]);
     return res.status(405).end(`Método ${req.method} no permitido`);
@@ -153,4 +151,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 }
-

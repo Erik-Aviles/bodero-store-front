@@ -16,9 +16,7 @@ import { useSession } from "next-auth/react";
 const Authentication = () => {
   const handleGoBack = useHandleGoBack()
   const { data: session, status, update } = useSession();
-  console.log("session", session?.user);
   const customer = session?.user;
-  console.log(customer);
   
   const fieldLabels = {
     newpassword: "Contraseña nueva",
@@ -40,12 +38,10 @@ const Authentication = () => {
 
   const handleCustomerSave = () => {
     alert("Datos del cliente guardados correctamente.");
-    console.log(authData);
   };
 
   const handleCustomerCancel = () => {
     setAuthData(initialData);
-    alert("Cambios revertidos a su estado inicial.");
   };
 
   const hasCustomerChanges = () => {

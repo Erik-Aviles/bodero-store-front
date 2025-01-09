@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { Customer } from '@/models/schemas/Customer';
 import { mongooseConnect } from '@/lib/mongoose';
-import { authOptions } from '../../auth/[...nextauth]';
+import { authOptions } from '../auth/[...nextauth]';
 
 export default async function handler(req, res) {
   await mongooseConnect();

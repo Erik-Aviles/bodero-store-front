@@ -101,7 +101,6 @@ const DivButton = styled.button`
 
 export default function RecoverPasswordPage() {
   const router = useRouter()
-  const [isUpLoanding, setIsUpLoanding] = useState(true)
   const [formData, setFormData] = useState({
     email: '',
   })
@@ -125,20 +124,7 @@ export default function RecoverPasswordPage() {
     })
 
     // Lógica para enviar los datos del formulario
-    console.log('Formulario enviado', formData)
-    alert('Formulario enviado')
-    router.push('/customer/mi-cuenta?section=perfil')
-  }
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsUpLoanding(false)
-    }, 1000)
-    return () => clearTimeout(timeout)
-  }, [])
-
-  if (isUpLoanding) {
-    return <Loading />
+    alert('En construcción...')
   }
 
   return (

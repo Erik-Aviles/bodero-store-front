@@ -11,14 +11,17 @@ import {
   TitleH2,
 } from "../stylesComponents/ComponentAccount";
 import BackButton from "../buttonComponents/BackButton";
-import { handleGoBack } from "@/hooks/useHandleGoBack";
+import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 import { formatDateToEcuador } from "@/utils/formats/formatDateToEcuador";
 import formatPrice from "@/utils/formats/formatPrice";
 import { useCustomerAllOrders } from "@/hooks/useCustomerAllOrders";
-import { calcularQuantity, calcularTotal } from "@/utils/generators/calculateTotals";
-
+import {
+  calcularQuantity,
+  calcularTotal,
+} from "@/utils/generators/calculateTotals";
 
 const MyOrders = () => {
+  const handleGoBack = useHandleGoBack();
   const { orders } = useCustomerAllOrders();
 
   return (
@@ -45,12 +48,12 @@ const MyOrders = () => {
               <tr key={order._id}>
                 <TDnowrap>{order?.orderNumber || ""}</TDnowrap>
                 <td>{formatDateToEcuador(order.createdAt) || ""}</td>
-                <TDnowrap>
+                <TD>
                   {`${order.streetAddress}, ${order.city}, ${order.province}, ${order.country}.` ||
                     ""}
-                </TDnowrap>
-                <td>{ formatPrice(calcularTotal(order?.line_items)) || ""}</td>
-                <td>{calcularQuantity(order?.line_items)  || ""}</td>
+                </TD>
+                <td>{formatPrice(calcularTotal(order?.line_items)) || ""}</td>
+                <td>{calcularQuantity(order?.line_items) || ""}</td>
                 <td>
                   {(
                     <StatusText $status={order?.status}>
@@ -70,9 +73,9 @@ const MyOrders = () => {
           </tbody>
         </Table>
 
-        {!orders && (
+        {!orders?.length && (
           <ContentEmpty>
-            <p>No tienes pedidos</p>
+            <p>No tienes pedidos para mostrar</p>
           </ContentEmpty>
         )}
       </ScrollContainer>

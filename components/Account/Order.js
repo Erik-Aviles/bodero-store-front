@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSession } from "next-auth/react";
 import BackButton from "../buttonComponents/BackButton";
 import { capitalize } from "@/utils/formats/capitalize";
 import {
@@ -19,10 +20,9 @@ import { calcularTotal } from "@/utils/generators/calculateTotals";
 import formatPrice from "@/utils/formats/formatPrice";
 
 const Order = ({ pedido }) => {
+  const { status } = useSession();
   const handleGoBack = useHandleGoBack();
-  console.log("pedido", pedido);
   const order = useCustomerOrder(pedido);
-  console.log("order", order);
 
   if (!order) {
     return (
@@ -68,16 +68,17 @@ const Order = ({ pedido }) => {
         <Article>
           <SectionTitle>Metodos de pago</SectionTitle>
           <p>
-            <span>Targeta de credito:</span> {order?.paymentMethod?.cardNumber}
-            {order?.paymentMethod?.cardIcon}
+            <span>Targeta de credito:</span>
+            {order?.paymentMethod?.cardNumber || "-"}
+            {order?.paymentMethod?.cardIcon || "-"}
           </p>
           <p>
             <span>Diferido:</span>
-            12 meses
+            {"--"}
           </p>
           <p>
             <span>Autorización:</span>
-            {order?.paymentMethod?.authorizationNumber}
+            {order?.paymentMethod?.authorizationNumber || "--"}
           </p>
           <p>
             <span>Adquiridor:</span> {order?.paymentMethod?.acquirerName}

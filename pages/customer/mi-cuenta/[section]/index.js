@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -147,9 +147,8 @@ const MainContent = styled.main`
 const AccountPage = () => {
   const router = useRouter();
   const { section, pedido } = router.query;
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { cerrar } = useActions();
-  console.log("session", session?.user);
   const customer = session?.user;
 
   const isActive = useCallback(
@@ -162,12 +161,12 @@ const AccountPage = () => {
     menuItems.map(({ label, href, icon, section: itemSection }) => (
       <AsideItem key={href} $isSelected={isActive(itemSection)}>
         {label === "Salir" ? (
-          <button onClick={cerrar}>
+          <button onClick={cerrar} title={label}>
             <span>{label}</span>
             {icon}
           </button>
         ) : (
-          <Link href={href}>
+          <Link href={href} title={label}>
             <span>{label}</span>
             {icon}
           </Link>

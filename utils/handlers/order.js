@@ -1,5 +1,17 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import styled, { css } from "styled-components";
+
+const StyledLink = styled.a`
+  color: #3498db;
+  font-weight: bold;
+  text-decoration: #0033a0;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    color: #2c82c9; /* Azul más oscuro */
+  }
+`;
 
 // Función para crear una orden
 export const handleCreateOrder = async ({
@@ -14,7 +26,7 @@ export const handleCreateOrder = async ({
   streetAddress,
   postal,
   cartProducts,
-  clearCart, 
+  clearCart,
 }) => {
   try {
     // Validar campos obligatorios antes de enviar la solicitud
@@ -83,16 +95,28 @@ export const handleCreateOrder = async ({
       // Limpiar carrito después de crear la orden
       clearCart();
     } else {
+      console.lop("Sino", response.data.message);
       throw new Error(response.data.message || "Error al crear el pedido.");
     }
   } catch (error) {
     console.error("Error al crear la orden:", error);
-
-    // Mostrar mensaje de error
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: error.response?.data?.message || "Ocurrió un error inesperado.",
-    });
+    if (error.response.status === 401) {
+      return Swal.fire({
+        icon: "error",
+        title: error.response?.data?.message || "Oops...",
+        showConfirmButton: false,
+        showCancelButton: true,
+        html: `Por seguridad, <a href="/auth/inicio-sesion"  
+        ><b> Iniciar sesion aqui!</b></a> 
+  `,
+        footer: "",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response?.data?.message || "Algo salió mal!",
+      });
+    }
   }
 };

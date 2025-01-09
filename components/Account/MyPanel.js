@@ -25,6 +25,7 @@ import { capitalizeWords } from "@/utils/formats/capitalizeWords";
 import { useCustomerAllOrders } from "@/hooks/useCustomerAllOrders";
 import { calcularTotal } from "@/utils/generators/calculateTotals";
 import formatPrice from "@/utils/formats/formatPrice";
+import useAddress from "@/hooks/useAddress";
 
 const InfoSection = styled.section`
   line-height: 1.6;
@@ -52,6 +53,7 @@ const FlexHeader = styled.div`
 const MyPanel = () => {
   const handleGoBack = useHandleGoBack();
   const { orders } = useCustomerAllOrders();
+  const { billingAddress, shippingAddress } = useAddress()
   const { data: session, status, update } = useSession();
   const customer = session?.user;
 
@@ -138,11 +140,11 @@ const MyPanel = () => {
                 <tr>
                   <TDnowrap>{recentOrder?.orderNumber || "--"}</TDnowrap>
                   <td>{formatDateToEcuador(recentOrder?.createdAt) || "--"}</td>
-                  <TDnowrap>
+                  <TD>
                     {recentOrder
                       ? `${recentOrder?.streetAddress}, ${recentOrder?.city}, ${recentOrder?.province}, ${recentOrder?.country}.`
                       : "--"}
-                  </TDnowrap>
+                  </TD>
                   <td>
                     {formatPrice(calcularTotal(recentOrder?.line_items)) || ""}
                   </td>
@@ -166,7 +168,7 @@ const MyPanel = () => {
           </Table>
           {!orders?.length && (
             <ContentEmpty>
-              <p>No tienes pedidos</p>
+              <p>No tienes pedidos para mostrar</p>
             </ContentEmpty>
           )}
         </ScrollContainer>
@@ -177,7 +179,7 @@ const MyPanel = () => {
           <SectionTitle>Mis Direcciones</SectionTitle>
           <ComponenteLink
             href="/customer/mi-cuenta/direcciones"
-            title="Editar mis direcciones"
+            title="Ir a direcciones"
           >
             Ver todos
           </ComponenteLink>
@@ -186,7 +188,7 @@ const MyPanel = () => {
           <Article>
             <FlexHeader>
               <SectionTitle>Dirección de Facturación </SectionTitle>
-              {!customer?.billingAddress ? (
+              {!billingAddress ? (
                 <ComponenteLink
                   href="/customer/mi-cuenta/direcciones"
                   title="Agregar dirección de facturación"
@@ -202,46 +204,46 @@ const MyPanel = () => {
                 </ComponenteLink>
               )}
             </FlexHeader>
-            {customer?.billingAddress ? (
+            {billingAddress ? (
               <>
                 <p>
                   <span>Nombres</span>
-                  {customer?.billingAddress?.name ||
-                  customer?.billingAddress?.lastname
+                  {billingAddress?.name ||
+                  billingAddress?.lastname
                     ? `${capitalizeWords(
-                        customer?.billingAddress?.name
-                      )} ${capitalizeWords(customer?.billingAddress?.lastname)}`
+                        billingAddress?.name
+                      )} ${capitalizeWords(billingAddress?.lastname)}`
                     : "--"}
                 </p>
 
                 <p>
                   <span>Dirección</span>
-                  {capitalizeWords(customer?.billingAddress?.streetAddress) ||
+                  {capitalizeWords(billingAddress?.streetAddress) ||
                     "--"}
                 </p>
 
                 <p>
                   <span>Provincia:</span>
-                  {customer?.billingAddress?.province?.name || "--"}
+                  {billingAddress?.province?.name || "--"}
                 </p>
 
                 <p>
                   <span>Cantón:</span>
-                  {customer?.billingAddress?.canton || "--"}
+                  {billingAddress?.canton || "--"}
                 </p>
 
                 <p>
                   <span>País:</span>
-                  {customer?.billingAddress?.country?.name || "--"}
+                  {billingAddress?.country?.name || "--"}
                 </p>
                 <p>
                   <span>Postal:</span>
-                  {customer?.billingAddress?.postal || "--"}
+                  {billingAddress?.postal || "--"}
                 </p>
 
                 <p>
                   <span>Teléfono:</span>
-                  {customer?.billingAddress?.phone || "--"}
+                  {billingAddress?.phone || "--"}
                 </p>
               </>
             ) : (
@@ -253,7 +255,7 @@ const MyPanel = () => {
           <Article>
             <FlexHeader>
               <SectionTitle>Dirección de Envío </SectionTitle>
-              {!customer?.shippingAddress ? (
+              {!shippingAddress ? (
                 <ComponenteLink
                   href="/customer/mi-cuenta/direcciones"
                   title="Agregar dirección de envío"
@@ -269,40 +271,40 @@ const MyPanel = () => {
                 </ComponenteLink>
               )}
             </FlexHeader>
-            {customer?.shippingAddress ? (
+            {shippingAddress ? (
               <>
                 <p>
                   <span>Nombres</span>
-                  {customer?.shippingAddress?.name ||
-                  customer?.shippingAddress?.lastname
+                  {shippingAddress?.name ||
+                  shippingAddress?.lastname
                     ? `${capitalize(
-                        customer?.shippingAddress?.name
-                      )} ${capitalize(customer?.shippingAddress?.lastname)}`
+                        shippingAddress?.name
+                      )} ${capitalize(shippingAddress?.lastname)}`
                     : "--"}
                 </p>
                 <p>
                   <span>Dirección</span>
-                  {capitalize(customer?.shippingAddress?.streetAddress) || "--"}
+                  {capitalize(shippingAddress?.streetAddress) || "--"}
                 </p>
                 <p>
                   <span>Provincia:</span>
-                  {customer?.shippingAddress?.province?.name || "--"}
+                  {shippingAddress?.province?.name || "--"}
                 </p>
                 <p>
                   <span>Cantón:</span>
-                  {customer?.shippingAddress?.canton || "--"}
+                  {shippingAddress?.canton || "--"}
                 </p>
                 <p>
                   <span>País:</span>
-                  {customer?.shippingAddress?.country?.name || "--"}
+                  {shippingAddress?.country?.name || "--"}
                 </p>
                 <p>
                   <span>Postal:</span>
-                  {customer?.shippingAddress?.postal || "--"}
+                  {shippingAddress?.postal || "--"}
                 </p>
                 <p>
                   <span>Teléfono:</span>
-                  {customer?.shippingAddress?.phone || "--"}
+                  {shippingAddress?.phone || "--"}
                 </p>
               </>
             ) : (

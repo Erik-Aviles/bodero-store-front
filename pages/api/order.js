@@ -124,7 +124,14 @@ export default async function handle(req, res) {
     // Actualizar el cliente autenticado agregando el ID del pedido
     await Customer.findByIdAndUpdate(
       customerId,
-      { $push: { orders: orderDoc._id } },
+      {
+        $push: {
+          orders: {
+            $each: [orderDoc],
+            $slice: -4, 
+          },
+        },
+      },
       { new: true }
     );
 
@@ -148,7 +155,7 @@ const generateOrderNumber = async () => {
     .padStart(2, "0")}${date.getDate().toString().padStart(2, "0")}`;
 
   const randomCode = Math.floor(10000 + Math.random() * 90000); // Código aleatorio de 5 dígitos
-  const orderNumber = `ORD-${formattedDate}-${randomCode}`;
+  const orderNumber = `cec-${formattedDate}-${randomCode}`;
 
   // Verificar que sea único en la base de datos
   const existingOrder = await Order.findOne({ orderNumber });

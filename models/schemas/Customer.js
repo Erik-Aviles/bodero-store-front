@@ -1,4 +1,5 @@
 import { Schema, model, models } from "mongoose";
+import { OrderSchema } from "../Order";
 
 const customerSchema = new Schema(
   {
@@ -12,7 +13,7 @@ const customerSchema = new Schema(
     dateOfBirth: { type: Date },
     billingAddress: Object,
     shippingAddress: Object,
-    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }], 
+    orders: [OrderSchema], 
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true, versionKey: false }

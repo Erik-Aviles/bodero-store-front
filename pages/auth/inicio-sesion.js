@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import styled, { css } from "styled-components";
 import Title from "@/components/stylesComponents/Title";
@@ -7,8 +7,9 @@ import { greylight, primary, secondary, white } from "@/lib/colors";
 import Link from "next/link";
 import InputGroup from "@/components/Account/forms/InputGroup";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
+import { Loading } from "@/components/Loading";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -132,6 +133,7 @@ const TextLink = styled(Link)`
 
 export default function LoginPage() {
   const router = useRouter();
+  const { status } = useSession();
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -142,6 +144,12 @@ export default function LoginPage() {
     email: "Correo electrónico",
     password: "Contraseña",
   };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/customer/mi-cuenta/general");
+    }
+  }, [status, router]);
 
   const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev);
 
@@ -161,7 +169,6 @@ export default function LoginPage() {
         password: formData?.password,
         redirect: false,
       });
-      console.log("res", res);
 
       const Toast = Swal.mixin({
         toast: true,
@@ -201,9 +208,13 @@ export default function LoginPage() {
     }
   };
 
+  if(status === "loading") {
+    return <Loading />
+  }
+
   return (
     <Layout title="B.R.D | Iniciar Sesión">
-      <CenterDiv>
+     {status !== "authenticated" && <CenterDiv>
         <DivTitle>
           <Title>Iniciar sesión o crear una cuenta</Title>
           <span>(*) Datos Obligatorios</span>
@@ -262,7 +273,7 @@ export default function LoginPage() {
             </DivButton>
           </Box>
         </ColumnsWrapper>
-      </CenterDiv>
+      </CenterDiv>}
     </Layout>
   );
 }

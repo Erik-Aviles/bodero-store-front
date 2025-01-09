@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
-const OrderSchema = new Schema(
+export const OrderSchema = new Schema(
   {
     orderNumber: { type: String, unique: true },
     customerId: {

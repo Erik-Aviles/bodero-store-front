@@ -3,10 +3,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { Customer } from "@/models/schemas/Customer";
 import bcrypt from "bcryptjs";
 import { mongooseConnect } from "@/lib/mongoose";
+import { signIn } from "next-auth/react";
 
 export const authOptions = {
   providers: [
     CredentialsProvider({
+      id: "credentials",
       name: "Credentials",
       credentials: {
         email: {
@@ -22,7 +24,6 @@ export const authOptions = {
       },
       async authorize(credentials, req) {
         await mongooseConnect();
-        console.log(credentials);
         if (!credentials.email || !credentials.password) {
           throw new Error("Por favor ingrese un correo y una contraseña");
         }
@@ -42,13 +43,16 @@ export const authOptions = {
         if (!passwordMatch) {
           throw new Error("Contraseña incorrecta");
         }
-        console.log(userFind);
-
         return userFind;
       },
     }),
   ],
   callbacks: {
+    async signIn({ user, account}) {
+      if (account.provider === "credentials") {
+        return true;
+      }
+    },
     jwt({ token, user, trigger, session }) {
 
       if (trigger === "update" && session) {

@@ -1,13 +1,13 @@
-import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import GlobalStyle from "@/components/globalstyles";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { CartContextProvider } from "@/context/CartContext";
 import { ActionsProvider } from "@/context/actionsProvider";
+import AuthProvider from "@/providers/Provider";
 
 export default function App({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: {  session, ...pageProps },
 }) {
   return (
     <>
@@ -19,7 +19,7 @@ export default function App({
         />
       </Head>
       <GlobalStyle />
-      <SessionProvider session={session}>
+      <AuthProvider session={session}>
         <NotificationProvider>
           <ActionsProvider>
             <CartContextProvider>
@@ -27,7 +27,7 @@ export default function App({
             </CartContextProvider>
           </ActionsProvider>
         </NotificationProvider>
-      </SessionProvider>
+        </AuthProvider>
     </>
   );
 }
