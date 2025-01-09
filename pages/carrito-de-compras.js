@@ -114,10 +114,10 @@ export default function CartPage() {
   );
   const [phone, setPhone] = useState(billingAddress?.phone || "");
   const [country, setCountry] = useState(
-    billingAddress?.country.isoCode || ""
+    billingAddress?.country?.isoCode || ""
   );
   const [province, setProvince] = useState(
-    billingAddress?.province.isoCode || ""
+    billingAddress?.province?.isoCode || ""
   );
   const [city, setCity] = useState(billingAddress?.canton || "");
 
