@@ -35,7 +35,7 @@ export default async function handle(req, res) {
 
     const features = new APIfeatures(
       Product.find(offerFilter).select(
-        "title salePrice offerPrice brand code codeWeb codeEnterprise compatibility quantity category "
+        "title salePrice offerPrice images brand code codeWeb codeEnterprise compatibility quantity category "
       ),
       req.query
     )
