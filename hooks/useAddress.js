@@ -2,16 +2,25 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 
 const useAddress = () => {
-  const { data, error, isLoading } = useSWR(`/api/customers/address`, fetcher, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-  });
+  const { data, error, isLoading, mutate } = useSWR(
+    `/api/customers/address`,
+    fetcher,
+    {
+      shouldRetryOnError: false,
+      fallbackData: {
+        billingAddress: {},
+        shippingAddress: {},
+      },
+      revalidateOnFocus: false,
+    }
+  );
 
   return {
     billingAddress: data?.billingAddress || {},
     shippingAddress: data?.shippingAddress || {},
     isLoading,
     isError: error,
+    mutateAddress: mutate,
   };
 };
 

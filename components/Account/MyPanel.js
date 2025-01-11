@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { blue } from "@/lib/colors";
 import { AddIcon, EdithIcon } from "../Icons";
@@ -26,6 +26,8 @@ import { useCustomerAllOrders } from "@/hooks/useCustomerAllOrders";
 import { calcularTotal } from "@/utils/generators/calculateTotals";
 import formatPrice from "@/utils/formats/formatPrice";
 import useAddress from "@/hooks/useAddress";
+import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
+import { countries } from "@/resource/curtomerData";
 
 const InfoSection = styled.section`
   line-height: 1.6;
@@ -53,12 +55,29 @@ const FlexHeader = styled.div`
 const MyPanel = () => {
   const handleGoBack = useHandleGoBack();
   const { orders } = useCustomerAllOrders();
-  const { billingAddress, shippingAddress } = useAddress()
+  const { billingAddress, shippingAddress } = useAddress();
   const { data: session, status, update } = useSession();
   const customer = session?.user;
 
   const recentOrder = orders?.slice(-1)[0];
 
+  // Estados y ciudades específicos para cada dirección
+  const [states, setStates] = useState({
+    billingAddress: [],
+    shippingAddress: [],
+  });
+
+  useEffect(() => {
+    const { statesData } = loadStatesAndCities(countries);
+    setStates(statesData);
+  }, []);
+
+  const getProvinceName = (country, provinceCode) =>
+    states[country]?.find((p) => p.isoCode === provinceCode)?.name;
+  
+  const provinceBillingAddress = getProvinceName(billingAddress?.country, billingAddress?.province);
+  const provinceShippingAddress = getProvinceName(shippingAddress?.country, shippingAddress?.province);
+  
   return (
     <Container>
       <header>
@@ -208,8 +227,7 @@ const MyPanel = () => {
               <>
                 <p>
                   <span>Nombres</span>
-                  {billingAddress?.name ||
-                  billingAddress?.lastname
+                  {billingAddress?.name || billingAddress?.lastname
                     ? `${capitalizeWords(
                         billingAddress?.name
                       )} ${capitalizeWords(billingAddress?.lastname)}`
@@ -218,13 +236,12 @@ const MyPanel = () => {
 
                 <p>
                   <span>Dirección</span>
-                  {capitalizeWords(billingAddress?.streetAddress) ||
-                    "--"}
+                  {capitalizeWords(billingAddress?.streetAddress) || "--"}
                 </p>
 
                 <p>
                   <span>Provincia:</span>
-                  {billingAddress?.province?.name || "--"}
+                  {provinceBillingAddress || "--"}
                 </p>
 
                 <p>
@@ -234,7 +251,7 @@ const MyPanel = () => {
 
                 <p>
                   <span>País:</span>
-                  {billingAddress?.country?.name || "--"}
+                  {billingAddress?.country || "--"}
                 </p>
                 <p>
                   <span>Postal:</span>
@@ -264,7 +281,7 @@ const MyPanel = () => {
                 </ComponenteLink>
               ) : (
                 <ComponenteLink
-                  href="/customer/mi-cuenta/perfil"
+                  href="/customer/mi-cuenta/direcciones"
                   title="Editar mi dirección de envío"
                 >
                   <EdithIcon size={22} />
@@ -275,11 +292,10 @@ const MyPanel = () => {
               <>
                 <p>
                   <span>Nombres</span>
-                  {shippingAddress?.name ||
-                  shippingAddress?.lastname
-                    ? `${capitalize(
-                        shippingAddress?.name
-                      )} ${capitalize(shippingAddress?.lastname)}`
+                  {shippingAddress?.name || shippingAddress?.lastname
+                    ? `${capitalize(shippingAddress?.name)} ${capitalize(
+                        shippingAddress?.lastname
+                      )}`
                     : "--"}
                 </p>
                 <p>
@@ -288,7 +304,7 @@ const MyPanel = () => {
                 </p>
                 <p>
                   <span>Provincia:</span>
-                  {shippingAddress?.province?.name || "--"}
+                  {provinceShippingAddress || "--"}
                 </p>
                 <p>
                   <span>Cantón:</span>
@@ -296,7 +312,7 @@ const MyPanel = () => {
                 </p>
                 <p>
                   <span>País:</span>
-                  {shippingAddress?.country?.name || "--"}
+                  {shippingAddress?.country || "--"}
                 </p>
                 <p>
                   <span>Postal:</span>
