@@ -13,7 +13,7 @@ import { FlexStyled } from "@/components/stylesComponents/Flex";
 import Title from "@/components/stylesComponents/Title";
 import { CartContext } from "@/context/CartContext";
 import NotificationContext from "@/context/NotificationContext";
-import { error, grey, greylight, success, white } from "@/lib/colors";
+import { grey, white } from "@/lib/colors";
 import { capitalize } from "@/utils/formats/capitalize";
 import InputGroup from "@/components/Account/forms/InputGroup";
 import { countries } from "@/resource/curtomerData";
@@ -21,6 +21,8 @@ import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 import { handleCreateOrder } from "@/utils/handlers/order";
 import useAddress from "@/hooks/useAddress";
+import { Loading } from "@/components/Loading";
+import { capitalizeWords } from "@/utils/formats/capitalizeWords";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -75,8 +77,13 @@ const Box = styled.div`
     font-size: 0.8rem;
     margin: 0;
     color: ${grey};
-    margin-left: 20px;
   }
+  span {
+    font-size: 0.8rem;
+    margin: 0;
+    color: ${grey};
+  }
+
   ${(props) =>
     props.$form &&
     css`
@@ -95,41 +102,29 @@ const Box = styled.div`
 `;
 
 export default function CartPage() {
-  const {billingAddress} = useAddress()
   const handleGoBack = useHandleGoBack();
+  const { cartProducts, clearCart } = useContext(CartContext);
+  const { shippingAddress, mutateAddress, isLoading } = useAddress();
   const { company } = useData();
   const secondaryPhone = company?.secondaryPhone;
 
   const { showNotification } = useContext(NotificationContext);
   const router = useRouter();
-  const { cartProducts, clearCart } = useContext(CartContext);
 
-  const [name, setName] = useState(billingAddress?.name || "");
-  const [lastname, setLastName] = useState(
-    billingAddress?.lastname || ""
-  );
-  const [email, setEmail] = useState(billingAddress?.email || "");
-  const [idDocument, setIdDocument] = useState(
-    billingAddress?.idDocument || ""
-  );
-  const [phone, setPhone] = useState(billingAddress?.phone || "");
-  const [country, setCountry] = useState(
-    billingAddress?.country?.isoCode || ""
-  );
-  const [province, setProvince] = useState(
-    billingAddress?.province?.isoCode || ""
-  );
-  const [city, setCity] = useState(billingAddress?.canton || "");
+  const [name, setName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [idDocument, setIdDocument] = useState("");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState({});
+  const [province, setProvince] = useState({});
+  const [city, setCity] = useState("");
 
-  const [states, setStates] = useState({});
-  const [cities, setCities] = useState({});
+  const [streetAddress, setStreetAddress] = useState("");
+  const [postal, setPostal] = useState("");
 
-  const [streetAddress, setStreetAddress] = useState(
-    billingAddress?.streetAddress || ""
-  );
-  const [postal, setPostal] = useState(
-    billingAddress?.postal || ""
-  );
+  const [isChecked, setIsChecked] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
 
   const fieldLabels = {
     name: "Nombres",
@@ -144,22 +139,150 @@ export default function CartPage() {
     phone: "Teléfono",
   };
 
+  // Estados y ciudades específicos para cada dirección
+  const [states, setStates] = useState({
+    shippingAddress: [],
+  });
+  const [cities, setCities] = useState({
+    shippingAddress: [],
+  });
+
   useEffect(() => {
     const { statesData, citiesData } = loadStatesAndCities(countries);
     setStates(statesData);
     setCities(citiesData);
   }, []);
 
+  useEffect(() => {
+    if (shippingAddress) {
+      setName(shippingAddress?.name || "");
+      setLastName(shippingAddress?.lastname || "");
+      setEmail(shippingAddress?.email || "");
+      setIdDocument(shippingAddress?.idDocument || "");
+      setPhone(shippingAddress?.phone || "");
+      setCountry(shippingAddress?.country || "");
+      setProvince(shippingAddress?.province || "");
+      setCity(shippingAddress?.canton || "");
+      setStreetAddress(shippingAddress?.streetAddress || "");
+      setPostal(shippingAddress?.postal || "");
+    }
+  }, [shippingAddress]);
+
+  useEffect(() => {
+    // Compara los valores actuales con los valores de shippingAddress
+    const isChanged =
+      name !== shippingAddress?.name ||
+      lastname !== shippingAddress?.lastname ||
+      email !== shippingAddress?.email ||
+      idDocument !== shippingAddress?.idDocument ||
+      phone !== shippingAddress?.phone ||
+      country !== shippingAddress?.country ||
+      province !== shippingAddress?.province ||
+      city !== shippingAddress?.canton ||
+      streetAddress !== shippingAddress?.streetAddress ||
+      postal !== shippingAddress?.postal;
+
+    setHasChanges(isChanged); // Actualiza el estado hasChanges
+  }, [
+    name,
+    lastname,
+    email,
+    idDocument,
+    phone,
+    country,
+    province,
+    city,
+    streetAddress,
+    postal,
+    shippingAddress,
+  ]);
+
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
+
     if (name === "country") {
-      setCountry(value);
-      setProvince("") / setCity("");
-    } else if (name === "province") {
-      setProvince(value);
+      const selectedCountry = countries.find((c) => c.isoCode === value);
+      setCountry(selectedCountry?.isoCode);
+      setProvince("");
       setCity("");
-    } else if (name === "canton") {
+    } else if (name === "province") {
+      const selectedProvince = states[shippingAddress?.country]?.find(
+        (p) => p.isoCode === value
+      );
+      setProvince(selectedProvince?.isoCode);
+      setCity("");
+    } else if (name === "city") {
       setCity(value);
+    }
+  };
+
+  const handleCheckboxChange = (e) => {
+    setIsChecked(e.target.checked);
+  };
+
+  const handleSaveInformation = async () => {
+    if (isChecked) {
+      try {
+        const type = "shippingAddress";
+        const address = {
+          name,
+          lastname,
+          email,
+          country,
+          province,
+          canton: city,
+          postal,
+          streetAddress,
+          idDocument,
+          phone,
+        };
+
+        // Enviar solicitud PUT
+        const response = await axios.put("/api/customers/address", {
+          type,
+          address,
+        });
+
+        if (response.status === 200) {
+          showNotification({
+            open: true,
+            msj:
+              response?.data?.message ||
+              "Información guardada para futuros envíos.",
+            status: "success",
+          });
+
+          mutateAddress(
+            (currentData) => ({
+              ...currentData,
+              shippingAddress: address,
+            }),
+            false
+          );
+        } else {
+          // Si la respuesta no tiene status 200, mostrar un mensaje de error
+          showNotification({
+            open: true,
+            msj:
+              response?.data?.error || "No se pudieron actualizar los datos.",
+            status: "error",
+          });
+        }
+      } catch (error) {
+        // Manejo de errores
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "No se pudieron actualizar los datos.";
+
+        showNotification({
+          open: true,
+          msj: errorMessage,
+          status: "error",
+        });
+
+        console.error("Error al guardar la información:", errorMessage);
+      }
     }
   };
 
@@ -179,6 +302,11 @@ export default function CartPage() {
       clearCart,
     });
   }
+
+  const handleShippingWithSave = () => {
+    handleShippingOrder();
+    handleSaveInformation();
+  };
 
   //Funcion para envio de pedido por whatsapp
   const submitOrderWhatsapp = async (e) => {
@@ -236,6 +364,10 @@ export default function CartPage() {
     }
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <Layout title="B.R.D | Mi carrito">
       <CenterDiv>
@@ -250,16 +382,20 @@ export default function CartPage() {
           {!!cartProducts?.length && (
             <Box $white={1}>
               <h3>Información de envío </h3>
+              <small>
+                Esta información se utilizará para el envio del pedido.
+              </small>
               <p>
-                Lea detenidamente si los campos con la información guardada son
-                los correctos, caso contrario puede ser editado.{" "}
+                Por favor, lea cuidadosamente si los campos con la información
+                guardada son los correctos, caso contrario puede ser editado y/o
+                guardados.{" "}
               </p>
               <WrapperDiv>
                 <InputGroup
                   required
                   label={fieldLabels.name}
                   name="name"
-                  value={name}
+                  value={capitalizeWords(name)}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ingresa tu nombre"
                 />
@@ -268,29 +404,28 @@ export default function CartPage() {
                   required
                   label={fieldLabels.lastname}
                   name="lastname"
-                  value={lastname}
+                  value={capitalizeWords(lastname)}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Ingresa tu apellido"
                 />
               </WrapperDiv>
               <WrapperDiv>
-              <InputGroup
-                required
-                type="email"
-                name="email"
-                label={fieldLabels.email}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <InputGroup
-                type="text"
-                name="postal"
-                label={fieldLabels.postal}
-                value={postal}
-                onChange={(e) => setPostal(e.target.value)}
-              />
+                <InputGroup
+                  required
+                  type="email"
+                  name="email"
+                  label={fieldLabels.email}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <InputGroup
+                  type="text"
+                  name="postal"
+                  label={fieldLabels.postal}
+                  value={postal}
+                  onChange={(e) => setPostal(e.target.value)}
+                />
               </WrapperDiv>
-
               <WrapperDiv>
                 <InputGroup
                   required
@@ -316,7 +451,7 @@ export default function CartPage() {
                   name="country"
                   label={fieldLabels.country}
                   value={country}
-                  onChange={handleAddressChange}
+                  onChange={(e) => handleAddressChange(e)}
                   options={countries.map((c) => ({
                     name: c.name,
                     value: c.isoCode,
@@ -328,26 +463,30 @@ export default function CartPage() {
                   name="province"
                   label={fieldLabels.province}
                   value={province}
-                  onChange={handleAddressChange}
+                  onChange={(e) => handleAddressChange(e)}
                   options={
-                    states[country]?.map((state) => ({
-                      name: state.name,
-                      value: state.isoCode,
-                    })) || []
+                    (country &&
+                      states[country]?.map((state) => ({
+                        name: state.name,
+                        value: state.isoCode,
+                      }))) ||
+                    []
                   }
                 />
                 <InputGroup
                   required
                   as="select"
-                  name="canton"
+                  name="city"
                   label={fieldLabels.canton}
                   value={city}
-                  onChange={handleAddressChange}
+                  onChange={(e) => handleAddressChange(e)}
                   options={
-                    cities[province]?.map((city) => ({
-                      name: city.name,
-                      value: city.name,
-                    })) || []
+                    (province &&
+                      cities[province]?.map((city) => ({
+                        name: city.name,
+                        value: city.name,
+                      }))) ||
+                    []
                   }
                 />
               </WrapperDiv>
@@ -355,16 +494,38 @@ export default function CartPage() {
                 required
                 name="streetAddress"
                 label={fieldLabels.address}
-                value={streetAddress}
+                value={capitalizeWords(streetAddress)}
                 onChange={(e) => setStreetAddress(e.target.value)}
                 placeholder="Escribe una dirección"
               />
+              {hasChanges && (
+                /*    <div>
+                  <label htmlFor="send-checkbox">
+                    <input
+                      type="checkbox"
+                      id="send-checkbox"
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                    />
+                    Guardar esta información para próximos envíos?
+                  </label>
+                </div> */
 
+                <InputGroup
+                  name="send-checkbox"
+                  type="checkbox"
+                  id="send-checkbox"
+                  label="Guardar esta información para próximos envíos?"
+                  onChange={handleCheckboxChange}
+                  isChecked={isChecked}
+                  showCheckbox={hasChanges}
+                />
+              )}
               <WrapperButton>
                 <Button
                   $black={1}
                   title={"Se envia pedido directo para realizar la compra"}
-                  onClick={handleShippingOrder}
+                  onClick={handleShippingWithSave}
                 >
                   ENVIAR PEDIDO DIRECTO
                 </Button>

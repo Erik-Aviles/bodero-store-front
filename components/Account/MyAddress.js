@@ -20,7 +20,7 @@ import useAddress from "@/hooks/useAddress";
 const MyAddress = () => {
   const { showNotification } = useContext(NotificationContext);
   const handleGoBack = useHandleGoBack();
-  const { billingAddress, shippingAddress } = useAddress()
+  const { billingAddress, shippingAddress, mutateAddress } = useAddress();
 
   const initialAddresses = {
     billingAddress: billingAddress || {},
@@ -28,6 +28,14 @@ const MyAddress = () => {
   };
 
   const [addresses, setAddresses] = useState(initialAddresses);
+
+  useEffect(() => {
+    setAddresses({
+      billingAddress: billingAddress || {},
+      shippingAddress: shippingAddress || {},
+    });
+  }, [billingAddress, shippingAddress]);
+
   const [originalAddresses, setOriginalAddresses] = useState(initialAddresses);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,26 +59,24 @@ const MyAddress = () => {
     const { name, value } = e.target;
     if (name === "country") {
       const selectedCountry = countries.find((c) => c.isoCode === value);
-
       setAddresses((prev) => ({
         ...prev,
         [type]: {
           ...prev[type],
-          country: selectedCountry,
+          country: selectedCountry?.isoCode,
           province: "",
           canton: "",
         },
       }));
     } else if (name === "province") {
-      const selectedProvince = states[addresses[type].country.isoCode].find(
+      const selectedProvince = states[addresses[type]?.country]?.find(
         (p) => p.isoCode === value
       );
-
       setAddresses((prev) => ({
         ...prev,
         [type]: {
           ...prev[type],
-          province: selectedProvince,
+          province: selectedProvince?.isoCode,
           canton: "",
         },
       }));
@@ -95,6 +101,7 @@ const MyAddress = () => {
     try {
       setIsLoading(true);
       const address = addresses[type];
+      console.log(address);
 
       // Enviar solicitud PUT
       const response = await axios.put("/api/customers/address", {
@@ -103,7 +110,6 @@ const MyAddress = () => {
       });
 
       if (response.status === 200) {
-     
         showNotification({
           open: true,
           msj: response.data.message,
@@ -114,6 +120,7 @@ const MyAddress = () => {
           ...prev,
           [type]: addresses[type],
         }));
+       
       } else {
         showNotification({
           open: true,
@@ -147,12 +154,6 @@ const MyAddress = () => {
       });
 
       if (response.status === 201) {
-        const updatedUser = {
-          ...customer,
-          [`${type}`]: address,
-        };
-        await update({ user: updatedUser });
-
         showNotification({
           open: true,
           msj: response.data.message,
@@ -163,6 +164,12 @@ const MyAddress = () => {
           ...prev,
           [type]: addresses[type],
         }));
+
+        mutateAddress((currentData) => ({
+          ...currentData,
+          [type === "billingAddress" ? "billingAddress" : "shippingAddress"]: address,
+        }), false);
+        
       } else {
         showNotification({
           open: true,
@@ -244,7 +251,7 @@ const MyAddress = () => {
                         as="select"
                         label={fieldLabels[field]}
                         name={field}
-                        value={value?.isoCode || ""}
+                        value={value || ""}
                         onChange={(e) => handleChange(e, type)}
                         options={countries.map((c) => ({
                           name: c.name,
@@ -254,7 +261,7 @@ const MyAddress = () => {
                     );
                   }
                   if (field === "province") {
-                    const countryCode = addresses[type]?.country?.isoCode;
+                    const countryCode = addresses[type]?.country;
                     return (
                       <InputGroup
                         required
@@ -262,7 +269,7 @@ const MyAddress = () => {
                         as="select"
                         label={fieldLabels[field]}
                         name={field}
-                        value={value?.isoCode || ""}
+                        value={value || ""}
                         onChange={(e) => handleChange(e, type)}
                         options={states[countryCode]?.map((s) => ({
                           name: s.name,
@@ -272,7 +279,7 @@ const MyAddress = () => {
                     );
                   }
                   if (field === "canton") {
-                    const provinceCode = addresses[type]?.province?.isoCode;
+                    const provinceCode = addresses[type]?.province;
                     return (
                       <InputGroup
                         required

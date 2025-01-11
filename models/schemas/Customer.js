@@ -4,7 +4,7 @@ import { OrderSchema } from "../Order";
 const customerSchema = new Schema(
   {
     name: { type: String, required: true },
-    lastname: { type: String, required: true },
+    lastname: { type: String, required: true },     
     idDocument: { type: String, required: true, unique: true },
     gender: { type: String },
     email: { type: String, required: true, unique: true },
@@ -14,6 +14,7 @@ const customerSchema = new Schema(
     billingAddress: Object,
     shippingAddress: Object,
     orders: [OrderSchema], 
+    cart: Array,
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true, versionKey: false }
