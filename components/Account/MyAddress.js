@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { countries, customerInfo } from "../../resource/curtomerData";
+import { countries } from "../../resource/curtomerData";
 import InputGroup from "./forms/InputGroup";
 import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
 import BackButton from "../buttonComponents/BackButton";
@@ -120,7 +120,6 @@ const MyAddress = () => {
           ...prev,
           [type]: addresses[type],
         }));
-       
       } else {
         showNotification({
           open: true,
@@ -165,11 +164,14 @@ const MyAddress = () => {
           [type]: addresses[type],
         }));
 
-        mutateAddress((currentData) => ({
-          ...currentData,
-          [type === "billingAddress" ? "billingAddress" : "shippingAddress"]: address,
-        }), false);
-        
+        mutateAddress(
+          (currentData) => ({
+            ...currentData,
+            [type === "billingAddress" ? "billingAddress" : "shippingAddress"]:
+              address,
+          }),
+          false
+        );
       } else {
         showNotification({
           open: true,
@@ -254,7 +256,7 @@ const MyAddress = () => {
                         value={value || ""}
                         onChange={(e) => handleChange(e, type)}
                         options={countries.map((c) => ({
-                          name: c.name,
+                          name: c.isoCode,
                           value: c.isoCode,
                         }))}
                       />

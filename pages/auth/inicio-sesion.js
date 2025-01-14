@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import { Loading } from "@/components/Loading";
+import { ComponenteLink, RequiredText } from "@/components/stylesComponents/ComponentAccount";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -54,6 +55,13 @@ const Box = styled.section`
   letter-spacing: normal;
   height: fit-content;
   padding: 15px;
+  .div-action {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: #9199a0;
+  }
   strong {
     font-weight: 400;
     color: #0033a0;
@@ -134,6 +142,7 @@ const TextLink = styled(Link)`
 export default function LoginPage() {
   const router = useRouter();
   const { status } = useSession();
+  const [errorNotification, setErrorNotification] = useState("");
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -147,7 +156,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/customer/mi-cuenta/general");
+      router.push("/");
     }
   }, [status, router]);
 
@@ -155,10 +164,12 @@ export default function LoginPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (formData[name] === value) return;
     setFormData({
       ...formData,
       [name]: value,
     });
+    setErrorNotification("");
   };
 
   const handleSubmit = async (e) => {
@@ -170,32 +181,30 @@ export default function LoginPage() {
         redirect: false,
       });
 
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "center",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        },
-      });
-      Toast.fire({
-        icon: "success",
-        title: "Bienvenid@ a tu cuenta",
-      });
-
-      if (res?.error) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: res?.error || "Algo salió mal!",
-        });
-        return;
+      if (res?.status === 401 || res?.error) {
+        setErrorNotification(res?.error);
       }
+      if (res?.status === 201) {
+        setErrorNotification(res?.error);
+      }
+
       if (res?.ok) {
-        return router.push("/customer/mi-cuenta/general");
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "center",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Bienvenid@ a tu cuenta",
+        });
+        return router.push("/");
       }
     } catch (error) {
       console.error("Error al registrar:", error);
@@ -208,72 +217,78 @@ export default function LoginPage() {
     }
   };
 
-  if(status === "loading") {
-    return <Loading />
+  if (status === "loading") {
+    return <Loading />;
   }
 
   return (
-    <Layout title="B.R.D | Iniciar Sesión">
-     {status !== "authenticated" && <CenterDiv>
-        <DivTitle>
-          <Title>Iniciar sesión o crear una cuenta</Title>
-          <span>(*) Datos Obligatorios</span>
-        </DivTitle>
-        <ColumnsWrapper>
-          <Box>
-            <strong>¿Estás registrado?</strong>
-            <p>Por favor completa tus datos para iniciar sesión.</p>
-            <form onSubmit={handleSubmit}>
-              <fieldset>
-                <InputGroup
-                  required
-                  name="email"
-                  label={fieldLabels.email}
-                  type="email"
-                  value={formData?.email}
-                  onChange={handleChange}
-                  placeholder="Ingresa tu correo"
-                />
-              </fieldset>
-              <fieldset>
-                <InputGroup
-                  required
-                  name="password"
-                  label={fieldLabels.password}
-                  isPassword
-                  isVisiblePass={isVisiblePass}
-                  type={isVisiblePass ? "text" : "password"}
-                  value={formData?.password}
-                  onChange={handleChange}
-                  toggleVisibility={toggleVisibilityPassword}
-                  placeholder="Ingresa tu contraseña"
-                />
-              </fieldset>
-              <div>
-                <TextLink
-                  href={"/auth/recuperar-contrasena"}
-                  title="¿Olvidó su contraseña?"
-                >
-                  ¿Olvidó su contraseña?
-                </TextLink>
-              </div>
-              <DivButton $primary title="Iniciar Sesión" type="submit">
-                INICIAR SESIÓN
+    <Layout title="B.R.D | Iniciar Sesión" sity={"/auth/inicio-sesion"}>
+      {status !== "authenticated" && (
+        <CenterDiv>
+          <DivTitle>
+            <Title>Iniciar sesión o crear una cuenta</Title>
+            <RequiredText>(*) Datos Obligatorios</RequiredText>
+          </DivTitle>
+          <ColumnsWrapper>
+            <Box>
+              <strong>¿Estás registrado?</strong>
+              <p>Por favor completa tus datos para iniciar sesión.</p>
+              <form onSubmit={handleSubmit}>
+                <fieldset>
+                  <InputGroup
+                    required
+                    name="email"
+                    label={fieldLabels.email}
+                    type="email"
+                    value={formData?.email}
+                    onChange={handleChange}
+                    placeholder="Ingresa tu correo"
+                  />
+                </fieldset>
+                <fieldset>
+                  <InputGroup
+                    required
+                    name="password"
+                    label={fieldLabels.password}
+                    isPassword
+                    isVisiblePass={isVisiblePass}
+                    type={isVisiblePass ? "text" : "password"}
+                    value={formData?.password}
+                    onChange={handleChange}
+                    toggleVisibility={toggleVisibilityPassword}
+                    placeholder="Ingresa tu contraseña"
+                  />
+                </fieldset>
+                <RequiredText>
+                  {errorNotification ? errorNotification : " "}
+                </RequiredText>
+                <div className="div-action">
+                  <span> ¿Olvidó su contraseña?</span>
+                  <ComponenteLink
+                    href={"/auth/registro"}
+                    title="¿Olvidó su contraseña?"
+                  >
+                    Recuperla aqui
+                  </ComponenteLink>
+                </div>
+                <DivButton $primary title="Iniciar Sesión" type="submit">
+                  INICIAR SESIÓN
+                </DivButton>
+              </form>
+            </Box>
+            <Box>
+              <strong>¿Aún no tienes cuenta?</strong>
+              <p>
+                Al crear una cuenta en nuestra tienda, podrás ver e informarte
+                sobre los pedidos de tu cuenta y su estado.
+              </p>
+              <DivButton $secondary title="Crear una cuenta">
+                <Link href={"/auth/registro"}>CREAR UNA CUENTA</Link>
               </DivButton>
-            </form>
-          </Box>
-          <Box>
-            <strong>¿Aún no tienes cuenta?</strong>
-            <p>
-              Al crear una cuenta en nuestra tienda, podrás ver e informarte
-              sobre los pedidos de tu cuenta y su estado.
-            </p>
-            <DivButton $secondary title="Crear una cuenta">
-              <Link href={"/auth/registro"}>CREAR UNA CUENTA</Link>
-            </DivButton>
-          </Box>
-        </ColumnsWrapper>
-      </CenterDiv>}
+            </Box>
+          </ColumnsWrapper>
+        </CenterDiv>
+      )}
     </Layout>
   );
 }

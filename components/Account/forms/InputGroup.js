@@ -140,7 +140,7 @@ const InputGroup = ({
 }) => {
   return (
     <InputGroupWrapper>
-      {label && type == "text" && (
+      {label && type !== "checkbox" && (
         <label htmlFor={name}>
           {capitalize(label)} {required && <span>*</span>}
         </label>

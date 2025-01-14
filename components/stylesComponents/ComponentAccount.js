@@ -95,6 +95,7 @@ export const ScrollContainer = styled.div`
   border: 1px solid #e9ecef;
   border-top: none;
 `;
+
 export const ContentEmpty = styled.div`
   width: 100%;
   display: flex;
@@ -102,6 +103,26 @@ export const ContentEmpty = styled.div`
   align-items: center;
   text-transform: capitalize;
 `;
+
+export const RequiredText = styled.span`
+  color: ${primary};
+  font-size: 12px;
+  ${(props) =>
+    props.$error &&
+    css`
+      display: block;
+    `};
+  ${(props) =>
+    props.$movil &&
+    props.$error &&
+    css`
+      display: block;
+      @media (min-width: 768px) {
+        display: none;
+      }
+    `};
+`;
+
 export const Table = styled.table`
   width: 100%;
   font-size: 0.8rem;
@@ -143,6 +164,12 @@ export const TDnowrap = styled.td`
 export const ComponenteLink = styled(Link)`
   white-space: nowrap;
   font-size: 0.8rem;
+  width: fit-content;
+  color: #2255c2;
+  cursor: pointer;
+  &:hover {
+    text-decoration-line: underline;
+  }
 `;
 
 export const WrapperButton = styled.div`

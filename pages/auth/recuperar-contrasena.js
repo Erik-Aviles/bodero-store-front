@@ -1,18 +1,25 @@
-import { useEffect, useState } from 'react'
-import Layout from '@/components/Layout'
-import { Loading } from '@/components/Loading'
-import styled, { css } from 'styled-components'
-import Title from '@/components/stylesComponents/Title'
-import 'react-datepicker/dist/react-datepicker.css'
-import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import { error, greylight, primary, white } from '@/lib/colors'
-import InputGroup from '@/components/Account/forms/InputGroup'
-import { useRouter } from 'next/router'
+import { useEffect, useState } from "react";
+import Layout from "@/components/Layout";
+import { Loading } from "@/components/Loading";
+import styled, { css } from "styled-components";
+import Title from "@/components/stylesComponents/Title";
+import "react-datepicker/dist/react-datepicker.css";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import { error, greylight, primary, white } from "@/lib/colors";
+import InputGroup from "@/components/Account/forms/InputGroup";
+import { useRouter } from "next/router";
+import isValidEmail from "@/utils/formats/isValidEmail";
+import { useSession } from "next-auth/react";
+import {
+  ComponenteLink,
+  RequiredText,
+} from "@/components/stylesComponents/ComponentAccount";
+import axios from "axios";
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
   ${CenterSecction}
-`
+`;
 
 const DivTitle = styled.div`
   margin-bottom: 10px;
@@ -24,12 +31,8 @@ const DivTitle = styled.div`
   @media screen and (min-width: 1024px) {
     text-align: center;
   }
-`
+`;
 
-const RequiredText = styled.span`
-  color: ${primary};
-  font-size: 12px;
-`
 const Box = styled.section`
   max-width: 800px;
   margin: 0 auto;
@@ -40,6 +43,13 @@ const Box = styled.section`
   letter-spacing: normal;
   height: fit-content;
   padding: 15px;
+  .div-action {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: #9199a0;
+  }
   strong {
     font-weight: 400;
     color: #0033a0;
@@ -63,18 +73,18 @@ const Box = styled.section`
       font-size: 14px;
     }
   }
-`
+`;
 const InnerBox = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
   width: 100%; /* Ajusta según tus necesidades */
-`
+`;
 
 const DivButton = styled.button`
   display: flex;
@@ -97,38 +107,75 @@ const DivButton = styled.button`
     color: #013c92;
     border: 1px solid #013c92;
   }
-`
+`;
 
 export default function RecoverPasswordPage() {
-  const router = useRouter()
+  const router = useRouter();
+  const [errorNotification, setErrorNotification] = useState("");
+  const { status } = useSession();
   const [formData, setFormData] = useState({
-    email: '',
-  })
-
+    email: "",
+  });
   const fieldLabels = {
-    email: 'Correo electrónico registrado',
-  }
+    email: "Correo electrónico registrado",
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
+    if (formData[name] === value) return;
     setFormData({
       ...formData,
       [name]: value,
-    })
-  }
+    });
+    setErrorNotification("");
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setFormData({
-      ...formData,
-    })
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // Lógica para enviar los datos del formulario
-    alert('En construcción...')
+    try {
+      const response = await axios.post("/api/auth/forget-password", {
+        email: formData?.email,
+      });
+      if (response.status === 400) {
+        setErrorNotification(
+          response?.message || "Error en los datos proporcionados"
+        );
+      }
+
+      if (response.status === 200) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "center",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: response?.data?.message || "Redirigiendo a inicio de sesión...",
+        });
+
+        router.push("/auth/inicio-sesion");
+      }
+    } catch (error) {
+      setErrorNotification(error?.response?.data?.message || "Algo salió mal!");
+    }
+  };
+
+  if (status === "loading") {
+    return <Loading />;
   }
 
   return (
-    <Layout title='B.R.D | Recuperar Contraseña'>
+    <Layout
+      title="B.R.D | Recuperar Contraseña"
+      sity={"/auth/recuperar-contrasena"}
+    >
       <CenterDiv>
         <DivTitle>
           <Title>Recuperar Contraseña</Title>
@@ -146,20 +193,33 @@ export default function RecoverPasswordPage() {
             <Container>
               <InputGroup
                 required
-                name='email'
+                name="email"
                 label={fieldLabels.email}
-                type='email'
+                type="email"
                 value={formData?.email}
                 onChange={handleChange}
-                placeholder='Ingresa tu correo'
+                placeholder="Ingresa tu correo"
               />
             </Container>
-            <DivButton type='submit' title='Recuperar Contraseña'>
+            <RequiredText>
+              {errorNotification && errorNotification}
+            </RequiredText>
+
+            <DivButton type="submit" title="Recuperar Contraseña">
               ENVIAR
             </DivButton>
+            <div className="div-action">
+              <span> ¿No tienes una cuenta?</span>
+              <ComponenteLink
+                href={"/auth/registro"}
+                title="¿No tienes una cuenta?"
+              >
+                Registrate aqui
+              </ComponenteLink>
+            </div>
           </InnerBox>
         </Box>
       </CenterDiv>
     </Layout>
-  )
+  );
 }

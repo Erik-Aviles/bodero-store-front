@@ -13,6 +13,7 @@ import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import { Loading } from "@/components/Loading";
+import { RequiredText } from "@/components/stylesComponents/ComponentAccount";
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
@@ -42,10 +43,7 @@ const ColumnsFormWrapper = styled.form`
     margin: 0 120px;
   }
 `;
-const RequiredText = styled.span`
-  color: ${primary};
-  font-size: 12px;
-`;
+
 const Box = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,6 +114,7 @@ const Button = styled.button`
 export default function RegisterPage() {
   const { status } = useSession();
   const router = useRouter();
+  const [errorNotification, setErrorNotification] = useState("");
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false);
   const [selectedDate, setSelectedDate] = useState();
@@ -142,11 +141,11 @@ export default function RegisterPage() {
     confirmPassword: "Confirmar Contraseña",
   };
 
-    useEffect(() => {
-      if (status === "authenticated") {
-        router.push("/customer/mi-cuenta/general");
-      }
-    }, [status, router]);
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/customer/mi-cuenta/general");
+    }
+  }, [status, router]);
 
   const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev);
   const toggleVisibilityConfirmPassword = () =>
@@ -154,10 +153,12 @@ export default function RegisterPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (formData[name] === value) return;
     setFormData({
       ...formData,
       [name]: value,
     });
+    setErrorNotification("");
   };
 
   const handleSubmit = async (e) => {
@@ -196,135 +197,137 @@ export default function RegisterPage() {
         }
       }
     } catch (error) {
-      console.error("Error al registrar:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error?.response?.data?.message || "Algo salió mal!",
-      });
-      return;
+      setErrorNotification(error?.response?.data?.message || "Algo salió mal!");
     }
   };
 
-    if(status === "loading") {
-      return <Loading />
-    }
+  if (status === "loading") {
+    return <Loading />;
+  }
 
   return (
-    <Layout title="B.R.D | Nueva Cuenta">
-      {status !== "authenticated" && <CenterDiv>
-        <DivTitle>
-          <Title>Crear una nueva cuenta</Title>
-          <RequiredText>(*) Datos Obligatorios</RequiredText>
-        </DivTitle>
-        <ColumnsFormWrapper onSubmit={handleSubmit}>
-          <Box>
-            <legend>
-              <strong>Información Personal</strong>
-            </legend>
-            <fieldset>
-              <InputGroup
-                required
-                label={fieldLabels.name}
-                name="name"
-                value={formData?.name}
-                onChange={handleChange}
-                placeholder="Ingresa tu nombre"
-              />
+    <Layout title="B.R.D | Nueva Cuenta" sity={"/auth/registro"}>
+      {status !== "authenticated" && (
+        <CenterDiv>
+          <DivTitle>
+            <Title>Crear una nueva cuenta</Title>
+            <RequiredText>(*) Datos Obligatorios</RequiredText>
+          </DivTitle>
+          <ColumnsFormWrapper onSubmit={handleSubmit}>
+            <Box>
+              <legend>
+                <strong>Información Personal</strong>
+              </legend>
+              <RequiredText $error={errorNotification !== ""}>
+                {errorNotification && errorNotification}
+              </RequiredText>
+              <fieldset>
+                <InputGroup
+                  required
+                  label={fieldLabels.name}
+                  name="name"
+                  value={formData?.name}
+                  onChange={handleChange}
+                  placeholder="Ingresa tu nombre"
+                />
 
-              <InputGroup
-                required
-                label={fieldLabels.lastname}
-                name="lastname"
-                value={formData?.lastname}
-                onChange={handleChange}
-                placeholder="Ingresa tu apellido"
-              />
-              <DateInputGroup
-                label={fieldLabels.dateOfBirth}
-                name="dateOfBirth"
-                selectedDate={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                placeholder="DD/MM/AAAA"
-              />
-              <InputGroup
-                required
-                label={fieldLabels.idDocument}
-                name="idDocument"
-                value={formData?.idDocument}
-                onChange={handleChange}
-                placeholder="Ingresa tu DI"
-              />
-              <InputGroup
-                type="tel"
-                label={fieldLabels.phone}
-                name="phone"
-                value={formData?.phone}
-                onChange={handleChange}
-                placeholder="Ingresa tu número de contacto"
-              />
+                <InputGroup
+                  required
+                  label={fieldLabels.lastname}
+                  name="lastname"
+                  value={formData?.lastname}
+                  onChange={handleChange}
+                  placeholder="Ingresa tu apellido"
+                />
+                <DateInputGroup
+                  label={fieldLabels.dateOfBirth}
+                  name="dateOfBirth"
+                  selectedDate={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  placeholder="DD/MM/AAAA"
+                />
+                <InputGroup
+                  required
+                  label={fieldLabels.idDocument}
+                  name="idDocument"
+                  value={formData?.idDocument}
+                  onChange={handleChange}
+                  placeholder="Ingresa tu DI"
+                />
+                <InputGroup
+                  type="tel"
+                  label={fieldLabels.phone}
+                  name="phone"
+                  value={formData?.phone}
+                  onChange={handleChange}
+                  placeholder="Ingresa tu número de contacto"
+                />
 
-              <InputGroup
-                as="select"
-                name="gender"
-                label={fieldLabels.gender}
-                value={formData?.gender}
-                onChange={handleChange}
-                options={genersData.map((gener) => ({
-                  value: gener.name,
-                  name: gener.name,
-                }))}
-              />
-            </fieldset>
-          </Box>
-          <Box>
-            <legend>
-              <strong>Información de inicio de sesión</strong>
-            </legend>
-            <fieldset>
-              <InputGroup
-                required
-                name="email"
-                label={fieldLabels.email}
-                type="email"
-                value={formData?.email}
-                onChange={handleChange}
-                placeholder="Ingresa un correo válido"
-              />
+                <InputGroup
+                  as="select"
+                  name="gender"
+                  label={fieldLabels.gender}
+                  value={formData?.gender}
+                  onChange={handleChange}
+                  options={genersData.map((gener) => ({
+                    value: gener.name,
+                    name: gener.name,
+                  }))}
+                />
+              </fieldset>
+            </Box>
+            <Box>
+              <legend>
+                <strong>Información de inicio de sesión</strong>
+              </legend>
+              <RequiredText $error={errorNotification !== ""} $movil>
+                {errorNotification && errorNotification}
+              </RequiredText>
+              <fieldset>
+                <InputGroup
+                  required
+                  name="email"
+                  label={fieldLabels.email}
+                  type="email"
+                  value={formData?.email}
+                  onChange={handleChange}
+                  placeholder="Ingresa un correo válido"
+                />
 
-              <InputGroup
-                required
-                name="password"
-                label={fieldLabels.password}
-                isPassword
-                isVisiblePass={isVisiblePass}
-                type={isVisiblePass ? "text" : "password"}
-                value={formData?.password}
-                onChange={handleChange}
-                toggleVisibility={toggleVisibilityPassword}
-                placeholder="*******"
-              />
+                <InputGroup
+                  required
+                  name="password"
+                  label={fieldLabels.password}
+                  isPassword
+                  isVisiblePass={isVisiblePass}
+                  type={isVisiblePass ? "text" : "password"}
+                  value={formData?.password}
+                  onChange={handleChange}
+                  toggleVisibility={toggleVisibilityPassword}
+                  placeholder="*******"
+                />
 
-              <InputGroup
-                required
-                name="confirmPassword"
-                label={fieldLabels.confirmPassword}
-                isPassword
-                isVisiblePass={isVisiblePassConfirm}
-                type={isVisiblePassConfirm ? "text" : "password"}
-                value={formData?.confirmPassword}
-                onChange={handleChange}
-                toggleVisibility={toggleVisibilityConfirmPassword}
-                placeholder="Repetir contraseña"
-              />
-            </fieldset>
-          </Box>
-          <div></div>
-          <Button type="submit" $primary title="Iniciar Sesión">
-            ENVIAR
-          </Button>
-        </ColumnsFormWrapper>
-      </CenterDiv>}
+                <InputGroup
+                  required
+                  name="confirmPassword"
+                  label={fieldLabels.confirmPassword}
+                  isPassword
+                  isVisiblePass={isVisiblePassConfirm}
+                  type={isVisiblePassConfirm ? "text" : "password"}
+                  value={formData?.confirmPassword}
+                  onChange={handleChange}
+                  toggleVisibility={toggleVisibilityConfirmPassword}
+                  placeholder="Repetir contraseña"
+                />
+              </fieldset>
+            </Box>
+            <div></div>
+            <Button type="submit" $primary title="Iniciar Sesión">
+              ENVIAR
+            </Button>
+          </ColumnsFormWrapper>
+        </CenterDiv>
+      )}
     </Layout>
   );
 }
