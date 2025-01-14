@@ -194,7 +194,7 @@ const AccountPage = () => {
   }, [section, pedido]);
 
   return (
-    <Layout title="B.R.D | Mi Cuenta">
+    <Layout title="B.R.D | Mi Cuenta" sity={`/customer/mi-cuenta/${section}`}>
       <CenterDiv>
         <AsideBar>
           <div>

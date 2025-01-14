@@ -10,7 +10,7 @@ import Title from "@/components/stylesComponents/Title";
 import Layout from "@/components/Layout";
 import BackButton from "@/components/buttonComponents/BackButton";
 import { FlexStyled } from "@/components/stylesComponents/Flex";
-import { black} from "@/lib/colors";
+import { black } from "@/lib/colors";
 import { useEffect, useState } from "react";
 import { Loading } from "@/components/Loading";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
@@ -97,7 +97,7 @@ const SectionText = styled.section`
 `;
 
 export default function AboutUsPage() {
-  const handleGoBack = useHandleGoBack()
+  const handleGoBack = useHandleGoBack();
 
   const [isUpLoanding, setIsUpLoanding] = useState(true);
 
@@ -113,7 +113,11 @@ export default function AboutUsPage() {
   }
 
   return (
-    <Layout title="B.R.D | Quienes somos">
+    <Layout
+      title="B.R.D | Quienes somos"
+      description="Nos enorgullece ofrecer repuestos originales y un servicio de reparación y preparación de motos de primer nivel. Sabemos que cada moto es única y cada cliente tiene necesidades específicas, por eso nos comprometemos a brindarte una atención personalizada"
+      sity="/quienes-somos"
+    >
       <CenterDiv>
         <FlexStyled>
           <BackButton onClick={handleGoBack} />
