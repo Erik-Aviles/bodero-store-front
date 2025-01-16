@@ -153,7 +153,7 @@ export const Table = styled.table`
   }
 `;
 export const TD = styled.td`
-  min-width: 265px;
+  min-width: 180px;
 `;
 
 export const TDnowrap = styled.td`

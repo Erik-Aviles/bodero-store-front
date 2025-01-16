@@ -7,6 +7,7 @@ import {
   EyeSlashFilledIcon,
 } from "@/components/Icons";
 import { capitalize } from "@/utils/formats/capitalize";
+import { RequiredText } from "@/components/stylesComponents/ComponentAccount";
 
 const InputGroupWrapper = styled.div`
   display: flex;
@@ -142,7 +143,7 @@ const InputGroup = ({
     <InputGroupWrapper>
       {label && type !== "checkbox" && (
         <label htmlFor={name}>
-          {capitalize(label)} {required && <span>*</span>}
+          {capitalize(label)} {required && <RequiredText>*</RequiredText>}
         </label>
       )}
       {/* Input o Select */}

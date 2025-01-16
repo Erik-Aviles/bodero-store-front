@@ -38,7 +38,7 @@ const MyOrders = () => {
               <th>Fecha de pedido</th>
               <th>Dirección de envío </th>
               <th>Pago total</th>
-              <th>Cant. Productos</th>
+              <th>Cant</th>
               <th>Estado</th>
               <th>Acción</th>
             </tr>
