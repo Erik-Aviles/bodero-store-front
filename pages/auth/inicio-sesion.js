@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import { Loading } from "@/components/Loading";
-import { ComponenteLink, RequiredText } from "@/components/stylesComponents/ComponentAccount";
+import { Button, ComponenteLink, RequiredText } from "@/components/stylesComponents/ComponentAccount";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -265,15 +265,15 @@ export default function LoginPage() {
                 <div className="div-action">
                   <span> ¿Olvidó su contraseña?</span>
                   <ComponenteLink
-                    href={"/auth/registro"}
+                    href={"/auth/recuperar-contrasena"}
                     title="¿Olvidó su contraseña?"
                   >
                     Recuperla aqui
                   </ComponenteLink>
                 </div>
-                <DivButton $primary title="Iniciar Sesión" type="submit">
+                <Button $red title="Iniciar Sesión" type="submit">
                   INICIAR SESIÓN
-                </DivButton>
+                </Button>
               </form>
             </Box>
             <Box>
@@ -282,9 +282,9 @@ export default function LoginPage() {
                 Al crear una cuenta en nuestra tienda, podrás ver e informarte
                 sobre los pedidos de tu cuenta y su estado.
               </p>
-              <DivButton $secondary title="Crear una cuenta">
+              <Button $green title="Crear una cuenta">
                 <Link href={"/auth/registro"}>CREAR UNA CUENTA</Link>
-              </DivButton>
+              </Button>
             </Box>
           </ColumnsWrapper>
         </CenterDiv>

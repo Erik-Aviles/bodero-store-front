@@ -180,7 +180,7 @@ const MyDatas = () => {
               title="Cancelar Cambios"
               onClick={handleCustomerCancel}
               disabled={!hasCustomerChanges()}
-              $canceled
+              $red
             >
               Cancelar
             </Button>
@@ -188,7 +188,7 @@ const MyDatas = () => {
               type="submit"
               title="Guardar Cambios"
               disabled={!hasCustomerChanges()}
-              $save
+              $blue
             >
               {isLoading ? "Guardando..." : "Guardar"}
             </Button>

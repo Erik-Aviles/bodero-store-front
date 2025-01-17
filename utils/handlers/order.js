@@ -1,17 +1,5 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import styled, { css } from "styled-components";
-
-const StyledLink = styled.a`
-  color: #3498db;
-  font-weight: bold;
-  text-decoration: #0033a0;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-    color: #2c82c9; /* Azul más oscuro */
-  }
-`;
 
 // Función para crear una orden
 export const handleCreateOrder = async ({
@@ -95,12 +83,11 @@ export const handleCreateOrder = async ({
       // Limpiar carrito después de crear la orden
       clearCart();
     } else {
-      console.lop("Sino", response.data.message);
-      throw new Error(response.data.message || "Error al crear el pedido.");
+      throw new Error(response.data?.message || "Error al crear el pedido.");
     }
   } catch (error) {
     console.error("Error al crear la orden:", error);
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       return Swal.fire({
         icon: "error",
         title: error.response?.data?.message || "Oops...",

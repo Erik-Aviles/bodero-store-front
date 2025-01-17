@@ -18,15 +18,13 @@ import Order from "@/components/Account/Order";
 const CenterDiv = styled.section`
   ${CenterSecction}
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
   font-size: 0.9rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
+  padding: 40px 5px;
+  @media (min-width: 1024px) {
+    flex-direction: row;
     gap: 10px;
-    padding: 40px 5px;
   }
 `;
 
@@ -55,7 +53,7 @@ const AsideBar = styled.aside`
     text-transform: uppercase;
     margin: 0;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 1023px) {
     color: ${white2};
     background-color: ${black};
     width: 250px;
@@ -83,7 +81,7 @@ const AsideList = styled.ul`
   justify-content: space-between;
   list-style: none;
   margin: 0;
-  @media (min-width: 768px) {
+  @media (min-width: 1023px) {
     flex-direction: column;
     align-items: inherit;
     gap: 20px;
@@ -100,7 +98,8 @@ const AsideItem = styled.li`
     color: ${({ $isSelected }) => ($isSelected ? primary : "inherit")};
     transition: color 0.3s;
     display: flex;
-
+    gap: 5px;
+    align-items;center;
     &:hover {
       color: ${primary};
     }
@@ -113,13 +112,18 @@ const AsideItem = styled.li`
     }
 
     /* Mostrar el svg solo en dispositivos móviles */
-    @media (max-width: 768px) {
-      span {
-        display: none;
-      }
+    @media (max-width: 1023px) {
+   
 
       svg {
         display: inline;
+      }
+    }
+    @media (max-width: 768px) {
+   
+
+      span {
+        display: none;
       }
     }
   }

@@ -1,4 +1,4 @@
-import { blue, primary, white } from "@/lib/colors";
+import { blue, primary, secondary, white } from "@/lib/colors";
 import Link from "next/link";
 import styled, { css } from "styled-components";
 
@@ -153,7 +153,7 @@ export const Table = styled.table`
   }
 `;
 export const TD = styled.td`
-  min-width: 265px;
+  min-width: 180px;
 `;
 
 export const TDnowrap = styled.td`
@@ -178,15 +178,23 @@ export const WrapperButton = styled.div`
   gap: 10px;
   padding: 20px 0;
 `;
+
 export const Button = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 0 auto;
   padding: 10px;
   color: ${white};
   border: none;
   border-radius: 4px;
   cursor: pointer;
-
+  font-size: 1rem;
+  font-weight: 500;
+  width: 300px;
   ${(props) =>
-    props.$canceled &&
+    props.$red &&
     css`
       background-color: ${primary};
       transition: background-color 0.3s ease;
@@ -199,7 +207,7 @@ export const Button = styled.button`
       }
     `};
   ${(props) =>
-    props.$save &&
+    props.$blue &&
     css`
       background-color: ${blue};
       transition: background-color 0.3s ease;
@@ -208,7 +216,21 @@ export const Button = styled.button`
         background-color: rgba(0, 91, 181, 0.8);
       }
       &:disabled {
-        background-color: rgba(0, 91, 181, 0.5);
+       background-color: rgba(0, 91, 181, 0.3);
+        cursor: not-allowed;
+      }
+    `};
+  ${(props) =>
+    props.$green &&
+    css`
+      background-color: ${secondary};
+      transition: background-color 0.3s ease;
+ 
+      &:hover {
+        background-color: rgba(65, 159, 0, 0.7);
+      }
+      &:disabled {
+        background-color: ${secondary};
         cursor: not-allowed;
       }
     `};

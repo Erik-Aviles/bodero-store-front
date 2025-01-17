@@ -1,17 +1,17 @@
-import styled, { css } from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { black, white } from '@/lib/colors'
-import Title from '@/components/stylesComponents/Title'
-import { CenterSecction } from '@/components/stylesComponents/CenterSecction'
-import Layout from '@/components/Layout'
-import BackButton from '@/components/buttonComponents/BackButton'
-import { FlexStyled } from '@/components/stylesComponents/Flex'
-import { Loading } from '@/components/Loading'
-import { useHandleGoBack } from '@/hooks/useHandleGoBack'
+import styled, { css } from "styled-components";
+import React, { useEffect, useState } from "react";
+import { black, white } from "@/lib/colors";
+import Title from "@/components/stylesComponents/Title";
+import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
+import Layout from "@/components/Layout";
+import BackButton from "@/components/buttonComponents/BackButton";
+import { FlexStyled } from "@/components/stylesComponents/Flex";
+import { Loading } from "@/components/Loading";
+import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
-`
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   @media screen and (min-width: 768px) {
     padding: 20px 60px 40px;
   }
-`
+`;
 const Box = styled.div`
   max-width: 700px;
   display: flex;
@@ -30,18 +30,8 @@ const Box = styled.div`
   gap: 10px;
   padding: 20px;
   height: fit-content;
-  ${(props) =>
-    props.$boxblack &&
-    css`
-      background-color: ${black};
-      color: ${white};
-    `};
-  ${(props) =>
-    props.$boxwhite &&
-    css`
-      background-color: ${white};
-      box-shadow: 1px 4px 20px rgb(0 0 0 / 50%);
-    `};
+  box-shadow: 1px 4px 20px rgb(0 0 0 / 50%);
+  background-color: ${white};
   h3 {
     padding: 15px;
     margin: 16px 0 0;
@@ -62,29 +52,28 @@ const Box = styled.div`
   span {
     padding: 7px 0 0 10px;
   }
-`
+`;
 
 export default function DeliveryPage() {
-  const handleGoBack = useHandleGoBack()
-  const [isUpLoanding, setIsUpLoanding] = useState(true)
+  const handleGoBack = useHandleGoBack();
+  const [isUpLoanding, setIsUpLoanding] = useState(true);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setIsUpLoanding(false)
-    }, 2000)
-    return () => clearTimeout(timeout)
-  }, [])
-
+      setIsUpLoanding(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   if (isUpLoanding) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
     <Layout
-      title='B.R.D | Pedidos y Entregas'
-      description='En B.R.D, nos complace ofrecerte opciones de pago para que elijas la que mejor se adapte a tus necesidades: Transferencia bancaria, Pago en efectivo...'
-      sity='/pedidos-y-entregas'
+      title="B.R.D | Pedidos y Entregas"
+      description="En B.R.D, nos complace ofrecerte opciones de pago para que elijas la que mejor se adapte a tus necesidades: Transferencia bancaria, Pago en efectivo..."
+      sity="/pedidos-y-entregas"
     >
       <CenterDiv>
         <FlexStyled>
@@ -92,7 +81,7 @@ export default function DeliveryPage() {
           <Title>Información</Title>
         </FlexStyled>
         <Wrapper>
-          <Box $boxwhite={1}>
+          <Box>
             <h3>¿Cómo Comprar?</h3>
             <p>Para realizar tus compras vía web, solo sigue estos pasos:</p>
             <span>- Ingresa a www.boderoracing.com</span>
@@ -107,7 +96,7 @@ export default function DeliveryPage() {
             </span>
             <span>- Especificar el método de pago</span>
           </Box>
-          <Box $boxwhite={1}>
+          <Box>
             <h3>Formas de pago aceptadas</h3>
             <p>
               En Boderoracing.com, nos complace ofrecerte opciones de pago para
@@ -137,7 +126,7 @@ export default function DeliveryPage() {
               necesitas asistencia adicional durante el proceso de compra.
             </p>
           </Box>
-          <Box $boxwhite={1}>
+          <Box>
             <h3>Tiempos de Entrega</h3>
             <p>
               Utilizamos los servicios de Servientrega o transporte público para
@@ -158,5 +147,5 @@ export default function DeliveryPage() {
         </Wrapper>
       </CenterDiv>
     </Layout>
-  )
+  );
 }
