@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Swal from "sweetalert2";
 import Layout from "@/components/Layout";
-import { Loading } from "@/components/Loading";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Title from "@/components/stylesComponents/Title";
 import "react-datepicker/dist/react-datepicker.css";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import { error, greylight, primary, white } from "@/lib/colors";
+import { greylight, white } from "@/lib/colors";
 import InputGroup from "@/components/Account/forms/InputGroup";
 import { useRouter } from "next/router";
-import isValidEmail from "@/utils/formats/isValidEmail";
-import { useSession } from "next-auth/react";
 import {
   ComponenteLink,
   RequiredText,
 } from "@/components/stylesComponents/ComponentAccount";
 import axios from "axios";
+import { VerifyIcon } from "@/components/Icons";
 
 const CenterDiv = styled.section`
   padding-bottom: 20px;
@@ -85,6 +84,21 @@ const Container = styled.div`
   position: relative;
   width: 100%; /* Ajusta según tus necesidades */
 `;
+const WrapperMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  margin: 0 auto;
+  width: 300px;
+  svg {
+    width: 60px;
+    height: 60px;
+  }
+  p {
+    text-align: center;
+  }
+`;
 
 const DivButton = styled.button`
   display: flex;
@@ -112,7 +126,7 @@ const DivButton = styled.button`
 export default function RecoverPasswordPage() {
   const router = useRouter();
   const [errorNotification, setErrorNotification] = useState("");
-  const { status } = useSession();
+  const [send, setSend] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -132,11 +146,11 @@ export default function RecoverPasswordPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post("/api/auth/forget-password", {
         email: formData?.email,
       });
+      console.log(response.data);
       if (response.status === 400) {
         setErrorNotification(
           response?.message || "Error en los datos proporcionados"
@@ -157,19 +171,16 @@ export default function RecoverPasswordPage() {
         });
         Toast.fire({
           icon: "success",
-          title: response?.data?.message || "Redirigiendo a inicio de sesión...",
+          title:
+            response?.data?.message || "Redirigiendo a inicio de sesión...",
         });
 
-        router.push("/auth/inicio-sesion");
+        setSend(true);
       }
     } catch (error) {
       setErrorNotification(error?.response?.data?.message || "Algo salió mal!");
     }
   };
-
-  if (status === "loading") {
-    return <Loading />;
-  }
 
   return (
     <Layout
@@ -177,48 +188,60 @@ export default function RecoverPasswordPage() {
       sity={"/auth/recuperar-contrasena"}
     >
       <CenterDiv>
-        <DivTitle>
-          <Title>Recuperar Contraseña</Title>
-          <RequiredText>(*) Datos Obligatorios</RequiredText>
-        </DivTitle>
-        <Box>
-          <legend>
-            <strong>¿Olvidaste tu contraseña?</strong>
-          </legend>
-          <p>
-            Por favor ingrese su dirección de correo electrónico. Recibirá un
-            enlace para restablecer su contraseña.
-          </p>
-          <InnerBox onSubmit={handleSubmit}>
-            <Container>
-              <InputGroup
-                required
-                name="email"
-                label={fieldLabels.email}
-                type="email"
-                value={formData?.email}
-                onChange={handleChange}
-                placeholder="Ingresa tu correo"
-              />
-            </Container>
-            <RequiredText>
-              {errorNotification && errorNotification}
-            </RequiredText>
+        {!send ? (
+          <>
+            <DivTitle>
+              <Title>Recuperar Contraseña</Title>
+              <RequiredText>(*) Datos Obligatorios</RequiredText>
+            </DivTitle>
+            <Box>
+              <legend>
+                <strong>¿Olvidaste tu contraseña?</strong>
+              </legend>
+              <p>
+                Por favor ingrese su dirección de correo electrónico registrado.
+                Recibirá un enlace para restablecer su contraseña.
+              </p>
+              <InnerBox onSubmit={handleSubmit}>
+                <Container>
+                  <InputGroup
+                    required
+                    name="email"
+                    label={fieldLabels.email}
+                    type="email"
+                    value={formData?.email}
+                    onChange={handleChange}
+                    placeholder="Ingresa tu correo"
+                  />
+                </Container>
+                <RequiredText>
+                  {errorNotification && errorNotification}
+                </RequiredText>
 
-            <DivButton type="submit" title="Recuperar Contraseña">
-              ENVIAR
-            </DivButton>
-            <div className="div-action">
-              <span> ¿No tienes una cuenta?</span>
-              <ComponenteLink
-                href={"/auth/registro"}
-                title="¿No tienes una cuenta?"
-              >
-                Registrate aqui
-              </ComponenteLink>
-            </div>
-          </InnerBox>
-        </Box>
+                <DivButton type="submit" title="Recuperar Contraseña">
+                  ENVIAR
+                </DivButton>
+                <div className="div-action">
+                  <span> ¿No tienes una cuenta?</span>
+                  <ComponenteLink
+                    href={"/auth/registro"}
+                    title="¿No tienes una cuenta?"
+                  >
+                    Registrate aqui
+                  </ComponenteLink>
+                </div>
+              </InnerBox>
+            </Box>{" "}
+          </>
+        ) : (
+          <WrapperMessage>
+            <VerifyIcon />
+            <p>
+              Dirigete a la bandeja de entrada del correo registrado y has click
+              en el enlace que te hemos enviado.
+            </p>
+          </WrapperMessage>
+        )}
       </CenterDiv>
     </Layout>
   );

@@ -1,13 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import { countries } from "../../resource/curtomerData";
-import InputGroup from "./forms/InputGroup";
-import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
+import React from "react";
 import BackButton from "../buttonComponents/BackButton";
 import {
   Container,
   TitleH2,
   Wrapper,
-
 } from "../stylesComponents/ComponentAccount";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 import useAddress from "@/hooks/useAddress";

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import styled from "styled-components";
 import NotificationContext from "@/context/NotificationContext";
 import { countries } from "@/resource/curtomerData";
 import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
 import axios from "axios";
-import { Form, SectionTitle, Button } from "@/components/stylesComponents/ComponentAccount";
+import { Form, SectionTitle, Button, WrapperButton } from "@/components/stylesComponents/ComponentAccount";
 import InputGroup from "./InputGroup";
 
 const fieldLabels = {
@@ -19,15 +18,6 @@ const fieldLabels = {
   idDocument: "Documento de identidad",
   phone: "Teléfono",
 };
-
-
-const WrapperButton = styled.section`
-  display: flex;
-  justify-content: end;
-  gap: 10px;
-  padding: 20px 0;
-  justify-content: center;
-`;
 
 const FormAddress = ({
   billingAddress,
@@ -310,7 +300,7 @@ const FormAddress = ({
                   <>
                     <Button
                       type="button"
-                      $canceled
+                      $red
                       disabled={!hasChanges(type)}
                       onClick={() => handleCancel(type)}
                     >
@@ -318,7 +308,7 @@ const FormAddress = ({
                     </Button>
                     <Button
                       type="submit"
-                      $save
+                      $blue
                       disabled={!hasChanges(type)}
                       onClick={(e) => handleModifyAddress(e, type)}
                     >
@@ -329,7 +319,7 @@ const FormAddress = ({
                   <>
                     <Button
                       type="button"
-                      $canceled
+                      $red
                       disabled={!hasChanges(type)}
                       onClick={() => handleCancel(type)}
                     >
@@ -337,7 +327,7 @@ const FormAddress = ({
                     </Button>
                     <Button
                       type="submit"
-                      $save
+                      $blue
                       disabled={!hasChanges(type)}
                       onClick={(e) => handleCreateAddress(e, type)}
                     >
