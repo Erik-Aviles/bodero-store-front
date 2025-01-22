@@ -153,7 +153,7 @@ const MyPanel = () => {
           <Table>
             <thead>
               <tr>
-                <th>N° Pedido</th>
+                <th>Pedido n° </th>
                 <th>Fecha de pedido</th>
                 <th>Dirección de envío </th>
                 <th>Total</th>

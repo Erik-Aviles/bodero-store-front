@@ -114,6 +114,8 @@ const Button = styled.button`
 export default function RegisterPage() {
   const { status } = useSession();
   const router = useRouter();
+  const { callbackUrl } = router.query;
+
   const [errorNotification, setErrorNotification] = useState("");
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const [isVisiblePassConfirm, setIsVisiblePassConfirm] = useState(false);
@@ -142,10 +144,10 @@ export default function RegisterPage() {
   };
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "authenticated" && !callbackUrl) {
       router.push("/customer/mi-cuenta/general");
     }
-  }, [status, router]);
+  }, [status, router, callbackUrl]);
 
   const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev);
   const toggleVisibilityConfirmPassword = () =>
@@ -193,7 +195,11 @@ export default function RegisterPage() {
         });
 
         if (res?.ok) {
-          router.push("/customer/mi-cuenta/general");
+          if (callbackUrl) {
+            return router.push(callbackUrl);
+          } else {
+            return router.push("/customer/mi-cuenta/general");
+          }
         }
       }
     } catch (error) {

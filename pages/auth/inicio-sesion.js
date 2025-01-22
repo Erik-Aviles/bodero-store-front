@@ -3,14 +3,18 @@ import Layout from "@/components/Layout";
 import styled, { css } from "styled-components";
 import Title from "@/components/stylesComponents/Title";
 import { CenterSecction } from "@/components/stylesComponents/CenterSecction";
-import { greylight, primary, secondary, white } from "@/lib/colors";
+import { greylight, primary } from "@/lib/colors";
 import Link from "next/link";
 import InputGroup from "@/components/Account/forms/InputGroup";
 import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import { Loading } from "@/components/Loading";
-import { Button, ComponenteLink, RequiredText } from "@/components/stylesComponents/ComponentAccount";
+import {
+  Button,
+  ComponenteLink,
+  RequiredText,
+} from "@/components/stylesComponents/ComponentAccount";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -92,55 +96,11 @@ const Box = styled.section`
     }
   }
 `;
-const DivButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  margin: 0 auto;
-  padding: 8px;
-  width: 300px;
-  font-size: 1rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  ${(props) =>
-    props.$primary &&
-    css`
-      background-color: ${primary};
-      color: ${white};
-      border: 1px solid ${primary};
-      &:hover {
-        background-color: transparent;
-        color: ${primary};
-        border: 1px solid ${primary};
-      }
-    `};
-  ${(props) =>
-    props.$secondary &&
-    css`
-      background-color: ${secondary};
-      color: ${white};
-      border: 1px solid ${secondary};
-      &:hover {
-        background-color: transparent;
-        color: ${secondary};
-      }
-    `};
-`;
-const TextLink = styled(Link)`
-  width: fit-content;
-  font-size: 0.8rem;
-  color: #2255c2;
-  cursor: pointer;
-  &:hover {
-    text-decoration-line: underline;
-  }
-`;
 
 export default function LoginPage() {
   const router = useRouter();
+  const { callbackUrl } = router.query;
+  
   const { status } = useSession();
   const [errorNotification, setErrorNotification] = useState("");
   const [isVisiblePass, setIsVisiblePass] = useState(false);
@@ -155,10 +115,10 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "authenticated" && !callbackUrl) {
       router.push("/");
     }
-  }, [status, router]);
+  }, [status, router, callbackUrl]);
 
   const toggleVisibilityPassword = () => setIsVisiblePass((prev) => !prev);
 
@@ -204,7 +164,12 @@ export default function LoginPage() {
           icon: "success",
           title: "Bienvenid@ a tu cuenta",
         });
-        return router.push("/");
+
+        if (callbackUrl) {
+          return router.push(callbackUrl);
+        } else {
+          return router.push("/");
+        }
       }
     } catch (error) {
       console.error("Error al registrar:", error);

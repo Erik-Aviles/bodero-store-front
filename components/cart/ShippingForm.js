@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useData } from "@/hooks/useData";
@@ -51,11 +52,11 @@ const ShippingForm = ({
   cartProducts,
   clearCart,
 }) => {
-  const router = useRouter();
   const { showNotification } = useContext(NotificationContext);
   const { company } = useData();
   const secondaryPhone = company?.secondaryPhone;
-
+  const { data: session } = useSession();
+  const router = useRouter();
   const [formState, setFormState] = useState(
     shippingAddress
       ? {
@@ -226,20 +227,35 @@ const ShippingForm = ({
   };
 
   async function handleShippingOrder() {
-    handleCreateOrder({
-      name: formState?.name,
-      lastname: formState?.lastname,
-      email: formState?.email,
-      idDocument: formState?.idDocument,
-      phone: formState?.phone,
-      country: formState?.country,
-      province: formState?.province,
-      city: formState?.canton,
-      streetAddress: formState?.streetAddress,
-      postal: formState?.postal,
-      cartProducts,
-      clearCart,
-    });
+    if (!session) {
+      Swal.fire({
+        icon: "warning",
+        title: "No estás logueado",
+        text: "Por favor, inicia sesión para continuar con el pedido.",
+        showConfirmButton: true,
+      }).then(() => {
+        // Redirigir al login después de cerrar la alerta
+        router.push({
+          pathname: "/auth/inicio-sesion",
+          query: { callbackUrl: router.asPath },
+        });
+      });
+    } else {
+      handleCreateOrder({
+        name: formState?.name,
+        lastname: formState?.lastname,
+        email: formState?.email,
+        idDocument: formState?.idDocument,
+        phone: formState?.phone,
+        country: formState?.country,
+        province: formState?.province,
+        city: formState?.canton,
+        streetAddress: formState?.streetAddress,
+        postal: formState?.postal,
+        cartProducts,
+        clearCart,
+      });
+    }
   }
 
   const handleShippingWithSave = (e) => {
@@ -334,7 +350,8 @@ const ShippingForm = ({
       <h3>Información de envío </h3>
       <small>Esta información se utilizará para el envio del pedido.</small>
       <p>
-        Por favor, lea cuidadosamente si los campos con la información guardada son los correctos, caso contrario pueden ser editados y/o guardados.
+        Por favor, lea cuidadosamente si los campos con la información guardada
+        son los correctos, caso contrario pueden ser editados y/o guardados.
       </p>
       <FormContainer onSubmit={handleShippingWithSave}>
         <WrapperDiv>
