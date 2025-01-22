@@ -150,7 +150,6 @@ export default function RecoverPasswordPage() {
       const response = await axios.post("/api/auth/forget-password", {
         email: formData?.email,
       });
-      console.log(response.data);
       if (response.status === 400) {
         setErrorNotification(
           response?.message || "Error en los datos proporcionados"

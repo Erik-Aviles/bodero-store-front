@@ -17,6 +17,10 @@ const customerSchema = new Schema(
     shippingAddress: Object,
     orders: [OrderSchema],
     cart: Array,
+    typeclient: {
+      type: String,
+      default: "online",
+    },
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true, versionKey: false }

@@ -7,7 +7,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Método no permitido" });
   }
   const { email, password, confirmpassword } = req.body;
-  console.log(email, password);
   await mongooseConnect();
 
   if (!password && !confirmpassword) {

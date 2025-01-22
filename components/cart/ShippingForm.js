@@ -127,7 +127,6 @@ const ShippingForm = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(value);
 
     if (name === "country") {
       const selectedCountry = countries.find((c) => c.isoCode === value);
@@ -178,7 +177,7 @@ const ShippingForm = ({
         };
 
         // Enviar solicitud PUT
-        const response = await axios.put("/api/customers/address", {
+        const response = await axios.put("/api/customers/addresses", {
           type,
           address,
         });

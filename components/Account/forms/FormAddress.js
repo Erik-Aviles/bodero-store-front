@@ -1,10 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import NotificationContext from "@/context/NotificationContext";
 import { countries } from "@/resource/curtomerData";
 import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
 import axios from "axios";
-import { Form, SectionTitle, Button, WrapperButton } from "@/components/stylesComponents/ComponentAccount";
+import {
+  Form,
+  SectionTitle,
+  Button,
+  WrapperButton,
+} from "@/components/stylesComponents/ComponentAccount";
 import InputGroup from "./InputGroup";
+import useCustomerAddress from "@/hooks/useAddress";
 
 const fieldLabels = {
   name: "Nombres",
@@ -19,18 +25,45 @@ const fieldLabels = {
   phone: "Teléfono",
 };
 
-const FormAddress = ({
-  billingAddress,
-  shippingAddress,
-  mutateAddress,
-}) => {
+const FormAddress = () => {
   const { showNotification } = useContext(NotificationContext);
+  const { billingAddress, shippingAddress, mutateAddress, isLoading } =
+    useCustomerAddress();
+  const [isLoadingButton, setIsLoadingButton] = useState({
+    billingAddress: false,
+    shippingAddress: false,
+  });
+  const [isValid, setIsValid] = useState({
+    billingAddress: false,
+    shippingAddress: false,
+  });
 
   const initialAddresses = {
-    billingAddress: billingAddress || {},
-    shippingAddress: shippingAddress || {},
+    billingAddress: {
+      name: billingAddress?.name || "",
+      lastname: billingAddress?.lastname || "",
+      email: billingAddress?.email || "",
+      idDocument: billingAddress?.idDocument || "",
+      phone: billingAddress?.phone || "",
+      country: billingAddress?.country || "",
+      province: billingAddress?.province || "",
+      canton: billingAddress?.canton || "",
+      streetAddress: billingAddress?.streetAddress || "",
+      postal: billingAddress?.postal || "",
+    },
+    shippingAddress: {
+      name: shippingAddress?.name || "",
+      lastname: shippingAddress?.lastname || "",
+      email: shippingAddress?.email || "",
+      idDocument: shippingAddress?.idDocument || "",
+      phone: shippingAddress?.phone || "",
+      country: shippingAddress?.country || "",
+      province: shippingAddress?.province || "",
+      canton: shippingAddress?.canton || "",
+      streetAddress: shippingAddress?.streetAddress || "",
+      postal: shippingAddress?.postal || "",
+    },
   };
-
   const [addresses, setAddresses] = useState(initialAddresses);
   const [originalAddresses, setOriginalAddresses] = useState(initialAddresses);
 
@@ -56,8 +89,36 @@ const FormAddress = ({
       shippingAddress: shippingAddress || {},
     });
   }, [billingAddress, shippingAddress]);
+  useEffect(() => {
+    setOriginalAddresses({
+      billingAddress: billingAddress || {},
+      shippingAddress: shippingAddress || {},
+    });
+  }, [billingAddress, shippingAddress]);
 
-  const [isLoadingButton, setIsLoadingButton] = useState(false);
+  useEffect(() => {
+    const validateSection = (type) => {
+      const current = addresses[type];
+      const original = originalAddresses[type];
+
+      // Verificar que todos los campos estén llenos
+      const allFieldsFilled = Object.values(current).every((value) =>
+        value.trim()
+      );
+
+      // Verificar si hay diferencias
+      const hasChanges = Object.keys(current).some(
+        (key) => current[key] !== original[key]
+      );
+
+      return allFieldsFilled && hasChanges;
+    };
+
+    setIsValid({
+      billingAddress: validateSection("billingAddress"),
+      shippingAddress: validateSection("shippingAddress"),
+    });
+  }, [addresses, originalAddresses]);
 
   const handleChange = (e, type) => {
     const { name, value } = e.target;
@@ -103,11 +164,11 @@ const FormAddress = ({
   const handleModifyAddress = async (e, type) => {
     e.preventDefault();
     try {
-      setIsLoadingButton(true);
+      setIsLoadingButton((prev) => ({ ...prev, [type]: true }));
       const address = addresses[type];
 
       // Enviar solicitud PUT
-      const response = await axios.put("/api/customers/address", {
+      const response = await axios.put("/api/customers/addresses", {
         type,
         address,
       });
@@ -139,18 +200,18 @@ const FormAddress = ({
         status: "error",
       });
     } finally {
-      setIsLoadingButton(false);
+      setIsLoadingButton((prev) => ({ ...prev, [type]: false }));
     }
   };
 
   const handleCreateAddress = async (e, type) => {
     e.preventDefault();
     try {
-      setIsLoadingButton(true);
+      setIsLoadingButton((prev) => ({ ...prev, [type]: true }));
       const address = addresses[type];
 
       // Enviar solicitud POST
-      const response = await axios.post("/api/customers/address", {
+      const response = await axios.post("/api/customers/addresses", {
         type,
         address,
       });
@@ -189,7 +250,7 @@ const FormAddress = ({
         status: "error",
       });
     } finally {
-      setIsLoadingButton(false);
+      setIsLoadingButton((prev) => ({ ...prev, [type]: false }));
     }
   };
 
@@ -204,19 +265,16 @@ const FormAddress = ({
       status: "success",
     });
   };
-
-  const hasChanges = (type) => {
-    return (
-      JSON.stringify(addresses[type]) !==
-      JSON.stringify(originalAddresses[type])
-    );
-  };
-
   return (
     <>
       {["billingAddress", "shippingAddress"].map((type) => {
         const title = type === "billingAddress" ? "Facturación" : "Envío";
-        const isExisting = Object.keys(originalAddresses[type]).length > 0;
+        const isExisting = Object.values(originalAddresses[type]).every(
+          (value) =>
+            value !== null &&
+            value !== undefined &&
+            value.toString().trim() !== ""
+        );
         return (
           <div key={type}>
             <p>Formulario de Dirección de {title}</p>
@@ -301,7 +359,7 @@ const FormAddress = ({
                     <Button
                       type="button"
                       $red
-                      disabled={!hasChanges(type)}
+                      disabled={!isValid[type]}
                       onClick={() => handleCancel(type)}
                     >
                       Cancelar
@@ -309,10 +367,10 @@ const FormAddress = ({
                     <Button
                       type="submit"
                       $blue
-                      disabled={!hasChanges(type)}
+                      disabled={!isValid[type]}
                       onClick={(e) => handleModifyAddress(e, type)}
                     >
-                      {isLoadingButton ? "Guardando..." : "Guardar"}
+                      {isLoadingButton[type] ? "Guardando..." : "Guardar"}
                     </Button>
                   </>
                 ) : (
@@ -320,7 +378,7 @@ const FormAddress = ({
                     <Button
                       type="button"
                       $red
-                      disabled={!hasChanges(type)}
+                      disabled={!isValid[type]}
                       onClick={() => handleCancel(type)}
                     >
                       Cancelar
@@ -328,10 +386,10 @@ const FormAddress = ({
                     <Button
                       type="submit"
                       $blue
-                      disabled={!hasChanges(type)}
+                      disabled={!isValid[type]}
                       onClick={(e) => handleCreateAddress(e, type)}
                     >
-                      {isLoadingButton ? "Creando..." : "Crear"}
+                      {isLoadingButton[type] ? "Creando..." : "Crear"}
                     </Button>
                   </>
                 )}
