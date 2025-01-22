@@ -1,5 +1,5 @@
 import { genersData } from "@/resource/curtomerData";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import InputGroup from "./forms/InputGroup";
 import {
   Button,
@@ -13,14 +13,13 @@ import BackButton from "../buttonComponents/BackButton";
 import DateInputGroup from "./forms/DateInputGroup";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
 import NotificationContext from "@/context/NotificationContext";
-import { useSession } from "next-auth/react";
 import axios from "axios";
+import { useCustomer } from "@/hooks/useCustomer";
 
 const MyDatas = () => {
   const { showNotification } = useContext(NotificationContext);
   const handleGoBack = useHandleGoBack();
-  const { data: session, status, update } = useSession();
-  const customer = session?.user;
+  const { customer } = useCustomer();
 
   const fieldLabels = {
     name: "Nombres",
@@ -45,6 +44,12 @@ const MyDatas = () => {
   const [originalCustomerData, setOriginalCustomerData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    setCustomerData(customer);
+    setOriginalCustomerData(customer);
+    setSelectedDate(customer?.dateOfBirth)
+  }, [customer]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCustomerData((prev) => ({
@@ -56,7 +61,6 @@ const MyDatas = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       const updatedData = { ...customerData, dateOfBirth: selectedDate };
 
@@ -64,12 +68,6 @@ const MyDatas = () => {
       const response = await axios.put("/api/customers/update", updatedData);
 
       if (response.status === 200) {
-        // Actualizar la sesión del usuario
-        await update({
-          ...session,
-          user: { ...session.user, ...updatedData },
-        });
-
         showNotification({
           open: true,
           msj: response.data.message,
@@ -104,7 +102,8 @@ const MyDatas = () => {
 
   const hasCustomerChanges = () => {
     return (
-      JSON.stringify(customerData) !== JSON.stringify(originalCustomerData)
+      JSON.stringify(customerData) !== JSON.stringify(originalCustomerData) ||
+      JSON.stringify(selectedDate) !== JSON.stringify(originalCustomerData.dateOfBirth)
     );
   };
 

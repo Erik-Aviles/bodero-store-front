@@ -88,8 +88,6 @@ const FormAddress = () => {
       billingAddress: billingAddress || {},
       shippingAddress: shippingAddress || {},
     });
-  }, [billingAddress, shippingAddress]);
-  useEffect(() => {
     setOriginalAddresses({
       billingAddress: billingAddress || {},
       shippingAddress: shippingAddress || {},
