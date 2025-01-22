@@ -6,7 +6,6 @@ import { Customer } from "@/models/schemas/Customer";
 export default async function handler(req, res) {
   if (req.method === "PUT") {
     try {
-      // Conectar a la base de datos
 
       // Obtener la sesión del usuario autenticado
       const session = await getServerSession(req, res, authOptions);
@@ -34,8 +33,7 @@ export default async function handler(req, res) {
             dateOfBirth,
             gender: gender.toLowerCase(),
           },
-        },
-        { new: true } // Devuelve el documento actualizado
+        }
       );
 
       if (!updatedCustomer) {
@@ -55,7 +53,6 @@ export default async function handler(req, res) {
       return res.status(200).json({
         success: true,
         message: "Datos actualizados correctamente",
-        updatedCustomer,
       });
     } catch (error) {
       console.error("Error al actualizar los datos:", error);

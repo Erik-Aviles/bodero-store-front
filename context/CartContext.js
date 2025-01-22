@@ -12,12 +12,27 @@ export function CartContextProvider({ children }) {
   useEffect(() => {
     async function loadCart() {
       try {
+        const storedCart = ls?.getItem("cart");
+        const localCart = storedCart ? JSON.parse(storedCart) : [];
+
         if (session?.user) {
           const response = await axios.get("/api/customers/cart");
-          setCartProducts(response?.data?.cart || []);
+          const serverCart = response?.data?.cart || [];
+
+          // Combinar ambos carritos sin duplicados
+          const combinedCart = Array.from(
+            new Set([...serverCart, ...localCart])
+          );
+          setCartProducts(combinedCart);
+
+          if (localCart.length > 0) {
+            await axios.put("/api/customers/cart", {
+              cartProducts: combinedCart,
+            });
+            ls?.removeItem("cart"); // Limpiar el carrito local después de sincronizar
+          }
         } else {
-          const storedCart = ls?.getItem("cart");
-          setCartProducts(storedCart ? JSON.parse(storedCart) : []);
+          setCartProducts(localCart);
         }
       } catch (error) {
         console.error("Error cargando la canasta:", error);
@@ -43,10 +58,10 @@ export function CartContextProvider({ children }) {
   const addProduct = (productId) => {
     setCartProducts((prev) => {
       const updatedCart = [...prev, productId];
-      updateCart(updatedCart); // Llama a la función para sincronizar el carrito
+      updateCart(updatedCart);
       return updatedCart;
     });
-  }
+  };
 
   const removeProduct = (productId) => {
     setCartProducts((prev) => {
@@ -56,23 +71,22 @@ export function CartContextProvider({ children }) {
       updateCart(updatedCart);
       return updatedCart;
     });
-  }
+  };
 
   const removeOneProduct = (productId) => {
     setCartProducts((prev) => {
-      const productosActualizados = prev.filter(
-        (producto) => producto !== productId
-      );
-      updateCart(productosActualizados);
-      return productosActualizados;
+      const updatedCart = prev.filter((product) => product !== productId);
+      updateCart(updatedCart);
+      return updatedCart;
     });
-  }
+  };
 
+  
   const clearCart = () => {
     setCartProducts([]);
     updateCart([]);
     ls?.removeItem("cart");
-  }
+  };
 
   return (
     <CartContext.Provider

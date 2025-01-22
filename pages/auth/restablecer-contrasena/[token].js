@@ -121,7 +121,6 @@ export default function ResetPasswordPage() {
         });
 
         if (mounted && res.status === 200) {
-          console.log(res.data);
           setErrorNotification("");
           setVerified(true);
           setCustomer(res?.data?.customer);

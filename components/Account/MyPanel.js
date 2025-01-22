@@ -18,7 +18,6 @@ import {
 } from "../stylesComponents/ComponentAccount";
 import BackButton from "../buttonComponents/BackButton";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
-import { useSession } from "next-auth/react";
 import { capitalize } from "@/utils/formats/capitalize";
 import { formatDateToEcuador } from "@/utils/formats/formatDateToEcuador";
 import { capitalizeWords } from "@/utils/formats/capitalizeWords";
@@ -28,6 +27,8 @@ import formatPrice from "@/utils/formats/formatPrice";
 import useAddress from "@/hooks/useAddress";
 import { loadStatesAndCities } from "@/utils/loadStatesAndCities";
 import { countries } from "@/resource/curtomerData";
+import { useCustomer } from "@/hooks/useCustomer";
+import { format } from "date-fns";
 
 const InfoSection = styled.section`
   line-height: 1.6;
@@ -56,8 +57,7 @@ const MyPanel = () => {
   const handleGoBack = useHandleGoBack();
   const { orders } = useCustomerAllOrders();
   const { billingAddress, shippingAddress } = useAddress();
-  const { data: session, status, update } = useSession();
-  const customer = session?.user;
+  const { customer } = useCustomer();
 
   const recentOrder = orders?.slice(-1)[0];
 
@@ -74,10 +74,19 @@ const MyPanel = () => {
 
   const getProvinceName = (country, provinceCode) =>
     states[country]?.find((p) => p.isoCode === provinceCode)?.name;
-  
-  const provinceBillingAddress = getProvinceName(billingAddress?.country, billingAddress?.province);
-  const provinceShippingAddress = getProvinceName(shippingAddress?.country, shippingAddress?.province);
-  
+
+  const provinceBillingAddress = getProvinceName(
+    billingAddress?.country,
+    billingAddress?.province
+  );
+  const provinceShippingAddress = getProvinceName(
+    shippingAddress?.country,
+    shippingAddress?.province
+  );
+  const formattedDate = customer?.dateOfBirth
+    ? format(new Date(customer.dateOfBirth), "dd/MM/yyyy")
+    : "";
+
   return (
     <Container>
       <header>
@@ -118,9 +127,7 @@ const MyPanel = () => {
               </p>
               <p>
                 <span>Fecha de nacimiento:</span>
-                {customer?.dateOfBirth
-                  ? formatDateToEcuador(customer?.dateOfBirth)
-                  : "--"}
+                {formattedDate}
               </p>
 
               <p>
@@ -146,7 +153,7 @@ const MyPanel = () => {
           <Table>
             <thead>
               <tr>
-                <th>N° Pedido</th>
+                <th>Pedido n° </th>
                 <th>Fecha de pedido</th>
                 <th>Dirección de envío </th>
                 <th>Total</th>

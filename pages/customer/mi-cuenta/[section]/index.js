@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import useActions from "@/hooks/useActions";
 import { menuItems } from "@/resource/linkRouterAccount";
 import Order from "@/components/Account/Order";
+import { justFirstWord } from "@/utils/generators/justFirstWord";
 
 const CenterDiv = styled.section`
   ${CenterSecction}
@@ -99,7 +100,7 @@ const AsideItem = styled.li`
     transition: color 0.3s;
     display: flex;
     gap: 5px;
-    align-items;center;
+    align-items: center;
     &:hover {
       color: ${primary};
     }
@@ -113,15 +114,11 @@ const AsideItem = styled.li`
 
     /* Mostrar el svg solo en dispositivos móviles */
     @media (max-width: 1023px) {
-   
-
       svg {
         display: inline;
       }
     }
     @media (max-width: 768px) {
-   
-
       span {
         display: none;
       }
@@ -203,7 +200,7 @@ const AccountPage = () => {
         <AsideBar>
           <div>
             <span>Hola,</span>
-            <h4> {customer?.name || "Usuario"}!</h4>
+            <h4> {justFirstWord(customer?.name) || "Usuario"}!</h4>
           </div>
           <AsideList>{renderMenuItems()}</AsideList>
         </AsideBar>

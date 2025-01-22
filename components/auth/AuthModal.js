@@ -84,7 +84,7 @@ const InfoUser = styled.div`
   span {
     margin: 0;
     font-size: 0.7em;
-    letter-spacing: 5px;
+    letter-spacing: 2px;
   }
   img {
     border-radius: 50%;

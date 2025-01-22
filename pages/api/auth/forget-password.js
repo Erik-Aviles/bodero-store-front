@@ -41,7 +41,6 @@ export default async function handler(req, res) {
 
     // Generar la URL de reseteo
     const resetUrl = `${process.env.NEXTAUTH_URL}/auth/restablecer-contrasena/${resetToken}`;
-    console.log("La url:", resetUrl);
 
     // Verificar que la API Key de SendGrid esté configurada
     if (!process.env.SENDGRID_API_KEY) {

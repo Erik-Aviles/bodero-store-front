@@ -1,27 +1,26 @@
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
+import { Loading } from "@/components/Loading";
 
-const useAddress = () => {
+const useCustomerAddress = () => {
   const { data, error, isLoading, mutate } = useSWR(
-    `/api/customers/address`,
+    `/api/customers/addresses`,
     fetcher,
     {
-      shouldRetryOnError: false,
-      fallbackData: {
-        billingAddress: {},
-        shippingAddress: {},
-      },
       revalidateOnFocus: false,
+      shouldRetryOnError: false,
     }
   );
+  
+  if(isLoading) return <Loading />
 
   return {
-    billingAddress: data?.billingAddress || {},
-    shippingAddress: data?.shippingAddress || {},
+    billingAddress: data ? data?.billingAddress : {},
+    shippingAddress: data ?  data?.shippingAddress : {},
     isLoading,
-    isError: error,
+    isError: !!error,
     mutateAddress: mutate,
   };
 };
 
-export default useAddress;
+export default useCustomerAddress;

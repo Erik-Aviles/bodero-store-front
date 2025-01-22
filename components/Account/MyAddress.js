@@ -6,13 +6,10 @@ import {
   Wrapper,
 } from "../stylesComponents/ComponentAccount";
 import { useHandleGoBack } from "@/hooks/useHandleGoBack";
-import useAddress from "@/hooks/useAddress";
 import FormAddress from "./forms/FormAddress";
 
 const MyAddress = () => {
   const handleGoBack = useHandleGoBack();
-  const { billingAddress, shippingAddress, mutateAddress, isLoading } =
-    useAddress();
 
   return (
     <Container>
@@ -22,14 +19,7 @@ const MyAddress = () => {
       </header>
 
       <Wrapper>
-        {billingAddress && shippingAddress && (
-          <FormAddress
-            billingAddress={billingAddress}
-            shippingAddress={shippingAddress}
-            mutateAddress={mutateAddress}
-            isLoading={isLoading}
-          />
-        )}
+        <FormAddress />
       </Wrapper>
     </Container>
   );
