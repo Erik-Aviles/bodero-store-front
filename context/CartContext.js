@@ -19,10 +19,8 @@ export function CartContextProvider({ children }) {
           const response = await axios.get("/api/customers/cart");
           const serverCart = response?.data?.cart || [];
 
-          // Combinar ambos carritos sin duplicados
-          const combinedCart = Array.from(
-            new Set([...serverCart, ...localCart])
-          );
+          // Combinar ambos carritos manteniendo duplicados
+          const combinedCart = [...serverCart, ...localCart];
           setCartProducts(combinedCart);
 
           if (localCart.length > 0) {
@@ -81,7 +79,6 @@ export function CartContextProvider({ children }) {
     });
   };
 
-  
   const clearCart = () => {
     setCartProducts([]);
     updateCart([]);
